@@ -57,6 +57,9 @@ button:not(.clickable-icon):not(:disabled):not([aria-disabled="true"]):active,
 
 button:focus-visible,
 .clickable-icon:focus-visible,
+.menu-item:focus-visible,
+.suggestion-item:focus-visible,
+[role="button"]:focus-visible,
 input[type="checkbox"]:focus-visible,
 input[type="radio"]:focus-visible,
 input[type="range"]:focus-visible,
@@ -124,6 +127,12 @@ select:disabled,
   font-weight: 600;
 }
 
+.suggestion-item.is-selected,
+.menu-item.is-selected {
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: 2px;
+}
+
 .notice.mod-warning,
 .tooltip.mod-warning {
   border: var(--pixel-border-control) solid var(--pixel-amber-text);
@@ -184,7 +193,7 @@ button.mod-loading::after {
 .tag-pane-empty {
   min-block-size: var(--pixel-state-min-block-size);
   border: var(--pixel-border-control) dashed var(--pixel-border-meaningful);
-  background-color: var(--pixel-surface-secondary);
+  background-color: var(--pixel-paper);
   color: var(--pixel-text-muted);
 }
 

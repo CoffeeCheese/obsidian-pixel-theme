@@ -49,7 +49,7 @@ test("compiled package maps core Markdown through documented Obsidian variables"
     "--blockquote-background-color": "var(--pixel-context-label)",
     "--text-highlight-bg": "var(--pixel-context-label)",
     "--tag-color": "var(--text-accent)",
-    "--tag-background": "var(--pixel-surface-secondary)",
+    "--tag-background": "var(--pixel-paper)",
     "--tag-border-color": "var(--text-accent)",
     "--tag-border-width": "var(--pixel-border-decoration)",
     "--tag-radius": "var(--pixel-radius)",

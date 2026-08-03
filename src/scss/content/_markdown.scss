@@ -35,3 +35,8 @@
 :where(.markdown-source-view.mod-cm6) :is(.cm-inline-code, .HyperMD-codeblock) {
   line-height: 1.65;
 }
+
+.markdown-source-view.mod-cm6 .code-block-flair,
+.markdown-rendered .code-block-flair {
+  color: var(--pixel-text);
+}

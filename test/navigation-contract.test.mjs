@@ -30,7 +30,7 @@ test("compiled package maps core navigation through documented Obsidian variable
     "--nav-heading-color": "var(--pixel-text)",
     "--nav-heading-color-collapsed": "var(--pixel-text-muted)",
     "--nav-heading-weight": "600",
-    "--nav-tag-background": "var(--pixel-surface-secondary)",
+    "--nav-tag-background": "var(--pixel-paper)",
     "--nav-tag-color": "var(--pixel-text-muted)",
     "--nav-tag-color-active": "var(--pixel-text)",
     "--search-result-background": "var(--pixel-paper)",
@@ -139,11 +139,11 @@ test("bookmarks, tags, badges, and empty states retain native structure", async 
   const badge = ruleBodyForSelector(css, ".tag-pane-tag-count");
   assert.equal(
     declaration(badge, "border"),
-    "var(--pixel-border-decoration) solid var(--pixel-line)",
+    "var(--pixel-border-decoration) solid var(--pixel-border-meaningful)",
   );
   assert.equal(
     declaration(badge, "background-color"),
-    "var(--pixel-surface-secondary)",
+    "var(--pixel-paper)",
   );
 
   const emptyStates = ruleBodyForSelector(css, ".bookmarks-pane-empty");

@@ -18,7 +18,7 @@ test("Bases and PDF map first-party roles through the Pixel palette", async () =
     "--bases-table-row-border-width": "var(--pixel-border-decoration)",
     "--bases-table-column-border-width": "var(--pixel-border-decoration)",
     "--bases-table-header-background": "var(--pixel-paper)",
-    "--bases-table-header-color": "var(--pixel-text-muted)",
+    "--bases-table-header-color": "var(--pixel-text)",
     "--bases-table-cell-background-selected": "var(--pixel-selection)",
     "--bases-table-cell-shadow-active":
       "0 0 0 var(--pixel-border-control) var(--pixel-cyan)",

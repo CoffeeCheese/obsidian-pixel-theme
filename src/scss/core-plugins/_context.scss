@@ -103,7 +103,7 @@ body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf-content[da
 body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf-content[data-type="properties"] .empty-state-container {
   min-block-size: var(--pixel-state-min-block-size);
   border: var(--pixel-border-control) dashed var(--pixel-border-meaningful);
-  background-color: var(--pixel-surface-secondary);
+  background-color: var(--pixel-paper);
   color: var(--pixel-text-muted);
 }
 

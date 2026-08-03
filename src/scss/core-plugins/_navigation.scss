@@ -59,9 +59,9 @@
 .nav-file-tag,
 .tree-item-flair,
 .tag-pane-tag-count {
-  border: var(--pixel-border-decoration) solid var(--pixel-line);
+  border: var(--pixel-border-decoration) solid var(--pixel-border-meaningful);
   border-radius: var(--pixel-radius);
-  background-color: var(--pixel-surface-secondary);
+  background-color: var(--pixel-paper);
   color: var(--pixel-text-muted);
 }
 
