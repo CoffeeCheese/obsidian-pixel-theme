@@ -93,11 +93,100 @@ async function assertCompatibilityMapping(manifest) {
   }
 }
 
-function* cssUrlValues(css) {
-  for (const match of css.matchAll(
-    /url\(\s*(?:"([^"]*)"|'([^']*)'|([^)]*))\s*\)/gi,
-  )) {
-    yield (match[1] ?? match[2] ?? match[3]).trim();
+function maskCssStringsAndComments(css) {
+  const masked = new Array(css.length);
+  let index = 0;
+
+  while (index < css.length) {
+    if (css[index] === "/" && css[index + 1] === "*") {
+      masked[index++] = " ";
+      masked[index++] = " ";
+      while (index < css.length) {
+        const closesComment = css[index] === "*" && css[index + 1] === "/";
+        masked[index++] = " ";
+        if (closesComment) {
+          masked[index++] = " ";
+          break;
+        }
+      }
+      continue;
+    }
+
+    if (css[index] === '"' || css[index] === "'") {
+      const quote = css[index];
+      masked[index++] = " ";
+      while (index < css.length) {
+        const character = css[index];
+        masked[index++] = " ";
+        if (character === "\\" && index < css.length) {
+          masked[index++] = " ";
+        } else if (character === quote) {
+          break;
+        }
+      }
+      continue;
+    }
+
+    masked[index] = css[index];
+    index += 1;
+  }
+
+  return masked.join("");
+}
+
+function readCssFunctionArgument(css, startIndex) {
+  let depth = 1;
+  let index = startIndex;
+  let quote;
+
+  while (index < css.length) {
+    const character = css[index];
+    if (quote) {
+      if (character === "\\") {
+        index += 2;
+        continue;
+      }
+      if (character === quote) quote = undefined;
+      index += 1;
+      continue;
+    }
+    if (character === '"' || character === "'") {
+      quote = character;
+      index += 1;
+      continue;
+    }
+    if (character === "/" && css[index + 1] === "*") {
+      const commentEnd = css.indexOf("*/", index + 2);
+      index = commentEnd < 0 ? css.length : commentEnd + 2;
+      continue;
+    }
+    if (character === "(") depth += 1;
+    if (character === ")") {
+      depth -= 1;
+      if (depth === 0) return css.slice(startIndex, index);
+    }
+    index += 1;
+  }
+
+  return css.slice(startIndex);
+}
+
+function normalizeCssUrl(argument) {
+  const withoutComments = argument.replace(/\/\*[\s\S]*?\*\//g, "").trim();
+  const quote = withoutComments[0];
+  if (
+    (quote === '"' || quote === "'") &&
+    withoutComments.at(-1) === quote
+  ) {
+    return withoutComments.slice(1, -1).trim();
+  }
+  return withoutComments;
+}
+
+function* cssUrlValues(css, syntaxCss = maskCssStringsAndComments(css)) {
+  const urlFunction = /\burl\s*\(/gi;
+  for (const match of syntaxCss.matchAll(urlFunction)) {
+    yield normalizeCssUrl(readCssFunctionArgument(css, match.index + match[0].length));
   }
 }
 
@@ -132,18 +221,18 @@ function assertGeneratedCssBudget(css) {
 }
 
 function assertEmbeddedRuntimeAssets(css) {
-  const cssWithoutComments = css.replace(/\/\*[\s\S]*?\*\//g, "");
+  const syntaxCss = maskCssStringsAndComments(css);
 
-  if (/@import\b/i.test(cssWithoutComments)) {
+  if (/@import\b/i.test(syntaxCss)) {
     throw new Error("compiled theme.css must not contain @import; embed assets instead");
   }
-  if (/(?:^|[^\w-])(?:-webkit-)?image-set\s*\(/i.test(cssWithoutComments)) {
+  if (/(?:^|[^\w-])(?:-webkit-)?image-set\s*\(/i.test(syntaxCss)) {
     throw new Error(
       "compiled theme.css must not contain image-set; use one embedded data URL",
     );
   }
 
-  for (const value of cssUrlValues(cssWithoutComments)) {
+  for (const value of cssUrlValues(css, syntaxCss)) {
     if (/^(?:https?:)?\/\//i.test(value)) {
       throw new Error("theme.css must not load runtime assets from the network");
     }

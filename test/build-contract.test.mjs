@@ -408,6 +408,21 @@ test("build allows an HTTP URL when it is inert text rather than a runtime asset
   );
 });
 
+test("build allows URL-like CSS syntax when it is inert generated text", async (t) => {
+  const fixtureRoot = await createPackageFixture(t);
+  const entryPath = path.join(fixtureRoot, "src/scss/index.scss");
+  const source = await readFile(entryPath, "utf8");
+  await writeFile(
+    entryPath,
+    `${source}\n.safe-text::before { content: "@import image-set() url(https://example.com/docs)"; }\n`,
+    "utf8",
+  );
+
+  const result = runBuild(fixtureRoot);
+
+  assert.equal(result.status, 0, result.output);
+});
+
 test("check rejects a stale committed stylesheet", async (t) => {
   const fixtureRoot = await createPackageFixture(t);
   const outputPath = path.join(fixtureRoot, "theme.css");
