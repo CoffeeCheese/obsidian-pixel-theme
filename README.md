@@ -21,7 +21,7 @@ For continuous compilation:
 npm run dev
 ```
 
-To deploy each build to a dedicated theme folder in a test Vault, copy `.env.example` to `.env` and set `OBSIDIAN_THEME_DIR` to an absolute path. The build copies `theme.css` and `manifest.json` there.
+To deploy each build to a dedicated theme folder in a test Vault, copy `.env.example` to `.env` and set `OBSIDIAN_THEME_DIR` to an absolute, non-symlink path. Deployment atomically replaces only `theme.css` and `manifest.json`; it does not delete other files in the destination or write elsewhere in the Vault.
 
 Before committing or releasing:
 
@@ -29,7 +29,7 @@ Before committing or releasing:
 npm run check
 ```
 
-This verifies the manifest, release tag when applicable, network-asset policy, and that committed `theme.css` exactly matches the Sass source.
+This verifies the manifest and compatibility map, release tag when applicable, network-asset policy, CSS and encoded-font budgets, and that committed `theme.css` exactly matches the Sass source. Run `npm test` to exercise the valid and rejected package paths plus recoverable watch and safe deployment behavior.
 
 ## Distribution contract
 

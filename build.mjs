@@ -1,5 +1,6 @@
-import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
+import { lstat, mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
 import { existsSync, readFileSync } from "node:fs";
+import { randomUUID } from "node:crypto";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -11,7 +12,11 @@ const root = path.dirname(fileURLToPath(import.meta.url));
 const entryPath = path.join(root, "src/scss/index.scss");
 const headerPath = path.join(root, "src/css/header.css");
 const manifestPath = path.join(root, "manifest.json");
+const versionsPath = path.join(root, "versions.json");
 const outputPath = path.join(root, "theme.css");
+const mebibyte = 1024 * 1024;
+const maxEncodedFontBytes = Math.floor(1.2 * mebibyte);
+const maxGeneratedCssBytes = Math.floor(1.5 * mebibyte);
 const isWatch = process.argv.includes("--watch");
 const isCheck = process.argv.includes("--check");
 
@@ -68,8 +73,43 @@ async function readManifest() {
   return manifest;
 }
 
+async function assertCompatibilityMapping(manifest) {
+  const versions = JSON.parse(await readFile(versionsPath, "utf8"));
+
+  if (versions[manifest.version] !== manifest.minAppVersion) {
+    throw new Error(
+      `versions.json must map current theme version ${manifest.version} to minAppVersion ${manifest.minAppVersion}`,
+    );
+  }
+}
+
+function assertEncodedFontBudget(css) {
+  let encodedFontBytes = 0;
+
+  for (const match of css.matchAll(/data:font\/[^,]+,([^)'"\s]+)/gi)) {
+    encodedFontBytes += Buffer.byteLength(match[1], "utf8");
+  }
+
+  if (encodedFontBytes > maxEncodedFontBytes) {
+    throw new Error(
+      `Encoded font payload exceeds 1.2 MiB budget (${encodedFontBytes} bytes); reduce or subset embedded fonts`,
+    );
+  }
+}
+
+function assertGeneratedCssBudget(css) {
+  const generatedCssBytes = Buffer.byteLength(css, "utf8");
+
+  if (generatedCssBytes > maxGeneratedCssBytes) {
+    throw new Error(
+      `Generated theme.css exceeds 1.5 MiB budget (${generatedCssBytes} bytes); remove or reduce generated CSS`,
+    );
+  }
+}
+
 async function renderTheme() {
-  await readManifest();
+  const manifest = await readManifest();
+  await assertCompatibilityMapping(manifest);
 
   const [header, compiled] = await Promise.all([
     readFile(headerPath, "utf8"),
@@ -87,6 +127,9 @@ async function renderTheme() {
     throw new Error("theme.css must not load runtime assets from the network");
   }
 
+  assertEncodedFontBudget(css);
+  assertGeneratedCssBudget(css);
+
   return css;
 }
 
@@ -98,11 +141,28 @@ async function deployToVault() {
   }
 
   await mkdir(destination, { recursive: true });
+  if ((await lstat(destination)).isSymbolicLink()) {
+    throw new Error("OBSIDIAN_THEME_DIR must not be a symbolic link");
+  }
   await Promise.all([
-    copyFile(outputPath, path.join(destination, "theme.css")),
-    copyFile(manifestPath, path.join(destination, "manifest.json")),
+    installPackageFile(outputPath, path.join(destination, "theme.css")),
+    installPackageFile(manifestPath, path.join(destination, "manifest.json")),
   ]);
   console.log(`Deployed theme package to ${destination}`);
+}
+
+async function installPackageFile(source, destination) {
+  const temporaryPath = path.join(
+    path.dirname(destination),
+    `.${path.basename(destination)}.${process.pid}.${randomUUID()}.tmp`,
+  );
+
+  try {
+    await writeFile(temporaryPath, await readFile(source), { flag: "wx" });
+    await rename(temporaryPath, destination);
+  } finally {
+    await rm(temporaryPath, { force: true });
+  }
 }
 
 async function build() {
@@ -127,27 +187,45 @@ async function build() {
   await deployToVault();
 }
 
-if (isWatch) {
-  await build();
+function reportBuildFailure(error) {
+  const message = error instanceof Error ? error.message : String(error);
+  console.error(`Build failed: ${message}`);
+}
+
+async function runWatch() {
   let timer;
-  chokidar
-    .watch(["src/**/*.scss", "src/**/*.css", "manifest.json"], {
+  let buildQueue = Promise.resolve();
+  const watcher = chokidar.watch(
+    ["src/scss", "src/css", "manifest.json", "versions.json"],
+    {
       cwd: root,
       ignoreInitial: true,
-    })
-    .on("all", (_event, changedPath) => {
-      clearTimeout(timer);
-      timer = setTimeout(async () => {
-        try {
-          console.log(`Change detected: ${changedPath}`);
-          await build();
-        } catch (error) {
-          console.error(error instanceof Error ? error.message : error);
-        }
-      }, 80);
-    });
+    },
+  );
 
+  const runRecoverableBuild = async (changedPath) => {
+    if (changedPath) console.log(`Change detected: ${changedPath}`);
+    try {
+      await build();
+    } catch (error) {
+      reportBuildFailure(error);
+    }
+  };
+
+  watcher.on("all", (_event, changedPath) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      buildQueue = buildQueue.then(() => runRecoverableBuild(changedPath));
+    }, 80);
+  });
+
+  await new Promise((resolve) => watcher.on("ready", resolve));
+  await runRecoverableBuild();
   console.log("Watching theme sources…");
+}
+
+if (isWatch) {
+  await runWatch();
 } else {
   await build();
 }

@@ -17,3 +17,4 @@ docs/
 # Generated diagnostics
 coverage/
 *.map
+.build-contract-fixture-*/
