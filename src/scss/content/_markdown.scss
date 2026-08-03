@@ -1,11 +1,39 @@
 .markdown-source-view.mod-cm6 .cm-content,
 .markdown-rendered {
+  font-family: var(--font-text);
   line-height: var(--line-height-normal);
+  color: var(--text-normal);
 }
 
 .markdown-rendered :is(h1, h2, h3) {
   letter-spacing: 0.01em;
+  overflow: visible;
   text-wrap: balance;
+}
+
+.inline-title,
+.markdown-source-view.mod-cm6 .HyperMD-header {
+  overflow: visible;
+}
+
+.markdown-source-view.mod-cm6 .cm-line.cm-active {
+  background-color: var(--pixel-active-line);
+  box-shadow: inset 2px 0 0 var(--pixel-cyan);
+}
+
+.markdown-source-view.mod-cm6 .cm-fold-indicator .collapse-indicator,
+.markdown-preview-view .collapse-indicator {
+  opacity: 0.7;
+}
+
+.markdown-source-view.mod-cm6 .cm-fold-indicator.is-collapsed .collapse-indicator,
+.markdown-preview-view .is-collapsed .collapse-indicator {
+  opacity: 1;
+}
+
+.markdown-rendered :is(p, ul, ol, table) {
+  box-shadow: none;
+  animation: none;
 }
 
 .markdown-rendered code {

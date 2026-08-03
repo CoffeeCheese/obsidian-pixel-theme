@@ -2,7 +2,7 @@
 
 Pixel is an independent Obsidian theme focused on long-form Markdown writing and knowledge management. The visual baseline is the H5 material system with the D1 balanced desktop layout.
 
-The implemented production slices install the approved Light/Dark palette, 4px pixel geometry, reading typography, embedded identity/code fonts, shared controls, and the H5/D1 desktop shell. The desktop workspace keeps native left navigation, central notes, and right context in place while applying cyan/amber dock labels and a shallow Paper reader console. Markdown surface coverage and the platform-invariant M1 mobile structure remain separate implementation slices.
+The implemented production slices install the approved Light/Dark palette, 4px pixel geometry, reading typography, embedded identity/code fonts, shared controls, the H5/D1 desktop shell, and a unified core Markdown experience across Source, Live Preview, and Reading. The desktop workspace keeps native left navigation, central notes, and right context in place while applying cyan/amber dock labels and a shallow Paper reader console. Structured Markdown surfaces and the platform-invariant M1 mobile structure remain separate implementation slices.
 
 ## Design foundation
 
@@ -10,6 +10,7 @@ The implemented production slices install the approved Light/Dark palette, 4px p
 - Long-form text uses a local/system Source Han and CJK fallback stack. Pixel does not bundle a CJK body font, so rare characters can continue through the operating system's natural font fallback.
 - Fusion Pixel is reserved for the inline title and H1–H3 identity. JetBrains Mono Regular/Bold is reserved for code and technical state.
 - The default reading measure is `72ch` at Obsidian's user-owned editor text size. Appearance settings can still override the theme font, text size, and accent color.
+- Source, Live Preview, and Reading share heading rhythm, semantic link/emphasis/list roles, and visible selection, caret, active-line, folding, indentation, and task signals without adding vertical margins to editable blocks.
 
 ## Development
 

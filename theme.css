@@ -72,6 +72,8 @@ body {
   --pixel-shadow-color: #8fa5b2;
   --pixel-nav-label: #c7dfe3;
   --pixel-context-label: #f0e1d0;
+  --pixel-selection: rgba(25, 125, 140, 0.28);
+  --pixel-active-line: #edf5f7;
 }
 
 .theme-dark {
@@ -94,6 +96,8 @@ body {
   --pixel-shadow-color: #091016;
   --pixel-nav-label: #254751;
   --pixel-context-label: #474135;
+  --pixel-selection: rgba(88, 199, 207, 0.35);
+  --pixel-active-line: #1d3039;
 }
 
 body {
@@ -106,6 +110,8 @@ body {
   --line-height-normal: 1.75;
   --line-height-tight: 1.5;
   --file-line-width: 72ch;
+  --p-spacing: 1em;
+  --heading-spacing: 2em;
   --inline-title-font: var(--pixel-font-identity);
   --inline-title-line-height: 1.3;
   --inline-title-size: 2em;
@@ -197,6 +203,48 @@ body {
   --setting-items-border-width: var(--pixel-border-control);
   --code-background: var(--pixel-surface-secondary);
   --code-normal: var(--pixel-text);
+  --link-color: var(--text-accent);
+  --link-color-hover: var(--text-accent-hover);
+  --link-decoration: underline;
+  --link-decoration-hover: underline;
+  --link-external-color: var(--text-accent);
+  --link-external-color-hover: var(--text-accent-hover);
+  --link-external-decoration: underline;
+  --link-external-decoration-hover: underline;
+  --link-unresolved-color: var(--text-accent);
+  --link-unresolved-opacity: 1;
+  --link-unresolved-decoration-style: dashed;
+  --blockquote-border-thickness: var(--pixel-border-control);
+  --blockquote-border-color: var(--pixel-amber-text);
+  --blockquote-color: var(--pixel-amber-text);
+  --blockquote-background-color: var(--pixel-context-label);
+  --text-highlight-bg: var(--pixel-context-label);
+  --tag-color: var(--text-accent);
+  --tag-color-hover: var(--text-accent-hover);
+  --tag-background: var(--pixel-surface-secondary);
+  --tag-background-hover: var(--pixel-paper);
+  --tag-border-color: var(--text-accent);
+  --tag-border-color-hover: var(--text-accent-hover);
+  --tag-border-width: var(--pixel-border-decoration);
+  --tag-radius: var(--pixel-radius);
+  --tag-corner-shape: square;
+  --list-spacing: 0.125em;
+  --list-marker-color: var(--pixel-text-muted);
+  --list-marker-color-hover: var(--pixel-text);
+  --list-marker-color-collapsed: var(--text-accent);
+  --list-bullet-radius: var(--pixel-radius);
+  --list-bullet-size: 0.35em;
+  --indentation-guide-width: var(--pixel-border-decoration);
+  --indentation-guide-width-active: var(--pixel-border-control);
+  --indentation-guide-color: var(--pixel-line);
+  --indentation-guide-color-active: var(--pixel-cyan);
+  --checkbox-color: var(--interactive-accent);
+  --checkbox-color-hover: var(--interactive-accent-hover);
+  --checkbox-border-color: var(--pixel-border-meaningful);
+  --checkbox-border-color-hover: var(--pixel-cyan);
+  --checkbox-marker-color: var(--pixel-paper);
+  --checklist-done-color: var(--pixel-text-muted);
+  --text-selection: var(--pixel-selection);
   --nav-item-color: var(--pixel-text-muted);
   --nav-item-color-hover: var(--pixel-text);
   --nav-item-background-hover: var(--pixel-surface-secondary);
@@ -292,12 +340,40 @@ body:not(.is-mobile) .workspace-leaf-resize-handle {
 
 .markdown-source-view.mod-cm6 .cm-content,
 .markdown-rendered {
+  font-family: var(--font-text);
   line-height: var(--line-height-normal);
+  color: var(--text-normal);
 }
 
 .markdown-rendered :is(h1, h2, h3) {
   letter-spacing: 0.01em;
+  overflow: visible;
   text-wrap: balance;
+}
+
+.inline-title,
+.markdown-source-view.mod-cm6 .HyperMD-header {
+  overflow: visible;
+}
+
+.markdown-source-view.mod-cm6 .cm-line.cm-active {
+  background-color: var(--pixel-active-line);
+  box-shadow: inset 2px 0 0 var(--pixel-cyan);
+}
+
+.markdown-source-view.mod-cm6 .cm-fold-indicator .collapse-indicator,
+.markdown-preview-view .collapse-indicator {
+  opacity: 0.7;
+}
+
+.markdown-source-view.mod-cm6 .cm-fold-indicator.is-collapsed .collapse-indicator,
+.markdown-preview-view .is-collapsed .collapse-indicator {
+  opacity: 1;
+}
+
+.markdown-rendered :is(p, ul, ol, table) {
+  box-shadow: none;
+  animation: none;
 }
 
 .markdown-rendered code {
