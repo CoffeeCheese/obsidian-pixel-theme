@@ -59,6 +59,10 @@ test("controls expose pointer, keyboard, and pressed feedback without layout shi
   assert.equal(declaration(raisedControl, "color"), "var(--pixel-text)");
   assert.equal(declaration(raisedControl, "box-shadow"), "var(--pixel-shadow-control)");
   assert.equal(declaration(raisedControl, "min-block-size"), "var(--pixel-control-min)");
+  assert.match(
+    declaration(raisedControl, "transition"),
+    /transform var\(--pixel-motion-press\) ease-out/,
+  );
 
   const textField = ruleBodyForSelector(css, "input[type=text]");
   assert.equal(
@@ -86,6 +90,12 @@ test("controls expose pointer, keyboard, and pressed feedback without layout shi
     declaration(fieldFocus, "outline"),
     "var(--pixel-border-control) solid var(--pixel-cyan)",
   );
+  const sliderFocus = ruleBodyForSelector(css, "input[type=range]:focus-visible");
+  assert.equal(
+    declaration(sliderFocus, "outline"),
+    "var(--pixel-border-control) solid var(--pixel-cyan)",
+  );
+  assert.equal(declaration(sliderFocus, "outline-offset"), "2px");
 
   const pointerHover = atRuleBody(css, "@media (hover: hover) and (pointer: fine)");
   const hover = ruleBodyForSelector(pointerHover, ".clickable-icon:hover");
@@ -199,6 +209,17 @@ test("shared surfaces and native control shapes remain readable and icon-safe", 
     "var(--pixel-border-control) solid var(--pixel-border-meaningful)",
   );
   assert.equal(declaration(toggle, "border-radius"), "var(--pixel-radius)");
+  const pressedToggle = ruleBodyForSelector(
+    css,
+    ".checkbox-container:not(.is-disabled):active::after",
+  );
+  assert.equal(declaration(pressedToggle, "translate"), "2px 2px");
+  assert.equal(declaration(pressedToggle, "box-shadow"), "none");
+  const disabledToggleThumb = ruleBodyForSelector(
+    css,
+    ".checkbox-container.is-disabled::after",
+  );
+  assert.equal(declaration(disabledToggleThumb, "box-shadow"), "none");
 
   const sliderThumb = ruleBody(css, "input[type=range]::-webkit-slider-thumb");
   assert.equal(
@@ -206,6 +227,11 @@ test("shared surfaces and native control shapes remain readable and icon-safe", 
     "var(--pixel-border-control) solid var(--pixel-cyan)",
   );
   assert.equal(declaration(sliderThumb, "box-shadow"), "var(--pixel-shadow-control)");
+  const disabledSliderThumb = ruleBodyForSelector(
+    css,
+    "input[type=range]:disabled::-webkit-slider-thumb",
+  );
+  assert.equal(declaration(disabledSliderThumb, "box-shadow"), "none");
 
   const icon = ruleBody(css, ".svg-icon");
   assert.equal(declaration(icon, "color"), "currentcolor");
@@ -219,7 +245,7 @@ test("shared surfaces and native control shapes remain readable and icon-safe", 
   assert.equal(declaration(mobile, "--pixel-icon-size"), "24px");
   assert.equal(declaration(mobile, "--input-height"), "44px");
 
-  const coarsePointer = atRuleBody(css, "@media (pointer: coarse)");
+  const coarsePointer = atRuleBody(css, "@media (any-pointer: coarse)");
   const coarseBody = ruleBody(coarsePointer, "body");
   assert.equal(declaration(coarseBody, "--pixel-control-min"), "44px");
   assert.equal(declaration(coarseBody, "--input-height"), "44px");

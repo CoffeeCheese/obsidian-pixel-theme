@@ -38,13 +38,6 @@ export function declaration(body, property) {
   return match[1].trim().toLowerCase();
 }
 
-export function matchingRuleBody(css, selectorPattern) {
-  const rules = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)];
-  const rule = rules.find((match) => selectorPattern.test(match[1].trim()));
-  assert.ok(rule, `Expected compiled rule matching ${selectorPattern}`);
-  return rule[2];
-}
-
 export function ruleBodyForSelector(css, selector) {
   const rules = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)];
   const rule = rules.find((match) =>

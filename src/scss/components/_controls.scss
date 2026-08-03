@@ -19,9 +19,6 @@
 @mixin focus-signal {
   outline: var(--pixel-border-control) solid var(--pixel-cyan);
   outline-offset: 2px;
-  transition:
-    border-color var(--pixel-motion-state) linear,
-    box-shadow var(--pixel-motion-state) linear;
 }
 
 button:not(.clickable-icon),
@@ -62,6 +59,7 @@ button:focus-visible,
 .clickable-icon:focus-visible,
 input[type="checkbox"]:focus-visible,
 input[type="radio"]:focus-visible,
+input[type="range"]:focus-visible,
 .checkbox-container:focus-visible {
   @include focus-signal;
 }
@@ -249,11 +247,31 @@ input[type="radio"]:checked {
   border-radius: var(--pixel-radius);
   background-color: var(--pixel-paper);
   box-shadow: var(--pixel-shadow-control);
+  translate: 0 0;
+  transition:
+    transform var(--pixel-motion-state) ease-out,
+    translate var(--pixel-motion-press) ease-out,
+    box-shadow var(--pixel-motion-press) ease-out,
+    width var(--pixel-motion-press) ease-out,
+    height var(--pixel-motion-press) ease-out,
+    margin-top var(--pixel-motion-press) ease-out,
+    left var(--pixel-motion-press) ease-out,
+    opacity var(--pixel-motion-press) linear;
 }
 
 .checkbox-container.is-enabled {
   border-color: var(--interactive-accent);
   background-color: var(--interactive-accent);
+}
+
+.checkbox-container:not(.is-disabled):active::after {
+  translate: 2px 2px;
+  box-shadow: none;
+}
+
+.checkbox-container.is-disabled::after,
+input[type="range"]:disabled::-webkit-slider-thumb {
+  box-shadow: none;
 }
 
 input[type="range"] {
