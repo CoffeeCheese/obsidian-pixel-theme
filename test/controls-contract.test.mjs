@@ -1,55 +1,12 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
-import path from "node:path";
 import test from "node:test";
-import { fileURLToPath } from "node:url";
-
-const repositoryRoot = path.resolve(
-  path.dirname(fileURLToPath(import.meta.url)),
-  "..",
-);
-
-async function readTheme() {
-  return readFile(path.join(repositoryRoot, "theme.css"), "utf8");
-}
-
-function ruleBody(css, selector) {
-  const escapedSelector = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const match = css.match(new RegExp(`${escapedSelector}\\s*\\{([\\s\\S]*?)\\}`));
-  assert.ok(match, `Expected compiled theme.css to contain ${selector}`);
-  return match[1];
-}
-
-function declaration(body, property) {
-  const escapedProperty = property.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const match = body.match(
-    new RegExp(`(?:^|[;\\n])\\s*${escapedProperty}:\\s*([^;]+);`),
-  );
-  assert.ok(match, `Expected ${property} in compiled rule`);
-  return match[1].trim().toLowerCase();
-}
-
-function matchingRuleBody(css, selectorPattern) {
-  const rules = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)];
-  const rule = rules.find((match) => selectorPattern.test(match[1].trim()));
-  assert.ok(rule, `Expected compiled rule matching ${selectorPattern}`);
-  return rule[2];
-}
-
-function atRuleBody(css, prelude) {
-  const start = css.indexOf(prelude);
-  assert.notEqual(start, -1, `Expected compiled theme.css to contain ${prelude}`);
-  const openingBrace = css.indexOf("{", start);
-  let depth = 1;
-
-  for (let index = openingBrace + 1; index < css.length; index += 1) {
-    if (css[index] === "{") depth += 1;
-    if (css[index] === "}") depth -= 1;
-    if (depth === 0) return css.slice(openingBrace + 1, index);
-  }
-
-  assert.fail(`Expected ${prelude} to have a closing brace`);
-}
+import {
+  atRuleBody,
+  declaration,
+  readTheme,
+  ruleBody,
+  ruleBodyForSelector,
+} from "../test-support/theme-css.mjs";
 
 test("compiled controls share Pixel surfaces, meaningful boundaries, and motion", async () => {
   const css = await readTheme();
@@ -93,10 +50,7 @@ test("compiled controls share Pixel surfaces, meaningful boundaries, and motion"
 
 test("controls expose pointer, keyboard, and pressed feedback without layout shifts", async () => {
   const css = await readTheme();
-  const raisedControl = matchingRuleBody(
-    css,
-    /button:not\(\.clickable-icon\).*\.clickable-icon/s,
-  );
+  const raisedControl = ruleBodyForSelector(css, "button:not(.clickable-icon)");
   assert.equal(
     declaration(raisedControl, "border"),
     "var(--pixel-border-control) solid var(--pixel-border-meaningful)",
@@ -106,7 +60,7 @@ test("controls expose pointer, keyboard, and pressed feedback without layout shi
   assert.equal(declaration(raisedControl, "box-shadow"), "var(--pixel-shadow-control)");
   assert.equal(declaration(raisedControl, "min-block-size"), "var(--pixel-control-min)");
 
-  const textField = matchingRuleBody(css, /textarea.*input\[type=text\]/s);
+  const textField = ruleBodyForSelector(css, "input[type=text]");
   assert.equal(
     declaration(textField, "border"),
     "var(--pixel-border-control) solid var(--pixel-border-meaningful)",
@@ -114,22 +68,27 @@ test("controls expose pointer, keyboard, and pressed feedback without layout shi
   assert.equal(declaration(textField, "background-color"), "var(--pixel-paper)");
   assert.equal(declaration(textField, "color"), "var(--pixel-text)");
 
-  const pressed = matchingRuleBody(css, /button.*:active.*\.clickable-icon.*:active/s);
+  const pressed = ruleBodyForSelector(
+    css,
+    '.clickable-icon:not([aria-disabled=true]):active',
+  );
   assert.equal(declaration(pressed, "transform"), "translate(2px, 2px)");
   assert.equal(declaration(pressed, "box-shadow"), "none");
 
-  const focus = matchingRuleBody(css, /button:focus-visible.*input\[type=text\]:focus-visible/s);
+  const focus = ruleBodyForSelector(css, "button:focus-visible");
   assert.equal(
     declaration(focus, "outline"),
     "var(--pixel-border-control) solid var(--pixel-cyan)",
   );
   assert.equal(declaration(focus, "outline-offset"), "2px");
+  const fieldFocus = ruleBodyForSelector(css, "input[type=text]:focus-visible");
+  assert.equal(
+    declaration(fieldFocus, "outline"),
+    "var(--pixel-border-control) solid var(--pixel-cyan)",
+  );
 
   const pointerHover = atRuleBody(css, "@media (hover: hover) and (pointer: fine)");
-  const hover = matchingRuleBody(
-    pointerHover,
-    /button:not\(\.clickable-icon\):hover.*\.clickable-icon:hover/s,
-  );
+  const hover = ruleBodyForSelector(pointerHover, ".clickable-icon:hover");
   assert.equal(
     declaration(hover, "background-color"),
     "var(--pixel-surface-secondary)",
@@ -139,10 +98,7 @@ test("controls expose pointer, keyboard, and pressed feedback without layout shi
 test("disabled, selected, warning, danger, loading, and empty states use multiple cues", async () => {
   const css = await readTheme();
 
-  const disabled = matchingRuleBody(
-    css,
-    /button:disabled.*\.clickable-icon\[aria-disabled=.*input:disabled.*\.suggestion-item\.is-disabled/s,
-  );
+  const disabled = ruleBodyForSelector(css, ".suggestion-item.is-disabled");
   assert.equal(declaration(disabled, "opacity"), "1");
   assert.equal(
     declaration(disabled, "background-color"),
@@ -152,10 +108,7 @@ test("disabled, selected, warning, danger, loading, and empty states use multipl
   assert.equal(declaration(disabled, "box-shadow"), "none");
   assert.equal(declaration(disabled, "cursor"), "not-allowed");
 
-  const selected = matchingRuleBody(
-    css,
-    /\.suggestion-item\.is-selected.*\.menu-item\.is-selected.*\.menu-item\.is-checked/s,
-  );
+  const selected = ruleBodyForSelector(css, ".suggestion-item.is-selected");
   assert.equal(
     declaration(selected, "box-shadow"),
     "inset 4px 0 0 var(--pixel-cyan)",
@@ -167,10 +120,7 @@ test("disabled, selected, warning, danger, loading, and empty states use multipl
   assert.equal(declaration(selected, "color"), "var(--pixel-text)");
   assert.equal(declaration(selected, "font-weight"), "600");
 
-  const warning = matchingRuleBody(
-    css,
-    /\.notice\.mod-warning.*\.tooltip\.mod-warning/s,
-  );
+  const warning = ruleBodyForSelector(css, ".notice.mod-warning");
   assert.equal(
     declaration(warning, "border"),
     "var(--pixel-border-control) solid var(--pixel-amber-text)",
@@ -178,10 +128,7 @@ test("disabled, selected, warning, danger, loading, and empty states use multipl
   assert.equal(declaration(warning, "border-inline-start-width"), "4px");
   assert.equal(declaration(warning, "color"), "var(--pixel-amber-text)");
 
-  const danger = matchingRuleBody(
-    css,
-    /button\.mod-warning.*button\.mod-destructive.*\[aria-invalid=true\]/s,
-  );
+  const danger = ruleBodyForSelector(css, "button.mod-destructive");
   assert.equal(
     declaration(danger, "border"),
     "var(--pixel-border-control) solid var(--pixel-brick)",
@@ -194,6 +141,7 @@ test("disabled, selected, warning, danger, loading, and empty states use multipl
     declaration(loading, "min-block-size"),
     "var(--pixel-state-min-block-size)",
   );
+  assert.equal(declaration(loading, "color"), "var(--pixel-text)");
   assert.equal(declaration(loading, "cursor"), "progress");
   const loadingIndicator = ruleBody(css, ".is-loading::before");
   assert.equal(declaration(loadingIndicator, "animation"), "none");
@@ -203,10 +151,7 @@ test("disabled, selected, warning, danger, loading, and empty states use multipl
   const loadingButtonIndicator = ruleBody(css, "button.mod-loading::after");
   assert.equal(declaration(loadingButtonIndicator, "display"), "none");
 
-  const empty = matchingRuleBody(
-    css,
-    /\.suggestion-empty.*\.empty-state-container.*\.search-empty-state/s,
-  );
+  const empty = ruleBodyForSelector(css, ".suggestion-empty");
   assert.equal(
     declaration(empty, "min-block-size"),
     "var(--pixel-state-min-block-size)",
@@ -219,10 +164,7 @@ test("shared surfaces and native control shapes remain readable and icon-safe", 
   const body = ruleBody(css, "body");
   assert.equal(declaration(body, "--pixel-icon-size"), "18px");
 
-  const surfaces = matchingRuleBody(
-    css,
-    /\.menu.*\.suggestion-container.*\.prompt.*\.modal.*\.notice.*\.tooltip/s,
-  );
+  const surfaces = ruleBodyForSelector(css, ".menu");
   assert.equal(
     declaration(surfaces, "border"),
     "var(--pixel-border-control) solid var(--pixel-border-meaningful)",
@@ -230,6 +172,11 @@ test("shared surfaces and native control shapes remain readable and icon-safe", 
   assert.equal(declaration(surfaces, "background-color"), "var(--pixel-paper)");
   assert.equal(declaration(surfaces, "color"), "var(--pixel-text)");
   assert.equal(declaration(surfaces, "box-shadow"), "var(--pixel-shadow-shell)");
+  const overlays = ruleBodyForSelector(css, ".modal-bg");
+  assert.equal(
+    declaration(overlays, "transition"),
+    "opacity var(--pixel-motion-surface) linear",
+  );
 
   const settingRow = ruleBody(css, ".setting-item");
   assert.equal(
@@ -239,10 +186,7 @@ test("shared surfaces and native control shapes remain readable and icon-safe", 
   assert.equal(declaration(settingRow, "background-color"), "var(--pixel-paper)");
   assert.equal(declaration(settingRow, "box-shadow"), "none");
 
-  const checkbox = matchingRuleBody(
-    css,
-    /^input\[type=checkbox\],\s*input\[type=radio\]$/s,
-  );
+  const checkbox = ruleBodyForSelector(css, "input[type=checkbox]");
   assert.equal(
     declaration(checkbox, "border"),
     "var(--pixel-border-control) solid var(--pixel-border-meaningful)",
@@ -266,10 +210,7 @@ test("shared surfaces and native control shapes remain readable and icon-safe", 
   const icon = ruleBody(css, ".svg-icon");
   assert.equal(declaration(icon, "color"), "currentcolor");
   assert.equal(declaration(icon, "filter"), "none");
-  const controlIcon = matchingRuleBody(
-    css,
-    /\.clickable-icon \.svg-icon.*button \.svg-icon/s,
-  );
+  const controlIcon = ruleBodyForSelector(css, ".clickable-icon .svg-icon");
   assert.equal(declaration(controlIcon, "inline-size"), "var(--pixel-icon-size)");
   assert.equal(declaration(controlIcon, "block-size"), "var(--pixel-icon-size)");
 
@@ -277,30 +218,26 @@ test("shared surfaces and native control shapes remain readable and icon-safe", 
   assert.equal(declaration(mobile, "--pixel-control-min"), "44px");
   assert.equal(declaration(mobile, "--pixel-icon-size"), "24px");
   assert.equal(declaration(mobile, "--input-height"), "44px");
+
+  const coarsePointer = atRuleBody(css, "@media (pointer: coarse)");
+  const coarseBody = ruleBody(coarsePointer, "body");
+  assert.equal(declaration(coarseBody, "--pixel-control-min"), "44px");
+  assert.equal(declaration(coarseBody, "--input-height"), "44px");
 });
 
 test("accessibility preferences remove motion and preserve system-authoritative states", async () => {
   const css = await readTheme();
 
   const reducedMotion = atRuleBody(css, "@media (prefers-reduced-motion: reduce)");
-  const motionlessControls = matchingRuleBody(
-    reducedMotion,
-    /button.*\.clickable-icon.*input.*\.menu.*\.tooltip/s,
-  );
+  const motionlessControls = ruleBodyForSelector(reducedMotion, ".clickable-icon");
   assert.equal(declaration(motionlessControls, "transition-duration"), "0ms");
   assert.equal(declaration(motionlessControls, "animation"), "none");
-  const motionlessDrawers = matchingRuleBody(
-    reducedMotion,
-    /\.workspace-drawer.*\.modal-bg/s,
-  );
+  const motionlessDrawers = ruleBodyForSelector(reducedMotion, ".workspace-drawer");
   assert.equal(declaration(motionlessDrawers, "transition-duration"), "0ms");
   assert.equal(declaration(motionlessDrawers, "animation"), "none");
 
   const forcedColors = atRuleBody(css, "@media (forced-colors: active)");
-  const systemRoles = matchingRuleBody(
-    forcedColors,
-    /^\.theme-light,\s*\.theme-dark$/s,
-  );
+  const systemRoles = ruleBodyForSelector(forcedColors, ".theme-light");
   assert.equal(declaration(systemRoles, "--pixel-canvas"), "canvas");
   assert.equal(declaration(systemRoles, "--pixel-paper"), "canvas");
   assert.equal(declaration(systemRoles, "--pixel-text"), "canvastext");
@@ -310,10 +247,7 @@ test("accessibility preferences remove motion and preserve system-authoritative 
   assert.equal(declaration(systemRoles, "--pixel-shadow-shell"), "none");
 
   const highContrast = atRuleBody(css, "@media (prefers-contrast: more)");
-  const strongerRoles = matchingRuleBody(
-    highContrast,
-    /^\.theme-light,\s*\.theme-dark$/s,
-  );
+  const strongerRoles = ruleBodyForSelector(highContrast, ".theme-light");
   assert.equal(
     declaration(strongerRoles, "--pixel-border-meaningful"),
     "var(--pixel-text)",

@@ -1,3 +1,29 @@
+@mixin form-controls($state: null) {
+  textarea#{$state},
+  .multi-select-container#{$state},
+  input.metadata-input-text#{$state},
+  input[type="date"]#{$state},
+  input[type="datetime-local"]#{$state},
+  input[type="text"]#{$state},
+  input[type="search"]#{$state},
+  input[type="email"]#{$state},
+  input[type="password"]#{$state},
+  input[type="number"]#{$state},
+  select#{$state},
+  .combobox-button#{$state},
+  .dropdown#{$state} {
+    @content;
+  }
+}
+
+@mixin focus-signal {
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: 2px;
+  transition:
+    border-color var(--pixel-motion-state) linear,
+    box-shadow var(--pixel-motion-state) linear;
+}
+
 button:not(.clickable-icon),
 .clickable-icon {
   min-block-size: var(--pixel-control-min);
@@ -14,19 +40,7 @@ button:not(.clickable-icon),
     color var(--pixel-motion-state) linear;
 }
 
-textarea,
-.multi-select-container,
-input.metadata-input-text,
-input[type="date"],
-input[type="datetime-local"],
-input[type="text"],
-input[type="search"],
-input[type="email"],
-input[type="password"],
-input[type="number"],
-select,
-.combobox-button,
-.dropdown {
+@include form-controls {
   border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
   border-radius: var(--pixel-radius);
   background-color: var(--pixel-paper);
@@ -46,27 +60,14 @@ button:not(.clickable-icon):not(:disabled):not([aria-disabled="true"]):active,
 
 button:focus-visible,
 .clickable-icon:focus-visible,
-textarea:focus-visible,
-.multi-select-container:focus-visible,
-input.metadata-input-text:focus-visible,
-input[type="date"]:focus-visible,
-input[type="datetime-local"]:focus-visible,
-input[type="text"]:focus-visible,
-input[type="search"]:focus-visible,
-input[type="email"]:focus-visible,
-input[type="password"]:focus-visible,
-input[type="number"]:focus-visible,
 input[type="checkbox"]:focus-visible,
 input[type="radio"]:focus-visible,
-select:focus-visible,
-.combobox-button:focus-visible,
-.dropdown:focus-visible,
 .checkbox-container:focus-visible {
-  outline: var(--pixel-border-control) solid var(--pixel-cyan);
-  outline-offset: 2px;
-  transition:
-    border-color var(--pixel-motion-state) linear,
-    box-shadow var(--pixel-motion-state) linear;
+  @include focus-signal;
+}
+
+@include form-controls(":focus-visible") {
+  @include focus-signal;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -77,42 +78,23 @@ select:focus-visible,
     color: var(--pixel-text);
   }
 
-  textarea:hover,
-  .multi-select-container:hover,
-  input.metadata-input-text:hover,
-  input[type="date"]:hover,
-  input[type="datetime-local"]:hover,
-  input[type="text"]:hover,
-  input[type="search"]:hover,
-  input[type="email"]:hover,
-  input[type="password"]:hover,
-  input[type="number"]:hover,
-  select:hover,
-  .combobox-button:hover,
-  .dropdown:hover {
+  @include form-controls(":hover") {
     background-color: var(--pixel-surface-secondary);
     border-color: var(--pixel-cyan);
   }
 }
 
 @media (hover: none) {
-  .clickable-icon:hover,
-  textarea:hover,
-  .multi-select-container:hover,
-  input.metadata-input-text:hover,
-  input[type="date"]:hover,
-  input[type="datetime-local"]:hover,
-  input[type="text"]:hover,
-  input[type="search"]:hover,
-  input[type="email"]:hover,
-  input[type="password"]:hover,
-  input[type="number"]:hover {
+  @include form-controls(":hover") {
     border-color: var(--pixel-border-meaningful);
     background-color: var(--pixel-paper);
     color: var(--pixel-text);
   }
 
   .clickable-icon:hover {
+    border-color: var(--pixel-border-meaningful);
+    background-color: var(--pixel-paper);
+    color: var(--pixel-text);
     box-shadow: var(--pixel-shadow-control);
   }
 }
@@ -177,6 +159,7 @@ button.mod-destructive,
 
 .is-loading {
   min-block-size: var(--pixel-state-min-block-size);
+  color: var(--pixel-text);
   cursor: progress;
 }
 
@@ -221,6 +204,11 @@ button.mod-loading::after {
     transform var(--pixel-motion-surface) ease-out,
     border-color var(--pixel-motion-state) linear;
   animation-duration: var(--pixel-motion-surface);
+}
+
+.modal-bg,
+.suggestion-bg {
+  transition: opacity var(--pixel-motion-surface) linear;
 }
 
 .setting-item {
@@ -310,76 +298,4 @@ button .svg-icon {
 .setting-item-control,
 .modal-button-container {
   gap: var(--pixel-space-2);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  button,
-  .clickable-icon,
-  input,
-  textarea,
-  select,
-  .checkbox-container,
-  .menu,
-  .suggestion-container,
-  .prompt,
-  .modal,
-  .notice,
-  .tooltip,
-  .is-loading::before {
-    transition-duration: 0ms;
-    animation: none;
-  }
-
-  .workspace-drawer,
-  .modal-bg {
-    transition-duration: 0ms;
-    animation: none;
-  }
-}
-
-@media (forced-colors: active) {
-  .theme-light,
-  .theme-dark {
-    --pixel-canvas: Canvas;
-    --pixel-paper: Canvas;
-    --pixel-surface-secondary: ButtonFace;
-    --pixel-text: CanvasText;
-    --pixel-text-muted: GrayText;
-    --pixel-cyan: Highlight;
-    --pixel-amber: CanvasText;
-    --pixel-amber-text: CanvasText;
-    --pixel-brick: CanvasText;
-    --pixel-line: CanvasText;
-    --pixel-border-meaningful: CanvasText;
-    --pixel-shadow-control: none;
-    --pixel-shadow-shell: none;
-    --interactive-accent: Highlight;
-    --interactive-accent-hover: Highlight;
-    --background-modifier-border-focus: Highlight;
-    --background-modifier-cover: transparent;
-  }
-
-  button,
-  .clickable-icon,
-  input,
-  textarea,
-  select,
-  .checkbox-container,
-  .menu,
-  .suggestion-container,
-  .prompt,
-  .modal,
-  .notice,
-  .tooltip,
-  .setting-item {
-    forced-color-adjust: auto;
-  }
-}
-
-@media (prefers-contrast: more) {
-  .theme-light,
-  .theme-dark {
-    --pixel-border-meaningful: var(--pixel-text);
-    --pixel-line: var(--pixel-text-muted);
-  }
 }

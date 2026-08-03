@@ -1,3 +1,10 @@
+@media (pointer: coarse) {
+  body {
+    --pixel-control-min: 44px;
+    --input-height: 44px;
+  }
+}
+
 body.is-mobile {
   --pixel-control-min: 44px;
   --pixel-icon-size: 24px;
