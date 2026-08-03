@@ -1,4 +1,4 @@
-.markdown-source-view.mod-cm6 .cm-content,
+:where(.markdown-source-view.mod-cm6) .cm-content,
 .markdown-rendered {
   font-family: var(--font-text);
   line-height: var(--line-height-normal);
@@ -12,23 +12,13 @@
 }
 
 .inline-title,
-.markdown-source-view.mod-cm6 .HyperMD-header {
+:where(.markdown-source-view.mod-cm6) .HyperMD-header {
   overflow: visible;
 }
 
-.markdown-source-view.mod-cm6 .cm-line.cm-active {
+:where(.markdown-source-view.mod-cm6) .cm-line.cm-active {
   background-color: var(--pixel-active-line);
   box-shadow: inset 2px 0 0 var(--pixel-cyan);
-}
-
-.markdown-source-view.mod-cm6 .cm-fold-indicator .collapse-indicator,
-.markdown-preview-view .collapse-indicator {
-  opacity: 0.7;
-}
-
-.markdown-source-view.mod-cm6 .cm-fold-indicator.is-collapsed .collapse-indicator,
-.markdown-preview-view .is-collapsed .collapse-indicator {
-  opacity: 1;
 }
 
 .markdown-rendered :is(p, ul, ol, table) {
@@ -42,6 +32,6 @@
 }
 
 .markdown-rendered code,
-.markdown-source-view.mod-cm6 :is(.cm-inline-code, .HyperMD-codeblock) {
+:where(.markdown-source-view.mod-cm6) :is(.cm-inline-code, .HyperMD-codeblock) {
   line-height: 1.65;
 }

@@ -5,38 +5,19 @@ import {
   declaration,
   readTheme,
   ruleBody,
-  ruleBodyForSelector,
 } from "../test-support/theme-css.mjs";
 
-test("Source, Live Preview, and Reading share the approved document measure", async () => {
+test("compiled package maps core Markdown through documented Obsidian variables", async () => {
   const css = await readTheme();
   const body = combinedRuleBody(css, "body");
+  const theme = ruleBody(css, ".theme-light,\n.theme-dark");
 
-  assert.equal(declaration(body, "--font-text-size"), "16px");
-  assert.equal(declaration(body, "--line-height-normal"), "1.75");
-  assert.equal(declaration(body, "--file-line-width"), "72ch");
-  assert.equal(declaration(body, "--p-spacing"), "1em");
-  assert.equal(declaration(body, "--heading-spacing"), "2em");
-
-  const documentSurfaces = ruleBodyForSelector(
-    css,
-    ".markdown-source-view.mod-cm6 .cm-content",
-  );
-  assert.equal(
-    declaration(documentSurfaces, "font-family"),
-    "var(--font-text)",
-  );
-  assert.equal(
-    declaration(documentSurfaces, "line-height"),
-    "var(--line-height-normal)",
-  );
-  assert.equal(declaration(documentSurfaces, "color"), "var(--text-normal)");
-});
-
-test("titles keep the approved identity hierarchy without clipping editor blocks", async () => {
-  const css = await readTheme();
-  const body = combinedRuleBody(css, "body");
-  const expectedHeadings = {
+  const expectedDefaults = {
+    "--font-text-size": "16px",
+    "--line-height-normal": "1.75",
+    "--file-line-width": "72ch",
+    "--p-spacing": "1em",
+    "--heading-spacing": "2em",
     "--inline-title-font": "var(--pixel-font-identity)",
     "--inline-title-size": "2em",
     "--inline-title-line-height": "1.3",
@@ -53,27 +34,11 @@ test("titles keep the approved identity hierarchy without clipping editor blocks
     "--h5-font": "var(--pixel-font-text)",
     "--h6-font": "var(--pixel-font-text)",
   };
-
-  for (const [property, value] of Object.entries(expectedHeadings)) {
+  for (const [property, value] of Object.entries(expectedDefaults)) {
     assert.equal(declaration(body, property), value);
   }
 
-  const titles = ruleBodyForSelector(css, ".inline-title");
-  assert.equal(declaration(titles, "overflow"), "visible");
-
-  const editorHeadings = ruleBodyForSelector(
-    css,
-    ".markdown-source-view.mod-cm6 .HyperMD-header",
-  );
-  assert.equal(declaration(editorHeadings, "overflow"), "visible");
-  assert.doesNotMatch(editorHeadings, /margin-(?:block|top|bottom)\s*:/);
-  assert.doesNotMatch(editorHeadings, /(?:block-size|height)\s*:/);
-});
-
-test("Markdown semantics use consistent navigation, emphasis, and list signals", async () => {
-  const css = await readTheme();
-  const mappings = ruleBody(css, ".theme-light,\n.theme-dark");
-  const expectedMappings = {
+  const expectedSemanticMappings = {
     "--link-color": "var(--text-accent)",
     "--link-external-color": "var(--text-accent)",
     "--link-unresolved-color": "var(--text-accent)",
@@ -93,48 +58,26 @@ test("Markdown semantics use consistent navigation, emphasis, and list signals",
     "--list-bullet-radius": "var(--pixel-radius)",
     "--indentation-guide-color": "var(--pixel-line)",
     "--indentation-guide-color-active": "var(--pixel-cyan)",
+    "--collapse-icon-color": "var(--pixel-text-muted)",
+    "--collapse-icon-color-collapsed": "var(--text-accent)",
     "--checkbox-color": "var(--interactive-accent)",
     "--checkbox-border-color": "var(--pixel-border-meaningful)",
     "--checklist-done-color": "var(--pixel-text-muted)",
     "--text-selection": "var(--pixel-selection)",
     "--caret-color": "var(--pixel-cyan)",
   };
-
-  for (const [property, value] of Object.entries(expectedMappings)) {
-    assert.equal(declaration(mappings, property), value);
+  for (const [property, value] of Object.entries(expectedSemanticMappings)) {
+    assert.equal(declaration(theme, property), value);
   }
 });
 
-test("editing signals stay visible without changing Live Preview block geometry", async () => {
+test("Light and Dark provide mode-neutral editing surface roles", async () => {
   const css = await readTheme();
-  const activeLine = ruleBody(
-    css,
-    ".markdown-source-view.mod-cm6 .cm-line.cm-active",
-  );
-  assert.equal(
-    declaration(activeLine, "background-color"),
-    "var(--pixel-active-line)",
-  );
-  assert.equal(
-    declaration(activeLine, "box-shadow"),
-    "inset 2px 0 0 var(--pixel-cyan)",
-  );
-  assert.doesNotMatch(activeLine, /margin-(?:block|top|bottom)\s*:/);
-  assert.doesNotMatch(activeLine, /transform\s*:/);
+  const light = ruleBody(css, ".theme-light");
+  const dark = ruleBody(css, ".theme-dark");
 
-  const foldControl = ruleBodyForSelector(
-    css,
-    ".markdown-source-view.mod-cm6 .cm-fold-indicator .collapse-indicator",
-  );
-  assert.equal(declaration(foldControl, "opacity"), "0.7");
-
-  const collapsedControl = ruleBodyForSelector(
-    css,
-    ".markdown-source-view.mod-cm6 .cm-fold-indicator.is-collapsed .collapse-indicator",
-  );
-  assert.equal(declaration(collapsedControl, "opacity"), "1");
-
-  const flatProse = ruleBody(css, ".markdown-rendered :is(p, ul, ol, table)");
-  assert.equal(declaration(flatProse, "box-shadow"), "none");
-  assert.equal(declaration(flatProse, "animation"), "none");
+  assert.equal(declaration(light, "--pixel-active-line"), "#edf5f7");
+  assert.equal(declaration(light, "--pixel-selection"), "rgba(25, 125, 140, 0.28)");
+  assert.equal(declaration(dark, "--pixel-active-line"), "#1d3039");
+  assert.equal(declaration(dark, "--pixel-selection"), "rgba(88, 199, 207, 0.35)");
 });

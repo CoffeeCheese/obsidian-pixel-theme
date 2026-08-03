@@ -238,6 +238,8 @@ body {
   --indentation-guide-width-active: var(--pixel-border-control);
   --indentation-guide-color: var(--pixel-line);
   --indentation-guide-color-active: var(--pixel-cyan);
+  --collapse-icon-color: var(--pixel-text-muted);
+  --collapse-icon-color-collapsed: var(--text-accent);
   --checkbox-color: var(--interactive-accent);
   --checkbox-color-hover: var(--interactive-accent-hover);
   --checkbox-border-color: var(--pixel-border-meaningful);
@@ -338,7 +340,7 @@ body:not(.is-mobile) .workspace-leaf-resize-handle {
   border-color: var(--pixel-line);
 }
 
-.markdown-source-view.mod-cm6 .cm-content,
+:where(.markdown-source-view.mod-cm6) .cm-content,
 .markdown-rendered {
   font-family: var(--font-text);
   line-height: var(--line-height-normal);
@@ -352,23 +354,13 @@ body:not(.is-mobile) .workspace-leaf-resize-handle {
 }
 
 .inline-title,
-.markdown-source-view.mod-cm6 .HyperMD-header {
+:where(.markdown-source-view.mod-cm6) .HyperMD-header {
   overflow: visible;
 }
 
-.markdown-source-view.mod-cm6 .cm-line.cm-active {
+:where(.markdown-source-view.mod-cm6) .cm-line.cm-active {
   background-color: var(--pixel-active-line);
   box-shadow: inset 2px 0 0 var(--pixel-cyan);
-}
-
-.markdown-source-view.mod-cm6 .cm-fold-indicator .collapse-indicator,
-.markdown-preview-view .collapse-indicator {
-  opacity: 0.7;
-}
-
-.markdown-source-view.mod-cm6 .cm-fold-indicator.is-collapsed .collapse-indicator,
-.markdown-preview-view .is-collapsed .collapse-indicator {
-  opacity: 1;
 }
 
 .markdown-rendered :is(p, ul, ol, table) {
@@ -382,7 +374,7 @@ body:not(.is-mobile) .workspace-leaf-resize-handle {
 }
 
 .markdown-rendered code,
-.markdown-source-view.mod-cm6 :is(.cm-inline-code, .HyperMD-codeblock) {
+:where(.markdown-source-view.mod-cm6) :is(.cm-inline-code, .HyperMD-codeblock) {
   line-height: 1.65;
 }
 
