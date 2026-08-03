@@ -1,8 +1,8 @@
 .workspace-ribbon,
 .workspace-tab-header-container {
-  border-color: var(--pixel-border);
+  border-color: var(--pixel-line);
 }
 
 .workspace-tab-header.is-active {
-  box-shadow: inset 0 calc(var(--pixel-border-width) * -1) 0 var(--pixel-cyan);
+  box-shadow: inset 0 calc(var(--pixel-border-control) * -1) 0 var(--pixel-cyan);
 }

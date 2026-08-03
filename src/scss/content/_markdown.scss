@@ -1,6 +1,6 @@
 .markdown-source-view.mod-cm6 .cm-content,
 .markdown-rendered {
-  line-height: 1.7;
+  line-height: var(--line-height-normal);
 }
 
 .markdown-rendered :is(h1, h2, h3) {
@@ -9,6 +9,11 @@
 }
 
 .markdown-rendered code {
-  border: var(--pixel-border-width) solid var(--pixel-border);
+  border: var(--pixel-border-decoration) solid var(--pixel-line);
   border-radius: var(--pixel-radius);
+}
+
+.markdown-rendered code,
+.markdown-source-view.mod-cm6 :is(.cm-inline-code, .HyperMD-codeblock) {
+  line-height: 1.65;
 }

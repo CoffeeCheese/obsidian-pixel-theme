@@ -1,16 +1,15 @@
 .theme-light {
   color-scheme: light;
-  --pixel-frost: #e8eef2;
+  --pixel-canvas: #e8eef2;
   --pixel-paper: #f8fbfc;
-  --pixel-ink: #182434;
-  --pixel-slate: #607184;
+  --pixel-surface-secondary: #dbe5eb;
+  --pixel-text: #182434;
+  --pixel-text-muted: #607184;
   --pixel-cyan: #197d8c;
   --pixel-amber: #d48732;
+  --pixel-amber-text: #80501e;
   --pixel-brick: #ae4e32;
-  --pixel-border: #9cabb7;
-  --pixel-surface-reader: var(--pixel-paper);
-  --pixel-surface-dock: var(--pixel-paper);
-  --pixel-surface-raised: #ffffff;
-  --pixel-surface-hover: #dce7eb;
-  --pixel-code-surface: #e3ebef;
+  --pixel-line: #afc0ca;
+  --pixel-border-meaningful: #607184;
+  --pixel-shadow-color: #8fa5b2;
 }

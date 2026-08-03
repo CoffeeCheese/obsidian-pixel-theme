@@ -7,7 +7,7 @@ import {
   rm,
   writeFile,
 } from "node:fs/promises";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, realpathSync } from "node:fs";
 import { randomUUID } from "node:crypto";
 import { homedir } from "node:os";
 import path from "node:path";
@@ -24,6 +24,7 @@ const manifestPath = path.join(root, "manifest.json");
 const versionsPath = path.join(root, "versions.json");
 const developmentConfigPath = path.join(root, "development.json");
 const outputPath = path.join(root, "theme.css");
+const fontAssetsPath = path.join(root, "src/assets/fonts");
 const mebibyte = 1024 * 1024;
 const maxEncodedFontBytes = Math.floor(1.2 * mebibyte);
 const maxGeneratedCssBytes = Math.floor(1.5 * mebibyte);
@@ -220,6 +221,38 @@ function assertGeneratedCssBudget(css) {
   }
 }
 
+function embeddedFontDataUrl(argumentsList) {
+  const relativePath = argumentsList[0].assertString("relativePath").text;
+  const requestedPath = path.resolve(fontAssetsPath, relativePath);
+  const pathWithinFontAssets = path.relative(fontAssetsPath, requestedPath);
+
+  if (
+    pathWithinFontAssets.startsWith("..") ||
+    path.isAbsolute(pathWithinFontAssets) ||
+    path.extname(requestedPath).toLowerCase() !== ".woff2"
+  ) {
+    throw new Error(`font asset must be a WOFF2 file under src/assets/fonts: ${relativePath}`);
+  }
+
+  const realAssetPath = realpathSync(requestedPath);
+  const realPathWithinFontAssets = path.relative(
+    realpathSync(fontAssetsPath),
+    realAssetPath,
+  );
+  if (
+    realPathWithinFontAssets.startsWith("..") ||
+    path.isAbsolute(realPathWithinFontAssets)
+  ) {
+    throw new Error(`font asset must not leave src/assets/fonts: ${relativePath}`);
+  }
+
+  const encodedFont = readFileSync(realAssetPath).toString("base64");
+  return new sass.SassString(
+    `url("data:font/woff2;base64,${encodedFont}")`,
+    { quotes: false },
+  );
+}
+
 function assertEmbeddedRuntimeAssets(css) {
   const syntaxCss = maskCssStringsAndComments(css);
 
@@ -252,6 +285,9 @@ async function renderTheme() {
     readFile(headerPath, "utf8"),
     Promise.resolve(
       sass.compile(entryPath, {
+        functions: {
+          "pixel-font-data-url($relativePath)": embeddedFontDataUrl,
+        },
         loadPaths: [path.join(root, "src/scss")],
         style: "expanded",
       }),
@@ -410,7 +446,7 @@ async function runWatch() {
   let timer;
   let buildQueue = Promise.resolve();
   const watcher = chokidar.watch(
-    ["src/scss", "src/css", "manifest.json", "versions.json"],
+    ["src/scss", "src/css", "src/assets", "manifest.json", "versions.json"],
     {
       cwd: root,
       ignoreInitial: true,
