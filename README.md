@@ -1,8 +1,8 @@
-# Pixel Workbench
+# Pixel
 
-Pixel Workbench is the provisional development name for an independent Obsidian theme focused on long-form Markdown writing and knowledge management. The visual baseline is the H5 material system with the D1 balanced desktop layout.
+Pixel is an independent Obsidian theme focused on long-form Markdown writing and knowledge management. The visual baseline is the H5 material system with the D1 balanced desktop layout.
 
-The final submission name, bundled-font budget, and complete mobile behavior are still design decisions. This repository currently contains the production-oriented engineering scaffold, not a release-ready theme.
+The bundled-font budget and complete mobile behavior are still design decisions. This repository currently contains the production-oriented engineering scaffold, not a release-ready theme.
 
 ## Development
 
@@ -40,4 +40,4 @@ This verifies the manifest, release tag when applicable, network-asset policy, a
 
 ## License
 
-A distribution license will be selected before the first public release.
+Pixel is available under the [MIT License](LICENSE).
