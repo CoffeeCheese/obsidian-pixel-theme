@@ -16,5 +16,6 @@ docs/
 
 # Generated diagnostics
 coverage/
+evidence/
 *.map
 .build-contract-fixture-*/

@@ -60,6 +60,11 @@
   .setting-item {
     forced-color-adjust: auto;
   }
+
+  body:not(.is-mobile) .workspace-split.mod-right-split {
+    --pixel-tree-signal: Highlight;
+    --pixel-tree-active-surface: Canvas;
+  }
 }
 
 @media (prefers-contrast: more) {
