@@ -20,6 +20,12 @@
   .canvas-wrapper.mod-animating .canvas-group-label,
   .canvas-card-menu-button.mod-draggable svg,
   .canvas-wrapper .canvas-edges path.canvas-display-path,
+  .bases-toolbar .text-icon-button,
+  .bases-view .bases-cards-item,
+  .bases-table-container,
+  .pdf-toolbar .clickable-icon,
+  .pdfViewer .page,
+  .pdf-thumbnail-view .thumbnail,
   .modal-bg,
   .suggestion-bg {
     transition-duration: 0ms;
@@ -58,6 +64,27 @@
     --graph-node-unresolved: CanvasText;
     --canvas-background: Canvas;
     --canvas-dot-pattern: CanvasText;
+    --bases-table-border-color: CanvasText;
+    --bases-table-header-background: Canvas;
+    --bases-table-header-background-hover: ButtonFace;
+    --bases-table-header-color: CanvasText;
+    --bases-table-cell-background-active: Canvas;
+    --bases-table-cell-background-disabled: ButtonFace;
+    --bases-table-cell-background-selected: Highlight;
+    --bases-table-cell-shadow-active: 0 0 0 2px Highlight;
+    --bases-table-cell-shadow-focus: 0 0 0 2px Highlight;
+    --bases-table-summary-background: Canvas;
+    --bases-table-summary-background-hover: ButtonFace;
+    --bases-cards-background: Canvas;
+    --bases-cards-cover-background: ButtonFace;
+    --bases-cards-shadow: none;
+    --bases-cards-shadow-hover: none;
+    --pdf-background: Canvas;
+    --pdf-page-background: Canvas;
+    --pdf-sidebar-background: Canvas;
+    --pdf-shadow: none;
+    --pdf-spread-shadow: none;
+    --pdf-thumbnail-shadow: none;
   }
 
   button,
@@ -93,6 +120,27 @@
     border-color: CanvasText;
     background-color: Canvas;
     color: CanvasText;
+  }
+
+  .bases-cards-item,
+  .bases-list-item,
+  .pdf-toolbar,
+  .pdf-findbar,
+  .pdf-sidebar-container,
+  .pdfViewer .page {
+    border-color: CanvasText;
+    background-color: Canvas;
+    color: CanvasText;
+    box-shadow: none;
+  }
+
+  .bases-td:focus-within,
+  .bases-cards-item:focus-within,
+  .bases-cards-item:focus-visible,
+  .pdf-thumbnail-view .thumbnail.selected,
+  .pdf-thumbnail-view .thumbnail:focus-visible {
+    border-color: Highlight;
+    outline-color: Highlight;
   }
 
   .canvas-background circle {
@@ -132,10 +180,17 @@
   .theme-dark {
     --pixel-border-meaningful: var(--pixel-text);
     --pixel-line: var(--pixel-text-muted);
+    --bases-table-row-border-width: var(--pixel-border-control);
+    --bases-table-column-border-width: var(--pixel-border-control);
+    --bases-cards-border-width: var(--pixel-border-control);
   }
 
   body.theme-light .canvas-node-container,
   body.theme-dark .canvas-node-container {
     border-width: var(--pixel-border-control);
+  }
+
+  .pdfViewer .page {
+    border-color: var(--pixel-border-meaningful);
   }
 }

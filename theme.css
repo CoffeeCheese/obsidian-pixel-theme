@@ -259,6 +259,31 @@ body {
   --table-selection-border-color: var(--pixel-cyan);
   --table-selection-border-width: var(--pixel-border-control);
   --table-selection-border-radius: var(--pixel-radius);
+  --bases-header-border-width: 0 0 var(--pixel-border-control) 0;
+  --bases-table-border-color: var(--pixel-border-meaningful);
+  --bases-table-row-border-width: var(--pixel-border-decoration);
+  --bases-table-column-border-width: var(--pixel-border-decoration);
+  --bases-table-header-background: var(--pixel-paper);
+  --bases-table-header-background-hover: var(--pixel-surface-secondary);
+  --bases-table-header-color: var(--pixel-text-muted);
+  --bases-table-cell-background-active: var(--pixel-paper);
+  --bases-table-cell-background-disabled: var(--pixel-surface-secondary);
+  --bases-table-cell-background-selected: var(--pixel-selection);
+  --bases-table-cell-shadow-active: 0 0 0 var(--pixel-border-control) var(--pixel-cyan);
+  --bases-table-cell-shadow-focus: 0 0 0 var(--pixel-border-control) var(--pixel-cyan);
+  --bases-table-summary-background: var(--pixel-paper);
+  --bases-table-summary-background-hover: var(--pixel-surface-secondary);
+  --bases-group-heading-property-color: var(--pixel-text-muted);
+  --bases-cards-container-background: transparent;
+  --bases-cards-background: var(--pixel-paper);
+  --bases-cards-cover-background: var(--pixel-surface-secondary);
+  --bases-cards-shadow: none;
+  --bases-cards-shadow-hover: none;
+  --bases-cards-border-width: var(--pixel-border-decoration);
+  --bases-cards-radius: var(--pixel-radius);
+  --bases-embed-border-color: var(--pixel-border-meaningful);
+  --bases-embed-border-width: var(--pixel-border-control);
+  --bases-embed-border-radius: var(--pixel-radius);
   --embed-max-height: min(60vh, 720px);
   --embed-background: var(--pixel-paper);
   --embed-border-start: 4px solid var(--pixel-cyan);
@@ -291,6 +316,12 @@ body {
   --canvas-color-2: var(--pixel-amber-rgb);
   --canvas-color-5: var(--pixel-cyan-rgb);
   --canvas-controls-radius: var(--pixel-radius);
+  --pdf-background: var(--pixel-canvas);
+  --pdf-page-background: var(--pixel-paper);
+  --pdf-sidebar-background: var(--pixel-paper);
+  --pdf-shadow: 0 0 0 var(--pixel-border-control) var(--pixel-border-meaningful);
+  --pdf-spread-shadow: 0 0 0 var(--pixel-border-control) var(--pixel-border-meaningful);
+  --pdf-thumbnail-shadow: 0 0 0 var(--pixel-border-control) var(--pixel-border-meaningful);
   --link-color: var(--text-accent);
   --link-color-hover: var(--text-accent-hover);
   --link-decoration: underline;
@@ -1064,6 +1095,12 @@ button .svg-icon {
   .canvas-wrapper.mod-animating .canvas-group-label,
   .canvas-card-menu-button.mod-draggable svg,
   .canvas-wrapper .canvas-edges path.canvas-display-path,
+  .bases-toolbar .text-icon-button,
+  .bases-view .bases-cards-item,
+  .bases-table-container,
+  .pdf-toolbar .clickable-icon,
+  .pdfViewer .page,
+  .pdf-thumbnail-view .thumbnail,
   .modal-bg,
   .suggestion-bg {
     transition-duration: 0ms;
@@ -1101,6 +1138,27 @@ button .svg-icon {
     --graph-node-unresolved: CanvasText;
     --canvas-background: Canvas;
     --canvas-dot-pattern: CanvasText;
+    --bases-table-border-color: CanvasText;
+    --bases-table-header-background: Canvas;
+    --bases-table-header-background-hover: ButtonFace;
+    --bases-table-header-color: CanvasText;
+    --bases-table-cell-background-active: Canvas;
+    --bases-table-cell-background-disabled: ButtonFace;
+    --bases-table-cell-background-selected: Highlight;
+    --bases-table-cell-shadow-active: 0 0 0 2px Highlight;
+    --bases-table-cell-shadow-focus: 0 0 0 2px Highlight;
+    --bases-table-summary-background: Canvas;
+    --bases-table-summary-background-hover: ButtonFace;
+    --bases-cards-background: Canvas;
+    --bases-cards-cover-background: ButtonFace;
+    --bases-cards-shadow: none;
+    --bases-cards-shadow-hover: none;
+    --pdf-background: Canvas;
+    --pdf-page-background: Canvas;
+    --pdf-sidebar-background: Canvas;
+    --pdf-shadow: none;
+    --pdf-spread-shadow: none;
+    --pdf-thumbnail-shadow: none;
   }
   button,
   .clickable-icon,
@@ -1134,6 +1192,25 @@ button .svg-icon {
     background-color: Canvas;
     color: CanvasText;
   }
+  .bases-cards-item,
+  .bases-list-item,
+  .pdf-toolbar,
+  .pdf-findbar,
+  .pdf-sidebar-container,
+  .pdfViewer .page {
+    border-color: CanvasText;
+    background-color: Canvas;
+    color: CanvasText;
+    box-shadow: none;
+  }
+  .bases-td:focus-within,
+  .bases-cards-item:focus-within,
+  .bases-cards-item:focus-visible,
+  .pdf-thumbnail-view .thumbnail.selected,
+  .pdf-thumbnail-view .thumbnail:focus-visible {
+    border-color: Highlight;
+    outline-color: Highlight;
+  }
   .canvas-background circle {
     fill: CanvasText;
   }
@@ -1164,10 +1241,16 @@ button .svg-icon {
   .theme-dark {
     --pixel-border-meaningful: var(--pixel-text);
     --pixel-line: var(--pixel-text-muted);
+    --bases-table-row-border-width: var(--pixel-border-control);
+    --bases-table-column-border-width: var(--pixel-border-control);
+    --bases-cards-border-width: var(--pixel-border-control);
   }
   body.theme-light .canvas-node-container,
   body.theme-dark .canvas-node-container {
     border-width: var(--pixel-border-control);
+  }
+  .pdfViewer .page {
+    border-color: var(--pixel-border-meaningful);
   }
 }
 .nav-file-title,
@@ -1611,6 +1694,74 @@ body.theme-dark {
 
 .canvas-control-item:focus-visible,
 .canvas-card-menu-button:focus-visible {
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: 2px;
+}
+
+.bases-table-container,
+.bases-list-container,
+.bases-cards-container {
+  box-shadow: none;
+}
+
+.bases-list-item {
+  border-block-end: var(--pixel-border-decoration) solid var(--pixel-border-meaningful);
+}
+
+.bases-cards-item {
+  border: var(--bases-cards-border-width) solid var(--pixel-border-meaningful);
+  border-radius: var(--bases-cards-radius);
+  box-shadow: none;
+}
+
+.bases-cards-item:hover {
+  border-color: var(--pixel-cyan);
+  box-shadow: none;
+}
+
+.bases-cards-item:focus-within,
+.bases-cards-item:focus-visible {
+  border-color: var(--pixel-cyan);
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: 0;
+  box-shadow: none;
+}
+
+.bases-table-summary-cell,
+.bases-group-heading {
+  color: var(--pixel-text);
+}
+
+.bases-error {
+  color: var(--pixel-brick);
+}
+
+.pdf-toolbar,
+.pdf-findbar {
+  border-block-end: var(--pixel-border-control) solid var(--pixel-border-meaningful);
+  background-color: var(--pixel-paper);
+  color: var(--pixel-text);
+  box-shadow: none;
+}
+
+.pdf-sidebar-container {
+  border-inline-end: var(--pixel-border-control) solid var(--pixel-border-meaningful);
+  background-color: var(--pdf-sidebar-background);
+  color: var(--pixel-text);
+  box-shadow: none;
+}
+
+.pdf-thumbnail-view .thumbnail.selected {
+  border: var(--pixel-border-control) solid var(--pixel-cyan);
+  color: var(--pixel-text);
+  box-shadow: none;
+}
+
+.pdf-thumbnail-view .thumbnail:hover {
+  border-color: var(--pixel-cyan);
+}
+
+.pdf-thumbnail-view .thumbnail:focus-visible {
   outline: var(--pixel-border-control) solid var(--pixel-cyan);
   outline-offset: 2px;
 }
