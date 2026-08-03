@@ -73,6 +73,7 @@ body {
   --pixel-brick-rgb: 174, 78, 50;
   --pixel-line: #afc0ca;
   --pixel-border-meaningful: #607184;
+  --pixel-border-meaningful-rgb: 96, 113, 132;
   --pixel-shadow-color: #8fa5b2;
   --pixel-nav-label: #c7dfe3;
   --pixel-context-label: #f0e1d0;
@@ -102,6 +103,7 @@ body {
   --pixel-brick-rgb: 239, 139, 93;
   --pixel-line: #344854;
   --pixel-border-meaningful: #8fa2ad;
+  --pixel-border-meaningful-rgb: 143, 162, 173;
   --pixel-shadow-color: #091016;
   --pixel-nav-label: #254751;
   --pixel-context-label: #474135;
@@ -273,6 +275,22 @@ body {
   --footnote-input-background-active: var(--pixel-surface-secondary);
   --hr-color: var(--pixel-border-meaningful);
   --hr-thickness: var(--pixel-border-control);
+  --graph-controls-width: min(240px, calc(100% - var(--pixel-space-6)));
+  --graph-text: var(--pixel-text);
+  --graph-line: var(--pixel-border-meaningful);
+  --graph-node: var(--pixel-text-muted);
+  --graph-node-focused: var(--pixel-cyan);
+  --graph-node-tag: var(--pixel-cyan);
+  --graph-node-attachment: var(--pixel-amber-text);
+  --graph-node-unresolved: var(--pixel-brick);
+  --canvas-background: var(--pixel-canvas);
+  --canvas-dot-pattern: var(--pixel-line);
+  --canvas-card-label-color: var(--pixel-text-muted);
+  --canvas-color: var(--pixel-border-meaningful-rgb);
+  --canvas-color-1: var(--pixel-brick-rgb);
+  --canvas-color-2: var(--pixel-amber-rgb);
+  --canvas-color-5: var(--pixel-cyan-rgb);
+  --canvas-controls-radius: var(--pixel-radius);
   --link-color: var(--text-accent);
   --link-color-hover: var(--text-accent-hover);
   --link-decoration: underline;
@@ -1041,6 +1059,11 @@ button .svg-icon {
   .workspace-leaf-resize-handle,
   .workspace-drawer,
   .callout-fold .svg-icon,
+  .graph-color-group,
+  .canvas-wrapper.mod-animating .canvas-node-label,
+  .canvas-wrapper.mod-animating .canvas-group-label,
+  .canvas-card-menu-button.mod-draggable svg,
+  .canvas-wrapper .canvas-edges path.canvas-display-path,
   .modal-bg,
   .suggestion-bg {
     transition-duration: 0ms;
@@ -1069,6 +1092,15 @@ button .svg-icon {
     --interactive-accent-hover: Highlight;
     --background-modifier-border-focus: Highlight;
     --background-modifier-cover: transparent;
+    --graph-text: CanvasText;
+    --graph-line: CanvasText;
+    --graph-node: CanvasText;
+    --graph-node-focused: Highlight;
+    --graph-node-tag: Highlight;
+    --graph-node-attachment: CanvasText;
+    --graph-node-unresolved: CanvasText;
+    --canvas-background: Canvas;
+    --canvas-dot-pattern: CanvasText;
   }
   button,
   .clickable-icon,
@@ -1089,12 +1121,53 @@ button .svg-icon {
     --pixel-tree-signal: Highlight;
     --pixel-tree-active-surface: Canvas;
   }
+  .workspace-leaf-content[data-type=graph] .view-content,
+  .workspace-leaf-content[data-type=localgraph] .view-content,
+  .canvas-wrapper,
+  .canvas-node-container,
+  .canvas-group-label,
+  .canvas-control-group,
+  .canvas-card-menu,
+  .canvas-menu,
+  .canvas-submenu {
+    border-color: CanvasText;
+    background-color: Canvas;
+    color: CanvasText;
+  }
+  .canvas-background circle {
+    fill: CanvasText;
+  }
+  .canvas-node.is-themed .canvas-node-content {
+    background-color: Canvas;
+  }
+  .canvas-node:is(.is-selected, .is-focused, .is-editing) .canvas-node-container {
+    border-color: Highlight;
+    outline-color: Highlight;
+  }
+  .canvas-edges path.canvas-display-path {
+    stroke: CanvasText;
+  }
+  .canvas-edges polygon.canvas-path-end {
+    stroke: CanvasText;
+    fill: CanvasText;
+  }
+  .canvas-edges g.is-focused path.canvas-display-path {
+    stroke: Highlight;
+  }
+  .canvas-edges g.is-focused polygon.canvas-path-end {
+    stroke: Highlight;
+    fill: Highlight;
+  }
 }
 @media (prefers-contrast: more) {
   .theme-light,
   .theme-dark {
     --pixel-border-meaningful: var(--pixel-text);
     --pixel-line: var(--pixel-text-muted);
+  }
+  body.theme-light .canvas-node-container,
+  body.theme-dark .canvas-node-container {
+    border-width: var(--pixel-border-control);
   }
 }
 .nav-file-title,
@@ -1396,6 +1469,152 @@ body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf-content[da
     color: var(--pixel-text);
   }
 }
+body.theme-light,
+body.theme-dark {
+  --canvas-color: var(--pixel-border-meaningful-rgb);
+}
+
+.workspace-split.mod-root .workspace-leaf-content[data-type=graph] .view-content,
+.workspace-split.mod-root .workspace-leaf-content[data-type=localgraph] .view-content,
+.workspace-split.mod-left-split .workspace-leaf-content[data-type=graph] .view-content,
+.workspace-split.mod-left-split .workspace-leaf-content[data-type=localgraph] .view-content,
+.workspace-split.mod-right-split .workspace-leaf-content[data-type=graph] .view-content,
+.workspace-split.mod-right-split .workspace-leaf-content[data-type=localgraph] .view-content {
+  --background-primary: var(--pixel-canvas);
+  background-color: var(--pixel-canvas);
+}
+
+.graph-controls {
+  border-radius: var(--pixel-radius);
+  background-color: var(--pixel-paper);
+  color: var(--pixel-text);
+}
+
+.graph-controls:not(.is-close) {
+  border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
+  box-shadow: var(--pixel-shadow-control);
+}
+
+.graph-controls.is-close {
+  border-color: var(--pixel-border-meaningful);
+  background-color: var(--pixel-paper);
+}
+
+.graph-control-section {
+  border-block-end-color: var(--pixel-line);
+}
+
+.graph-control-section-header {
+  color: var(--pixel-text);
+}
+
+.graph-view.color-fill-unresolved {
+  opacity: 1;
+}
+
+.canvas-wrapper {
+  background-color: var(--canvas-background);
+}
+
+.canvas-node-container {
+  border: var(--pixel-border-decoration) solid rgb(var(--canvas-color));
+  border-radius: var(--pixel-radius);
+  background-color: var(--pixel-paper);
+  box-shadow: none;
+}
+
+.canvas-node.is-themed .canvas-node-container {
+  border-color: rgb(var(--canvas-color));
+  box-shadow: none;
+}
+
+.canvas-node:is(.is-selected, .is-focused, .is-editing) .canvas-node-container,
+.canvas-node.is-themed:is(.is-selected, .is-focused, .is-editing) .canvas-node-container {
+  border-color: var(--pixel-cyan);
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: 0;
+  box-shadow: none;
+}
+
+.canvas-node-group:not(.is-themed) {
+  --canvas-color: var(--pixel-amber-rgb);
+}
+
+.canvas-group-label {
+  border: var(--pixel-border-decoration) solid rgb(var(--canvas-color));
+  border-radius: var(--pixel-radius);
+}
+
+.canvas-node-content:is(.markdown-embed, .media-embed) {
+  border: 0;
+  border-radius: var(--pixel-radius);
+  box-shadow: none;
+}
+
+.canvas-selection {
+  border-color: var(--pixel-cyan);
+  border-radius: var(--pixel-radius);
+  background-color: var(--pixel-selection);
+}
+
+.canvas-selection.mod-group-selection {
+  border-color: var(--pixel-cyan);
+  border-radius: var(--pixel-radius);
+  background-color: var(--pixel-selection);
+}
+
+.canvas-edges g.is-focused path.canvas-display-path {
+  stroke: var(--pixel-cyan);
+}
+
+.canvas-edges g.is-focused polygon.canvas-path-end {
+  stroke: var(--pixel-cyan);
+  fill: var(--pixel-cyan);
+}
+
+.canvas-path-label {
+  border-radius: var(--pixel-radius);
+  background-color: var(--pixel-paper);
+  color: var(--pixel-text);
+}
+
+.canvas-path-label.is-editing {
+  border-color: var(--pixel-cyan);
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: 0;
+  box-shadow: none;
+}
+
+.canvas-control-group,
+.canvas-card-menu,
+.canvas-menu,
+.canvas-submenu {
+  border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
+  border-radius: var(--pixel-radius);
+  background-color: var(--pixel-paper);
+  color: var(--pixel-text);
+  box-shadow: var(--pixel-shadow-control);
+}
+
+.canvas-control-item:is(.is-active, .has-active-menu) {
+  border-inline-start: 4px solid var(--pixel-cyan);
+  background-color: var(--pixel-nav-label);
+  color: var(--pixel-text);
+  font-weight: 600;
+}
+
+.canvas-control-item.is-disabled {
+  background-color: var(--pixel-surface-secondary);
+  color: var(--pixel-text-muted);
+  cursor: not-allowed;
+}
+
+.canvas-control-item:focus-visible,
+.canvas-card-menu-button:focus-visible {
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: 2px;
+}
+
 @media (any-pointer: coarse) {
   body {
     --pixel-control-min: 44px;

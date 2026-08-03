@@ -2,7 +2,7 @@
 
 Pixel is an independent Obsidian theme focused on long-form Markdown writing and knowledge management. The visual baseline is the H5 material system with the D1 balanced desktop layout.
 
-The implemented production slices install the approved Light/Dark palette, 4px pixel geometry, reading typography, embedded identity/code fonts, shared controls, the H5/D1 desktop shell, complete cyan navigation and amber context docks, and a unified Markdown experience across Source, Live Preview, and Reading. Callouts, code, tables, embeds, media, attachments, footnotes, math, tasks, tags, and highlights share restrained Paper surfaces without replacing native editing, scrolling, folding, navigation, or media controls. The platform-invariant M1 mobile structure remains a separate implementation slice.
+The implemented production slices install the approved Light/Dark palette, 4px pixel geometry, reading typography, embedded identity/code fonts, shared controls, the H5/D1 desktop shell, complete cyan navigation and amber context docks, and a unified Markdown experience across Source, Live Preview, and Reading. Callouts, code, tables, embeds, media, attachments, footnotes, math, tasks, tags, and highlights share restrained Paper surfaces. Global and local Graph views use semantic cyan, amber, and brick renderer roles, while Canvas preserves native cards, groups, media, edges, selection, editing, menus, and spatial interaction on the cool-gray canvas. Pixel does not replace native editing, scrolling, folding, navigation, SVG icons, or media controls. The platform-invariant M1 mobile structure remains a separate implementation slice.
 
 ## Design foundation
 

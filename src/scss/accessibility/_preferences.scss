@@ -15,6 +15,11 @@
   .workspace-leaf-resize-handle,
   .workspace-drawer,
   .callout-fold .svg-icon,
+  .graph-color-group,
+  .canvas-wrapper.mod-animating .canvas-node-label,
+  .canvas-wrapper.mod-animating .canvas-group-label,
+  .canvas-card-menu-button.mod-draggable svg,
+  .canvas-wrapper .canvas-edges path.canvas-display-path,
   .modal-bg,
   .suggestion-bg {
     transition-duration: 0ms;
@@ -44,6 +49,15 @@
     --interactive-accent-hover: Highlight;
     --background-modifier-border-focus: Highlight;
     --background-modifier-cover: transparent;
+    --graph-text: CanvasText;
+    --graph-line: CanvasText;
+    --graph-node: CanvasText;
+    --graph-node-focused: Highlight;
+    --graph-node-tag: Highlight;
+    --graph-node-attachment: CanvasText;
+    --graph-node-unresolved: CanvasText;
+    --canvas-background: Canvas;
+    --canvas-dot-pattern: CanvasText;
   }
 
   button,
@@ -66,6 +80,51 @@
     --pixel-tree-signal: Highlight;
     --pixel-tree-active-surface: Canvas;
   }
+
+  .workspace-leaf-content[data-type="graph"] .view-content,
+  .workspace-leaf-content[data-type="localgraph"] .view-content,
+  .canvas-wrapper,
+  .canvas-node-container,
+  .canvas-group-label,
+  .canvas-control-group,
+  .canvas-card-menu,
+  .canvas-menu,
+  .canvas-submenu {
+    border-color: CanvasText;
+    background-color: Canvas;
+    color: CanvasText;
+  }
+
+  .canvas-background circle {
+    fill: CanvasText;
+  }
+
+  .canvas-node.is-themed .canvas-node-content {
+    background-color: Canvas;
+  }
+
+  .canvas-node:is(.is-selected, .is-focused, .is-editing) .canvas-node-container {
+    border-color: Highlight;
+    outline-color: Highlight;
+  }
+
+  .canvas-edges path.canvas-display-path {
+    stroke: CanvasText;
+  }
+
+  .canvas-edges polygon.canvas-path-end {
+    stroke: CanvasText;
+    fill: CanvasText;
+  }
+
+  .canvas-edges g.is-focused path.canvas-display-path {
+    stroke: Highlight;
+  }
+
+  .canvas-edges g.is-focused polygon.canvas-path-end {
+    stroke: Highlight;
+    fill: Highlight;
+  }
 }
 
 @media (prefers-contrast: more) {
@@ -73,5 +132,10 @@
   .theme-dark {
     --pixel-border-meaningful: var(--pixel-text);
     --pixel-line: var(--pixel-text-muted);
+  }
+
+  body.theme-light .canvas-node-container,
+  body.theme-dark .canvas-node-container {
+    border-width: var(--pixel-border-control);
   }
 }
