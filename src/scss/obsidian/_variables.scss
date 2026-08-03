@@ -34,9 +34,6 @@ body {
   --input-radius: var(--pixel-radius);
   --tab-radius-active: var(--pixel-radius);
   --checkbox-radius: var(--pixel-radius);
-  --accent-h: 187;
-  --accent-s: 69%;
-  --accent-l: 32%;
 }
 
 .theme-light,
@@ -55,13 +52,13 @@ body {
   --text-muted: var(--pixel-text-muted);
   --text-faint: var(--pixel-text-muted);
   --text-accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
-  --text-accent-hover: hsl(var(--accent-h), var(--accent-s), calc(var(--accent-l) + 6%));
+  --text-accent-hover: hsl(var(--accent-h), var(--accent-s), calc(var(--accent-l) + var(--pixel-accent-hover-shift)));
   --text-warning: var(--pixel-amber-text);
   --text-error: var(--pixel-brick);
   --interactive-normal: var(--pixel-paper);
   --interactive-hover: var(--pixel-surface-secondary);
   --interactive-accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
-  --interactive-accent-hover: hsl(var(--accent-h), var(--accent-s), calc(var(--accent-l) + 6%));
+  --interactive-accent-hover: hsl(var(--accent-h), var(--accent-s), calc(var(--accent-l) + var(--pixel-accent-hover-shift)));
   --divider-color: var(--pixel-line);
   --caret-color: var(--pixel-cyan);
   --code-background: var(--pixel-surface-secondary);

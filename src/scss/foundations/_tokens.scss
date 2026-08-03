@@ -1,6 +1,6 @@
 body {
-  --pixel-font-interface: "Source Han Sans CN", "Source Han Sans SC", "Noto Sans CJK SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
   --pixel-font-text: "Source Han Sans CN", "Source Han Sans SC", "Noto Sans CJK SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+  --pixel-font-interface: var(--pixel-font-text);
   --pixel-font-identity: "Fusion Pixel 12 Proportional", var(--pixel-font-text);
   --pixel-font-monospace: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", var(--pixel-font-text), monospace;
 

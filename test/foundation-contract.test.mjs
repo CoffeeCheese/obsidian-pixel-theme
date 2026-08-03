@@ -13,20 +13,21 @@ async function readTheme() {
   return readFile(path.join(repositoryRoot, "theme.css"), "utf8");
 }
 
-function ruleBody(css, selector) {
-  const escapedSelector = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const match = css.match(new RegExp(`${escapedSelector}\\s*\\{([\\s\\S]*?)\\}`));
-  assert.ok(match, `Expected compiled theme.css to contain ${selector}`);
-  return match[1];
-}
-
-function combinedRuleBody(css, selector) {
+function matchingRuleBodies(css, selector) {
   const escapedSelector = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const matches = [
     ...css.matchAll(new RegExp(`${escapedSelector}\\s*\\{([\\s\\S]*?)\\}`, "g")),
   ];
   assert.ok(matches.length > 0, `Expected compiled theme.css to contain ${selector}`);
-  return matches.map((match) => match[1]).join("\n");
+  return matches.map((match) => match[1]);
+}
+
+function ruleBody(css, selector) {
+  return matchingRuleBodies(css, selector)[0];
+}
+
+function combinedRuleBody(css, selector) {
+  return matchingRuleBodies(css, selector).join("\n");
 }
 
 function declaration(body, property) {
@@ -53,6 +54,31 @@ function contrastRatio(firstColor, secondColor) {
   const lighter = Math.max(...luminances);
   const darker = Math.min(...luminances);
   return (lighter + 0.05) / (darker + 0.05);
+}
+
+function hslToHex(hue, saturation, lightness) {
+  const normalizedSaturation = saturation / 100;
+  const normalizedLightness = lightness / 100;
+  const chroma =
+    (1 - Math.abs(2 * normalizedLightness - 1)) * normalizedSaturation;
+  const secondComponent = chroma * (1 - Math.abs(((hue / 60) % 2) - 1));
+  const offset = normalizedLightness - chroma / 2;
+  const channels =
+    hue < 60
+      ? [chroma, secondComponent, 0]
+      : hue < 120
+        ? [secondComponent, chroma, 0]
+        : hue < 180
+          ? [0, chroma, secondComponent]
+          : hue < 240
+            ? [0, secondComponent, chroma]
+            : hue < 300
+              ? [secondComponent, 0, chroma]
+              : [chroma, 0, secondComponent];
+
+  return `#${channels
+    .map((channel) => Math.round((channel + offset) * 255).toString(16).padStart(2, "0"))
+    .join("")}`;
 }
 
 test("compiled package exposes the approved Pixel palette and geometry", async () => {
@@ -95,6 +121,17 @@ test("compiled package exposes the approved Pixel palette and geometry", async (
     assert.equal(declaration(dark, property), value);
   }
 
+  const expectedAccentDefaults = {
+    light: { "--accent-h": "188", "--accent-s": "70%", "--accent-l": "32%" },
+    dark: { "--accent-h": "184", "--accent-s": "55%", "--accent-l": "58%" },
+  };
+  for (const [property, value] of Object.entries(expectedAccentDefaults.light)) {
+    assert.equal(declaration(light, property), value);
+  }
+  for (const [property, value] of Object.entries(expectedAccentDefaults.dark)) {
+    assert.equal(declaration(dark, property), value);
+  }
+
   const expectedGeometry = {
     "--pixel-space-1": "4px",
     "--pixel-space-2": "8px",
@@ -130,6 +167,9 @@ test("compiled package maps Pixel roles through documented Obsidian variables", 
     "--background-modifier-border-focus": "var(--pixel-cyan)",
     "--text-normal": "var(--pixel-text)",
     "--text-muted": "var(--pixel-text-muted)",
+    "--text-accent": "hsl(var(--accent-h), var(--accent-s), var(--accent-l))",
+    "--text-accent-hover":
+      "hsl(var(--accent-h), var(--accent-s), calc(var(--accent-l) + var(--pixel-accent-hover-shift)))",
     "--text-error": "var(--pixel-brick)",
     "--divider-color": "var(--pixel-line)",
   };
@@ -162,6 +202,31 @@ test("compiled package keeps text and meaningful boundaries above the accessibil
     assert.ok(
       contrastRatio(declaration(theme, "--pixel-amber-text"), paper) >= 4.5,
       `${selector} warning text must not rely on the decorative amber role`,
+    );
+
+    const accentHue = Number(declaration(theme, "--accent-h"));
+    const accentSaturation = Number.parseFloat(declaration(theme, "--accent-s"));
+    const accentLightness = Number.parseFloat(declaration(theme, "--accent-l"));
+    const accentHoverShift = Number.parseFloat(
+      declaration(theme, "--pixel-accent-hover-shift"),
+    );
+    assert.ok(
+      contrastRatio(
+        hslToHex(accentHue, accentSaturation, accentLightness),
+        paper,
+      ) >= 4.5,
+      `${selector} default accent text must reach 4.5:1 on Paper`,
+    );
+    assert.ok(
+      contrastRatio(
+        hslToHex(
+          accentHue,
+          accentSaturation,
+          accentLightness + accentHoverShift,
+        ),
+        paper,
+      ) >= 4.5,
+      `${selector} default accent hover must reach 4.5:1 on Paper`,
     );
   }
 });

@@ -25,8 +25,8 @@
   font-weight: 700;
 }
 body {
-  --pixel-font-interface: "Source Han Sans CN", "Source Han Sans SC", "Noto Sans CJK SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
   --pixel-font-text: "Source Han Sans CN", "Source Han Sans SC", "Noto Sans CJK SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+  --pixel-font-interface: var(--pixel-font-text);
   --pixel-font-identity: "Fusion Pixel 12 Proportional", var(--pixel-font-text);
   --pixel-font-monospace: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", var(--pixel-font-text), monospace;
   --pixel-space-1: 4px;
@@ -46,6 +46,10 @@ body {
 
 .theme-light {
   color-scheme: light;
+  --accent-h: 188;
+  --accent-s: 70%;
+  --accent-l: 32%;
+  --pixel-accent-hover-shift: -6%;
   --pixel-canvas: #e8eef2;
   --pixel-paper: #f8fbfc;
   --pixel-surface-secondary: #dbe5eb;
@@ -62,6 +66,10 @@ body {
 
 .theme-dark {
   color-scheme: dark;
+  --accent-h: 184;
+  --accent-s: 55%;
+  --accent-l: 58%;
+  --pixel-accent-hover-shift: 6%;
   --pixel-canvas: #101821;
   --pixel-paper: #17232d;
   --pixel-surface-secondary: #20313c;
@@ -112,9 +120,6 @@ body {
   --input-radius: var(--pixel-radius);
   --tab-radius-active: var(--pixel-radius);
   --checkbox-radius: var(--pixel-radius);
-  --accent-h: 187;
-  --accent-s: 69%;
-  --accent-l: 32%;
 }
 
 .theme-light,
@@ -133,13 +138,13 @@ body {
   --text-muted: var(--pixel-text-muted);
   --text-faint: var(--pixel-text-muted);
   --text-accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
-  --text-accent-hover: hsl(var(--accent-h), var(--accent-s), calc(var(--accent-l) + 6%));
+  --text-accent-hover: hsl(var(--accent-h), var(--accent-s), calc(var(--accent-l) + var(--pixel-accent-hover-shift)));
   --text-warning: var(--pixel-amber-text);
   --text-error: var(--pixel-brick);
   --interactive-normal: var(--pixel-paper);
   --interactive-hover: var(--pixel-surface-secondary);
   --interactive-accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
-  --interactive-accent-hover: hsl(var(--accent-h), var(--accent-s), calc(var(--accent-l) + 6%));
+  --interactive-accent-hover: hsl(var(--accent-h), var(--accent-s), calc(var(--accent-l) + var(--pixel-accent-hover-shift)));
   --divider-color: var(--pixel-line);
   --caret-color: var(--pixel-cyan);
   --code-background: var(--pixel-surface-secondary);
