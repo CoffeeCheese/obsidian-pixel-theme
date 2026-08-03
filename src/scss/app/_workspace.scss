@@ -26,10 +26,12 @@ body:not(.is-mobile) {
   }
 
   .workspace-split.mod-left-split .workspace-tab-header-container {
+    --icon-opacity: 1;
     background-color: var(--pixel-nav-label);
   }
 
   .workspace-split.mod-right-split .workspace-tab-header-container {
+    --icon-opacity: 1;
     background-color: var(--pixel-context-label);
   }
 
@@ -68,15 +70,24 @@ body:not(.is-mobile) {
     font-weight: 600;
   }
 
-  .workspace-split.mod-root .workspace-leaf.mod-active .view-header,
-  .workspace-split.mod-left-split .workspace-leaf.mod-active .view-header {
-    background-color: var(--pixel-paper);
-    box-shadow: inset 4px 0 0 var(--pixel-cyan);
+  .workspace-split.mod-root .workspace-leaf.mod-active,
+  .workspace-split.mod-left-split .workspace-leaf.mod-active {
+    --pixel-pane-signal: var(--pixel-cyan);
   }
 
-  .workspace-split.mod-right-split .workspace-leaf.mod-active .view-header {
-    background-color: var(--pixel-paper);
-    box-shadow: inset 4px 0 0 var(--pixel-amber-text);
+  .workspace-split.mod-right-split .workspace-leaf.mod-active {
+    --pixel-pane-signal: var(--pixel-amber-text);
+  }
+
+  .workspace-leaf.mod-active::after {
+    content: "";
+    position: absolute;
+    z-index: var(--layer-cover);
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: 4px;
+    background-color: var(--pixel-pane-signal);
+    pointer-events: none;
   }
 
   .workspace-leaf-resize-handle {

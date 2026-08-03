@@ -56,6 +56,7 @@ test("visible desktop side docks keep Paper bodies with cyan and amber labels", 
     declaration(navigationLabel, "background-color"),
     "var(--pixel-nav-label)",
   );
+  assert.equal(declaration(navigationLabel, "--icon-opacity"), "1");
 
   const contextLabel = ruleBody(
     css,
@@ -65,6 +66,7 @@ test("visible desktop side docks keep Paper bodies with cyan and amber labels", 
     declaration(contextLabel, "background-color"),
     "var(--pixel-context-label)",
   );
+  assert.equal(declaration(contextLabel, "--icon-opacity"), "1");
 });
 
 test("desktop notes remain the primary shallow reader console", async () => {
@@ -124,22 +126,36 @@ test("desktop active tabs and panes use side-aware multi-cue signals", async () 
 
   const activeReader = ruleBodyForSelector(
     css,
-    "body:not(.is-mobile) .workspace-split.mod-root .workspace-leaf.mod-active .view-header",
+    "body:not(.is-mobile) .workspace-split.mod-root .workspace-leaf.mod-active",
   );
   assert.equal(
-    declaration(activeReader, "box-shadow"),
-    "inset 4px 0 0 var(--pixel-cyan)",
+    declaration(activeReader, "--pixel-pane-signal"),
+    "var(--pixel-cyan)",
   );
-  assert.equal(declaration(activeReader, "background-color"), "var(--pixel-paper)");
 
   const activeContext = ruleBody(
     css,
-    "body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf.mod-active .view-header",
+    "body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf.mod-active",
   );
   assert.equal(
-    declaration(activeContext, "box-shadow"),
-    "inset 4px 0 0 var(--pixel-amber-text)",
+    declaration(activeContext, "--pixel-pane-signal"),
+    "var(--pixel-amber-text)",
   );
+
+  const paneSignal = ruleBody(
+    css,
+    "body:not(.is-mobile) .workspace-leaf.mod-active::after",
+  );
+  assert.equal(declaration(paneSignal, "content"), '""');
+  assert.equal(declaration(paneSignal, "position"), "absolute");
+  assert.equal(declaration(paneSignal, "inset-block"), "0");
+  assert.equal(declaration(paneSignal, "inset-inline-start"), "0");
+  assert.equal(declaration(paneSignal, "inline-size"), "4px");
+  assert.equal(
+    declaration(paneSignal, "background-color"),
+    "var(--pixel-pane-signal)",
+  );
+  assert.equal(declaration(paneSignal, "pointer-events"), "none");
 
   assert.doesNotMatch(
     css,

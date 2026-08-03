@@ -227,9 +227,11 @@ body:not(.is-mobile) .workspace-split.mod-right-split .view-content {
   background-color: var(--pixel-paper);
 }
 body:not(.is-mobile) .workspace-split.mod-left-split .workspace-tab-header-container {
+  --icon-opacity: 1;
   background-color: var(--pixel-nav-label);
 }
 body:not(.is-mobile) .workspace-split.mod-right-split .workspace-tab-header-container {
+  --icon-opacity: 1;
   background-color: var(--pixel-context-label);
 }
 body:not(.is-mobile) .workspace-split.mod-root {
@@ -262,14 +264,22 @@ body:not(.is-mobile) .workspace-split.mod-right-split .workspace-tab-header.is-a
   box-shadow: inset 0 -4px 0 var(--pixel-amber-text);
   font-weight: 600;
 }
-body:not(.is-mobile) .workspace-split.mod-root .workspace-leaf.mod-active .view-header,
-body:not(.is-mobile) .workspace-split.mod-left-split .workspace-leaf.mod-active .view-header {
-  background-color: var(--pixel-paper);
-  box-shadow: inset 4px 0 0 var(--pixel-cyan);
+body:not(.is-mobile) .workspace-split.mod-root .workspace-leaf.mod-active,
+body:not(.is-mobile) .workspace-split.mod-left-split .workspace-leaf.mod-active {
+  --pixel-pane-signal: var(--pixel-cyan);
 }
-body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf.mod-active .view-header {
-  background-color: var(--pixel-paper);
-  box-shadow: inset 4px 0 0 var(--pixel-amber-text);
+body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf.mod-active {
+  --pixel-pane-signal: var(--pixel-amber-text);
+}
+body:not(.is-mobile) .workspace-leaf.mod-active::after {
+  content: "";
+  position: absolute;
+  z-index: var(--layer-cover);
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: 4px;
+  background-color: var(--pixel-pane-signal);
+  pointer-events: none;
 }
 body:not(.is-mobile) .workspace-leaf-resize-handle {
   transition: background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear;
