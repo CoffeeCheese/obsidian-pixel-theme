@@ -18,6 +18,7 @@ const repositoryRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "..",
 );
+const dedicatedVaultId = "773da17a65bacca8";
 
 async function createPackageFixture(t) {
   const fixtureRoot = await mkdtemp(
@@ -37,6 +38,18 @@ async function createPackageFixture(t) {
   return fixtureRoot;
 }
 
+function buildEnvironment(overrides = {}) {
+  return {
+    ...process.env,
+    GITHUB_REF_NAME: "",
+    GITHUB_REF_TYPE: "",
+    OBSIDIAN_THEME_DIR: "",
+    OBSIDIAN_VAULT_ID: "",
+    OBSIDIAN_VAULT_REGISTRY: "",
+    ...overrides,
+  };
+}
+
 function runBuild(fixtureRoot, args = [], environment = {}) {
   const result = spawnSync(
     process.execPath,
@@ -44,13 +57,7 @@ function runBuild(fixtureRoot, args = [], environment = {}) {
     {
       cwd: fixtureRoot,
       encoding: "utf8",
-      env: {
-        ...process.env,
-        GITHUB_REF_NAME: "",
-        GITHUB_REF_TYPE: "",
-        OBSIDIAN_THEME_DIR: "",
-        ...environment,
-      },
+      env: buildEnvironment(environment),
     },
   );
 
@@ -66,6 +73,24 @@ async function readJson(filePath) {
 
 async function writeJson(filePath, value) {
   await writeFile(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
+}
+
+async function createDeploymentEnvironment(
+  fixtureRoot,
+  vaultRoot,
+  vaultId = dedicatedVaultId,
+) {
+  const registryPath = path.join(fixtureRoot, "obsidian-registry.json");
+  await writeJson(registryPath, {
+    vaults: {
+      [vaultId]: { path: vaultRoot },
+    },
+  });
+
+  return {
+    OBSIDIAN_VAULT_ID: vaultId,
+    OBSIDIAN_VAULT_REGISTRY: registryPath,
+  };
 }
 
 async function waitForOutput(readOutput, pattern, timeoutMs = 8000) {
@@ -116,6 +141,19 @@ test("check rejects a non-exact manifest SemVer", async (t) => {
   const manifestPath = path.join(fixtureRoot, "manifest.json");
   const manifest = await readJson(manifestPath);
   manifest.version = "0.1";
+  await writeJson(manifestPath, manifest);
+
+  const result = runBuild(fixtureRoot, ["--check"]);
+
+  assert.notEqual(result.status, 0);
+  assert.match(result.output, /manifest version must use exact x\.y\.z SemVer/);
+});
+
+test("check rejects SemVer components with leading zeroes", async (t) => {
+  const fixtureRoot = await createPackageFixture(t);
+  const manifestPath = path.join(fixtureRoot, "manifest.json");
+  const manifest = await readJson(manifestPath);
+  manifest.version = "01.2.3";
   await writeJson(manifestPath, manifest);
 
   const result = runBuild(fixtureRoot, ["--check"]);
@@ -236,6 +274,22 @@ test("check rejects runtime HTTP imports in the compiled stylesheet", async (t) 
   assert.match(result.output, /must not load runtime assets from the network/);
 });
 
+test("check rejects runtime HTTP URLs separated from the scheme by a CSS comment", async (t) => {
+  const fixtureRoot = await createPackageFixture(t);
+  const entryPath = path.join(fixtureRoot, "src/scss/index.scss");
+  const source = await readFile(entryPath, "utf8");
+  await writeFile(
+    entryPath,
+    `${source}\n.runtime-request { background-image: url(/*comment*/https://example.com/pixel.png); }\n`,
+    "utf8",
+  );
+
+  const result = runBuild(fixtureRoot, ["--check"]);
+
+  assert.notEqual(result.status, 0);
+  assert.match(result.output, /must not load runtime assets from the network/);
+});
+
 test("check rejects a stale committed stylesheet", async (t) => {
   const fixtureRoot = await createPackageFixture(t);
   const outputPath = path.join(fixtureRoot, "theme.css");
@@ -267,16 +321,94 @@ test("deployment rejects a theme destination that redirects through a symlink", 
   await mkdir(unrelatedDirectory, { recursive: true });
   await writeFile(path.join(unrelatedDirectory, "keep.txt"), "keep\n", "utf8");
   await symlink(unrelatedDirectory, destination);
+  const deploymentEnvironment = await createDeploymentEnvironment(
+    fixtureRoot,
+    path.join(fixtureRoot, "dev-test"),
+  );
 
   const result = runBuild(fixtureRoot, [], {
+    ...deploymentEnvironment,
     OBSIDIAN_THEME_DIR: destination,
   });
 
   assert.notEqual(result.status, 0);
-  assert.match(result.output, /OBSIDIAN_THEME_DIR must not be a symbolic link/);
+  assert.match(result.output, /theme destination must not traverse symbolic links/);
   assert.equal(await readFile(path.join(unrelatedDirectory, "keep.txt"), "utf8"), "keep\n");
   await assert.rejects(readFile(path.join(unrelatedDirectory, "theme.css")));
   await assert.rejects(readFile(path.join(unrelatedDirectory, "manifest.json")));
+});
+
+test("deployment rejects a destination outside the configured dedicated Vault", async (t) => {
+  const fixtureRoot = await createPackageFixture(t);
+  const dedicatedVault = path.join(fixtureRoot, "dev-test");
+  const otherDestination = path.join(
+    fixtureRoot,
+    "other-vault",
+    ".obsidian",
+    "themes",
+    "Pixel",
+  );
+  const deploymentEnvironment = await createDeploymentEnvironment(
+    fixtureRoot,
+    dedicatedVault,
+  );
+
+  const result = runBuild(fixtureRoot, [], {
+    ...deploymentEnvironment,
+    OBSIDIAN_THEME_DIR: otherDestination,
+  });
+
+  assert.notEqual(result.status, 0);
+  assert.match(
+    result.output,
+    /OBSIDIAN_THEME_DIR must target the Pixel theme in Vault 773da17a65bacca8/,
+  );
+});
+
+test("deployment rejects a Vault ID other than the dedicated dev-test Vault", async (t) => {
+  const fixtureRoot = await createPackageFixture(t);
+  const vaultRoot = path.join(fixtureRoot, "dev-test");
+  const destination = path.join(vaultRoot, ".obsidian", "themes", "Pixel");
+  const deploymentEnvironment = await createDeploymentEnvironment(
+    fixtureRoot,
+    vaultRoot,
+    "another-vault-id",
+  );
+
+  const result = runBuild(fixtureRoot, [], {
+    ...deploymentEnvironment,
+    OBSIDIAN_THEME_DIR: destination,
+  });
+
+  assert.notEqual(result.status, 0);
+  assert.match(
+    result.output,
+    /OBSIDIAN_VAULT_ID must be the dedicated dev-test Vault ID 773da17a65bacca8/,
+  );
+});
+
+test("deployment rejects a symlinked ancestor below the dedicated Vault", async (t) => {
+  const fixtureRoot = await createPackageFixture(t);
+  const vaultRoot = path.join(fixtureRoot, "dev-test");
+  const obsidianRoot = path.join(vaultRoot, ".obsidian");
+  const unrelatedDirectory = path.join(fixtureRoot, "unrelated-themes");
+  const destination = path.join(obsidianRoot, "themes", "Pixel");
+  await mkdir(obsidianRoot, { recursive: true });
+  await mkdir(unrelatedDirectory, { recursive: true });
+  await symlink(unrelatedDirectory, path.join(obsidianRoot, "themes"));
+  const deploymentEnvironment = await createDeploymentEnvironment(
+    fixtureRoot,
+    vaultRoot,
+  );
+
+  const result = runBuild(fixtureRoot, [], {
+    ...deploymentEnvironment,
+    OBSIDIAN_THEME_DIR: destination,
+  });
+
+  assert.notEqual(result.status, 0);
+  assert.match(result.output, /theme destination must not traverse symbolic links/);
+  await assert.rejects(readFile(path.join(unrelatedDirectory, "Pixel", "theme.css")));
 });
 
 test("deployment replaces package-file symlinks without altering other Vault data", async (t) => {
@@ -293,8 +425,13 @@ test("deployment replaces package-file symlinks without altering other Vault dat
   await writeFile(unrelatedNote, "must remain unchanged\n", "utf8");
   await writeFile(path.join(destination, "keep.txt"), "keep\n", "utf8");
   await symlink(unrelatedNote, path.join(destination, "theme.css"));
+  const deploymentEnvironment = await createDeploymentEnvironment(
+    fixtureRoot,
+    vaultRoot,
+  );
 
   const result = runBuild(fixtureRoot, [], {
+    ...deploymentEnvironment,
     OBSIDIAN_THEME_DIR: destination,
   });
 
@@ -323,12 +460,7 @@ test("watch mode recovers from a build error and rebuilds after a valid change",
 
   const watcher = spawn(process.execPath, [path.join(fixtureRoot, "build.mjs"), "--watch"], {
     cwd: fixtureRoot,
-    env: {
-      ...process.env,
-      GITHUB_REF_NAME: "",
-      GITHUB_REF_TYPE: "",
-      OBSIDIAN_THEME_DIR: "",
-    },
+    env: buildEnvironment(),
     stdio: ["ignore", "pipe", "pipe"],
   });
   let output = "";

@@ -21,7 +21,7 @@ For continuous compilation:
 npm run dev
 ```
 
-To deploy each build to a dedicated theme folder in a test Vault, copy `.env.example` to `.env` and set `OBSIDIAN_THEME_DIR` to an absolute, non-symlink path. Deployment atomically replaces only `theme.css` and `manifest.json`; it does not delete other files in the destination or write elsewhere in the Vault.
+To deploy each build to the dedicated `dev-test` Vault, copy `.env.example` to `.env`, keep its confirmed `OBSIDIAN_VAULT_ID`, and set `OBSIDIAN_THEME_DIR` to that Vault's absolute, non-symlink Pixel theme path. Deployment replaces only `theme.css` and `manifest.json` using atomic per-file writes; it does not delete other files in the destination or write elsewhere in the Vault.
 
 Before committing or releasing:
 

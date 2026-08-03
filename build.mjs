@@ -1,6 +1,15 @@
-import { lstat, mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
+import {
+  lstat,
+  mkdir,
+  readFile,
+  realpath,
+  rename,
+  rm,
+  writeFile,
+} from "node:fs/promises";
 import { existsSync, readFileSync } from "node:fs";
 import { randomUUID } from "node:crypto";
+import { homedir } from "node:os";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -17,6 +26,7 @@ const outputPath = path.join(root, "theme.css");
 const mebibyte = 1024 * 1024;
 const maxEncodedFontBytes = Math.floor(1.2 * mebibyte);
 const maxGeneratedCssBytes = Math.floor(1.5 * mebibyte);
+const dedicatedVaultId = "773da17a65bacca8";
 const isWatch = process.argv.includes("--watch");
 const isCheck = process.argv.includes("--check");
 
@@ -44,7 +54,7 @@ function loadLocalEnvironment() {
 }
 
 function assertSemver(value, field) {
-  if (!/^\d+\.\d+\.\d+$/.test(value)) {
+  if (!/^(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)$/.test(value)) {
     throw new Error(`${field} must use exact x.y.z SemVer; received ${value}`);
   }
 }
@@ -122,15 +132,86 @@ async function renderTheme() {
   ]);
 
   const css = `${header.trim()}\n\n${compiled.css.trim()}\n`;
+  const cssWithoutComments = css.replace(/\/\*[\s\S]*?\*\//g, "");
 
-  if (/(?:@import\s+(?:url\()?|url\()\s*["']?https?:\/\//i.test(css)) {
+  if (
+    /(?:@import\s+(?:url\()?|url\()\s*["']?\s*https?:\/\//i.test(
+      cssWithoutComments,
+    )
+  ) {
     throw new Error("theme.css must not load runtime assets from the network");
   }
 
   assertEncodedFontBudget(css);
   assertGeneratedCssBudget(css);
 
-  return css;
+  return { css, manifest };
+}
+
+function defaultVaultRegistryPath() {
+  if (process.platform === "darwin") {
+    return path.join(
+      homedir(),
+      "Library",
+      "Application Support",
+      "obsidian",
+      "obsidian.json",
+    );
+  }
+
+  if (process.platform === "win32") {
+    if (!process.env.APPDATA) {
+      throw new Error("APPDATA is required to locate the Obsidian Vault registry");
+    }
+    return path.join(process.env.APPDATA, "obsidian", "obsidian.json");
+  }
+
+  return path.join(
+    process.env.XDG_CONFIG_HOME || path.join(homedir(), ".config"),
+    "obsidian",
+    "obsidian.json",
+  );
+}
+
+async function readDedicatedVaultPath() {
+  const vaultId = process.env.OBSIDIAN_VAULT_ID;
+  if (vaultId !== dedicatedVaultId) {
+    throw new Error(
+      `OBSIDIAN_VAULT_ID must be the dedicated dev-test Vault ID ${dedicatedVaultId}`,
+    );
+  }
+
+  const registryPath =
+    process.env.OBSIDIAN_VAULT_REGISTRY || defaultVaultRegistryPath();
+  const registry = JSON.parse(await readFile(registryPath, "utf8"));
+  const vaultPath = registry.vaults?.[vaultId]?.path;
+
+  if (typeof vaultPath !== "string" || vaultPath.trim() === "") {
+    throw new Error(
+      `Obsidian Vault registry does not contain dev-test Vault ID ${dedicatedVaultId}`,
+    );
+  }
+
+  return path.resolve(vaultPath);
+}
+
+async function assertNoSymlinkedThemePath(vaultPath) {
+  if ((await realpath(vaultPath)) !== vaultPath) {
+    throw new Error("theme destination must not traverse symbolic links");
+  }
+
+  let currentPath = vaultPath;
+  for (const segment of [".obsidian", "themes", "Pixel"]) {
+    currentPath = path.join(currentPath, segment);
+    try {
+      if ((await lstat(currentPath)).isSymbolicLink()) {
+        throw new Error("theme destination must not traverse symbolic links");
+      }
+    } catch (error) {
+      if (error?.code === "ENOENT") return;
+      throw error;
+    }
+  }
 }
 
 async function deployToVault() {
@@ -140,9 +221,23 @@ async function deployToVault() {
     throw new Error("OBSIDIAN_THEME_DIR must be an absolute path");
   }
 
+  const vaultPath = await readDedicatedVaultPath();
+  const expectedDestination = path.join(
+    vaultPath,
+    ".obsidian",
+    "themes",
+    "Pixel",
+  );
+  if (path.resolve(destination) !== expectedDestination) {
+    throw new Error(
+      `OBSIDIAN_THEME_DIR must target the Pixel theme in Vault ${dedicatedVaultId}`,
+    );
+  }
+
+  await assertNoSymlinkedThemePath(vaultPath);
   await mkdir(destination, { recursive: true });
-  if ((await lstat(destination)).isSymbolicLink()) {
-    throw new Error("OBSIDIAN_THEME_DIR must not be a symbolic link");
+  if ((await realpath(destination)) !== expectedDestination) {
+    throw new Error("theme destination must not traverse symbolic links");
   }
   await Promise.all([
     installPackageFile(outputPath, path.join(destination, "theme.css")),
@@ -166,7 +261,7 @@ async function installPackageFile(source, destination) {
 }
 
 async function build() {
-  const css = await renderTheme();
+  const { css } = await renderTheme();
 
   if (isCheck) {
     if (!existsSync(outputPath)) {
