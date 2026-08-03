@@ -179,7 +179,9 @@ button.mod-loading::after {
 
 .suggestion-empty,
 .empty-state-container,
-.search-empty-state {
+.search-empty-state,
+.bookmarks-pane-empty,
+.tag-pane-empty {
   min-block-size: var(--pixel-state-min-block-size);
   border: var(--pixel-border-control) dashed var(--pixel-border-meaningful);
   background-color: var(--pixel-surface-secondary);
