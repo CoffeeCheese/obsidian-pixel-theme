@@ -17,4 +17,10 @@ body {
   --pixel-radius: 0;
   --pixel-shadow-control: 2px 2px 0 var(--pixel-shadow-color);
   --pixel-shadow-shell: 4px 4px 0 var(--pixel-shadow-color);
+  --pixel-motion-press: 80ms;
+  --pixel-motion-state: 120ms;
+  --pixel-motion-surface: 160ms;
+  --pixel-control-min: 32px;
+  --pixel-icon-size: 18px;
+  --pixel-state-min-block-size: 48px;
 }

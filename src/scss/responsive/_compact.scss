@@ -1,9 +1,0 @@
-@media (max-width: 768px) {
-  body {
-    --pixel-control-min: 44px;
-  }
-
-  button {
-    min-block-size: var(--pixel-control-min);
-  }
-}
