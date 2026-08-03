@@ -1,0 +1,218 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import {
+  atRuleBody,
+  declaration,
+  readTheme,
+  ruleBody,
+  ruleBodyForSelector,
+} from "../test-support/theme-css.mjs";
+
+test("compiled desktop package exposes the H5 split-label material roles", async () => {
+  const css = await readTheme();
+  const body = ruleBody(css, "body");
+  const light = ruleBody(css, ".theme-light");
+  const dark = ruleBody(css, ".theme-dark");
+
+  assert.equal(declaration(body, "--pixel-workspace-gap"), "12px");
+  assert.equal(declaration(body, "--pixel-workspace-inset"), "12px");
+
+  assert.equal(declaration(light, "--pixel-nav-label"), "#c7dfe3");
+  assert.equal(declaration(light, "--pixel-context-label"), "#f0e1d0");
+  assert.equal(declaration(dark, "--pixel-nav-label"), "#254751");
+  assert.equal(declaration(dark, "--pixel-context-label"), "#474135");
+});
+
+test("visible desktop side docks keep Paper bodies with cyan and amber labels", async () => {
+  const css = await readTheme();
+
+  for (const selector of [
+    "body:not(.is-mobile) .workspace-split.mod-left-split:not(.is-sidedock-collapsed)",
+    "body:not(.is-mobile) .workspace-split.mod-right-split:not(.is-sidedock-collapsed)",
+  ]) {
+    const dock = ruleBodyForSelector(css, selector);
+    assert.equal(declaration(dock, "background-color"), "var(--pixel-paper)");
+    assert.equal(
+      declaration(dock, "border"),
+      "var(--pixel-border-shell) solid var(--pixel-border-meaningful)",
+    );
+    assert.equal(declaration(dock, "box-shadow"), "var(--pixel-shadow-shell)");
+  }
+
+  const dockContents = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace-split.mod-left-split .workspace-tabs",
+  );
+  assert.equal(
+    declaration(dockContents, "background-color"),
+    "var(--pixel-paper)",
+  );
+
+  const navigationLabel = ruleBody(
+    css,
+    "body:not(.is-mobile) .workspace-split.mod-left-split .workspace-tab-header-container",
+  );
+  assert.equal(
+    declaration(navigationLabel, "background-color"),
+    "var(--pixel-nav-label)",
+  );
+
+  const contextLabel = ruleBody(
+    css,
+    "body:not(.is-mobile) .workspace-split.mod-right-split .workspace-tab-header-container",
+  );
+  assert.equal(
+    declaration(contextLabel, "background-color"),
+    "var(--pixel-context-label)",
+  );
+});
+
+test("desktop notes remain the primary shallow reader console", async () => {
+  const css = await readTheme();
+  const workspace = ruleBody(css, "body:not(.is-mobile) .workspace");
+  assert.equal(declaration(workspace, "gap"), "var(--pixel-workspace-gap)");
+  assert.equal(
+    declaration(workspace, "padding"),
+    "var(--pixel-workspace-inset)",
+  );
+  assert.equal(declaration(workspace, "background-color"), "var(--pixel-canvas)");
+
+  const readerShell = ruleBody(
+    css,
+    "body:not(.is-mobile) .workspace-split.mod-root .workspace-tabs",
+  );
+  assert.equal(
+    declaration(readerShell, "border"),
+    "var(--pixel-border-shell) solid var(--pixel-border-meaningful)",
+  );
+  assert.equal(declaration(readerShell, "background-color"), "var(--pixel-paper)");
+  assert.equal(declaration(readerShell, "box-shadow"), "var(--pixel-shadow-shell)");
+  assert.equal(declaration(readerShell, "background-image"), "none");
+
+  const reader = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace-split.mod-root .view-content",
+  );
+  assert.equal(declaration(reader, "background-color"), "var(--pixel-paper)");
+  assert.equal(declaration(reader, "box-shadow"), "none");
+  assert.equal(declaration(reader, "text-shadow"), "none");
+});
+
+test("desktop active tabs and panes use side-aware multi-cue signals", async () => {
+  const css = await readTheme();
+  const expectedTabs = new Map([
+    [
+      "body:not(.is-mobile) .workspace-split.mod-left-split .workspace-tab-header.is-active",
+      "var(--pixel-cyan)",
+    ],
+    [
+      "body:not(.is-mobile) .workspace-split.mod-right-split .workspace-tab-header.is-active",
+      "var(--pixel-amber-text)",
+    ],
+  ]);
+
+  for (const [selector, signal] of expectedTabs) {
+    const activeTab = ruleBody(css, selector);
+    assert.equal(declaration(activeTab, "background-color"), "var(--pixel-paper)");
+    assert.equal(
+      declaration(activeTab, "box-shadow"),
+      `inset 0 -4px 0 ${signal}`,
+    );
+    assert.equal(declaration(activeTab, "color"), "var(--pixel-text)");
+    assert.equal(declaration(activeTab, "font-weight"), "600");
+  }
+
+  const activeReader = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace-split.mod-root .workspace-leaf.mod-active .view-header",
+  );
+  assert.equal(
+    declaration(activeReader, "box-shadow"),
+    "inset 4px 0 0 var(--pixel-cyan)",
+  );
+  assert.equal(declaration(activeReader, "background-color"), "var(--pixel-paper)");
+
+  const activeContext = ruleBody(
+    css,
+    "body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf.mod-active .view-header",
+  );
+  assert.equal(
+    declaration(activeContext, "box-shadow"),
+    "inset 4px 0 0 var(--pixel-amber-text)",
+  );
+
+  assert.doesNotMatch(
+    css,
+    /(?:workspace-tab-header-inner-close-button|view-actions|sidebar-toggle-button)[^{]*\{[^}]*display:\s*none/is,
+  );
+});
+
+test("desktop chrome maps titlebar, ribbon, tabs, dividers, status, and scrollbars", async () => {
+  const css = await readTheme();
+  const mappings = ruleBody(css, ".theme-light,\n.theme-dark");
+  const expectedMappings = {
+    "--divider-color": "var(--pixel-line)",
+    "--divider-color-hover": "var(--pixel-cyan)",
+    "--divider-width": "var(--pixel-border-decoration)",
+    "--divider-width-hover": "var(--pixel-border-shell)",
+    "--ribbon-background": "var(--pixel-canvas)",
+    "--ribbon-background-collapsed": "var(--pixel-paper)",
+    "--tab-container-background": "var(--pixel-surface-secondary)",
+    "--tab-background-active": "var(--pixel-paper)",
+    "--tab-outline-color": "var(--pixel-border-meaningful)",
+    "--tab-outline-width": "var(--pixel-border-control)",
+    "--status-bar-background": "var(--pixel-paper)",
+    "--status-bar-border-color": "var(--pixel-border-meaningful)",
+    "--status-bar-border-width": "var(--pixel-border-control) 0 0 var(--pixel-border-control)",
+    "--status-bar-radius": "var(--pixel-radius)",
+    "--scrollbar-bg": "var(--pixel-canvas)",
+    "--scrollbar-thumb-bg": "var(--pixel-border-meaningful)",
+    "--scrollbar-active-thumb-bg": "var(--pixel-cyan)",
+    "--scrollbar-radius": "var(--pixel-radius)",
+    "--titlebar-border-color": "var(--pixel-line)",
+    "--titlebar-border-width": "var(--pixel-border-decoration)",
+  };
+
+  for (const [property, value] of Object.entries(expectedMappings)) {
+    assert.equal(declaration(mappings, property), value);
+  }
+
+  const ribbon = ruleBody(css, "body:not(.is-mobile) .workspace-ribbon");
+  assert.equal(
+    declaration(ribbon, "border-inline-end"),
+    "var(--pixel-border-shell) solid var(--pixel-border-meaningful)",
+  );
+
+  const divider = ruleBody(css, "body:not(.is-mobile) .workspace-leaf-resize-handle");
+  assert.equal(
+    declaration(divider, "transition"),
+    "background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear",
+  );
+});
+
+test("narrow desktop only reduces density and accessibility modes preserve D1", async () => {
+  const css = await readTheme();
+  const narrowDesktop = atRuleBody(css, "@media (max-width: 900px)");
+  const compactBody = ruleBody(narrowDesktop, "body:not(.is-mobile)");
+  assert.equal(declaration(compactBody, "--pixel-workspace-gap"), "4px");
+  assert.equal(declaration(compactBody, "--pixel-workspace-inset"), "4px");
+  assert.doesNotMatch(
+    narrowDesktop,
+    /workspace-split[^{}]*\{[^}]*display:\s*none/is,
+  );
+  assert.doesNotMatch(narrowDesktop, /workspace-drawer/i);
+
+  const reducedMotion = atRuleBody(css, "@media (prefers-reduced-motion: reduce)");
+  const motionlessDivider = ruleBodyForSelector(
+    reducedMotion,
+    ".workspace-leaf-resize-handle",
+  );
+  assert.equal(declaration(motionlessDivider, "transition-duration"), "0ms");
+  assert.equal(declaration(motionlessDivider, "animation"), "none");
+
+  const forcedColors = atRuleBody(css, "@media (forced-colors: active)");
+  const systemRoles = ruleBodyForSelector(forcedColors, ".theme-light");
+  assert.equal(declaration(systemRoles, "--pixel-nav-label"), "canvas");
+  assert.equal(declaration(systemRoles, "--pixel-context-label"), "canvas");
+  assert.equal(declaration(systemRoles, "--pixel-shadow-shell"), "none");
+});

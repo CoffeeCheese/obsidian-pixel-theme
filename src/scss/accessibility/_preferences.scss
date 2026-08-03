@@ -12,6 +12,7 @@
   .notice,
   .tooltip,
   .is-loading::before,
+  .workspace-leaf-resize-handle,
   .workspace-drawer,
   .modal-bg,
   .suggestion-bg {
@@ -34,6 +35,8 @@
     --pixel-brick: CanvasText;
     --pixel-line: CanvasText;
     --pixel-border-meaningful: CanvasText;
+    --pixel-nav-label: Canvas;
+    --pixel-context-label: Canvas;
     --pixel-shadow-control: none;
     --pixel-shadow-shell: none;
     --interactive-accent: Highlight;

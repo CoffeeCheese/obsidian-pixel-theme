@@ -10,3 +10,10 @@ body.is-mobile {
   --pixel-icon-size: 24px;
   --input-height: 44px;
 }
+
+@media (max-width: 900px) {
+  body:not(.is-mobile) {
+    --pixel-workspace-gap: 4px;
+    --pixel-workspace-inset: 4px;
+  }
+}
