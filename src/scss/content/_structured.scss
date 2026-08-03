@@ -1,0 +1,225 @@
+.callout {
+  --pixel-callout-fallback-glyph: "i";
+  border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
+  border-inline-start: 4px solid rgb(var(--callout-color));
+  border-radius: var(--pixel-radius);
+  background-color: var(--pixel-paper);
+  color: var(--pixel-text);
+  box-shadow: none;
+  animation: none;
+}
+
+.callout[data-callout="warning"],
+.callout[data-callout="caution"],
+.callout[data-callout="attention"] {
+  --pixel-callout-fallback-glyph: "!";
+  border-color: var(--pixel-amber-text);
+  border-inline-start-width: 4px;
+  background-color: var(--pixel-paper);
+  color: var(--pixel-text);
+}
+
+.callout[data-callout="danger"],
+.callout[data-callout="error"],
+.callout[data-callout="bug"],
+.callout[data-callout="failure"],
+.callout[data-callout="fail"],
+.callout[data-callout="missing"] {
+  --pixel-callout-fallback-glyph: "×";
+  border-color: var(--pixel-brick);
+  border-inline-start-width: 4px;
+  background-color: var(--pixel-paper);
+  color: var(--pixel-text);
+}
+
+.callout-title {
+  color: var(--pixel-text);
+  font-weight: 700;
+}
+
+.callout-icon {
+  color: rgb(var(--callout-color));
+}
+
+.callout-icon:has(> svg:empty) {
+  position: relative;
+}
+
+.callout-icon:has(> svg:empty)::before {
+  content: var(--pixel-callout-fallback-glyph);
+  display: grid;
+  place-items: center;
+  inline-size: 1rem;
+  block-size: 1rem;
+  border: var(--pixel-border-control) solid currentColor;
+  font-family: var(--font-monospace);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.callout-icon:has(> svg:empty) > svg {
+  position: absolute;
+  inset: 0;
+}
+
+.callout-content {
+  min-inline-size: 0;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+}
+
+.callout.is-collapsible .callout-title:focus-visible {
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: 2px;
+}
+
+.markdown-rendered code {
+  font-family: var(--font-monospace);
+  font-size: var(--code-size);
+  line-height: 1.65;
+}
+
+:where(.markdown-source-view.mod-cm6) .cm-inline-code,
+:where(.markdown-source-view.mod-cm6) .HyperMD-codeblock {
+  font-family: var(--font-monospace);
+  font-size: var(--code-size);
+  line-height: 1.65;
+}
+
+.markdown-rendered pre {
+  max-inline-size: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  border: var(--code-border-width) solid var(--code-border-color);
+  box-shadow: none;
+  animation: none;
+}
+
+.markdown-rendered .table-wrapper,
+.markdown-rendered .el-table,
+.markdown-source-view.mod-cm6 .cm-table-widget {
+  max-inline-size: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+}
+
+.markdown-rendered table {
+  min-inline-size: 100%;
+  box-shadow: none;
+  animation: none;
+}
+
+.markdown-rendered th,
+.markdown-rendered td {
+  overflow-wrap: anywhere;
+  text-overflow: clip;
+}
+
+.markdown-embed,
+.file-embed {
+  max-inline-size: 100%;
+  border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
+  border-inline-start-width: 4px;
+  border-inline-start-color: var(--pixel-cyan);
+  border-radius: var(--pixel-radius);
+  background-color: var(--pixel-paper);
+  box-shadow: none;
+  animation: none;
+}
+
+.file-embed.mod-generic,
+.file-embed.mod-empty,
+.file-embed.mod-empty-attachment {
+  border-style: dashed;
+}
+
+.inline-embed > .markdown-embed-content {
+  max-block-size: var(--embed-max-height);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.image-embed,
+.audio-embed,
+.video-embed {
+  max-inline-size: 100%;
+  border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
+  border-radius: var(--pixel-radius);
+  background-color: var(--pixel-paper);
+  box-shadow: none;
+  animation: none;
+  overflow: auto;
+}
+
+.markdown-rendered img,
+.markdown-rendered audio,
+.markdown-rendered video {
+  max-inline-size: 100%;
+}
+
+audio:focus-visible,
+video:focus-visible {
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: 2px;
+}
+
+.embed-title,
+.file-embed-title {
+  min-inline-size: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-overflow: clip;
+}
+
+.footnotes {
+  padding-block-start: var(--pixel-space-3);
+  border-block-start: var(--pixel-border-control) solid var(--pixel-border-meaningful);
+  color: var(--pixel-text);
+}
+
+.footnote-link,
+.footnote-backref {
+  color: var(--link-color);
+  text-decoration: underline;
+}
+
+mjx-container,
+.markdown-source-view.mod-cm6 .math-block,
+.markdown-rendered .math-block {
+  max-inline-size: 100%;
+  overflow-x: auto;
+  color: var(--pixel-text);
+}
+
+.cm-comment {
+  color: var(--pixel-text-muted);
+  font-style: italic;
+}
+
+.markdown-rendered hr {
+  border: none;
+  border-top: var(--hr-thickness) solid var(--hr-color);
+}
+
+.markdown-rendered mark {
+  background-color: var(--pixel-context-label);
+  color: var(--pixel-text);
+}
+
+.cm-highlight,
+.cm-formatting-highlight {
+  background-color: var(--pixel-context-label);
+  color: var(--pixel-text);
+}
+
+a.tag {
+  border: var(--tag-border-width) solid var(--tag-border-color);
+  background-color: var(--tag-background);
+  color: var(--tag-color);
+  box-shadow: none;
+}
+
+.task-list-item-checkbox {
+  box-shadow: none;
+}
