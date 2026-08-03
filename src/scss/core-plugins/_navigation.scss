@@ -48,12 +48,7 @@
 }
 
 .search-result-file-match-replace-button {
-  display: block;
-  position: static;
-  inline-size: fit-content;
   min-block-size: var(--pixel-control-min);
-  margin-block-start: var(--pixel-space-1);
-  margin-inline-start: auto;
   border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
   border-radius: var(--pixel-radius);
   background-color: var(--pixel-paper);
@@ -88,8 +83,9 @@
     color: var(--pixel-text);
   }
 
+  .tree-item-self:is(.is-active, .is-selected):hover,
   .tag-pane-tag.is-active:hover {
-    background-color: var(--pixel-tree-active-surface);
+    background-color: var(--pixel-surface-secondary);
     color: var(--pixel-text);
   }
 }
