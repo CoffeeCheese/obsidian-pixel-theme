@@ -38,6 +38,10 @@ body:not(.is-mobile) {
   .workspace-split.mod-right-split {
     --pixel-tree-signal: var(--pixel-amber-text);
     --pixel-tree-active-surface: var(--pixel-context-label);
+    --nav-item-color-highlighted: var(--pixel-tree-signal);
+    --nav-item-background-active: var(--pixel-tree-active-surface);
+    --nav-item-background-selected: var(--pixel-tree-active-surface);
+    --nav-collapse-icon-color-collapsed: var(--pixel-tree-signal);
   }
 
   .workspace-split.mod-root {

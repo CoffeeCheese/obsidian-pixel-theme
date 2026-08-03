@@ -10,8 +10,6 @@ test("compiled package maps core navigation through documented Obsidian variable
   const css = await readTheme();
   const theme = ruleBody(css, ".theme-light,\n.theme-dark");
   const expectedMappings = {
-    "--pixel-tree-signal": "var(--pixel-cyan)",
-    "--pixel-tree-active-surface": "var(--pixel-nav-label)",
     "--nav-item-color": "var(--pixel-text-muted)",
     "--nav-item-color-hover": "var(--pixel-text)",
     "--nav-item-color-active": "var(--pixel-text)",
@@ -39,5 +37,18 @@ test("compiled package maps core navigation through documented Obsidian variable
 
   for (const [property, value] of Object.entries(expectedMappings)) {
     assert.equal(declaration(theme, property), value);
+  }
+});
+
+test("Light and Dark provide pane-aware navigation state roles", async () => {
+  const css = await readTheme();
+
+  for (const selector of [".theme-light", ".theme-dark"]) {
+    const mode = ruleBody(css, selector);
+    assert.equal(declaration(mode, "--pixel-tree-signal"), "var(--pixel-cyan)");
+    assert.equal(
+      declaration(mode, "--pixel-tree-active-surface"),
+      "var(--pixel-nav-label)",
+    );
   }
 });

@@ -72,6 +72,8 @@ body {
   --pixel-shadow-color: #8fa5b2;
   --pixel-nav-label: #c7dfe3;
   --pixel-context-label: #f0e1d0;
+  --pixel-tree-signal: var(--pixel-cyan);
+  --pixel-tree-active-surface: var(--pixel-nav-label);
   --pixel-selection: rgba(25, 125, 140, 0.28);
   --pixel-active-line: #edf5f7;
 }
@@ -96,6 +98,8 @@ body {
   --pixel-shadow-color: #091016;
   --pixel-nav-label: #254751;
   --pixel-context-label: #474135;
+  --pixel-tree-signal: var(--pixel-cyan);
+  --pixel-tree-active-surface: var(--pixel-nav-label);
   --pixel-selection: rgba(88, 199, 207, 0.35);
   --pixel-active-line: #1d3039;
 }
@@ -247,8 +251,6 @@ body {
   --checkbox-marker-color: var(--pixel-paper);
   --checklist-done-color: var(--pixel-text-muted);
   --text-selection: var(--pixel-selection);
-  --pixel-tree-signal: var(--pixel-cyan);
-  --pixel-tree-active-surface: var(--pixel-nav-label);
   --nav-item-color: var(--pixel-text-muted);
   --nav-item-color-hover: var(--pixel-text);
   --nav-item-color-active: var(--pixel-text);
@@ -313,6 +315,10 @@ body:not(.is-mobile) .workspace-split.mod-right-split .workspace-tab-header-cont
 body:not(.is-mobile) .workspace-split.mod-right-split {
   --pixel-tree-signal: var(--pixel-amber-text);
   --pixel-tree-active-surface: var(--pixel-context-label);
+  --nav-item-color-highlighted: var(--pixel-tree-signal);
+  --nav-item-background-active: var(--pixel-tree-active-surface);
+  --nav-item-background-selected: var(--pixel-tree-active-surface);
+  --nav-collapse-icon-color-collapsed: var(--pixel-tree-signal);
 }
 body:not(.is-mobile) .workspace-split.mod-root {
   background-color: transparent;
@@ -833,7 +839,7 @@ button .svg-icon {
 }
 
 .search-result-file-matched-text {
-  background-color: var(--pixel-nav-label);
+  background-color: var(--pixel-tree-active-surface);
   color: var(--pixel-text);
   font-weight: 600;
 }
