@@ -88,39 +88,41 @@ async function createDeploymentEnvironment(
   vaultId = dedicatedVaultId,
 ) {
   const fakeHome = path.join(fixtureRoot, "fake-home");
-  let registryPath;
-  const environment = { HOME: fakeHome };
-
-  if (process.platform === "darwin") {
-    registryPath = path.join(
+  const environment = {
+    HOME: fakeHome,
+    APPDATA: path.join(fakeHome, "AppData", "Roaming"),
+    XDG_CONFIG_HOME: path.join(fakeHome, ".config"),
+  };
+  const registryPaths = [
+    path.join(
       fakeHome,
       "Library",
       "Application Support",
       "obsidian",
       "obsidian.json",
-    );
-  } else if (process.platform === "win32") {
-    environment.APPDATA = path.join(fakeHome, "AppData", "Roaming");
-    registryPath = path.join(
+    ),
+    path.join(
       environment.APPDATA,
       "obsidian",
       "obsidian.json",
-    );
-  } else {
-    environment.XDG_CONFIG_HOME = path.join(fakeHome, ".config");
-    registryPath = path.join(
+    ),
+    path.join(
       environment.XDG_CONFIG_HOME,
       "obsidian",
       "obsidian.json",
-    );
-  }
-
-  await mkdir(path.dirname(registryPath), { recursive: true });
-  await writeJson(registryPath, {
+    ),
+  ];
+  const registry = {
     vaults: {
       [vaultId]: { path: vaultRoot },
     },
-  });
+  };
+  await Promise.all(
+    registryPaths.map(async (registryPath) => {
+      await mkdir(path.dirname(registryPath), { recursive: true });
+      await writeJson(registryPath, registry);
+    }),
+  );
 
   return environment;
 }
@@ -320,7 +322,7 @@ test("check rejects runtime HTTP imports in the compiled stylesheet", async (t) 
   const result = runBuild(fixtureRoot, ["--check"]);
 
   assert.notEqual(result.status, 0);
-  assert.match(result.output, /must not load runtime assets from the network/);
+  assert.match(result.output, /compiled theme\.css must not contain @import/);
 });
 
 test("check rejects runtime HTTP URLs separated from the scheme by a CSS comment", async (t) => {
@@ -385,6 +387,25 @@ test("check rejects runtime image-set assets", async (t) => {
 
   assert.notEqual(result.status, 0);
   assert.match(result.output, /compiled theme\.css must not contain image-set/);
+});
+
+test("build allows an HTTP URL when it is inert text rather than a runtime asset", async (t) => {
+  const fixtureRoot = await createPackageFixture(t);
+  const entryPath = path.join(fixtureRoot, "src/scss/index.scss");
+  const source = await readFile(entryPath, "utf8");
+  await writeFile(
+    entryPath,
+    `${source}\n.safe-text::before { content: "https://example.com/docs"; }\n`,
+    "utf8",
+  );
+
+  const result = runBuild(fixtureRoot);
+
+  assert.equal(result.status, 0, result.output);
+  assert.match(
+    await readFile(path.join(fixtureRoot, "theme.css"), "utf8"),
+    /content: "https:\/\/example\.com\/docs"/,
+  );
 });
 
 test("check rejects a stale committed stylesheet", async (t) => {

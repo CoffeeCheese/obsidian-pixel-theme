@@ -134,9 +134,6 @@ function assertGeneratedCssBudget(css) {
 function assertEmbeddedRuntimeAssets(css) {
   const cssWithoutComments = css.replace(/\/\*[\s\S]*?\*\//g, "");
 
-  if (/https?:\/\//i.test(cssWithoutComments)) {
-    throw new Error("theme.css must not load runtime assets from the network");
-  }
   if (/@import\b/i.test(cssWithoutComments)) {
     throw new Error("compiled theme.css must not contain @import; embed assets instead");
   }
@@ -147,6 +144,9 @@ function assertEmbeddedRuntimeAssets(css) {
   }
 
   for (const value of cssUrlValues(cssWithoutComments)) {
+    if (/^(?:https?:)?\/\//i.test(value)) {
+      throw new Error("theme.css must not load runtime assets from the network");
+    }
     if (!/^(?:data:|#)/i.test(value)) {
       throw new Error(
         `theme.css runtime assets must be embedded as data URLs; received ${value || "an empty URL"}`,
