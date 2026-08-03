@@ -18,7 +18,9 @@ const repositoryRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "..",
 );
-const dedicatedVaultId = "773da17a65bacca8";
+const { vaultId: dedicatedVaultId } = JSON.parse(
+  await readFile(path.join(repositoryRoot, "development.json"), "utf8"),
+);
 
 async function createPackageFixture(t) {
   const fixtureRoot = await mkdtemp(
@@ -27,7 +29,14 @@ async function createPackageFixture(t) {
   t.after(() => rm(fixtureRoot, { recursive: true, force: true }));
 
   await Promise.all(
-    ["build.mjs", "manifest.json", "versions.json", "theme.css", "src"].map(
+    [
+      "build.mjs",
+      "development.json",
+      "manifest.json",
+      "versions.json",
+      "theme.css",
+      "src",
+    ].map(
       (name) =>
         cp(path.join(repositoryRoot, name), path.join(fixtureRoot, name), {
           recursive: true,
@@ -44,8 +53,6 @@ function buildEnvironment(overrides = {}) {
     GITHUB_REF_NAME: "",
     GITHUB_REF_TYPE: "",
     OBSIDIAN_THEME_DIR: "",
-    OBSIDIAN_VAULT_ID: "",
-    OBSIDIAN_VAULT_REGISTRY: "",
     ...overrides,
   };
 }
@@ -80,17 +87,42 @@ async function createDeploymentEnvironment(
   vaultRoot,
   vaultId = dedicatedVaultId,
 ) {
-  const registryPath = path.join(fixtureRoot, "obsidian-registry.json");
+  const fakeHome = path.join(fixtureRoot, "fake-home");
+  let registryPath;
+  const environment = { HOME: fakeHome };
+
+  if (process.platform === "darwin") {
+    registryPath = path.join(
+      fakeHome,
+      "Library",
+      "Application Support",
+      "obsidian",
+      "obsidian.json",
+    );
+  } else if (process.platform === "win32") {
+    environment.APPDATA = path.join(fakeHome, "AppData", "Roaming");
+    registryPath = path.join(
+      environment.APPDATA,
+      "obsidian",
+      "obsidian.json",
+    );
+  } else {
+    environment.XDG_CONFIG_HOME = path.join(fakeHome, ".config");
+    registryPath = path.join(
+      environment.XDG_CONFIG_HOME,
+      "obsidian",
+      "obsidian.json",
+    );
+  }
+
+  await mkdir(path.dirname(registryPath), { recursive: true });
   await writeJson(registryPath, {
     vaults: {
       [vaultId]: { path: vaultRoot },
     },
   });
 
-  return {
-    OBSIDIAN_VAULT_ID: vaultId,
-    OBSIDIAN_VAULT_REGISTRY: registryPath,
-  };
+  return environment;
 }
 
 async function waitForOutput(readOutput, pattern, timeoutMs = 8000) {
@@ -226,6 +258,23 @@ test("build rejects encoded font payload above 1.2 MiB", async (t) => {
   assert.match(result.output, /encoded font payload exceeds 1\.2 MiB budget/i);
 });
 
+test("build counts legacy data-URI MIME types toward the encoded font budget", async (t) => {
+  const fixtureRoot = await createPackageFixture(t);
+  const entryPath = path.join(fixtureRoot, "src/scss/index.scss");
+  const source = await readFile(entryPath, "utf8");
+  const encodedFont = "A".repeat(Math.floor(1.2 * 1024 * 1024) + 1);
+  await writeFile(
+    entryPath,
+    `${source}\n@font-face { font-family: Fixture; src: url("data:application/font-woff;base64,${encodedFont}"); }\n`,
+    "utf8",
+  );
+
+  const result = runBuild(fixtureRoot);
+
+  assert.notEqual(result.status, 0);
+  assert.match(result.output, /encoded font payload exceeds 1\.2 MiB budget/i);
+});
+
 test("build rejects generated CSS above 1.5 MiB", async (t) => {
   const fixtureRoot = await createPackageFixture(t);
   const entryPath = path.join(fixtureRoot, "src/scss/index.scss");
@@ -288,6 +337,54 @@ test("check rejects runtime HTTP URLs separated from the scheme by a CSS comment
 
   assert.notEqual(result.status, 0);
   assert.match(result.output, /must not load runtime assets from the network/);
+});
+
+test("check rejects non-embedded relative runtime assets", async (t) => {
+  const fixtureRoot = await createPackageFixture(t);
+  const entryPath = path.join(fixtureRoot, "src/scss/index.scss");
+  const source = await readFile(entryPath, "utf8");
+  await writeFile(
+    entryPath,
+    `${source}\n.runtime-request { background-image: url("./pixel.png"); }\n`,
+    "utf8",
+  );
+
+  const result = runBuild(fixtureRoot, ["--check"]);
+
+  assert.notEqual(result.status, 0);
+  assert.match(result.output, /runtime assets must be embedded as data URLs/);
+});
+
+test("check rejects escaped runtime imports", async (t) => {
+  const fixtureRoot = await createPackageFixture(t);
+  const entryPath = path.join(fixtureRoot, "src/scss/index.scss");
+  const source = await readFile(entryPath, "utf8");
+  await writeFile(
+    entryPath,
+    `${source}\n@import "h\\74 tps://example.com/runtime.css";\n`,
+    "utf8",
+  );
+
+  const result = runBuild(fixtureRoot, ["--check"]);
+
+  assert.notEqual(result.status, 0);
+  assert.match(result.output, /compiled theme\.css must not contain @import/);
+});
+
+test("check rejects runtime image-set assets", async (t) => {
+  const fixtureRoot = await createPackageFixture(t);
+  const entryPath = path.join(fixtureRoot, "src/scss/index.scss");
+  const source = await readFile(entryPath, "utf8");
+  await writeFile(
+    entryPath,
+    `${source}\n.runtime-request { background-image: image-set("./pixel.png" 1x); }\n`,
+    "utf8",
+  );
+
+  const result = runBuild(fixtureRoot, ["--check"]);
+
+  assert.notEqual(result.status, 0);
+  assert.match(result.output, /compiled theme\.css must not contain image-set/);
 });
 
 test("check rejects a stale committed stylesheet", async (t) => {
@@ -361,7 +458,7 @@ test("deployment rejects a destination outside the configured dedicated Vault", 
   assert.notEqual(result.status, 0);
   assert.match(
     result.output,
-    /OBSIDIAN_THEME_DIR must target the Pixel theme in Vault 773da17a65bacca8/,
+    /OBSIDIAN_THEME_DIR must target the Pixel theme in the configured dedicated Vault/,
   );
 });
 
@@ -383,7 +480,7 @@ test("deployment rejects a Vault ID other than the dedicated dev-test Vault", as
   assert.notEqual(result.status, 0);
   assert.match(
     result.output,
-    /OBSIDIAN_VAULT_ID must be the dedicated dev-test Vault ID 773da17a65bacca8/,
+    /Obsidian Vault registry does not contain dev-test Vault ID/,
   );
 });
 

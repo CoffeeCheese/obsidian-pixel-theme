@@ -22,11 +22,11 @@ const entryPath = path.join(root, "src/scss/index.scss");
 const headerPath = path.join(root, "src/css/header.css");
 const manifestPath = path.join(root, "manifest.json");
 const versionsPath = path.join(root, "versions.json");
+const developmentConfigPath = path.join(root, "development.json");
 const outputPath = path.join(root, "theme.css");
 const mebibyte = 1024 * 1024;
 const maxEncodedFontBytes = Math.floor(1.2 * mebibyte);
 const maxGeneratedCssBytes = Math.floor(1.5 * mebibyte);
-const dedicatedVaultId = "773da17a65bacca8";
 const isWatch = process.argv.includes("--watch");
 const isCheck = process.argv.includes("--check");
 
@@ -93,11 +93,25 @@ async function assertCompatibilityMapping(manifest) {
   }
 }
 
+function* cssUrlValues(css) {
+  for (const match of css.matchAll(
+    /url\(\s*(?:"([^"]*)"|'([^']*)'|([^)]*))\s*\)/gi,
+  )) {
+    yield (match[1] ?? match[2] ?? match[3]).trim();
+  }
+}
+
 function assertEncodedFontBudget(css) {
   let encodedFontBytes = 0;
 
-  for (const match of css.matchAll(/data:font\/[^,]+,([^)'"\s]+)/gi)) {
-    encodedFontBytes += Buffer.byteLength(match[1], "utf8");
+  for (const fontFace of css.matchAll(/@font-face\s*{([\s\S]*?)}/gi)) {
+    for (const value of cssUrlValues(fontFace[1])) {
+      if (!/^data:/i.test(value)) continue;
+      const separator = value.indexOf(",");
+      if (separator >= 0) {
+        encodedFontBytes += Buffer.byteLength(value.slice(separator + 1), "utf8");
+      }
+    }
   }
 
   if (encodedFontBytes > maxEncodedFontBytes) {
@@ -117,6 +131,30 @@ function assertGeneratedCssBudget(css) {
   }
 }
 
+function assertEmbeddedRuntimeAssets(css) {
+  const cssWithoutComments = css.replace(/\/\*[\s\S]*?\*\//g, "");
+
+  if (/https?:\/\//i.test(cssWithoutComments)) {
+    throw new Error("theme.css must not load runtime assets from the network");
+  }
+  if (/@import\b/i.test(cssWithoutComments)) {
+    throw new Error("compiled theme.css must not contain @import; embed assets instead");
+  }
+  if (/(?:^|[^\w-])(?:-webkit-)?image-set\s*\(/i.test(cssWithoutComments)) {
+    throw new Error(
+      "compiled theme.css must not contain image-set; use one embedded data URL",
+    );
+  }
+
+  for (const value of cssUrlValues(cssWithoutComments)) {
+    if (!/^(?:data:|#)/i.test(value)) {
+      throw new Error(
+        `theme.css runtime assets must be embedded as data URLs; received ${value || "an empty URL"}`,
+      );
+    }
+  }
+}
+
 async function renderTheme() {
   const manifest = await readManifest();
   await assertCompatibilityMapping(manifest);
@@ -132,20 +170,12 @@ async function renderTheme() {
   ]);
 
   const css = `${header.trim()}\n\n${compiled.css.trim()}\n`;
-  const cssWithoutComments = css.replace(/\/\*[\s\S]*?\*\//g, "");
 
-  if (
-    /(?:@import\s+(?:url\()?|url\()\s*["']?\s*https?:\/\//i.test(
-      cssWithoutComments,
-    )
-  ) {
-    throw new Error("theme.css must not load runtime assets from the network");
-  }
-
+  assertEmbeddedRuntimeAssets(css);
   assertEncodedFontBudget(css);
   assertGeneratedCssBudget(css);
 
-  return { css, manifest };
+  return css;
 }
 
 function defaultVaultRegistryPath() {
@@ -174,25 +204,25 @@ function defaultVaultRegistryPath() {
 }
 
 async function readDedicatedVaultPath() {
-  const vaultId = process.env.OBSIDIAN_VAULT_ID;
-  if (vaultId !== dedicatedVaultId) {
-    throw new Error(
-      `OBSIDIAN_VAULT_ID must be the dedicated dev-test Vault ID ${dedicatedVaultId}`,
-    );
+  const developmentConfig = JSON.parse(
+    await readFile(developmentConfigPath, "utf8"),
+  );
+  const vaultId = developmentConfig.vaultId;
+  if (typeof vaultId !== "string" || vaultId.trim() === "") {
+    throw new Error("development.json requires a non-empty vaultId");
   }
 
-  const registryPath =
-    process.env.OBSIDIAN_VAULT_REGISTRY || defaultVaultRegistryPath();
+  const registryPath = defaultVaultRegistryPath();
   const registry = JSON.parse(await readFile(registryPath, "utf8"));
   const vaultPath = registry.vaults?.[vaultId]?.path;
 
   if (typeof vaultPath !== "string" || vaultPath.trim() === "") {
     throw new Error(
-      `Obsidian Vault registry does not contain dev-test Vault ID ${dedicatedVaultId}`,
+      `Obsidian Vault registry does not contain dev-test Vault ID ${vaultId}`,
     );
   }
 
-  return path.resolve(vaultPath);
+  return { vaultId, vaultPath: path.resolve(vaultPath) };
 }
 
 async function assertNoSymlinkedThemePath(vaultPath) {
@@ -221,7 +251,7 @@ async function deployToVault() {
     throw new Error("OBSIDIAN_THEME_DIR must be an absolute path");
   }
 
-  const vaultPath = await readDedicatedVaultPath();
+  const { vaultId, vaultPath } = await readDedicatedVaultPath();
   const expectedDestination = path.join(
     vaultPath,
     ".obsidian",
@@ -230,7 +260,7 @@ async function deployToVault() {
   );
   if (path.resolve(destination) !== expectedDestination) {
     throw new Error(
-      `OBSIDIAN_THEME_DIR must target the Pixel theme in Vault ${dedicatedVaultId}`,
+      `OBSIDIAN_THEME_DIR must target the Pixel theme in the configured dedicated Vault ${vaultId}`,
     );
   }
 
@@ -261,7 +291,7 @@ async function installPackageFile(source, destination) {
 }
 
 async function build() {
-  const { css } = await renderTheme();
+  const css = await renderTheme();
 
   if (isCheck) {
     if (!existsSync(outputPath)) {
