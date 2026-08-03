@@ -247,14 +247,16 @@ body {
   --checkbox-marker-color: var(--pixel-paper);
   --checklist-done-color: var(--pixel-text-muted);
   --text-selection: var(--pixel-selection);
+  --pixel-tree-signal: var(--pixel-cyan);
+  --pixel-tree-active-surface: var(--pixel-nav-label);
   --nav-item-color: var(--pixel-text-muted);
   --nav-item-color-hover: var(--pixel-text);
   --nav-item-color-active: var(--pixel-text);
   --nav-item-color-selected: var(--pixel-text);
-  --nav-item-color-highlighted: var(--pixel-cyan);
+  --nav-item-color-highlighted: var(--pixel-tree-signal);
   --nav-item-background-hover: var(--pixel-surface-secondary);
-  --nav-item-background-active: var(--pixel-nav-label);
-  --nav-item-background-selected: var(--pixel-nav-label);
+  --nav-item-background-active: var(--pixel-tree-active-surface);
+  --nav-item-background-selected: var(--pixel-tree-active-surface);
   --nav-item-children-padding-start: var(--pixel-space-1);
   --nav-item-children-margin-start: var(--pixel-space-3);
   --nav-item-weight-active: 600;
@@ -262,7 +264,7 @@ body {
   --nav-indentation-guide-width: var(--pixel-border-decoration);
   --nav-indentation-guide-color: var(--pixel-line);
   --nav-collapse-icon-color: var(--pixel-text-muted);
-  --nav-collapse-icon-color-collapsed: var(--pixel-cyan);
+  --nav-collapse-icon-color-collapsed: var(--pixel-tree-signal);
   --nav-heading-color: var(--pixel-text);
   --nav-heading-color-hover: var(--pixel-text);
   --nav-heading-color-collapsed: var(--pixel-text-muted);
@@ -307,6 +309,10 @@ body:not(.is-mobile) .workspace-split.mod-left-split .workspace-tab-header-conta
 body:not(.is-mobile) .workspace-split.mod-right-split .workspace-tab-header-container {
   --icon-opacity: 1;
   background-color: var(--pixel-context-label);
+}
+body:not(.is-mobile) .workspace-split.mod-right-split {
+  --pixel-tree-signal: var(--pixel-amber-text);
+  --pixel-tree-active-surface: var(--pixel-context-label);
 }
 body:not(.is-mobile) .workspace-split.mod-root {
   background-color: transparent;
@@ -790,16 +796,17 @@ button .svg-icon {
 }
 .nav-file-title,
 .nav-folder-title,
-.tree-item-self {
+.tree-item-self,
+.tag-pane-tag {
+  border-inline-start: 4px solid transparent;
   border-radius: var(--pixel-radius);
 }
 
-.tree-item-self.is-active,
-.tree-item-self.is-selected,
+.tree-item-self:is(.is-active, .is-selected),
 .tag-pane-tag.is-active {
-  background-color: var(--pixel-nav-label);
+  border-inline-start-color: var(--pixel-tree-signal);
+  background-color: var(--pixel-tree-active-surface);
   color: var(--pixel-text);
-  box-shadow: inset 4px 0 0 var(--pixel-cyan);
   font-weight: 600;
 }
 
@@ -833,12 +840,16 @@ button .svg-icon {
 
 .search-result-file-match.has-focus {
   outline: var(--pixel-border-control) solid var(--pixel-cyan);
-  outline-offset: -2px;
+  outline-offset: 2px;
 }
 
 .search-result-file-match-replace-button {
   display: block;
+  position: static;
+  inline-size: fit-content;
   min-block-size: var(--pixel-control-min);
+  margin-block-start: var(--pixel-space-1);
+  margin-inline-start: auto;
   border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
   border-radius: var(--pixel-radius);
   background-color: var(--pixel-paper);
@@ -856,7 +867,7 @@ button .svg-icon {
 }
 
 .tag-pane-tag.is-active .tag-pane-tag-count {
-  border-color: var(--pixel-cyan);
+  border-color: var(--pixel-tree-signal);
   background-color: var(--pixel-paper);
   color: var(--pixel-text);
 }
@@ -867,26 +878,14 @@ button .svg-icon {
   outline-offset: 2px;
 }
 
-body:not(.is-phone) .workspace-leaf.mod-active .tree-item-self.has-focus,
-body:not(.is-phone) .workspace-leaf.mod-active .tree-item.has-focus > .tag-pane-tag {
-  box-shadow: none;
-}
-
-body:not(.is-phone) .workspace-leaf.mod-active .tree-item-self.is-active.has-focus,
-body:not(.is-phone) .workspace-leaf.mod-active .tree-item-self.is-selected.has-focus,
-body:not(.is-phone) .workspace-leaf.mod-active .tree-item.has-focus > .tag-pane-tag.is-active {
-  box-shadow: inset 4px 0 0 var(--pixel-cyan);
-}
-
 @media (hover: hover) and (pointer: fine) {
   .search-result-file-match:hover {
     background-color: var(--pixel-surface-secondary);
     color: var(--pixel-text);
   }
   .tag-pane-tag.is-active:hover {
-    background-color: var(--pixel-nav-label);
+    background-color: var(--pixel-tree-active-surface);
     color: var(--pixel-text);
-    box-shadow: inset 4px 0 0 var(--pixel-cyan);
   }
 }
 @media (any-pointer: coarse) {

@@ -35,6 +35,11 @@ body:not(.is-mobile) {
     background-color: var(--pixel-context-label);
   }
 
+  .workspace-split.mod-right-split {
+    --pixel-tree-signal: var(--pixel-amber-text);
+    --pixel-tree-active-surface: var(--pixel-context-label);
+  }
+
   .workspace-split.mod-root {
     background-color: transparent;
   }

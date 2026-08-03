@@ -1,15 +1,16 @@
 .nav-file-title,
 .nav-folder-title,
-.tree-item-self {
+.tree-item-self,
+.tag-pane-tag {
+  border-inline-start: 4px solid transparent;
   border-radius: var(--pixel-radius);
 }
 
-.tree-item-self.is-active,
-.tree-item-self.is-selected,
+.tree-item-self:is(.is-active, .is-selected),
 .tag-pane-tag.is-active {
-  background-color: var(--pixel-nav-label);
+  border-inline-start-color: var(--pixel-tree-signal);
+  background-color: var(--pixel-tree-active-surface);
   color: var(--pixel-text);
-  box-shadow: inset 4px 0 0 var(--pixel-cyan);
   font-weight: 600;
 }
 
@@ -43,12 +44,16 @@
 
 .search-result-file-match.has-focus {
   outline: var(--pixel-border-control) solid var(--pixel-cyan);
-  outline-offset: -2px;
+  outline-offset: 2px;
 }
 
 .search-result-file-match-replace-button {
   display: block;
+  position: static;
+  inline-size: fit-content;
   min-block-size: var(--pixel-control-min);
+  margin-block-start: var(--pixel-space-1);
+  margin-inline-start: auto;
   border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
   border-radius: var(--pixel-radius);
   background-color: var(--pixel-paper);
@@ -66,7 +71,7 @@
 }
 
 .tag-pane-tag.is-active .tag-pane-tag-count {
-  border-color: var(--pixel-cyan);
+  border-color: var(--pixel-tree-signal);
   background-color: var(--pixel-paper);
   color: var(--pixel-text);
 }
@@ -77,17 +82,6 @@
   outline-offset: 2px;
 }
 
-body:not(.is-phone) .workspace-leaf.mod-active .tree-item-self.has-focus,
-body:not(.is-phone) .workspace-leaf.mod-active .tree-item.has-focus > .tag-pane-tag {
-  box-shadow: none;
-}
-
-body:not(.is-phone) .workspace-leaf.mod-active .tree-item-self.is-active.has-focus,
-body:not(.is-phone) .workspace-leaf.mod-active .tree-item-self.is-selected.has-focus,
-body:not(.is-phone) .workspace-leaf.mod-active .tree-item.has-focus > .tag-pane-tag.is-active {
-  box-shadow: inset 4px 0 0 var(--pixel-cyan);
-}
-
 @media (hover: hover) and (pointer: fine) {
   .search-result-file-match:hover {
     background-color: var(--pixel-surface-secondary);
@@ -95,8 +89,7 @@ body:not(.is-phone) .workspace-leaf.mod-active .tree-item.has-focus > .tag-pane-
   }
 
   .tag-pane-tag.is-active:hover {
-    background-color: var(--pixel-nav-label);
+    background-color: var(--pixel-tree-active-surface);
     color: var(--pixel-text);
-    box-shadow: inset 4px 0 0 var(--pixel-cyan);
   }
 }
