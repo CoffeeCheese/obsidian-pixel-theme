@@ -1,0 +1,186 @@
+body.is-mobile {
+  --mobile-sidebar-width: min(88vw, 420px);
+  --mobile-sidebar-min-width: 0px;
+  --mobile-sidebar-max-width: 420px;
+  --mobile-sidebar-radius: var(--pixel-radius);
+  --mobile-sidebar-background: var(--pixel-paper);
+  --view-header-height: 56px;
+  --navbar-height: 56px;
+  --navbar-radius: var(--pixel-radius);
+  --navbar-bottom-offset: max(var(--safe-area-inset-bottom), var(--pixel-space-3));
+  --mobile-toolbar-height: 56px;
+
+  .workspace {
+    background-color: var(--pixel-canvas);
+  }
+
+  .workspace-split.mod-root,
+  .workspace-split.mod-root .workspace-tabs,
+  .workspace-split.mod-root .workspace-leaf,
+  .workspace-split.mod-root .view-content {
+    min-inline-size: 0;
+    background-color: var(--pixel-paper);
+  }
+
+  .workspace-drawer {
+    inline-size: var(--mobile-sidebar-width);
+    min-inline-size: var(--mobile-sidebar-min-width);
+    max-inline-size: var(--mobile-sidebar-max-width);
+    border-radius: var(--pixel-radius);
+    background-color: var(--pixel-paper);
+    box-shadow: var(--pixel-shadow-shell);
+    transition:
+      transform var(--pixel-motion-surface) ease-out,
+      width var(--pixel-motion-surface) ease-out;
+  }
+
+  .workspace-drawer.mod-left {
+    --pixel-tree-signal: var(--pixel-cyan);
+    --pixel-tree-active-surface: var(--pixel-nav-label);
+    border-inline-end: var(--pixel-border-shell) solid var(--pixel-cyan);
+  }
+
+  .workspace-drawer.mod-right {
+    --pixel-tree-signal: var(--pixel-amber-text);
+    --pixel-tree-active-surface: var(--pixel-context-label);
+    border-inline-start: var(--pixel-border-shell) solid var(--pixel-amber-text);
+  }
+
+  .workspace-drawer-inner,
+  .workspace-drawer-active-tab-content,
+  .workspace-drawer .workspace-leaf,
+  .workspace-drawer .view-content {
+    background-color: var(--pixel-paper);
+  }
+
+  .workspace-drawer.mod-left .workspace-drawer-header {
+    background-color: var(--pixel-nav-label);
+    box-shadow: inset 0 -4px 0 var(--pixel-cyan);
+  }
+
+  .workspace-drawer.mod-right .workspace-drawer-header {
+    background-color: var(--pixel-context-label);
+    box-shadow: inset 0 -4px 0 var(--pixel-amber-text);
+  }
+
+  .workspace-drawer-header,
+  .view-header {
+    min-block-size: 56px;
+  }
+
+  .workspace-drawer-header,
+  .workspace-drawer .nav-buttons-container,
+  .workspace-drawer-tab-options-list,
+  .mobile-navbar-actions,
+  .mobile-toolbar-options-container {
+    gap: var(--pixel-space-2);
+  }
+
+  .workspace-drawer :is(
+      .workspace-drawer-header-icon,
+      .workspace-drawer-tab-select,
+      .workspace-tab-header,
+      .nav-action-button,
+      .side-dock-ribbon-action
+    ),
+  .view-header :is(.view-action, .sidebar-toggle-button),
+  .mobile-navbar-action,
+  .mobile-toolbar-option {
+    min-inline-size: var(--pixel-control-min);
+    min-block-size: var(--pixel-control-min);
+  }
+
+  .workspace-drawer :is(
+      .workspace-drawer-header-icon,
+      .workspace-drawer-tab-select,
+      .workspace-tab-header,
+      .nav-action-button,
+      .side-dock-ribbon-action
+    ):focus-visible,
+  .view-header :is(.view-action, .sidebar-toggle-button):focus-visible,
+  .mobile-navbar-action:focus-visible,
+  .mobile-toolbar-option:focus-visible {
+    outline: var(--pixel-border-control) solid var(--pixel-cyan);
+    outline-offset: 2px;
+  }
+
+  :is(
+      .workspace-drawer,
+      .view-header,
+      .mobile-navbar,
+      .mobile-toolbar
+    ) .svg-icon {
+    inline-size: var(--pixel-icon-size);
+    block-size: var(--pixel-icon-size);
+  }
+
+  .workspace-drawer .workspace-tab-header.is-active {
+    border-inline-start: 4px solid var(--pixel-tree-signal);
+    background-color: var(--pixel-tree-active-surface);
+    color: var(--pixel-text);
+    font-weight: 600;
+  }
+
+  .workspace-drawer-backdrop {
+    background-color: var(--background-modifier-cover);
+    transition: opacity var(--pixel-motion-surface) linear;
+  }
+
+  .mobile-navbar.mod-raised,
+  .mobile-toolbar {
+    min-block-size: 56px;
+    border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
+    border-radius: var(--pixel-radius);
+    background-color: var(--pixel-paper);
+    box-shadow: var(--pixel-shadow-shell);
+  }
+
+  .mobile-navbar.mod-raised {
+    inset-block-end: var(--navbar-bottom-offset);
+  }
+}
+
+// Obsidian translates the note and floating navbar as an unpinned drawer opens.
+// The independent translate axis cancels that native offset without overriding
+// inline styles, so M1 keeps the note stationary beneath the native scrim.
+body.is-mobile .workspace.is-left-sidedock-open:has(> .workspace-drawer.mod-left:not(.is-pinned)) .workspace-split.mod-root,
+body.is-mobile:has(.workspace.is-left-sidedock-open > .workspace-drawer.mod-left:not(.is-pinned)) .mobile-navbar {
+  translate: calc(-1 * var(--mobile-sidebar-width)) 0;
+}
+
+body.is-mobile .workspace.is-right-sidedock-open:has(> .workspace-drawer.mod-right:not(.is-pinned)) .workspace-split.mod-root,
+body.is-mobile:has(.workspace.is-right-sidedock-open > .workspace-drawer.mod-right:not(.is-pinned)) .mobile-navbar {
+  translate: var(--mobile-sidebar-width) 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.is-mobile .workspace-drawer,
+  body.is-mobile .workspace-drawer-backdrop {
+    transition-duration: 0ms;
+    animation: none;
+  }
+}
+
+@media (forced-colors: active) {
+  body.is-mobile {
+    .workspace-drawer,
+    .mobile-navbar,
+    .mobile-toolbar {
+      border-color: CanvasText;
+      background-color: Canvas;
+      box-shadow: none;
+    }
+
+    .workspace-drawer.mod-left .workspace-drawer-header,
+    .workspace-drawer.mod-right .workspace-drawer-header {
+      background-color: Canvas;
+      box-shadow: inset 0 -4px 0 Highlight;
+    }
+  }
+}
+
+@media (prefers-contrast: more) {
+  body.is-mobile .workspace-drawer {
+    border-color: var(--pixel-text);
+  }
+}
