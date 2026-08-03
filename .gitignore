@@ -1,0 +1,19 @@
+.DS_Store
+node_modules/
+*.log
+
+# Local development configuration
+.env
+.env.*
+!.env.example
+
+# Wayfinder notes and disposable design material
+.scratch/
+CONTEXT.md
+prototypes/
+doc/
+docs/
+
+# Generated diagnostics
+coverage/
+*.map

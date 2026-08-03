@@ -1,0 +1,10 @@
+button,
+.clickable-icon {
+  border-radius: var(--pixel-radius);
+}
+
+button:focus-visible,
+.clickable-icon:focus-visible {
+  outline: var(--pixel-border-width) solid var(--pixel-cyan);
+  outline-offset: 2px;
+}

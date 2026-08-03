@@ -1,0 +1,45 @@
+body {
+  --font-interface-theme: var(--pixel-font-interface);
+  --font-text-theme: var(--pixel-font-text);
+  --font-monospace-theme: var(--pixel-font-monospace);
+  --border-width: var(--pixel-border-width);
+  --radius-s: var(--pixel-radius);
+  --radius-m: var(--pixel-radius);
+  --radius-l: var(--pixel-radius);
+  --input-radius: var(--pixel-radius);
+  --tab-radius-active: var(--pixel-radius);
+  --checkbox-radius: var(--pixel-radius);
+  --accent-h: 187;
+  --accent-s: 69%;
+  --accent-l: 32%;
+}
+
+.theme-light,
+.theme-dark {
+  --background-primary: var(--pixel-surface-reader);
+  --background-primary-alt: var(--pixel-surface-raised);
+  --background-secondary: var(--pixel-surface-dock);
+  --background-secondary-alt: var(--pixel-frost);
+  --background-modifier-hover: var(--pixel-surface-hover);
+  --background-modifier-border: var(--pixel-border);
+  --background-modifier-border-hover: var(--pixel-cyan);
+  --background-modifier-border-focus: var(--pixel-cyan);
+  --text-normal: var(--pixel-ink);
+  --text-muted: var(--pixel-slate);
+  --text-accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
+  --text-accent-hover: var(--pixel-amber);
+  --text-error: var(--pixel-brick);
+  --interactive-normal: var(--pixel-surface-raised);
+  --interactive-hover: var(--pixel-surface-hover);
+  --interactive-accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
+  --interactive-accent-hover: var(--pixel-amber);
+  --text-on-accent: var(--pixel-paper);
+  --divider-color: var(--pixel-border);
+  --code-background: var(--pixel-code-surface);
+  --code-normal: var(--pixel-ink);
+  --nav-item-color: var(--pixel-slate);
+  --nav-item-color-hover: var(--pixel-ink);
+  --nav-item-background-hover: var(--pixel-surface-hover);
+  --titlebar-background: var(--pixel-frost);
+  --titlebar-background-focused: var(--pixel-frost);
+}

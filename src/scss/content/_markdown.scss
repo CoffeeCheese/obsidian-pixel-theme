@@ -1,0 +1,14 @@
+.markdown-source-view.mod-cm6 .cm-content,
+.markdown-rendered {
+  line-height: 1.7;
+}
+
+.markdown-rendered :is(h1, h2, h3) {
+  letter-spacing: 0.01em;
+  text-wrap: balance;
+}
+
+.markdown-rendered code {
+  border: var(--pixel-border-width) solid var(--pixel-border);
+  border-radius: var(--pixel-radius);
+}

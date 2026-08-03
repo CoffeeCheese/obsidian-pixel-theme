@@ -1,0 +1,148 @@
+/*!
+ * Pixel Workbench
+ * Independent Obsidian theme source. Do not edit generated theme.css directly.
+ */
+
+body {
+  --pixel-font-interface: "Fusion Pixel 12px Proportional", "Source Han Sans CN", sans-serif;
+  --pixel-font-text: "Source Han Sans CN", sans-serif;
+  --pixel-font-monospace: "JetBrains Mono", monospace;
+  --pixel-grid: 4px;
+  --pixel-border-width: 2px;
+  --pixel-radius: 0;
+  --pixel-control-min: 32px;
+}
+
+.theme-light {
+  color-scheme: light;
+  --pixel-frost: #e8eef2;
+  --pixel-paper: #f8fbfc;
+  --pixel-ink: #182434;
+  --pixel-slate: #607184;
+  --pixel-cyan: #197d8c;
+  --pixel-amber: #d48732;
+  --pixel-brick: #ae4e32;
+  --pixel-border: #9cabb7;
+  --pixel-surface-reader: var(--pixel-paper);
+  --pixel-surface-dock: var(--pixel-paper);
+  --pixel-surface-raised: #ffffff;
+  --pixel-surface-hover: #dce7eb;
+  --pixel-code-surface: #e3ebef;
+}
+
+.theme-dark {
+  color-scheme: dark;
+  --pixel-frost: #16222d;
+  --pixel-paper: #1d2b38;
+  --pixel-ink: #e9f1f4;
+  --pixel-slate: #9eb0bd;
+  --pixel-cyan: #62c2cf;
+  --pixel-amber: #e4a45d;
+  --pixel-brick: #d4795c;
+  --pixel-border: #455868;
+  --pixel-surface-reader: var(--pixel-paper);
+  --pixel-surface-dock: var(--pixel-paper);
+  --pixel-surface-raised: #253646;
+  --pixel-surface-hover: #2b4050;
+  --pixel-code-surface: #13202a;
+}
+
+body {
+  --font-interface-theme: var(--pixel-font-interface);
+  --font-text-theme: var(--pixel-font-text);
+  --font-monospace-theme: var(--pixel-font-monospace);
+  --border-width: var(--pixel-border-width);
+  --radius-s: var(--pixel-radius);
+  --radius-m: var(--pixel-radius);
+  --radius-l: var(--pixel-radius);
+  --input-radius: var(--pixel-radius);
+  --tab-radius-active: var(--pixel-radius);
+  --checkbox-radius: var(--pixel-radius);
+  --accent-h: 187;
+  --accent-s: 69%;
+  --accent-l: 32%;
+}
+
+.theme-light,
+.theme-dark {
+  --background-primary: var(--pixel-surface-reader);
+  --background-primary-alt: var(--pixel-surface-raised);
+  --background-secondary: var(--pixel-surface-dock);
+  --background-secondary-alt: var(--pixel-frost);
+  --background-modifier-hover: var(--pixel-surface-hover);
+  --background-modifier-border: var(--pixel-border);
+  --background-modifier-border-hover: var(--pixel-cyan);
+  --background-modifier-border-focus: var(--pixel-cyan);
+  --text-normal: var(--pixel-ink);
+  --text-muted: var(--pixel-slate);
+  --text-accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
+  --text-accent-hover: var(--pixel-amber);
+  --text-error: var(--pixel-brick);
+  --interactive-normal: var(--pixel-surface-raised);
+  --interactive-hover: var(--pixel-surface-hover);
+  --interactive-accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
+  --interactive-accent-hover: var(--pixel-amber);
+  --text-on-accent: var(--pixel-paper);
+  --divider-color: var(--pixel-border);
+  --code-background: var(--pixel-code-surface);
+  --code-normal: var(--pixel-ink);
+  --nav-item-color: var(--pixel-slate);
+  --nav-item-color-hover: var(--pixel-ink);
+  --nav-item-background-hover: var(--pixel-surface-hover);
+  --titlebar-background: var(--pixel-frost);
+  --titlebar-background-focused: var(--pixel-frost);
+}
+
+.workspace-ribbon,
+.workspace-tab-header-container {
+  border-color: var(--pixel-border);
+}
+
+.workspace-tab-header.is-active {
+  box-shadow: inset 0 calc(var(--pixel-border-width) * -1) 0 var(--pixel-cyan);
+}
+
+.markdown-source-view.mod-cm6 .cm-content,
+.markdown-rendered {
+  line-height: 1.7;
+}
+
+.markdown-rendered :is(h1, h2, h3) {
+  letter-spacing: 0.01em;
+  text-wrap: balance;
+}
+
+.markdown-rendered code {
+  border: var(--pixel-border-width) solid var(--pixel-border);
+  border-radius: var(--pixel-radius);
+}
+
+button,
+.clickable-icon {
+  border-radius: var(--pixel-radius);
+}
+
+button:focus-visible,
+.clickable-icon:focus-visible {
+  outline: var(--pixel-border-width) solid var(--pixel-cyan);
+  outline-offset: 2px;
+}
+
+.nav-file-title,
+.nav-folder-title,
+.tree-item-self {
+  border-radius: var(--pixel-radius);
+}
+
+.nav-file-title.is-active {
+  box-shadow: inset var(--pixel-border-width) 0 0 var(--pixel-cyan);
+}
+
+@media (max-width: 768px) {
+  body {
+    --pixel-control-min: 44px;
+  }
+  button {
+    min-block-size: var(--pixel-control-min);
+  }
+}

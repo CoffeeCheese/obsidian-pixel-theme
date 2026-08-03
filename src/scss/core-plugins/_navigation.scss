@@ -1,0 +1,9 @@
+.nav-file-title,
+.nav-folder-title,
+.tree-item-self {
+  border-radius: var(--pixel-radius);
+}
+
+.nav-file-title.is-active {
+  box-shadow: inset var(--pixel-border-width) 0 0 var(--pixel-cyan);
+}
