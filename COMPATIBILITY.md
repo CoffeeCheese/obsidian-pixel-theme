@@ -80,7 +80,7 @@ The selector audit contains no `!important`, no `@keyframes`, no plugin-specific
 - an empty callout SVG fallback, needed because the native icon may render as an empty SVG;
 - mobile drawer offset cancellation, needed because Obsidian applies inline transforms while an unpinned native drawer is open.
 
-No decorative animation or expensive visual filter is shipped. The final installed surface had 4,577 DOM nodes, seven stylesheets, no recorded long task during the audit window, about 49.4 MB used JS heap, and an empty captured error/warning buffer. The generated CSS is 1,197,503 bytes, remains below the 1.5 MiB package gate, has no runtime network asset, and passes deterministic build checks.
+No decorative animation or expensive visual filter is shipped. The final installed surface had 4,577 DOM nodes, seven stylesheets, no recorded long task during the audit window, about 49.4 MB used JS heap, and an empty captured error/warning buffer. The generated CSS is 1,198,214 bytes, remains below the 1.5 MiB package gate, has no runtime network asset, and passes deterministic build checks.
 
 ## Verification command
 
