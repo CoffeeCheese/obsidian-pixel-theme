@@ -110,7 +110,9 @@ test("handoff documents separate prepared artifacts from pending manual validati
     read(".gitignore"),
   ]);
 
-  assert.match(candidate, new RegExp(`^# Pixel ${manifest.version} release-candidate handoff`, "m"));
+  assert.ok(
+    candidate.startsWith(`# Pixel ${manifest.version} release-candidate handoff\n`),
+  );
   assert.match(readme, /H5 material system, D1 balanced desktop layout, and M1/);
   assert.match(readme, /Node\.js 24/);
   assert.match(readme, /1\.2 MiB/);
