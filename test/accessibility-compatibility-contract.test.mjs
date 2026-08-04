@@ -98,12 +98,20 @@ test("muted badges and empty states stay on Paper with meaningful boundaries", a
 
 test("keyboard-selected and directly focused controls expose the shared focus ring", async () => {
   const css = await readTheme();
-  const directFocus = ruleBodyForSelector(css, ".menu-item:focus-visible");
-  assert.equal(
-    declaration(directFocus, "outline"),
-    "var(--pixel-border-control) solid var(--pixel-cyan)",
-  );
-  assert.equal(declaration(directFocus, "outline-offset"), "2px");
+  for (const selector of [
+    ".menu-item:focus-visible",
+    ".internal-link:focus-visible",
+    ".tag:focus-visible",
+    ".workspace-tab-header-container-inner:focus-visible",
+    ".nav-files-container:focus-visible",
+  ]) {
+    const directFocus = ruleBodyForSelector(css, selector);
+    assert.equal(
+      declaration(directFocus, "outline"),
+      "var(--pixel-border-control) solid var(--pixel-cyan)",
+    );
+    assert.equal(declaration(directFocus, "outline-offset"), "2px");
+  }
 
   const keyboardSelection = ruleBody(
     css,
@@ -144,6 +152,10 @@ test("adaptive preferences change presentation without redefining D1 or M1", asy
 
   assert.match(reduced, /transition-duration:\s*0m?s/);
   assert.match(reduced, /animation:\s*none/);
+  assert.match(
+    reduced,
+    /body:not\(\.is-mobile\) \.workspace-leaf-resize-handle/,
+  );
   assert.equal(
     declaration(ruleBodyForSelector(forced, ".theme-light"), "--pixel-paper"),
     "canvas",
@@ -152,6 +164,13 @@ test("adaptive preferences change presentation without redefining D1 or M1", asy
     declaration(
       ruleBodyForSelector(stronger, ".theme-light"),
       "--pixel-border-meaningful",
+    ),
+    "var(--pixel-text)",
+  );
+  assert.equal(
+    declaration(
+      ruleBodyForSelector(stronger, ".theme-light"),
+      "--pixel-text-muted",
     ),
     "var(--pixel-text)",
   );

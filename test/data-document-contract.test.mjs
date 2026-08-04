@@ -48,6 +48,16 @@ test("Bases and PDF map first-party roles through the Pixel palette", async () =
 
 test("Bases keeps dense table, list, card, summary, and empty-result surfaces restrained", async () => {
   const css = await readTheme();
+  const contentLinks = ruleBody(css, ".bases-view");
+  assert.equal(declaration(contentLinks, "--link-color"), "var(--pixel-text)");
+  assert.equal(
+    declaration(contentLinks, "--link-color-hover"),
+    "var(--pixel-text)",
+  );
+  assert.equal(
+    declaration(contentLinks, "--link-unresolved-color"),
+    "var(--pixel-text)",
+  );
   const containers = ruleBody(
     css,
     ".bases-table-container,\n.bases-list-container,\n.bases-cards-container",

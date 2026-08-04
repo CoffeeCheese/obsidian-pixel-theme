@@ -4,6 +4,14 @@
   box-shadow: none;
 }
 
+.bases-view {
+  --link-color: var(--pixel-text);
+  --link-color-hover: var(--pixel-text);
+  --link-external-color: var(--pixel-text);
+  --link-external-color-hover: var(--pixel-text);
+  --link-unresolved-color: var(--pixel-text);
+}
+
 .bases-list-item {
   border-block-end: var(--pixel-border-decoration) solid var(--pixel-border-meaningful);
 }

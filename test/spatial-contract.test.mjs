@@ -90,6 +90,17 @@ test("Graph keeps its renderer semantic colors and native settings controls read
 
 test("Canvas keeps restrained meaningful node, selection, edge, and media boundaries", async () => {
   const css = await readTheme();
+
+  const contentLinks = ruleBodyForSelector(css, ".canvas-node-content");
+  assert.equal(declaration(contentLinks, "--link-color"), "var(--pixel-text)");
+  assert.equal(
+    declaration(contentLinks, "--link-color-hover"),
+    "var(--pixel-text)",
+  );
+  assert.equal(
+    declaration(contentLinks, "--link-unresolved-color"),
+    "var(--pixel-text)",
+  );
   const wrapper = ruleBody(css, ".canvas-wrapper");
   assert.equal(declaration(wrapper, "background-color"), "var(--canvas-background)");
 

@@ -809,6 +809,10 @@ button:not(.clickable-icon):not(:disabled):not([aria-disabled=true]):active,
 
 button:focus-visible,
 .clickable-icon:focus-visible,
+.internal-link:focus-visible,
+.tag:focus-visible,
+.workspace-tab-header-container-inner:focus-visible,
+.nav-files-container:focus-visible,
 .menu-item:focus-visible,
 .suggestion-item:focus-visible,
 [role=button]:focus-visible,
@@ -1111,6 +1115,7 @@ button .svg-icon {
   .tooltip,
   .is-loading::before,
   .workspace-leaf-resize-handle,
+  body:not(.is-mobile) .workspace-leaf-resize-handle,
   .workspace-drawer,
   .callout-fold .svg-icon,
   .graph-color-group,
@@ -1262,6 +1267,7 @@ button .svg-icon {
 @media (prefers-contrast: more) {
   .theme-light,
   .theme-dark {
+    --pixel-text-muted: var(--pixel-text);
     --pixel-border-meaningful: var(--pixel-text);
     --pixel-line: var(--pixel-text-muted);
     --bases-table-row-border-width: var(--pixel-border-control);
@@ -1629,6 +1635,14 @@ body.theme-dark {
   box-shadow: none;
 }
 
+.canvas-node-content {
+  --link-color: var(--pixel-text);
+  --link-color-hover: var(--pixel-text);
+  --link-external-color: var(--pixel-text);
+  --link-external-color-hover: var(--pixel-text);
+  --link-unresolved-color: var(--pixel-text);
+}
+
 .canvas-node.is-themed .canvas-node-container {
   border-color: rgb(var(--canvas-color));
   box-shadow: none;
@@ -1725,6 +1739,14 @@ body.theme-dark {
 .bases-list-container,
 .bases-cards-container {
   box-shadow: none;
+}
+
+.bases-view {
+  --link-color: var(--pixel-text);
+  --link-color-hover: var(--pixel-text);
+  --link-external-color: var(--pixel-text);
+  --link-external-color-hover: var(--pixel-text);
+  --link-unresolved-color: var(--pixel-text);
 }
 
 .bases-list-item {

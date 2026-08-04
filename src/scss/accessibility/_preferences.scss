@@ -13,6 +13,7 @@
   .tooltip,
   .is-loading::before,
   .workspace-leaf-resize-handle,
+  body:not(.is-mobile) .workspace-leaf-resize-handle,
   .workspace-drawer,
   .callout-fold .svg-icon,
   .graph-color-group,
@@ -178,6 +179,7 @@
 @media (prefers-contrast: more) {
   .theme-light,
   .theme-dark {
+    --pixel-text-muted: var(--pixel-text);
     --pixel-border-meaningful: var(--pixel-text);
     --pixel-line: var(--pixel-text-muted);
     --bases-table-row-border-width: var(--pixel-border-control);

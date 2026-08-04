@@ -52,6 +52,14 @@ body.theme-dark {
   box-shadow: none;
 }
 
+.canvas-node-content {
+  --link-color: var(--pixel-text);
+  --link-color-hover: var(--pixel-text);
+  --link-external-color: var(--pixel-text);
+  --link-external-color-hover: var(--pixel-text);
+  --link-unresolved-color: var(--pixel-text);
+}
+
 .canvas-node.is-themed .canvas-node-container {
   border-color: rgb(var(--canvas-color));
   box-shadow: none;
