@@ -25,6 +25,17 @@ const versionsPath = path.join(root, "versions.json");
 const developmentConfigPath = path.join(root, "development.json");
 const outputPath = path.join(root, "theme.css");
 const fontAssetsPath = path.join(root, "src/assets/fonts");
+const redistributableLicensePaths = [
+  ["Pixel theme — MIT License", path.join(root, "LICENSE")],
+  [
+    "Fusion Pixel — SIL Open Font License 1.1",
+    path.join(fontAssetsPath, "licenses/Fusion-Pixel-OFL-1.1.txt"),
+  ],
+  [
+    "JetBrains Mono — SIL Open Font License 1.1",
+    path.join(fontAssetsPath, "licenses/JetBrains-Mono-OFL-1.1.txt"),
+  ],
+];
 const mebibyte = 1024 * 1024;
 const maxEncodedFontBytes = Math.floor(1.2 * mebibyte);
 const maxGeneratedCssBytes = Math.floor(1.5 * mebibyte);
@@ -253,6 +264,17 @@ function embeddedFontDataUrl(argumentsList) {
   );
 }
 
+function preservedLicenseComment(title, license) {
+  const lines = license.trim().split(/\r?\n/);
+  return [
+    "/*!",
+    ` * ${title}`,
+    " *",
+    ...lines.map((line) => (line ? ` * ${line}` : " *")),
+    " */",
+  ].join("\n");
+}
+
 function assertEmbeddedRuntimeAssets(css) {
   const syntaxCss = maskCssStringsAndComments(css);
 
@@ -281,8 +303,13 @@ async function renderTheme() {
   const manifest = await readManifest();
   await assertCompatibilityMapping(manifest);
 
-  const [header, compiled] = await Promise.all([
+  const [header, licenses, compiled] = await Promise.all([
     readFile(headerPath, "utf8"),
+    Promise.all(
+      redistributableLicensePaths.map(async ([title, licensePath]) =>
+        preservedLicenseComment(title, await readFile(licensePath, "utf8")),
+      ),
+    ),
     Promise.resolve(
       sass.compile(entryPath, {
         functions: {
@@ -294,7 +321,7 @@ async function renderTheme() {
     ),
   ]);
 
-  const css = `${header.trim()}\n\n${compiled.css.trim()}\n`;
+  const css = `${header.trim()}\n\n${licenses.join("\n\n")}\n\n${compiled.css.trim()}\n`;
 
   assertEmbeddedRuntimeAssets(css);
   assertEncodedFontBudget(css);

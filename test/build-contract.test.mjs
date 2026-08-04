@@ -31,6 +31,7 @@ async function createPackageFixture(t) {
   await Promise.all(
     [
       "build.mjs",
+      "LICENSE",
       "development.json",
       "manifest.json",
       "versions.json",

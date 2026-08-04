@@ -2,6 +2,12 @@
 
 This is the authoritative release-baseline matrix for Pixel. It records the installed-theme audit against Obsidian 1.12.7 on macOS, using the dedicated `dev-test` Vault. The runtime pass was performed in an isolated Obsidian profile at 1024×800; the package tests cover the same contracts without relying on that profile.
 
+## Ticket 13 candidate-preparation record
+
+**Ticket status:** Awaiting tester validation
+
+The Pixel `0.1.0` package is reproducibly built, checked, and deployed to the dedicated Vault. Its installable files and exact hashes are recorded in [RELEASE_CANDIDATE.md](RELEASE_CANDIDATE.md). Automated release preparation is complete; manual desktop acceptance and the physical iOS/Android matrix remain explicitly pending and are not inferred from the structural mobile evidence below.
+
 ## Ticket 12 completion record
 
 **Ticket status:** Complete
@@ -80,7 +86,7 @@ The selector audit contains no `!important`, no `@keyframes`, no plugin-specific
 - an empty callout SVG fallback, needed because the native icon may render as an empty SVG;
 - mobile drawer offset cancellation, needed because Obsidian applies inline transforms while an unpinned native drawer is open.
 
-No decorative animation or expensive visual filter is shipped. The final installed surface had 4,577 DOM nodes, seven stylesheets, no recorded long task during the audit window, about 49.4 MB used JS heap, and an empty captured error/warning buffer. The generated CSS is 1,198,214 bytes, remains below the 1.5 MiB package gate, has no runtime network asset, and passes deterministic build checks.
+No decorative animation or expensive visual filter is shipped. The final installed surface had 4,577 DOM nodes, seven stylesheets, no recorded long task during the audit window, about 49.4 MB used JS heap, and an empty captured error/warning buffer. The release-candidate CSS is 1,210,809 bytes, including preserved MIT and OFL redistribution notices; its three encoded fonts total 1,131,736 bytes. Both remain below their package gates, the stylesheet has no runtime network asset, and deterministic build checks pass.
 
 ## Verification command
 

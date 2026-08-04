@@ -19,6 +19,8 @@ Requirements: Node.js 24 and npm.
 ```sh
 npm ci
 npm run build
+npm test
+npm run check
 ```
 
 `src/scss/index.scss` is the only Sass entry point. Edit source modules under `src/`; do not edit the generated root `theme.css` directly.
@@ -29,22 +31,37 @@ For continuous compilation:
 npm run dev
 ```
 
-To deploy each build to the dedicated `dev-test` Vault, copy `.env.example` to `.env` and set `OBSIDIAN_THEME_DIR` to that Vault's absolute, non-symlink Pixel theme path. The trusted Vault ID lives in `development.json` and is resolved through Obsidian's system registry. Deployment replaces only `theme.css` and `manifest.json` using atomic per-file writes; it does not delete other files in the destination or write elsewhere in the Vault.
+Before committing or preparing a release candidate, run the full sequence above from the lockfile. `npm run build` is the only command that writes the generated root stylesheet. `npm test` exercises the installed-package contracts and rejected release paths. `npm run check` is read-only and fails when the committed artifact differs from source.
 
-Before committing or releasing:
+### Dedicated Vault deployment
+
+Copy `.env.example` to `.env` and set `OBSIDIAN_THEME_DIR` to the absolute, non-symlink Pixel theme directory inside the dedicated `dev-test` Vault. Then run:
 
 ```sh
-npm run check
+OBSIDIAN_THEME_DIR=/absolute/path/to/dev-test/.obsidian/themes/Pixel npm run build
 ```
 
-This verifies the manifest and compatibility map, release tag when applicable, network-asset policy, CSS and encoded-font budgets, and that committed `theme.css` exactly matches the Sass source. Run `npm test` to exercise the valid and rejected package paths plus recoverable watch and safe deployment behavior.
+The trusted Vault ID lives in `development.json` and is resolved through Obsidian's system registry. Deployment atomically replaces only `theme.css` and `manifest.json`; it refuses relative, symlinked, mismatched-Vault, and out-of-scope destinations and does not delete other files.
+
+See [COMPATIBILITY.md](COMPATIBILITY.md) for the authoritative component/accessibility matrix and [DEVICE_TEST_PLAN.md](DEVICE_TEST_PLAN.md) for the tester-operated physical iOS/Android release gate.
 
 ## Distribution contract
 
 - `manifest.json` is the theme-version authority.
 - `theme.css` is the only generated installable stylesheet.
+- A user installs exactly `manifest.json` and `theme.css` in `.obsidian/themes/Pixel/`.
+- `versions.json` maps each theme version to its minimum Obsidian version; Pixel `0.1.0` requires Obsidian `1.12.0`.
 - Runtime assets must be embedded; remote font and image requests are rejected.
+- Encoded fonts are capped at 1.2 MiB and generated CSS at 1.5 MiB.
 - Release tags must exactly match `manifest.json.version`.
+- The release workflow creates a draft containing only the two install files. It does not publish to the Obsidian community directory.
+
+## Scope boundaries
+
+- H5, D1, and M1 prototypes are visual/structural references only. Prototype markup, JavaScript state, simulated controls, screenshots, and Vault fixtures are not release assets.
+- Pixel is a CSS theme, not a plugin. It does not inject DOM, register commands, replace platform gestures, or add synthetic drawer behavior.
+- Community plugins that use documented Obsidian variables inherit Pixel naturally. The project ships no plugin-specific selectors and makes no individual plugin support promise.
+- Screenshots, contrast captures, diagnostics, device records, and local Vault material remain ignored development evidence rather than tracked release files.
 
 ## Bundled fonts
 

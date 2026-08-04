@@ -18,6 +18,9 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
+      - run: npm run build
+      - run: git diff --exit-code -- theme.css
+      - run: npm test
       - run: npm run check
       - name: Create draft release
         env:
