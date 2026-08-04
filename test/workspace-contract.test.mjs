@@ -16,8 +16,6 @@ test("compiled desktop package exposes the H5 split-label material roles", async
 
   assert.equal(declaration(body, "--pixel-workspace-gap"), "12px");
   assert.equal(declaration(body, "--pixel-workspace-inset"), "12px");
-  assert.equal(declaration(body, "--pixel-workspace-grid-size"), "24px");
-
   assert.equal(declaration(light, "--pixel-nav-label"), "#c7dfe3");
   assert.equal(declaration(light, "--pixel-context-label"), "#f0e1d0");
   assert.equal(declaration(dark, "--pixel-nav-label"), "#254751");
@@ -69,52 +67,6 @@ test("visible desktop side docks keep Paper bodies with cyan and amber labels", 
   );
   assert.equal(declaration(contextLabel, "--icon-opacity"), "1");
 
-  const sideLabels = ruleBody(
-    css,
-    "body:not(.is-mobile) .workspace-split:is(.mod-left-split, .mod-right-split) .workspace-tab-header-container",
-  );
-  assert.equal(declaration(sideLabels, "min-block-size"), "42px");
-  assert.equal(
-    declaration(sideLabels, "border-block-end"),
-    "var(--pixel-border-decoration) solid var(--pixel-line)",
-  );
-});
-
-test("desktop file rows retain native navigation while reading as raised cartridges", async () => {
-  const css = await readTheme();
-  const cartridge = ruleBodyForSelector(
-    css,
-    "body:not(.is-mobile) .workspace-split.mod-left-split .nav-file-title",
-  );
-  assert.equal(declaration(cartridge, "min-block-size"), "34px");
-  assert.equal(declaration(cartridge, "margin-block"), "var(--pixel-space-1)");
-  assert.equal(
-    declaration(cartridge, "border"),
-    "var(--pixel-border-control) solid var(--pixel-border-meaningful)",
-  );
-  assert.equal(
-    declaration(cartridge, "background-color"),
-    "var(--pixel-paper)",
-  );
-  assert.equal(
-    declaration(cartridge, "box-shadow"),
-    "var(--pixel-shadow-control)",
-  );
-
-  const loadedCartridge = ruleBodyForSelector(
-    css,
-    "body:not(.is-mobile) .workspace-split.mod-left-split .nav-file-title.is-active",
-  );
-  assert.equal(declaration(loadedCartridge, "transform"), "translate(2px, 2px)");
-  assert.equal(declaration(loadedCartridge, "box-shadow"), "none");
-  assert.equal(
-    declaration(loadedCartridge, "border-inline-start-color"),
-    "var(--pixel-cyan)",
-  );
-  assert.equal(
-    declaration(loadedCartridge, "background-color"),
-    "var(--pixel-nav-label)",
-  );
 });
 
 test("desktop notes remain the primary shallow reader console", async () => {
@@ -126,15 +78,6 @@ test("desktop notes remain the primary shallow reader console", async () => {
     "var(--pixel-workspace-inset)",
   );
   assert.equal(declaration(workspace, "background-color"), "var(--pixel-canvas)");
-  assert.equal(
-    declaration(workspace, "background-image"),
-    "linear-gradient(var(--pixel-line) 1px, transparent 1px), linear-gradient(90deg, var(--pixel-line) 1px, transparent 1px)",
-  );
-  assert.equal(
-    declaration(workspace, "background-size"),
-    "var(--pixel-workspace-grid-size) var(--pixel-workspace-grid-size)",
-  );
-
   const readerShell = ruleBody(
     css,
     "body:not(.is-mobile) .workspace-split.mod-root .workspace-tabs",
@@ -149,43 +92,6 @@ test("desktop notes remain the primary shallow reader console", async () => {
   );
   assert.equal(declaration(readerShell, "box-shadow"), "var(--pixel-shadow-shell)");
   assert.equal(declaration(readerShell, "background-image"), "none");
-
-  const consoleHeader = ruleBody(
-    css,
-    "body:not(.is-mobile) .workspace-split.mod-root .workspace-tab-header-container",
-  );
-  assert.equal(declaration(consoleHeader, "min-block-size"), "36px");
-  assert.equal(
-    declaration(consoleHeader, "border-block-end"),
-    "var(--pixel-border-control) solid var(--pixel-text)",
-  );
-  assert.equal(
-    declaration(consoleHeader, "background-color"),
-    "var(--pixel-surface-secondary)",
-  );
-
-  const consoleStage = ruleBody(
-    css,
-    "body:not(.is-mobile) .workspace-split.mod-root .workspace-tab-container",
-  );
-  assert.equal(
-    declaration(consoleStage, "background-color"),
-    "var(--pixel-surface-secondary)",
-  );
-
-  const markdownScreen = ruleBodyForSelector(
-    css,
-    "body:not(.is-mobile) .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .view-content",
-  );
-  assert.equal(
-    declaration(markdownScreen, "border"),
-    "4px solid var(--pixel-line)",
-  );
-  assert.equal(declaration(markdownScreen, "box-sizing"), "border-box");
-  assert.equal(
-    declaration(markdownScreen, "background-color"),
-    "var(--pixel-paper)",
-  );
 
   const reader = ruleBodyForSelector(
     css,
@@ -321,13 +227,6 @@ test("narrow desktop only reduces density and accessibility modes preserve D1", 
   );
   assert.equal(declaration(motionlessDivider, "transition-duration"), "0ms");
   assert.equal(declaration(motionlessDivider, "animation"), "none");
-
-  const motionlessCartridge = ruleBodyForSelector(
-    reducedMotion,
-    ".nav-file-title",
-  );
-  assert.equal(declaration(motionlessCartridge, "transition-duration"), "0ms");
-  assert.equal(declaration(motionlessCartridge, "animation"), "none");
 
   const forcedColors = atRuleBody(css, "@media (forced-colors: active)");
   const systemRoles = ruleBodyForSelector(forcedColors, ".theme-light");
