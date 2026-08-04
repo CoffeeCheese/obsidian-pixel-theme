@@ -15,7 +15,6 @@ test("release version, compatibility floor, and two-file draft agree", async () 
   ]);
 
   assert.equal(manifest.name, "Pixel");
-  assert.equal(manifest.version, "0.1.0");
   assert.equal(manifest.minAppVersion, "1.12.0");
   assert.equal(versions[manifest.version], manifest.minAppVersion);
   assert.match(workflow, /gh release create "\$GITHUB_REF_NAME"\s+theme\.css manifest\.json/);
@@ -103,13 +102,15 @@ test("CI and draft release run the complete locked verification path", async () 
 });
 
 test("handoff documents separate prepared artifacts from pending manual validation", async () => {
-  const [readme, candidate, devices, ignore] = await Promise.all([
+  const [manifest, readme, candidate, devices, ignore] = await Promise.all([
+    read("manifest.json").then(JSON.parse),
     read("README.md"),
     read("RELEASE_CANDIDATE.md"),
     read("DEVICE_TEST_PLAN.md"),
     read(".gitignore"),
   ]);
 
+  assert.match(candidate, new RegExp(`^# Pixel ${manifest.version} release-candidate handoff`, "m"));
   assert.match(readme, /H5 material system, D1 balanced desktop layout, and M1/);
   assert.match(readme, /Node\.js 24/);
   assert.match(readme, /1\.2 MiB/);
