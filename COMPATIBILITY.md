@@ -2,6 +2,28 @@
 
 This is the authoritative release-baseline matrix for Pixel. It records the installed-theme audit against Obsidian 1.12.7 on macOS, using the dedicated `dev-test` Vault. The runtime pass was performed in an isolated Obsidian profile at 1024×800; the package tests cover the same contracts without relying on that profile.
 
+## Ticket 12 completion record
+
+**Ticket status:** Complete
+
+Ticket 12 was implemented by `25ee366` and independently re-audited from that committed state with Node.js 24. The locked install, one-shot build, 86-test suite, and generated-artifact check all passed. The table below maps every acceptance gate to durable repository or installed-runtime evidence; later tickets may extend the evidence without changing this baseline result.
+
+| Gate | Result | Evidence |
+| --- | --- | --- |
+| T12-01 | Pass | Component matrix below; `accessibility-compatibility-contract` surface coverage |
+| T12-02 | Pass | Contrast contract below; `accessibility-compatibility-contract` palette ratios; installed runtime compositing audit |
+| T12-03 | Pass | Raw amber and decorative-line policy below; `controls-contract`; `accessibility-compatibility-contract` |
+| T12-04 | Pass | Keyboard record below; `controls-contract`; installed runtime forward and reverse traversal |
+| T12-05 | Pass | `controls-contract` and the navigation, context, spatial, data-document, structured-content state suites |
+| T12-06 | Pass | 200% text record below; installed runtime reflow, action-reachability, and local-overflow audit |
+| T12-07 | Pass | Preference records below; `accessibility-compatibility-contract`; installed runtime media emulation |
+| T12-08 | Pass | `mobile-contract`; structural runtime safe-area, 44×44px target, 8px gap, and keyboard-resize evidence |
+| T12-09 | Pass | User-preference record below; `accessibility-compatibility-contract`; installed runtime restore check |
+| T12-10 | Pass | Official-variable smoke record below; installed runtime inheritance check; selector source audit |
+| T12-11 | Pass | Selector policy below; `accessibility-compatibility-contract`; spatial and structured-content cost guards |
+| T12-12 | Pass | This tracked matrix; installed runtime Light, Dark, desktop, and structural mobile evidence |
+| T12-13 | Pass | Failure record below; `navigation-contract`, `markdown-contract`, `structured-content-contract`, and core-view suites |
+
 ## Component matrix
 
 | Surface | Light | Dark | Keyboard and state | Zoom / overflow | Evidence |

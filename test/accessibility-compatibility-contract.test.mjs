@@ -196,3 +196,18 @@ test("the compatibility evidence matrix covers every required first-party surfac
     assert.match(matrix, new RegExp(`\\| ${surface.replaceAll("/", "\\/")} \\|`));
   }
 });
+
+test("Ticket 12 records every acceptance gate as complete with evidence", async () => {
+  const matrix = await readFile(new URL("../COMPATIBILITY.md", import.meta.url), "utf8");
+  assert.match(matrix, /## Ticket 12 completion record/);
+  assert.match(matrix, /\*\*Ticket status:\*\* Complete/);
+
+  const rows = [...matrix.matchAll(/^\| T12-(\d{2}) \| Pass \| ([^|]+) \|$/gm)];
+  assert.deepEqual(
+    rows.map((row) => row[1]),
+    Array.from({ length: 13 }, (_, index) => String(index + 1).padStart(2, "0")),
+  );
+  for (const [, , evidence] of rows) {
+    assert.match(evidence, /`[^`]+`|installed runtime|structural runtime/);
+  }
+});
