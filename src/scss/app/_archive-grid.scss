@@ -213,15 +213,3 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split :is(
   border-inline-start-color: var(--pixel-cyan);
   background-color: var(--pixel-nav-label);
 }
-
-body:not(.is-mobile) .status-bar {
-  inset: auto 0 0;
-  min-block-size: 24px;
-  padding: 0 var(--pixel-space-3);
-  border: 0;
-  border-block-start: var(--pixel-border-decoration) solid var(--pixel-line);
-  background-color: var(--pixel-paper);
-  box-shadow: none;
-  font-family: var(--pixel-font-identity);
-  font-size: 8px;
-}

@@ -1,6 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { declaration, readTheme, ruleBody } from "../test-support/theme-css.mjs";
+import {
+  declaration,
+  matchingRuleBodies,
+  readTheme,
+  ruleBody,
+} from "../test-support/theme-css.mjs";
 
 test("H5 Archive Grid keeps the desktop workspace as one continuous paper plane", async () => {
   const css = await readTheme();
@@ -26,6 +31,20 @@ test("H5 Archive Grid joins the navigation dock to the reader without an active 
   );
 
   assert.equal(declaration(readerLeadingEdgeSignal, "content"), "none");
+});
+
+test("H5 Archive Grid leaves global status-bar geometry to the workspace shell", async () => {
+  const css = await readTheme();
+  const statusBarRules = matchingRuleBodies(
+    css,
+    "body:not(.is-mobile) .status-bar",
+  );
+
+  assert.equal(
+    statusBarRules.length,
+    1,
+    "a later status-bar rule can stretch the fixed bar across the side-dock footer",
+  );
 });
 
 test("H5 Archive Grid exposes the prototype's subtle and structural line roles", async () => {
