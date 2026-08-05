@@ -67,7 +67,7 @@ test("compiled package exposes the approved Pixel palette and geometry", async (
       "--pixel-cyan": "#197d8c",
       "--pixel-amber": "#d48732",
       "--pixel-brick": "#ae4e32",
-      "--pixel-line": "#afc0ca",
+      "--pixel-line": "#d2dde2",
       "--pixel-shadow-color": "#8fa5b2",
     },
     dark: {
@@ -79,7 +79,7 @@ test("compiled package exposes the approved Pixel palette and geometry", async (
       "--pixel-cyan": "#58c7cf",
       "--pixel-amber": "#f0aa4f",
       "--pixel-brick": "#ef8b5d",
-      "--pixel-line": "#344854",
+      "--pixel-line": "#2b3d47",
       "--pixel-shadow-color": "#091016",
     },
   };
