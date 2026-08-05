@@ -181,10 +181,11 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header
   font-weight: 450;
 }
 
-// The reader begins directly on the navigation paper plane in the H5 shell.
-// Its generic active-pane signal would otherwise become a full-height cyan
-// divider at that join; tabs and the active file row retain the state cues.
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf.mod-active::after {
+// The ribbon, navigation cabin, and reader share one paper plane in the H5
+// shell. The generic active-pane signal would otherwise become a full-height
+// cyan divider at either join; tabs and the active file row retain state cues.
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf.mod-active::after,
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf.mod-active::after {
   content: none;
 }
 

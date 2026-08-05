@@ -2473,7 +2473,8 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header
   font-weight: 450;
 }
 
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf.mod-active::after {
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf.mod-active::after,
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf.mod-active::after {
   content: none;
 }
 
