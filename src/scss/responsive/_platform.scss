@@ -11,9 +11,9 @@ body.is-mobile {
   --input-height: 44px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   body:not(.is-mobile) {
-    --pixel-workspace-gap: 4px;
-    --pixel-workspace-inset: 4px;
+    --pixel-workspace-gap: 8px;
+    --pixel-workspace-inset: 8px;
   }
 }

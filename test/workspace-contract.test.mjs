@@ -7,6 +7,10 @@ import {
   ruleBody,
   ruleBodyForSelector,
 } from "../test-support/theme-css.mjs";
+import {
+  narrowDesktopMediaQuery,
+  narrowWorkspaceSpacing,
+} from "../test-support/h5-contract.mjs";
 
 test("compiled desktop package exposes the H5 split-label material roles", async () => {
   const css = await readTheme();
@@ -210,10 +214,16 @@ test("desktop chrome maps titlebar, ribbon, tabs, dividers, status, and scrollba
 
 test("narrow desktop only reduces density and accessibility modes preserve D1", async () => {
   const css = await readTheme();
-  const narrowDesktop = atRuleBody(css, "@media (max-width: 900px)");
+  const narrowDesktop = atRuleBody(css, narrowDesktopMediaQuery);
   const compactBody = ruleBody(narrowDesktop, "body:not(.is-mobile)");
-  assert.equal(declaration(compactBody, "--pixel-workspace-gap"), "4px");
-  assert.equal(declaration(compactBody, "--pixel-workspace-inset"), "4px");
+  assert.equal(
+    declaration(compactBody, "--pixel-workspace-gap"),
+    narrowWorkspaceSpacing,
+  );
+  assert.equal(
+    declaration(compactBody, "--pixel-workspace-inset"),
+    narrowWorkspaceSpacing,
+  );
   assert.doesNotMatch(
     narrowDesktop,
     /workspace-split[^{}]*\{[^}]*display:\s*none/is,

@@ -8,6 +8,7 @@ import {
   ruleBody,
   ruleBodyForSelector,
 } from "../test-support/theme-css.mjs";
+import { narrowDesktopMediaQuery } from "../test-support/h5-contract.mjs";
 
 test("the desktop context dock maps native properties to restrained Paper roles", async () => {
   const css = await readTheme();
@@ -221,7 +222,7 @@ test("context states remain structural under forced colors and narrow desktop", 
     "canvas",
   );
 
-  const narrowDesktop = atRuleBody(css, "@media (max-width: 900px)");
+  const narrowDesktop = atRuleBody(css, narrowDesktopMediaQuery);
   assert.doesNotMatch(
     narrowDesktop,
     /(?:outline|backlink-pane|outgoing-link-pane|metadata-container)[^{}]*\{[^}]*display:\s*none/is,
