@@ -2312,6 +2312,7 @@ body.is-mobile:has(.workspace.is-right-sidedock-open > .workspace-drawer.mod-rig
   }
 }
 body:not(.is-mobile) .workspace.workspace {
+  --header-height: 44px;
   gap: 0;
   padding: 0;
   background-color: var(--pixel-paper);
@@ -2431,7 +2432,11 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-t
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split .workspace-tab-header-container {
-  background-color: var(--pixel-context-label);
+  background-color: var(--pixel-paper);
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split .workspace-tab-header {
+  border-inline-end: 0;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split .workspace-tab-header.is-active {

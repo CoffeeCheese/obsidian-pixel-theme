@@ -1,6 +1,10 @@
 // H5 Archive Grid: Obsidian owns the panes and their interactions; this layer
 // makes those native panes read as one continuous, pixel-indexed workspace.
 body:not(.is-mobile) .workspace.workspace {
+  // Obsidian offsets the macOS ribbon by this native variable. Match it to
+  // the H5 cartridge rail so their horizontal and vertical rules intersect.
+  --header-height: 44px;
+
   gap: 0;
   padding: 0;
   background-color: var(--pixel-paper);
@@ -137,7 +141,11 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-t
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split .workspace-tab-header-container {
-  background-color: var(--pixel-context-label);
+  background-color: var(--pixel-paper);
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split .workspace-tab-header {
+  border-inline-end: 0;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split .workspace-tab-header.is-active {

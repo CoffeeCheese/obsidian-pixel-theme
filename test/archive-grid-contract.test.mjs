@@ -16,6 +16,7 @@ test("H5 Archive Grid keeps the desktop workspace as one continuous paper plane"
     "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split:not(.is-sidedock-collapsed),\nbody:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split:not(.is-sidedock-collapsed)",
   );
 
+  assert.equal(declaration(workspace, "--header-height"), "44px");
   assert.equal(declaration(workspace, "gap"), "0");
   assert.equal(declaration(workspace, "padding"), "0");
   assert.equal(declaration(workspace, "background-color"), "var(--pixel-paper)");
@@ -39,8 +40,22 @@ test("H5 Archive Grid joins its workspace cabins without active cyan dividers", 
   assert.equal(declaration(navigationLeadingEdgeSignal, "content"), "none");
 });
 
+test("H5 Archive Grid keeps the context toolbar free of vertical tab dividers", async () => {
+  const css = await readTheme();
+  const contextTab = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split .workspace-tab-header",
+  );
+
+  assert.equal(declaration(contextTab, "border-inline-end"), "0");
+});
+
 test("H5 Archive Grid maps native root tabs to the prototype cartridge rail", async () => {
   const css = await readTheme();
+  const contextRail = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split .workspace-tab-header-container",
+  );
   const title = ruleBodyForSelector(
     css,
     "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header-inner-title",
@@ -62,6 +77,7 @@ test("H5 Archive Grid maps native root tabs to the prototype cartridge rail", as
     "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header.is-active::after",
   );
 
+  assert.equal(declaration(contextRail, "background-color"), "var(--pixel-paper)");
   assert.equal(declaration(title, "font-family"), "var(--pixel-font-identity)");
   assert.equal(declaration(title, "font-size"), "10px");
   assert.equal(
