@@ -320,6 +320,10 @@ test("H5 Archive Grid reproduces the prototype property sheet in the central rea
     css,
     `${scope} .metadata-property:focus-within`,
   );
+  const hoveredRow = ruleBodyForSelector(
+    css,
+    `${scope} .metadata-property:hover`,
+  );
   const keyEditingRow = ruleBodyForSelector(
     css,
     `${scope} .metadata-property:has(.metadata-property-key:focus-within)`,
@@ -337,6 +341,15 @@ test("H5 Archive Grid reproduces the prototype property sheet in the central rea
     `${scope} .metadata-property-value[data-property-type=date] > .clickable-icon`,
   );
   const pill = ruleBodyForSelector(css, `${scope} .multi-select-pill`);
+  const propertyInput = ruleBody(
+    css,
+    `${scope} .metadata-property :is(.metadata-property-key-input,\n.metadata-input,\n.metadata-input-text,\n.metadata-input-longtext,\n.metadata-link-inner,\n.multi-select-container)`,
+  );
+  const addButton = ruleBodyForSelector(css, `${scope} .metadata-add-button`);
+  const hoveredAddButton = ruleBodyForSelector(
+    css,
+    `${scope} .metadata-add-button:hover`,
+  );
 
   assert.equal(declaration(view, "container-type"), "inline-size");
   assert.equal(
@@ -347,18 +360,23 @@ test("H5 Archive Grid reproduces the prototype property sheet in the central rea
   assert.equal(declaration(sheet, "margin-block-start"), "44px");
   assert.equal(declaration(heading, "gap"), "10px");
   assert.equal(declaration(heading, "font-family"), "var(--pixel-font-identity)");
-  assert.equal(declaration(heading, "font-size"), "11px");
+  assert.equal(declaration(heading, "font-size"), "16px");
   assert.equal(declaration(heading, "font-weight"), "720");
+  assert.equal(declaration(heading, "line-height"), "1.2");
+  assert.equal(declaration(heading, "padding"), "4px");
   assert.equal(declaration(marker, "inline-size"), "6px");
   assert.equal(declaration(marker, "block-size"), "6px");
   assert.equal(declaration(marker, "position"), "static");
   assert.match(declaration(marker, "box-shadow"), /var\(--pixel-amber-text\)/);
   assert.equal(declaration(markerIcon, "opacity"), "0");
-  assert.equal(declaration(row, "min-block-size"), "36px");
+  assert.equal(declaration(row, "min-block-size"), "29px");
   assert.equal(declaration(row, "border"), "0");
+  assert.equal(declaration(row, "border-radius"), "6px");
   assert.equal(declaration(key, "flex"), "0 0 165px");
   assert.equal(declaration(key, "font-family"), "var(--pixel-font-monospace)");
+  assert.equal(declaration(key, "font-size"), "16px");
   assert.equal(declaration(value, "font-family"), "var(--pixel-font-text)");
+  assert.equal(declaration(value, "font-size"), "16px");
   assert.equal(declaration(propertyIcon, "font-family"), "var(--pixel-font-monospace)");
   assert.equal(declaration(propertyIconGlyph, "content"), '"·"');
   assert.equal(declaration(textIconGlyph, "content"), '"≡"');
@@ -368,7 +386,17 @@ test("H5 Archive Grid reproduces the prototype property sheet in the central rea
   assert.equal(declaration(propertyIconSvg, "inline-size"), "0");
   assert.equal(declaration(propertyIconSvg, "block-size"), "0");
   assert.equal(declaration(propertyIconSvg, "opacity"), "0");
+  assert.equal(
+    declaration(hoveredRow, "box-shadow"),
+    "0 0 0 var(--pixel-border-decoration) var(--pixel-line)",
+  );
   assert.equal(declaration(focusedRow, "outline"), "0");
+  assert.equal(
+    declaration(focusedRow, "box-shadow"),
+    "0 0 0 var(--pixel-border-control) var(--pixel-line-strong)",
+  );
+  assert.equal(declaration(propertyInput, "min-block-size"), "28px");
+  assert.equal(declaration(propertyInput, "padding"), "4px 8px");
   assert.equal(declaration(keyEditingRow, "padding-block-end"), "64px");
   assert.equal(
     declaration(focusedKey, "background-color"),
@@ -378,4 +406,12 @@ test("H5 Archive Grid reproduces the prototype property sheet in the central rea
   assert.equal(declaration(longText, "overflow-wrap"), "anywhere");
   assert.equal(declaration(dateAction, "margin-inline-start"), "0");
   assert.equal(declaration(pill, "border-radius"), "6px");
+  assert.equal(declaration(pill, "font-size"), "14px");
+  assert.equal(declaration(pill, "line-height"), "14px");
+  assert.equal(declaration(addButton, "font-size"), "14px");
+  assert.equal(declaration(addButton, "line-height"), "1.5");
+  assert.equal(
+    declaration(hoveredAddButton, "background-color"),
+    "var(--pixel-surface-secondary)",
+  );
 });

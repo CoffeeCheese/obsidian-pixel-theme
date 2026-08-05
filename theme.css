@@ -2616,15 +2616,15 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-l
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-properties-heading {
   display: flex;
   min-block-size: 0;
-  margin: 0 0 13px;
-  padding: 0;
+  margin: 0 0 8px;
+  padding: 4px;
   align-items: center;
   gap: 10px;
   color: var(--pixel-text);
   font-family: var(--pixel-font-identity);
-  font-size: 11px;
+  font-size: 16px;
   font-weight: 720;
-  line-height: 1;
+  line-height: 1.2;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-properties-heading .collapse-indicator {
@@ -2655,12 +2655,12 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-l
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property {
   display: flex;
-  min-block-size: 36px;
+  min-block-size: 29px;
   margin: 0;
   padding: 0;
   align-items: center;
   border: 0;
-  border-radius: 0;
+  border-radius: 6px;
   background-color: transparent;
   box-shadow: none;
 }
@@ -2675,8 +2675,8 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-l
   background-color: transparent;
   color: var(--pixel-text-muted);
   font-family: var(--pixel-font-monospace);
-  font-size: 14px;
-  line-height: 1.45;
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-value {
@@ -2688,8 +2688,8 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-l
   background-color: transparent;
   color: var(--pixel-text);
   font-family: var(--pixel-font-text);
-  font-size: 14px;
-  line-height: 1.45;
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-icon {
@@ -2750,8 +2750,8 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-l
 .metadata-input-longtext,
 .metadata-link-inner,
 .multi-select-container) {
-  min-block-size: 0;
-  padding: 0;
+  min-block-size: 28px;
+  padding: 4px 8px;
   border: 0;
   border-radius: 0;
   background-color: transparent;
@@ -2780,14 +2780,23 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-l
   display: block;
   inline-size: 100%;
   max-inline-size: 100%;
-  padding-block: 6px;
+  padding: 4px 8px;
   overflow-wrap: anywhere;
   white-space: normal;
-  line-height: 1.55;
+  line-height: 1.5;
 }
 
+@media (hover: hover) and (pointer: fine) {
+  body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:hover {
+    border-radius: 6px;
+    background-color: transparent;
+    box-shadow: 0 0 0 var(--pixel-border-decoration) var(--pixel-line);
+  }
+}
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:focus-within {
   outline: 0;
+  border-radius: 6px;
+  box-shadow: 0 0 0 var(--pixel-border-control) var(--pixel-line-strong);
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:has(.metadata-property-key:focus-within) {
@@ -2815,33 +2824,40 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-l
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0;
+  gap: 6px;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .multi-select-pill {
   display: inline-flex;
   min-block-size: 0;
-  margin: 2px 5px 2px 0;
-  padding: 2px 9px;
+  margin: 0 5px 0 0;
+  padding: 2.5px 0;
   border: var(--pixel-border-decoration) solid rgb(from var(--pixel-cyan) r g b/35%);
   border-radius: 6px;
   background-color: var(--pixel-nav-label);
   color: var(--pixel-cyan);
   box-shadow: inset 0 -2px 0 rgb(from var(--pixel-cyan) r g b/16%);
-  font-size: 11px;
-  line-height: 18px;
+  font-size: 14px;
+  line-height: 14px;
   white-space: nowrap;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-add-button {
   min-block-size: 0;
-  margin: 6px 0 0 -4px;
-  padding: 5px 7px;
-  border-radius: 6px;
+  margin: 7px 0 0;
+  padding: 4px 4px 4px 6px;
+  border-radius: 5px;
   color: var(--pixel-text-muted);
-  font-size: 12px;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
+@media (hover: hover) and (pointer: fine) {
+  body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-add-button:hover {
+    background-color: var(--pixel-surface-secondary);
+    color: var(--pixel-text);
+  }
+}
 body:not(.is-mobile):has(.workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-key:focus-within) .suggestion-container.mod-property-key {
   border: var(--pixel-border-decoration) solid var(--pixel-cyan);
   border-radius: 0 0 6px 6px;
