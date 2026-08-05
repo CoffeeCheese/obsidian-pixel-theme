@@ -144,6 +144,10 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split .work
   background-color: var(--pixel-paper);
 }
 
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-tab-header {
+  border-inline-end: 0;
+}
+
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split .workspace-tab-header {
   border-inline-end: 0;
 }
@@ -498,6 +502,13 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-l
 ) {
   color: var(--pixel-text);
   font-family: inherit;
+}
+
+// Obsidian positions Chromium's native calendar picker at the input's inline
+// start and reserves 24px for it. The compact property-input padding above
+// must retain that reservation or the first date segment sits under the icon.
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] .metadata-property-value :is(input[type="date"], input[type="datetime-local"]) {
+  padding-inline-start: 24px;
 }
 
 // Obsidian pulls the date action back by the value container's native 4px gap.

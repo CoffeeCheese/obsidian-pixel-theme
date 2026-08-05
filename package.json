@@ -7,6 +7,8 @@
     "dev": "node build.mjs --watch",
     "check": "node build.mjs --check",
     "test": "node --test --test-concurrency=1",
+    "test:due-date-layout": "node h5/due-date-layout-check.mjs",
+    "test:left-tab-rail-layout": "node h5/left-tab-rail-layout-check.mjs",
     "visual:h5": "node h5/visual-h5.mjs"
   },
   "devDependencies": {

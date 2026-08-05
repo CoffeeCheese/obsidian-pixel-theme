@@ -50,6 +50,16 @@ test("H5 Archive Grid keeps the context toolbar free of vertical tab dividers", 
   assert.equal(declaration(contextTab, "border-inline-end"), "0");
 });
 
+test("H5 Archive Grid keeps the navigation toolbar free of vertical tab dividers", async () => {
+  const css = await readTheme();
+  const navigationTab = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-tab-header",
+  );
+
+  assert.equal(declaration(navigationTab, "border-inline-end"), "0");
+});
+
 test("H5 Archive Grid maps native root tabs to the prototype cartridge rail", async () => {
   const css = await readTheme();
   const contextRail = ruleBodyForSelector(
@@ -340,6 +350,10 @@ test("H5 Archive Grid reproduces the prototype property sheet in the central rea
     css,
     `${scope} .metadata-property-value[data-property-type=date] > .clickable-icon`,
   );
+  const dateInput = ruleBody(
+    css,
+    `${scope} .metadata-property-value :is(input[type=date], input[type=datetime-local])`,
+  );
   const pill = ruleBodyForSelector(css, `${scope} .multi-select-pill`);
   const propertyInput = ruleBody(
     css,
@@ -404,6 +418,7 @@ test("H5 Archive Grid reproduces the prototype property sheet in the central rea
   );
   assert.equal(declaration(longText, "white-space"), "normal");
   assert.equal(declaration(longText, "overflow-wrap"), "anywhere");
+  assert.equal(declaration(dateInput, "padding-inline-start"), "24px");
   assert.equal(declaration(dateAction, "margin-inline-start"), "0");
   assert.equal(declaration(pill, "border-radius"), "6px");
   assert.equal(declaration(pill, "font-size"), "14px");
