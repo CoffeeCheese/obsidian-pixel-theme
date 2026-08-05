@@ -46,6 +46,11 @@ test("compiled desktop package exposes distinct N1 elevation and contour roles",
     declaration(body, "--pixel-cockpit-contour"),
     "9px 9px 22px 9px",
   );
+  assert.equal(declaration(body, "--pixel-cartridge-rail-min"), "48px");
+  assert.equal(declaration(body, "--pixel-cartridge-rail-padding-block"), "6px");
+  assert.equal(declaration(body, "--pixel-cartridge-rail-padding-inline"), "8px");
+  assert.equal(declaration(body, "--pixel-cartridge-rail-gap"), "6px");
+  assert.equal(declaration(body, "--pixel-content-chassis-inset"), "8px");
 });
 
 test("visible desktop side docks keep Paper bodies with cyan and amber labels", async () => {
@@ -135,16 +140,30 @@ test("desktop notes remain the primary shallow reader console", async () => {
     css,
     ":where(body:not(.is-mobile) .workspace-split.mod-root) .workspace-tab-header-container",
   );
-  assert.equal(declaration(cartridgeRail, "min-block-size"), "42px");
+  assert.equal(
+    declaration(cartridgeRail, "min-block-size"),
+    "var(--pixel-cartridge-rail-min)",
+  );
+  assert.equal(
+    declaration(cartridgeRail, "padding-block"),
+    "var(--pixel-cartridge-rail-padding-block)",
+  );
+  assert.equal(
+    declaration(cartridgeRail, "padding-inline"),
+    "var(--pixel-cartridge-rail-padding-inline)",
+  );
+  assert.equal(
+    declaration(cartridgeRail, "gap"),
+    "var(--pixel-cartridge-rail-gap)",
+  );
   assert.equal(
     declaration(cartridgeRail, "border-block-end"),
     "var(--pixel-border-control) solid var(--pixel-text)",
   );
-  const cartridge = ruleBody(
+  assert.doesNotMatch(
     css,
-    "body:not(.is-mobile) .workspace-split.mod-root .workspace-tab-header",
+    /workspace-split\.mod-root\s+\.workspace-tab-header[^,{]*\{[^}]*(?:inline-size|width):\s*128px/is,
   );
-  assert.equal(declaration(cartridge, "min-inline-size"), "128px");
 
   const reader = ruleBodyForSelector(
     css,
@@ -167,6 +186,14 @@ test("first-party non-Markdown and empty root leaves keep honest content tiers",
   );
   assert.equal(declaration(specialized, "background-image"), "none");
   assert.equal(declaration(specialized, "box-shadow"), "none");
+  assert.equal(
+    declaration(specialized, "margin"),
+    "var(--pixel-content-chassis-inset)",
+  );
+  assert.equal(
+    declaration(specialized, "border"),
+    "var(--pixel-border-control) solid var(--pixel-line)",
+  );
 
   const neutral = ruleBodyForSelector(
     css,
@@ -193,7 +220,7 @@ test("desktop active tabs and panes use side-aware multi-cue signals", async () 
   assert.equal(declaration(activeCartridge, "border"), "0");
   assert.equal(
     declaration(activeCartridge, "border-inline-start"),
-    "5px solid var(--pixel-cyan)",
+    "6px solid var(--pixel-cyan)",
   );
   assert.equal(declaration(activeCartridge, "box-shadow"), "none");
 
@@ -344,6 +371,21 @@ test("narrow desktop only reduces density and accessibility modes preserve D1", 
     declaration(compactBody, "--pixel-workspace-inset"),
     narrowWorkspaceSpacing,
   );
+  assert.equal(
+    declaration(compactBody, "--pixel-cockpit-contour"),
+    "7px 7px 16px 7px",
+  );
+  assert.equal(declaration(compactBody, "--pixel-cartridge-rail-min"), "42px");
+  assert.equal(
+    declaration(compactBody, "--pixel-cartridge-rail-padding-block"),
+    "4px",
+  );
+  assert.equal(
+    declaration(compactBody, "--pixel-cartridge-rail-padding-inline"),
+    "6px",
+  );
+  assert.equal(declaration(compactBody, "--pixel-cartridge-rail-gap"), "4px");
+  assert.equal(declaration(compactBody, "--pixel-content-chassis-inset"), "4px");
   assert.doesNotMatch(
     narrowDesktop,
     /workspace-split[^{}]*\{[^}]*display:\s*none/is,

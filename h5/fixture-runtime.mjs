@@ -254,6 +254,9 @@ function assertObservedRole(actual, expected, message) {
 
 export function assertN1ShellObservation(fixture, observation) {
   const expectedSpacing = fixture.topology.edgeFoldExpected ? "8px" : "12px";
+  const expectedContour = fixture.topology.edgeFoldExpected
+    ? [7, 7, 16, 7]
+    : [9, 9, 22, 9];
   assertObservedRole(
     observation.workspace,
     {
@@ -287,7 +290,7 @@ export function assertN1ShellObservation(fixture, observation) {
       {
         shadowOffset: [5, 5],
         borderWidths: [4, 4, 4, 4],
-        cornerRadii: [9, 9, 22, 9],
+        cornerRadii: expectedContour,
       },
       `${fixture.id} root groups must own the Cockpit Unit shadow role and contour`,
     );
@@ -310,13 +313,25 @@ export function assertN1ShellObservation(fixture, observation) {
     throw new Error(`${fixture.id} canvas grid must belong only to the workspace`);
   }
   assertObservedRole(
-    observation.textZoom200,
+    observation.textScale200,
     {
       rootGroupCount: fixture.topology.rootGroups.length,
       statusBarCount: 1,
       nativeActionsVisible: true,
+      documentOverflowFree: true,
     },
-    `${fixture.id} must preserve native topology and actions at 200% text zoom`,
+    `${fixture.id} must preserve native topology and actions at 200% text scaling`,
+  );
+  assertObservedRole(
+    observation.interactionPreservation,
+    {
+      resizeHandlesOperable: true,
+      collapseControlsVisible: true,
+      focusableNativeControlAcceptsFocus: true,
+      nativeContentOwnerVisible: true,
+      statusItemsOperable: true,
+    },
+    `${fixture.id} must preserve native resize, collapse, focus, scroll-owner and status interactions`,
   );
 }
 
@@ -355,16 +370,36 @@ export function fixtureObservationCode(fixture) {
       rootGroups:rootGroupElements.map(framedRole),
       statusBars:statusBarElements.map(bufferRole),
       gridOwnerCount:[...document.querySelectorAll("body *")].filter(element=>backgroundSizes(getComputedStyle(element)).includes("24px 24px")).length,
-      textZoom200:null
+      textScale200:null,
+      interactionPreservation:null
     };
-    const originalZoom=document.body.style.zoom;
-    document.body.style.zoom="2";
-    shell.textZoom200={
+    const originalRootFontSize=document.documentElement.style.fontSize;
+    document.documentElement.style.fontSize="200%";
+    shell.textScale200={
       rootGroupCount:document.querySelectorAll(".workspace-split.mod-root .workspace-tabs").length,
       statusBarCount:document.querySelectorAll(".status-bar").length,
-      nativeActionsVisible:requiredControlSelectors.every(selector=>[...document.querySelectorAll(selector)].some(visible))
+      nativeActionsVisible:requiredControlSelectors.every(selector=>[...document.querySelectorAll(selector)].some(visible)),
+      documentOverflowFree:document.documentElement.scrollWidth<=window.innerWidth
     };
-    document.body.style.zoom=originalZoom;
+    document.documentElement.style.fontSize=originalRootFontSize;
+    const visibleResizeHandles=[...document.querySelectorAll(".workspace-leaf-resize-handle")].filter(visible);
+    const collapseControls=[...document.querySelectorAll(".sidebar-toggle-button")];
+    const focusTarget=document.querySelector(".mod-root button:not([disabled])");
+    const previousFocus=document.activeElement;
+    focusTarget?.focus();
+    const focusableNativeControlAcceptsFocus=document.activeElement===focusTarget;
+    previousFocus instanceof HTMLElement?previousFocus.focus():focusTarget?.blur();
+    const activeContent=document.querySelector(".mod-root .workspace-leaf.mod-active .workspace-leaf-content");
+    const contentOwner=activeContent?.querySelector(".markdown-preview-view,.cm-scroller,.graph-view,.canvas-wrapper,.view-content,.empty-state-container");
+    const statusItems=[...document.querySelectorAll(".status-bar-item")];
+    const renderedStatusItems=statusItems.filter(item=>{const style=getComputedStyle(item);const rect=item.getBoundingClientRect();return style.display!=="none"&&style.visibility!=="hidden"&&rect.width>0&&rect.height>0});
+    shell.interactionPreservation={
+      resizeHandlesOperable:visibleResizeHandles.length>0,
+      collapseControlsVisible:collapseControls.filter(visible).length>=2,
+      focusableNativeControlAcceptsFocus,
+      nativeContentOwnerVisible:!!contentOwner&&visible(contentOwner),
+      statusItemsOperable:renderedStatusItems.length>0&&renderedStatusItems.every(item=>getComputedStyle(item).pointerEvents!=="none")
+    };
     const normalizeType=(type)=>type==="file-properties"?"properties":type;
     const groups=(layout.main?.children||[]).map(group=>{
       const tabs=(group.children||[]).map(child=>normalizeType(child.state?.type));
@@ -383,6 +418,7 @@ export function fixtureObservationCode(fixture) {
     const canvasFiles=rootLeaves.filter(leaf=>leaf.state?.type==="canvas").map(leaf=>leaf.state?.state?.file);
     const rightBanks=(layout.right?.children||[]).map(group=>normalizeType(group.children?.[group.currentTab||0]?.state?.type));
     const rail=document.querySelector(".mod-root .workspace-tab-header-container-inner");
+    const railTitleOverflow=[...document.querySelectorAll(".mod-root .workspace-tab-header-inner-title")].some(title=>title.scrollWidth>title.clientWidth);
     const contentChecks={
       "h5-reader-bilingual":markdownFiles.includes(${expectedReader}),
       "h5-graph":rootTypes.includes("graph"),
@@ -401,7 +437,7 @@ export function fixtureObservationCode(fixture) {
       topology:{
         workspaceModel:document.body.classList.contains("is-mobile")?"mobile":"d1-desktop",
         rootArrangement,
-        tabRail:rail&&rail.scrollWidth>rail.clientWidth?"overflow-stress":"native",
+        tabRail:rail&&(rail.scrollWidth>rail.clientWidth||railTitleOverflow)?"overflow-stress":"native",
         edgeFoldExpected:window.innerWidth<=1100,
         leftDockVisible:!(layout.left?.collapsed)&&!!document.querySelector(".mod-left-split:not(.is-sidedock-collapsed)"),
         rightBanks,

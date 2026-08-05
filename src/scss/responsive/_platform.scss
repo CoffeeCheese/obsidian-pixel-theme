@@ -15,5 +15,11 @@ body.is-mobile {
   body:not(.is-mobile) {
     --pixel-workspace-gap: 8px;
     --pixel-workspace-inset: 8px;
+    --pixel-cockpit-contour: 7px 7px 16px 7px;
+    --pixel-cartridge-rail-min: 42px;
+    --pixel-cartridge-rail-padding-block: 4px;
+    --pixel-cartridge-rail-padding-inline: 6px;
+    --pixel-cartridge-rail-gap: 4px;
+    --pixel-content-chassis-inset: 4px;
   }
 }

@@ -123,10 +123,18 @@ test("runtime N1 shell observation enforces per-group ownership and role elevati
       },
     ],
     gridOwnerCount: 1,
-    textZoom200: {
+    textScale200: {
       rootGroupCount: 2,
       statusBarCount: 1,
       nativeActionsVisible: true,
+      documentOverflowFree: true,
+    },
+    interactionPreservation: {
+      resizeHandlesOperable: true,
+      collapseControlsVisible: true,
+      focusableNativeControlAcceptsFocus: true,
+      nativeContentOwnerVisible: true,
+      statusItemsOperable: true,
     },
   };
 
@@ -149,5 +157,25 @@ test("runtime N1 shell observation enforces per-group ownership and role elevati
         gridOwnerCount: 2,
       }),
     /canvas grid must belong only to the workspace/,
+  );
+
+  const narrowFixture = catalog.fixtures.find(
+    ({ id }) => id === "narrow-mixed-stress-light",
+  );
+  assert.doesNotThrow(() =>
+    assertN1ShellObservation(narrowFixture, {
+      ...observation,
+      workspace: { ...observation.workspace, gap: "8px", padding: "8px" },
+      rootGroups: [
+        {
+          ...observation.rootGroups[0],
+          cornerRadii: [7, 7, 16, 7],
+        },
+      ],
+      textScale200: {
+        ...observation.textScale200,
+        rootGroupCount: 1,
+      },
+    }),
   );
 });

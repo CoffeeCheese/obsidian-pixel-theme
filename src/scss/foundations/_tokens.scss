@@ -21,6 +21,11 @@ body {
   --pixel-shadow-cockpit: 5px 5px 0 var(--pixel-shadow-color);
   --pixel-shadow-buffer: 3px 3px 0 var(--pixel-shadow-color);
   --pixel-cockpit-contour: 9px 9px 22px 9px;
+  --pixel-cartridge-rail-min: 48px;
+  --pixel-cartridge-rail-padding-block: 6px;
+  --pixel-cartridge-rail-padding-inline: 8px;
+  --pixel-cartridge-rail-gap: 6px;
+  --pixel-content-chassis-inset: 8px;
   --pixel-motion-press: 80ms;
   --pixel-motion-state: 120ms;
   --pixel-motion-surface: 160ms;

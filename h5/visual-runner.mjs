@@ -13,6 +13,7 @@ import { isDeepStrictEqual } from "node:util";
 
 import { pathLeavesDirectory } from "./path-boundary.mjs";
 import { H5_APPROVAL_OBJECTIVE_CHECKS } from "./approval.mjs";
+import { assertN1ShellObservation } from "./fixture-runtime.mjs";
 import { writeReviewBench } from "./review-bench.mjs";
 
 const ownershipFileName = ".pixel-h5-run.json";
@@ -184,6 +185,7 @@ function assertFixtureObservation(fixture, observation, phase) {
       );
     }
   }
+  assertN1ShellObservation(fixture, observation.shell);
 }
 
 function assertTransitions(fixture, actual, expected) {

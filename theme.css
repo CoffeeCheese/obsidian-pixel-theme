@@ -272,6 +272,11 @@ body {
   --pixel-shadow-cockpit: 5px 5px 0 var(--pixel-shadow-color);
   --pixel-shadow-buffer: 3px 3px 0 var(--pixel-shadow-color);
   --pixel-cockpit-contour: 9px 9px 22px 9px;
+  --pixel-cartridge-rail-min: 48px;
+  --pixel-cartridge-rail-padding-block: 6px;
+  --pixel-cartridge-rail-padding-inline: 8px;
+  --pixel-cartridge-rail-gap: 6px;
+  --pixel-content-chassis-inset: 8px;
   --pixel-motion-press: 80ms;
   --pixel-motion-state: 120ms;
   --pixel-motion-surface: 160ms;
@@ -708,7 +713,7 @@ body:not(.is-mobile) .workspace-split.mod-left-split .workspace-tab-header.is-ac
 }
 body:not(.is-mobile) .workspace-split.mod-root .workspace-tab-header.is-active {
   border: 0;
-  border-inline-start: 5px solid var(--pixel-cyan);
+  border-inline-start: 6px solid var(--pixel-cyan);
   box-shadow: none;
 }
 body:not(.is-mobile) .workspace-split.mod-right-split .workspace-tab-header.is-active {
@@ -760,13 +765,12 @@ body:not(.is-mobile) .status-bar {
 }
 
 :where(body:not(.is-mobile) .workspace-split.mod-root) .workspace-tab-header-container {
-  min-block-size: 42px;
+  min-block-size: var(--pixel-cartridge-rail-min);
+  padding-block: var(--pixel-cartridge-rail-padding-block);
+  padding-inline: var(--pixel-cartridge-rail-padding-inline);
+  gap: var(--pixel-cartridge-rail-gap);
   border-block-end: var(--pixel-border-control) solid var(--pixel-text);
   background-color: var(--pixel-surface-secondary);
-}
-
-body:not(.is-mobile) .workspace-split.mod-root .workspace-tab-header {
-  min-inline-size: 128px;
 }
 
 :where(body:not(.is-mobile) .workspace-split.mod-root) .workspace-tab-container {
@@ -774,6 +778,9 @@ body:not(.is-mobile) .workspace-split.mod-root .workspace-tab-header {
 }
 
 :where(body:not(.is-mobile) .workspace-split.mod-root) .workspace-leaf-content:not([data-type=markdown]):not([data-type=empty]) .view-content {
+  box-sizing: border-box;
+  margin: var(--pixel-content-chassis-inset);
+  border: var(--pixel-border-control) solid var(--pixel-line);
   background-color: var(--pixel-paper);
   background-image: none;
   box-shadow: none;
@@ -2141,6 +2148,12 @@ body.is-mobile {
   body:not(.is-mobile) {
     --pixel-workspace-gap: 8px;
     --pixel-workspace-inset: 8px;
+    --pixel-cockpit-contour: 7px 7px 16px 7px;
+    --pixel-cartridge-rail-min: 42px;
+    --pixel-cartridge-rail-padding-block: 4px;
+    --pixel-cartridge-rail-padding-inline: 6px;
+    --pixel-cartridge-rail-gap: 4px;
+    --pixel-content-chassis-inset: 4px;
   }
 }
 body.is-mobile {

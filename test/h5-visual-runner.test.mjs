@@ -116,12 +116,53 @@ function validPreflight() {
 }
 
 function observationFor(fixture) {
+  const narrow = fixture.topology.edgeFoldExpected;
   return {
     fixtureId: fixture.id,
     viewport: structuredClone(fixture.viewport),
     theme: fixture.theme,
     nativeViewTypes: [...fixture.nativeViewTypes],
     topology: structuredClone(fixture.topology),
+    shell: {
+      workspace: {
+        gridSize: "24px 24px",
+        gap: narrow ? "8px" : "12px",
+        padding: narrow ? "8px" : "12px",
+      },
+      ribbon: { shadowOffset: [4, 4], cornerRadii: [0, 0, 0, 0] },
+      sideModules: [
+        { shadowOffset: [4, 4], cornerRadii: [0, 0, 0, 0] },
+        { shadowOffset: [4, 4], cornerRadii: [0, 0, 0, 0] },
+      ],
+      rootGroups: fixture.topology.rootGroups.map(() => ({
+        shadowOffset: [5, 5],
+        borderWidths: [4, 4, 4, 4],
+        cornerRadii: narrow ? [7, 7, 16, 7] : [9, 9, 22, 9],
+      })),
+      statusBars: [
+        {
+          shadowOffset: [3, 3],
+          borderWidths: [2, 2, 2, 2],
+          cornerRadii: [0, 0, 0, 0],
+          insetInlineEnd: 18,
+          insetBlockEnd: 14,
+        },
+      ],
+      gridOwnerCount: 1,
+      textScale200: {
+        rootGroupCount: fixture.topology.rootGroups.length,
+        statusBarCount: 1,
+        nativeActionsVisible: true,
+        documentOverflowFree: true,
+      },
+      interactionPreservation: {
+        resizeHandlesOperable: true,
+        collapseControlsVisible: true,
+        focusableNativeControlAcceptsFocus: true,
+        nativeContentOwnerVisible: true,
+        statusItemsOperable: true,
+      },
+    },
     requiredContentIds: [...fixture.requiredContentIds],
   };
 }
@@ -415,6 +456,27 @@ test("topology mismatch is fatal before evidence capture", async () => {
     await assert.rejects(
       runVisualH5({ adapter, catalog, packageIdentity, tempParent }),
       /topology does not match the fixture catalog/,
+    );
+    assert.ok(!events.some((event) => event.startsWith("capture:")));
+    assert.equal(events.at(-1), "restore");
+  });
+});
+
+test("an adapter cannot bypass N1 shell ownership checks", async () => {
+  await withTempParent(async (tempParent) => {
+    const events = [];
+    const adapter = fakeAdapter(events, {
+      async verifyFixture({ fixture, phase }) {
+        events.push(`verify:${phase}:${fixture.id}`);
+        const observation = observationFor(fixture);
+        observation.shell.rootGroups[0].shadowOffset = [4, 4];
+        return observation;
+      },
+    });
+
+    await assert.rejects(
+      runVisualH5({ adapter, catalog, packageIdentity, tempParent }),
+      /Cockpit Unit shadow role/,
     );
     assert.ok(!events.some((event) => event.startsWith("capture:")));
     assert.equal(events.at(-1), "restore");

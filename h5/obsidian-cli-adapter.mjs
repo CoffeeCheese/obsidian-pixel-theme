@@ -8,7 +8,6 @@ import {
   verifyFixtureContent,
 } from "./fixture-content.mjs";
 import {
-  assertN1ShellObservation,
   assertTransitionObservation,
   buildFixtureLayout,
   buildTransitionPlans,
@@ -265,7 +264,6 @@ export async function createObsidianCliAdapter({
         { signal },
         `fixture observation ${fixture.id}`,
       );
-      assertN1ShellObservation(fixture, observation.shell);
       return observation;
     },
 
