@@ -88,7 +88,7 @@ function validPreflight() {
     activeTheme: "Pixel",
     platform: "desktop",
     zoomFactor: 1,
-    installedPackage: {
+    package: {
       themeCssSha256: packageIdentity.themeCssSha256,
       manifestSha256: packageIdentity.manifestSha256,
     },
@@ -118,6 +118,13 @@ function fakeAdapter(events, overrides = {}) {
       events.push("snapshot");
       return { layout: "original" };
     },
+    async installPackage() {
+      events.push("install-package");
+      return {
+        themeCssSha256: packageIdentity.themeCssSha256,
+        manifestSha256: packageIdentity.manifestSha256,
+      };
+    },
     async establishFixture({ fixture, runDirectory }) {
       events.push(`establish:${fixture.id}`);
       assert.ok(runDirectory.includes("pixel-h5-"));
@@ -128,7 +135,7 @@ function fakeAdapter(events, overrides = {}) {
     },
     async exerciseTransitions({ fixture, transitions }) {
       events.push(`transitions:${fixture.id}`);
-      return [...transitions];
+      return transitions.map((transition) => ({ transition, verified: true }));
     },
     async captureEvidence({ fixture, outputPath }) {
       events.push(`capture:${fixture.id}`);
@@ -186,6 +193,7 @@ test("successful run verifies topology around transitions and restores before cl
     assert.deepEqual(events, [
       "preflight",
       "snapshot",
+      "install-package",
       `establish:${fixtures[0].id}`,
       `verify:established:${fixtures[0].id}`,
       `transitions:${fixtures[0].id}`,
@@ -218,6 +226,30 @@ test("adapter failure restores the snapshot and removes owned transient evidence
       /adapter capture failed/,
     );
     assert.equal(events.at(-1), "restore");
+    assert.deepEqual(await import("node:fs/promises").then(({ readdir }) => readdir(tempParent)), []);
+  });
+});
+
+test("package installation failure restores before removing the owned run", async () => {
+  await withTempParent(async (tempParent) => {
+    const events = [];
+    const adapter = fakeAdapter(events, {
+      async installPackage() {
+        events.push("install-package:failed");
+        throw new Error("exact package install failed");
+      },
+    });
+
+    await assert.rejects(
+      runVisualH5({ adapter, catalog, packageIdentity, tempParent }),
+      /exact package install failed/,
+    );
+    assert.deepEqual(events, [
+      "preflight",
+      "snapshot",
+      "install-package:failed",
+      "restore",
+    ]);
     assert.deepEqual(await import("node:fs/promises").then(({ readdir }) => readdir(tempParent)), []);
   });
 });
@@ -263,6 +295,25 @@ test("topology mismatch is fatal before evidence capture", async () => {
     await assert.rejects(
       runVisualH5({ adapter, catalog, packageIdentity, tempParent }),
       /topology does not match the fixture catalog/,
+    );
+    assert.ok(!events.some((event) => event.startsWith("capture:")));
+    assert.equal(events.at(-1), "restore");
+  });
+});
+
+test("transition names without independent observations cannot unlock capture", async () => {
+  await withTempParent(async (tempParent) => {
+    const events = [];
+    const adapter = fakeAdapter(events, {
+      async exerciseTransitions({ fixture, transitions }) {
+        events.push(`transitions:${fixture.id}`);
+        return [...transitions];
+      },
+    });
+
+    await assert.rejects(
+      runVisualH5({ adapter, catalog, packageIdentity, tempParent }),
+      /transitions must independently verify/,
     );
     assert.ok(!events.some((event) => event.startsWith("capture:")));
     assert.equal(events.at(-1), "restore");

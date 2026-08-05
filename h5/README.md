@@ -4,7 +4,7 @@
 
 ## Dedicated runtime
 
-The built-in adapter uses Obsidian's official CLI developer commands. The Obsidian app must already be running from a dedicated profile that contains only the Vault ID in `development.json`; Pixel must be active and the exact repository `theme.css` and `manifest.json` must be installed in that Vault. The profile's per-Vault window state must use zoom level `0`.
+The built-in adapter uses Obsidian's official CLI developer commands. The Obsidian app must already be running from a dedicated profile that contains only the Vault ID in `development.json`; Pixel must be active and the profile's per-Vault window state must use zoom level `0`. After preflight, the runner snapshots the currently installed package, atomically installs the exact repository `theme.css` and `manifest.json`, verifies both installed hashes, and restores the prior package with the workspace at lifecycle end.
 
 Fixture bytes are pinned by `fixture-content.v1.json`. A missing file, symlink escape, or SHA-256 mismatch stops the run before the workspace snapshot. The fixture-content version must match `fixtures.v1.json`.
 
@@ -23,10 +23,11 @@ Without `--keep-temp`, evidence is removed after the original workspace has been
 
 - `preflight({ catalog, fixtures, packageIdentity, signal })`
 - `snapshotWorkspace({ signal })`
+- `installPackage({ packageIdentity, runDirectory, signal })`
 - `establishFixture({ fixture, runDirectory, signal })`
 - `verifyFixture({ fixture, phase, signal })`
 - `exerciseTransitions({ fixture, transitions, signal })`
 - `captureEvidence({ fixture, outputPath, signal })`
 - `restoreWorkspace(snapshot)`
 
-Preflight must report a dedicated Vault and profile, exact Obsidian/theme/zoom/platform/package identity, verified content IDs, and every capability declared by `H5_RUN_CAPABILITIES`. `verifyFixture` returns the observed viewport, theme, native views, topology, and content IDs. The runner compares the observation to the catalog before capture and again after transitions; adapters cannot weaken this check.
+Preflight must report a dedicated Vault and profile, exact Obsidian/theme/zoom/platform/candidate-package identity, verified content IDs, and every capability declared by `H5_RUN_CAPABILITIES`. `installPackage` must return the installed hashes. `verifyFixture` returns the observed viewport, theme, native views, topology, and content IDs. The runner compares the observation to the catalog before capture and again after transitions; `exerciseTransitions` must return an independently observed `{ transition, verified: true }` result for every catalog transition. Adapters cannot weaken these checks.

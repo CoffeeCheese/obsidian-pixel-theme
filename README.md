@@ -51,7 +51,7 @@ With Obsidian 1.12.7 running against the dedicated H5 profile and fixture Vault,
 npm run visual:h5
 ```
 
-Before changing the workspace, the command verifies the dedicated Vault/profile, exact Obsidian version, active Pixel theme, desktop/default-zoom state, installed package hashes, versioned fixture-content hashes, and required Obsidian CLI developer commands. It then snapshots the current workspace, creates an owned operating-system temporary directory, establishes each catalog fixture, verifies native topology, exercises the declared transitions, and captures evidence only after verification. The original workspace is restored and temporary evidence is removed after success, failure, or interruption.
+Before changing the workspace, the command verifies the dedicated Vault/profile, exact Obsidian version, active Pixel theme, desktop/default-zoom state, candidate package hashes, versioned fixture-content hashes, and required Obsidian CLI developer commands. It then snapshots the current workspace and installed package, creates an owned operating-system temporary directory, atomically installs the exact repository `theme.css` and `manifest.json`, establishes each catalog fixture, verifies native topology and every declared transition, and captures evidence only after verification. The original workspace/package is restored and temporary evidence is removed after success, failure, or interruption.
 
 Focused diagnostic reruns use the same fail-closed path:
 

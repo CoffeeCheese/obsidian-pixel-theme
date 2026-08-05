@@ -1,9 +1,5 @@
 import { execFile } from "node:child_process";
-import { createHash } from "node:crypto";
-import {
-  readFile,
-  realpath,
-} from "node:fs/promises";
+import { readFile, realpath } from "node:fs/promises";
 import { promisify } from "node:util";
 import path from "node:path";
 
@@ -11,15 +7,22 @@ import {
   readFixtureContentCatalog,
   verifyFixtureContent,
 } from "./fixture-content.mjs";
+import {
+  assertTransitionObservation,
+  buildFixtureLayout,
+  buildTransitionPlans,
+  fixtureObservationCode,
+  transitionObservationCode,
+} from "./fixture-runtime.mjs";
+import {
+  assertSafeThemeDirectory,
+  installPackageFiles,
+  packageHashes,
+  readPackageFiles,
+} from "./package-install.mjs";
 import { H5_RUN_CAPABILITIES } from "./visual-runner.mjs";
 
 const execFileAsync = promisify(execFile);
-const readerPath = "H5 Reference Workspace/30 资源/常青笔记的维护节奏.md";
-const canvasPath = "Pixel Canvas Dense QA.canvas";
-
-async function sha256(filePath) {
-  return createHash("sha256").update(await readFile(filePath)).digest("hex");
-}
 
 function parseJsonOutput(output, label) {
   const trimmed = output.trim();
@@ -53,187 +56,10 @@ function terminalValue(output) {
   return line?.replace(/^[^:]+:\s*/, "").trim() || "";
 }
 
-function leafState(viewType, id) {
-  if (viewType === "markdown") {
-    return {
-      id,
-      type: "leaf",
-      state: {
-        type: "markdown",
-        state: { file: readerPath, mode: "preview", source: false },
-      },
-    };
-  }
-  if (viewType === "canvas") {
-    return {
-      id,
-      type: "leaf",
-      state: { type: "canvas", state: { file: canvasPath } },
-    };
-  }
-  return { id, type: "leaf", state: { type: viewType, state: {} } };
-}
-
-function buildFixtureLayout(fixture) {
-  const stem = fixture.id.replace(/[^a-z0-9]/g, "-");
-  const rootGroups = fixture.topology.rootGroups.map((group, groupIndex) => ({
-    id: `${stem}-root-${groupIndex}`,
-    type: "tabs",
-    currentTab: 0,
-    children: group.tabs.map((viewType, tabIndex) =>
-      leafState(viewType, `${stem}-root-${groupIndex}-tab-${tabIndex}`),
-    ),
-  }));
-  const active = rootGroups[0].children[0].id;
-
-  return {
-    main: {
-      id: `${stem}-main`,
-      type: "split",
-      direction: "vertical",
-      children: rootGroups,
-    },
-    left: {
-      id: `${stem}-left`,
-      type: "split",
-      direction: "horizontal",
-      width: 260,
-      children: [
-        {
-          id: `${stem}-files-tabs`,
-          type: "tabs",
-          currentTab: 0,
-          children: [leafState("file-explorer", `${stem}-files`)],
-        },
-      ],
-    },
-    right: {
-      id: `${stem}-right`,
-      type: "split",
-      direction: "horizontal",
-      width: 248,
-      children: [
-        {
-          id: `${stem}-properties-tabs`,
-          type: "tabs",
-          currentTab: 0,
-          children: [
-            {
-              id: `${stem}-properties`,
-              type: "leaf",
-              state: {
-                type: "file-properties",
-                state: { file: readerPath },
-              },
-            },
-          ],
-        },
-        {
-          id: `${stem}-outline-tabs`,
-          type: "tabs",
-          currentTab: 0,
-          children: [
-            {
-              id: `${stem}-outline`,
-              type: "leaf",
-              state: { type: "outline", state: { file: readerPath } },
-            },
-          ],
-        },
-      ],
-    },
-    "left-ribbon": { hiddenItems: {} },
-    active,
-    lastOpenFiles: [readerPath, canvasPath],
-  };
-}
-
-function clone(value) {
-  return structuredClone(value);
-}
-
-function transitionLayouts(fixture) {
-  const baseline = buildFixtureLayout(fixture);
-  const created = clone(baseline);
-  const createdGroup = created.main.children[0];
-  const temporaryLeaf = leafState("empty", `${fixture.id}-transition-empty`);
-  createdGroup.children.push(temporaryLeaf);
-
-  const switched = clone(created);
-  switched.main.children[0].currentTab =
-    switched.main.children[0].children.length - 1;
-  switched.active = temporaryLeaf.id;
-
-  const reordered = clone(created);
-  reordered.main.children[0].children.reverse();
-  reordered.main.children[0].currentTab = 0;
-  reordered.active = reordered.main.children[0].children[0].id;
-
-  const split = clone(baseline);
-  split.main.children.push({
-    id: `${fixture.id}-transition-split`,
-    type: "tabs",
-    currentTab: 0,
-    children: [leafState("graph", `${fixture.id}-transition-graph`)],
-  });
-
-  return [created, switched, baseline, reordered, split, baseline];
-}
-
 function workspaceChangeCode(layout, colorTheme) {
   const serializedLayout = JSON.stringify(layout);
   const serializedTheme = JSON.stringify(colorTheme);
   return `(async()=>{app.vault.setConfig("theme",${serializedTheme});app.setTheme(${serializedTheme});await app.workspace.changeLayout(${serializedLayout});await new Promise(resolve=>setTimeout(resolve,120));return "ok"})()`;
-}
-
-function observationCode(fixture) {
-  const fixtureId = JSON.stringify(fixture.id);
-  const isNarrow = fixture.viewport.width <= 1100;
-  return `(()=>{
-    const layout=app.workspace.getLayout();
-    const normalizeType=(type)=>type==="file-properties"?"properties":type;
-    const groups=(layout.main?.children||[]).map(group=>{
-      const tabs=(group.children||[]).map(child=>normalizeType(child.state?.type));
-      const active=group.children?.[group.currentTab||0]||group.children?.[0];
-      const activeType=normalizeType(active?.state?.type);
-      return {
-        activeViewType:activeType,
-        activeViewState:activeType==="markdown"&&active?.state?.state?.mode==="preview"?"reading":activeType==="empty"?"new-tab":"default",
-        activeContentTier:activeType==="markdown"?"reader":activeType==="empty"?"neutral":"specialized",
-        tabs
-      };
-    });
-    const rootTypes=groups.flatMap(group=>group.tabs);
-    const rightBanks=(layout.right?.children||[]).map(group=>normalizeType(group.children?.[group.currentTab||0]?.state?.type));
-    const visible=element=>{const style=getComputedStyle(element);const rect=element.getBoundingClientRect();return style.display!=="none"&&style.visibility!=="hidden"&&style.pointerEvents!=="none"&&rect.width>0&&rect.height>0};
-    const requiredControlSelectors=[".mod-root .workspace-tab-header-new-tab",".mod-root .workspace-tab-header-tab-list",".mod-root .view-actions",".sidebar-toggle-button"];
-    const nativeActionsVisible=requiredControlSelectors.every(selector=>[...document.querySelectorAll(selector)].some(visible));
-    const rail=document.querySelector(".mod-root .workspace-tab-header-container-inner");
-    const contentIds=[];
-    if(rootTypes.includes("markdown"))contentIds.push("h5-reader-bilingual");
-    if(rootTypes.includes("graph"))contentIds.push("h5-graph");
-    if(rootTypes.includes("canvas"))contentIds.push("h5-canvas");
-    if(document.querySelector(".mod-left-split .workspace-leaf-content[data-type='file-explorer']"))contentIds.push("h5-file-tree");
-    if(${isNarrow})contentIds.unshift("h5-long-bilingual-labels");
-    const nativeViewTypes=["file-explorer",...new Set(rootTypes),...rightBanks];
-    return JSON.stringify({
-      fixtureId:${fixtureId},
-      viewport:{width:window.innerWidth,height:window.innerHeight},
-      theme:document.body.classList.contains("theme-dark")?"dark":"light",
-      nativeViewTypes,
-      topology:{
-        workspaceModel:document.body.classList.contains("is-mobile")?"mobile":"d1-desktop",
-        rootArrangement:groups.length===2?"side-by-side":"single",
-        tabRail:rail&&rail.scrollWidth>rail.clientWidth?"overflow-stress":"native",
-        edgeFoldExpected:window.innerWidth<=1100,
-        leftDockVisible:!(layout.left?.collapsed)&&!!document.querySelector(".mod-left-split:not(.is-sidedock-collapsed)"),
-        rightBanks,
-        rootGroups:groups,
-        nativeActionsVisible
-      },
-      requiredContentIds:contentIds
-    });
-  })()`;
 }
 
 export async function createObsidianCliAdapter({
@@ -268,6 +94,7 @@ export async function createObsidianCliAdapter({
 
   let vaultPath;
   let profilePath;
+  let themeDirectory;
 
   const command = (argumentsList, options) =>
     execute([`vault=${vaultId}`, ...argumentsList], options);
@@ -346,11 +173,9 @@ export async function createObsidianCliAdapter({
         contentCatalog,
         requiredContentIds,
       });
-      const themeDirectory = path.join(vaultPath, ".obsidian", "themes", "Pixel");
-      const installedPackage = {
-        themeCssSha256: await sha256(path.join(themeDirectory, "theme.css")),
-        manifestSha256: await sha256(path.join(themeDirectory, "manifest.json")),
-      };
+      themeDirectory = path.join(vaultPath, ".obsidian", "themes", "Pixel");
+      await assertSafeThemeDirectory(vaultPath, themeDirectory);
+      const candidatePackage = packageHashes(await readPackageFiles(root));
 
       return {
         vault: { id: vaultId, path: vaultPath, dedicated: true },
@@ -359,7 +184,7 @@ export async function createObsidianCliAdapter({
         activeTheme,
         platform: runtime.desktop ? "desktop" : "mobile",
         zoomFactor: runtime.zoomFactor,
-        installedPackage,
+        package: candidatePackage,
         availableContentIds,
         capabilities: [...H5_RUN_CAPABILITIES],
         packageIdentity,
@@ -367,11 +192,22 @@ export async function createObsidianCliAdapter({
     },
 
     async snapshotWorkspace({ signal } = {}) {
-      return evaluate(
+      const runtimeSnapshot = await evaluate(
         `JSON.stringify({layout:app.workspace.getLayout(),colorTheme:app.vault.getConfig("theme")})`,
         { signal },
         "workspace snapshot",
       );
+      return {
+        ...runtimeSnapshot,
+        packageFiles: {
+          ...(await readPackageFiles(themeDirectory)),
+        },
+      };
+    },
+
+    async installPackage() {
+      await installPackageFiles(themeDirectory, await readPackageFiles(root));
+      return packageHashes(await readPackageFiles(themeDirectory));
     },
 
     async establishFixture({ fixture, signal }) {
@@ -397,7 +233,7 @@ export async function createObsidianCliAdapter({
 
     async verifyFixture({ fixture, signal }) {
       return evaluate(
-        observationCode(fixture),
+        fixtureObservationCode(fixture),
         { signal },
         `fixture observation ${fixture.id}`,
       );
@@ -405,15 +241,26 @@ export async function createObsidianCliAdapter({
 
     async exerciseTransitions({ fixture, transitions, signal }) {
       const colorTheme = fixture.theme === "light" ? "obsidian" : "moonstone";
-      const layouts = transitionLayouts(fixture);
-      if (layouts.length !== transitions.length) {
+      const plans = buildTransitionPlans(fixture);
+      if (
+        plans.length !== transitions.length ||
+        plans.some((plan, index) => plan.transition !== transitions[index])
+      ) {
         throw new Error("adapter transition layouts do not match the fixture catalog");
       }
-      for (const layout of layouts) {
-        await changeLayout(layout, colorTheme, { signal });
+      const results = [];
+      for (const plan of plans) {
+        await changeLayout(plan.layout, colorTheme, { signal });
+        const observation = await evaluate(
+          transitionObservationCode(),
+          { signal },
+          `${plan.transition} transition observation`,
+        );
+        assertTransitionObservation(plan, observation);
+        results.push({ transition: plan.transition, verified: true });
       }
       await changeLayout(buildFixtureLayout(fixture), colorTheme, { signal });
-      return [...transitions];
+      return results;
     },
 
     async captureEvidence({ outputPath, signal }) {
@@ -422,13 +269,30 @@ export async function createObsidianCliAdapter({
     },
 
     async restoreWorkspace(snapshot) {
+      const restorationErrors = [];
       try {
         await changeLayout(snapshot.layout, snapshot.colorTheme, {});
-      } finally {
+      } catch (error) {
+        restorationErrors.push(error);
+      }
+      try {
+        await installPackageFiles(themeDirectory, snapshot.packageFiles);
+      } catch (error) {
+        restorationErrors.push(error);
+      }
+      try {
         await command([
           "dev:cdp",
           "method=Emulation.clearDeviceMetricsOverride",
         ]);
+      } catch (error) {
+        restorationErrors.push(error);
+      }
+      if (restorationErrors.length > 0) {
+        throw new AggregateError(
+          restorationErrors,
+          `unable to restore H5 workspace: ${restorationErrors.map((error) => error.message).join("; ")}`,
+        );
       }
     },
   };

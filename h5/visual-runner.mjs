@@ -15,6 +15,7 @@ const ownershipFileName = ".pixel-h5-run.json";
 
 export const H5_RUN_CAPABILITIES = Object.freeze([
   "snapshot-workspace",
+  "install-package",
   "establish-fixture",
   "verify-topology",
   "exercise-transitions",
@@ -25,6 +26,7 @@ export const H5_RUN_CAPABILITIES = Object.freeze([
 const adapterMethods = [
   "preflight",
   "snapshotWorkspace",
+  "installPackage",
   "establishFixture",
   "verifyFixture",
   "exerciseTransitions",
@@ -117,14 +119,14 @@ function assertPreflight(preflight, catalog, packageIdentity, fixtures) {
   assertExactValue(preflight.platform, "desktop", "Obsidian platform");
   assertExactValue(preflight.zoomFactor, 1, "Obsidian zoom factor");
   assertExactValue(
-    preflight.installedPackage?.themeCssSha256,
+    preflight.package?.themeCssSha256,
     packageIdentity.themeCssSha256,
-    "installed theme.css SHA-256",
+    "candidate theme.css SHA-256",
   );
   assertExactValue(
-    preflight.installedPackage?.manifestSha256,
+    preflight.package?.manifestSha256,
     packageIdentity.manifestSha256,
-    "installed manifest.json SHA-256",
+    "candidate manifest.json SHA-256",
   );
 
   const contentIds = [
@@ -172,11 +174,28 @@ function assertFixtureObservation(fixture, observation, phase) {
 }
 
 function assertTransitions(fixture, actual, expected) {
-  if (!isDeepStrictEqual(actual, expected)) {
+  const expectedResults = expected.map((transition) => ({
+    transition,
+    verified: true,
+  }));
+  if (!isDeepStrictEqual(actual, expectedResults)) {
     throw new Error(
-      `${fixture.id} transitions must exercise ${expected.join(", ")}`,
+      `${fixture.id} transitions must independently verify ${expected.join(", ")}`,
     );
   }
+}
+
+function assertInstalledPackage(installedPackage, packageIdentity) {
+  assertExactValue(
+    installedPackage?.themeCssSha256,
+    packageIdentity.themeCssSha256,
+    "installed theme.css SHA-256",
+  );
+  assertExactValue(
+    installedPackage?.manifestSha256,
+    packageIdentity.manifestSha256,
+    "installed manifest.json SHA-256",
+  );
 }
 
 async function createOwnedRunDirectory(tempParent) {
@@ -271,6 +290,13 @@ export async function runVisualH5({
     throwIfAborted(signal);
     ownedRun = await createOwnedRunDirectory(tempParent);
     await onEvent({ type: "run-directory", path: ownedRun.runDirectory });
+    const installedPackage = await adapter.installPackage({
+      packageIdentity,
+      runDirectory: ownedRun.runDirectory,
+      signal,
+    });
+    assertInstalledPackage(installedPackage, packageIdentity);
+    throwIfAborted(signal);
 
     for (const fixture of selectedFixtures) {
       throwIfAborted(signal);
