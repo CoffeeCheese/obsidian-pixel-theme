@@ -8,6 +8,29 @@ The built-in adapter uses Obsidian's official CLI developer commands. The Obsidi
 
 Fixture bytes are pinned by `fixture-content.v1.json`. A missing file, symlink escape, or SHA-256 mismatch stops the run before the workspace snapshot. The fixture-content version must match `fixtures.v1.json`.
 
+## Transient review bench
+
+After every selected fixture is captured, the runner builds and opens a self-contained `review.html` inside the owned operating-system temporary directory. The page binds the captured views to the exact `theme.css` and `manifest.json` hashes, source commit/worktree state, fixture and rubric versions, Obsidian version, desktop/zoom state, dedicated Vault/profile, and capture time.
+
+The default run presents all ten views grouped by canonical/narrow state and native topology. View A and View B can be inspected side by side with synchronized zoom/pan, overlaid at an adjustable opacity, or rendered with the browser's `difference` blend for localization. These are diagnostic views only: the bench does not calculate a percentage, threshold, perceptual measure, or equality result.
+
+The six non-compensatory visual gates each expose only `Pass`, `Revise`, and `Fail`, with repeatable fixture/region findings. H5 Identity is a separate holistic `Approved` or `Rejected` judgment and is never derived from the local gates. All decision controls remain disabled until a named reviewer explicitly claims visual-owner authority; the automation labels, generic implementer placeholders, and displayed source author are rejected as owner names. A `Revise` or `Fail` draft cannot be copied without at least one complete fixture, region, and finding. Automation and source-author identity remain read-only provenance and cannot mark decisions. The optional clipboard draft contains text and identities only; it is not an approval attestation.
+
+Focused fixture/theme runs show the same comparison tools but no gate, owner, H5 Identity, or draft controls. Only an exact full ten-view matrix can record decisions.
+
+The command waits for the reviewer to press Enter before restoring the original workspace and deleting the page, screenshots, overlays, and differences. Cancellation or failure reports the active lifecycle phase plus restoration/cleanup outcome in stderr while still removing visual artifacts by default.
+
+### Manual browser acceptance
+
+For a full run, verify the browser-visible behavior before pressing Enter:
+
+1. Confirm all ten fixture cards appear under canonical/narrow and single/split groups, with the exact identity panel visible.
+2. Switch among side-by-side, overlay, and difference localization; confirm overlay opacity appears only in overlay mode and the difference canvas renders.
+3. Change zoom and drag the comparison surface; both selected images must retain the same scale and translation.
+4. Confirm every decision is disabled, then enter a named visual owner and select the authority checkbox; gate, finding, identity, and copy controls must unlock together.
+5. Select `Revise` or `Fail` without a complete localized finding; text export must be rejected with an actionable gate message.
+6. Run a focused `--case`/`--theme` session and confirm it is explicitly diagnostic-only with no human decision controls.
+
 ## Filters and temporary evidence
 
 - `--case=<case-id>` runs both themes for one case.
@@ -15,7 +38,7 @@ Fixture bytes are pinned by `fixture-content.v1.json`. A missing file, symlink e
 - `--theme=light|dark` filters the selected fixtures by theme.
 - `--keep-temp` retains the runner-owned temporary directory for local diagnosis.
 
-Without `--keep-temp`, evidence is removed after the original workspace has been restored, including on adapter failure and interruption. Cleanup requires the ownership token written by the runner; it refuses arbitrary directories.
+Without `--keep-temp`, evidence and the review page are removed after the original workspace has been restored, including on adapter failure, review cancellation, and interruption. Cleanup requires the ownership token written by the runner; it refuses arbitrary directories.
 
 ## Adapter seam
 
