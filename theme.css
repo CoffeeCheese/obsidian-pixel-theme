@@ -2520,6 +2520,8 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-t
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] .nav-header {
   position: relative;
+  display: grid;
+  align-items: center;
   min-block-size: 44px;
   padding: 0 9px;
   border-block-end: var(--pixel-border-decoration) solid var(--pixel-line);

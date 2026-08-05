@@ -185,6 +185,10 @@ test("H5 Archive Grid maps the native file browser to the H5 S1 navigation cabin
 
   assert.equal(declaration(tools, "min-block-size"), "44px");
   assert.equal(declaration(tools, "padding"), "0 9px");
+  // The 44px instrument strip must center its 32px toolbar vertically,
+  // otherwise the buttons stick to the top edge and leave dead space below.
+  assert.equal(declaration(tools, "display"), "grid");
+  assert.equal(declaration(tools, "align-items"), "center");
   assert.equal(
     declaration(tools, "border-block-end"),
     "var(--pixel-border-decoration) solid var(--pixel-line)",

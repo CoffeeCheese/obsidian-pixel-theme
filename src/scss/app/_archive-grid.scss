@@ -229,6 +229,10 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-t
 // on the native file explorer toolbar that actually owns these actions.
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] .nav-header {
   position: relative;
+  // Grid keeps the full-width toolbar stretched horizontally while the
+  // 44px instrument strip centers it vertically.
+  display: grid;
+  align-items: center;
   min-block-size: 44px;
   padding: 0 9px;
   border-block-end: var(--pixel-border-decoration) solid var(--pixel-line);
