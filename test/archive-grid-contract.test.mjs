@@ -80,18 +80,38 @@ test("H5 Archive Grid maps native root tabs to the prototype cartridge rail", as
 
 test("H5 Archive Grid gives root tabs the H5 S1 cartridge geometry", async () => {
   const css = await readTheme();
+  const rail = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header-container",
+  );
   const tab = ruleBodyForSelector(
     css,
     "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header",
+  );
+  const active = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header.is-active",
   );
   const newTab = ruleBodyForSelector(
     css,
     "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header-new-tab",
   );
 
+  assert.equal(declaration(rail, "gap"), "2px");
+  assert.equal(declaration(tab, "inline-size"), "180px");
+  assert.equal(declaration(tab, "min-inline-size"), "180px");
   assert.equal(declaration(tab, "max-inline-size"), "180px");
+  assert.equal(
+    declaration(tab, "border"),
+    "var(--pixel-border-decoration) solid transparent",
+  );
+  assert.equal(declaration(tab, "border-block-end"), "0");
   assert.equal(declaration(tab, "border-radius"), "6px 6px 0 0");
   assert.equal(declaration(tab, "overflow"), "hidden");
+  assert.equal(
+    declaration(active, "border-color"),
+    "var(--pixel-line)",
+  );
   assert.equal(declaration(newTab, "inline-size"), "44px");
   assert.equal(declaration(newTab, "min-inline-size"), "44px");
   assert.equal(declaration(newTab, "border-radius"), "6px");
@@ -115,10 +135,33 @@ test("H5 Archive Grid maps the native file browser to the H5 S1 navigation cabin
     css,
     "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] .nav-file-title.is-active",
   );
+  const toolsAfter = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] .nav-header::after",
+  );
+  const toolButton = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] .nav-header .clickable-icon",
+  );
+  const activeBefore = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] .nav-file-title.is-active::before",
+  );
+  const activeAfter = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] .nav-file-title.is-active::after",
+  );
 
   assert.equal(declaration(tools, "min-block-size"), "44px");
   assert.equal(declaration(tools, "padding"), "0 9px");
-  assert.equal(declaration(tools, "background-color"), "var(--pixel-nav-label)");
+  assert.equal(
+    declaration(tools, "border-block-end"),
+    "var(--pixel-border-decoration) solid var(--pixel-line)",
+  );
+  assert.equal(
+    declaration(tools, "background-color"),
+    "color-mix(in srgb, var(--pixel-cyan) 8%, var(--pixel-paper))",
+  );
   assert.match(
     declaration(tools, "background-image"),
     /^repeating-linear-gradient\(90deg, color-mix\(in srgb, var\(--pixel-cyan\) 18%, transparent\) 0 1px, transparent 1px 8px\)$/,
@@ -126,9 +169,16 @@ test("H5 Archive Grid maps the native file browser to the H5 S1 navigation cabin
   assert.equal(declaration(list, "padding"), "7px 8px 24px");
   assert.equal(declaration(row, "border-radius"), "5px");
   assert.equal(declaration(active, "background-color"), "var(--pixel-nav-label)");
+  assert.equal(declaration(active, "box-shadow"), "none");
+  assert.equal(declaration(toolsAfter, "content"), '"a-01"');
+  assert.equal(declaration(toolButton, "border-radius"), "6px");
+  assert.equal(declaration(activeBefore, "inline-size"), "4px");
+  assert.equal(declaration(activeBefore, "background-color"), "var(--pixel-cyan)");
+  assert.equal(declaration(activeAfter, "inline-size"), "5px");
+  assert.equal(declaration(activeAfter, "block-size"), "5px");
   assert.equal(
-    declaration(active, "box-shadow"),
-    "inset 4px 0 0 var(--pixel-cyan)",
+    declaration(activeAfter, "box-shadow"),
+    "-7px 0 0 color-mix(in srgb, var(--pixel-cyan) 50%, transparent)",
   );
 });
 

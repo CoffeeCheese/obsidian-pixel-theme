@@ -62,6 +62,10 @@ body:not(.is-mobile) .workspace.workspace .workspace-tab-header-container {
   background-color: var(--pixel-paper);
 }
 
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header-container {
+  gap: 2px;
+}
+
 body:not(.is-mobile) .workspace.workspace .workspace-tab-header {
   min-block-size: 44px;
   border-inline-end: var(--pixel-border-decoration) solid var(--pixel-line);
@@ -69,7 +73,11 @@ body:not(.is-mobile) .workspace.workspace .workspace-tab-header {
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header {
+  inline-size: 180px;
+  min-inline-size: 180px;
   max-inline-size: 180px;
+  border: var(--pixel-border-decoration) solid transparent;
+  border-block-end: 0;
   border-radius: 6px 6px 0 0;
   overflow: hidden;
 }
@@ -100,6 +108,7 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-t
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header.is-active {
+  border-color: var(--pixel-line);
   background-color: color-mix(in srgb, var(--pixel-canvas) 45%, var(--pixel-paper));
   background-image: none;
 }
@@ -206,9 +215,11 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-t
 // cyan instrument strip. Keep the side-dock tab rail quiet and put the signal
 // on the native file explorer toolbar that actually owns these actions.
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] .nav-header {
+  position: relative;
   min-block-size: 44px;
   padding: 0 9px;
-  background-color: var(--pixel-nav-label);
+  border-block-end: var(--pixel-border-decoration) solid var(--pixel-line);
+  background-color: color-mix(in srgb, var(--pixel-cyan) 8%, var(--pixel-paper));
   background-image: repeating-linear-gradient(
     90deg,
     color-mix(in srgb, var(--pixel-cyan) 18%, transparent) 0 1px,
@@ -216,17 +227,56 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .works
   );
 }
 
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] .nav-header::after {
+  content: "A-01";
+  position: absolute;
+  inset: auto 10px 2px auto;
+  color: var(--pixel-cyan);
+  font-family: var(--pixel-font-identity);
+  font-size: 6px;
+  line-height: 1;
+  pointer-events: none;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] .nav-header .clickable-icon {
+  border-radius: 6px;
+}
+
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] .nav-files-container {
   padding: 7px 8px 24px;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] :is(.nav-file-title, .nav-folder-title) {
+  position: relative;
   border-radius: 5px;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] .nav-file-title.is-active {
   background-color: var(--pixel-nav-label);
-  box-shadow: inset 4px 0 0 var(--pixel-cyan);
+  box-shadow: none;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] .nav-file-title.is-active::before {
+  content: "";
+  position: absolute;
+  inset-block: 4px;
+  inset-inline-start: -12px;
+  inline-size: 4px;
+  background-color: var(--pixel-cyan);
+  pointer-events: none;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] .nav-file-title.is-active::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: 7px;
+  inline-size: 5px;
+  block-size: 5px;
+  transform: translateY(-50%);
+  background-color: var(--pixel-cyan);
+  box-shadow: -7px 0 0 color-mix(in srgb, var(--pixel-cyan) 50%, transparent);
+  pointer-events: none;
 }
 
 body:not(.is-mobile) .workspace.workspace :is(
