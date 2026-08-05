@@ -85,6 +85,42 @@ body:not(.is-mobile) .workspace.workspace .workspace-tab-header.is-active {
   font-weight: 600;
 }
 
+// Obsidian draws rounded tab shoulders with both pseudo-elements. The H5 rail
+// is flat, so clear those masks before reusing the active tab's trailing
+// pseudo-element for the segmented navigation signal.
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header-inner-title {
+  font-family: var(--pixel-font-identity);
+  font-size: 10px;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header.is-active {
+  background-color: color-mix(in srgb, var(--pixel-canvas) 45%, var(--pixel-paper));
+  background-image: none;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header::before,
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header::after {
+  content: none;
+  box-shadow: none;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header.is-active::after {
+  content: "";
+  position: absolute;
+  inset: auto 15px 0;
+  display: block;
+  width: auto;
+  height: 4px;
+  border-radius: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--pixel-cyan) 0 12px,
+    transparent 12px 16px
+  );
+  clip-path: none;
+  pointer-events: none;
+}
+
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split .workspace-tab-header-container {
   background-color: var(--pixel-context-label);
 }
@@ -97,6 +133,37 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split .work
 body:not(.is-mobile) .workspace.workspace .workspace-leaf.mod-active::after {
   inline-size: 4px;
   background-color: var(--pixel-cyan);
+}
+
+// Keep Obsidian's native history and action controls, but let the file chain
+// occupy the same left-anchored, compact typographic lane as the H5 top bar.
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header-title-container {
+  justify-content: flex-start;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header-title-parent {
+  gap: 7px;
+  font-size: 11px;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header-breadcrumb {
+  padding: 0;
+  color: var(--pixel-text-muted);
+  font-size: 11px;
+  font-weight: 450;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header-breadcrumb-separator {
+  margin: 0;
+  padding: 0;
+  color: var(--pixel-line-strong);
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header-title {
+  padding: 0;
+  color: var(--pixel-text);
+  font-size: 11px;
+  font-weight: 450;
 }
 
 // The reader begins directly on the navigation paper plane in the H5 shell.

@@ -5,6 +5,7 @@ import {
   matchingRuleBodies,
   readTheme,
   ruleBody,
+  ruleBodyForSelector,
 } from "../test-support/theme-css.mjs";
 
 test("H5 Archive Grid keeps the desktop workspace as one continuous paper plane", async () => {
@@ -31,6 +32,73 @@ test("H5 Archive Grid joins the navigation dock to the reader without an active 
   );
 
   assert.equal(declaration(readerLeadingEdgeSignal, "content"), "none");
+});
+
+test("H5 Archive Grid maps native root tabs to the prototype cartridge rail", async () => {
+  const css = await readTheme();
+  const title = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header-inner-title",
+  );
+  const active = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header.is-active",
+  );
+  const before = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header::before",
+  );
+  const after = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header::after",
+  );
+  const activeAfter = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header.is-active::after",
+  );
+
+  assert.equal(declaration(title, "font-family"), "var(--pixel-font-identity)");
+  assert.equal(declaration(title, "font-size"), "10px");
+  assert.equal(
+    declaration(active, "background-color"),
+    "color-mix(in srgb, var(--pixel-canvas) 45%, var(--pixel-paper))",
+  );
+  assert.equal(declaration(active, "background-image"), "none");
+  assert.equal(declaration(before, "content"), "none");
+  assert.equal(declaration(before, "box-shadow"), "none");
+  assert.equal(declaration(after, "content"), "none");
+  assert.equal(declaration(after, "box-shadow"), "none");
+  assert.equal(declaration(activeAfter, "display"), "block");
+  assert.equal(declaration(activeAfter, "content"), '""');
+  assert.equal(declaration(activeAfter, "inset"), "auto 15px 0");
+  assert.equal(declaration(activeAfter, "height"), "4px");
+  assert.match(
+    declaration(activeAfter, "background"),
+    /^repeating-linear-gradient\(90deg, var\(--pixel-cyan\) 0 12px, transparent 12px 16px\)$/,
+  );
+});
+
+test("H5 Archive Grid keeps the native file-header chain left aligned and prototype-sized", async () => {
+  const css = await readTheme();
+  const container = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header-title-container",
+  );
+  const chain = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header-title-parent",
+  );
+  const current = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header-title",
+  );
+
+  assert.equal(declaration(container, "justify-content"), "flex-start");
+  assert.equal(declaration(chain, "gap"), "7px");
+  assert.equal(declaration(chain, "font-size"), "11px");
+  assert.equal(declaration(current, "color"), "var(--pixel-text)");
+  assert.equal(declaration(current, "font-size"), "11px");
+  assert.equal(declaration(current, "font-weight"), "450");
 });
 
 test("H5 Archive Grid leaves global status-bar geometry to the workspace shell", async () => {
