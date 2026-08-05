@@ -18,6 +18,16 @@ test("H5 Archive Grid keeps the desktop workspace as one continuous paper plane"
   assert.equal(declaration(sidePane, "box-shadow"), "none");
 });
 
+test("H5 Archive Grid joins the navigation dock to the reader without an active cyan divider", async () => {
+  const css = await readTheme();
+  const readerLeadingEdgeSignal = ruleBody(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf.mod-active::after",
+  );
+
+  assert.equal(declaration(readerLeadingEdgeSignal, "content"), "none");
+});
+
 test("H5 Archive Grid exposes the prototype's subtle and structural line roles", async () => {
   const css = await readTheme();
   const light = ruleBody(css, ".theme-light");

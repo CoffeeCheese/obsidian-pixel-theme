@@ -20,10 +20,10 @@ test("compiled desktop package exposes the H5 split-label material roles", async
 
   assert.equal(declaration(body, "--pixel-workspace-gap"), "12px");
   assert.equal(declaration(body, "--pixel-workspace-inset"), "12px");
-  assert.equal(declaration(light, "--pixel-nav-label"), "#c7dfe3");
-  assert.equal(declaration(light, "--pixel-context-label"), "#f0e1d0");
-  assert.equal(declaration(dark, "--pixel-nav-label"), "#254751");
-  assert.equal(declaration(dark, "--pixel-context-label"), "#474135");
+  assert.equal(declaration(light, "--pixel-nav-label"), "#dcebed");
+  assert.equal(declaration(light, "--pixel-context-label"), "#f3eee3");
+  assert.equal(declaration(dark, "--pixel-nav-label"), "#203d46");
+  assert.equal(declaration(dark, "--pixel-context-label"), "#2a2926");
 });
 
 test("compiled desktop package exposes distinct N1 elevation and contour roles", async () => {

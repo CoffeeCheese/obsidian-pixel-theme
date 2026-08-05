@@ -2400,6 +2400,10 @@ body:not(.is-mobile) .workspace.workspace .workspace-leaf.mod-active::after {
   background-color: var(--pixel-cyan);
 }
 
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf.mod-active::after {
+  content: none;
+}
+
 body:not(.is-mobile) .workspace.workspace .clickable-icon {
   border: 0;
   border-radius: 0;
