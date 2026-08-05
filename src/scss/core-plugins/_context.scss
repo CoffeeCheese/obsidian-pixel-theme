@@ -23,6 +23,19 @@ body:not(.is-mobile) .workspace-split.mod-right-split {
   --metadata-input-longtext-lines: 4;
 }
 
+// The right dock is a lightweight navigation/context rail, not a second
+// metadata editor. Hide both the current-note Properties tab and its content
+// while leaving Obsidian's underlying workspace state untouched. Inline
+// properties in the central editor and the All Properties view remain
+// available.
+body:not(.is-mobile) .workspace-split.mod-right-split .workspace-tab-header[data-type="file-properties"] {
+  display: none;
+}
+
+body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf-content[data-type="file-properties"] .metadata-container {
+  display: none;
+}
+
 body:not(.is-mobile) .workspace-split.mod-right-split .metadata-property {
   min-inline-size: 0;
   border-inline-start: 4px solid transparent;

@@ -40,6 +40,29 @@ test("the desktop context dock maps native properties to restrained Paper roles"
   }
 });
 
+test("the right dock hides the current-note properties view and its tab", async () => {
+  const css = await readTheme();
+  const currentNoteProperties = ruleBody(
+    css,
+    'body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf-content[data-type=file-properties] .metadata-container',
+  );
+  const currentNotePropertiesTab = ruleBody(
+    css,
+    'body:not(.is-mobile) .workspace-split.mod-right-split .workspace-tab-header[data-type=file-properties]',
+  );
+
+  assert.equal(declaration(currentNoteProperties, "display"), "none");
+  assert.equal(declaration(currentNotePropertiesTab, "display"), "none");
+  assert.doesNotMatch(
+    css,
+    /\.workspace-split\.mod-right-split\s+\.workspace-tab-header\[data-type=properties\][^{]*\{[^}]*display:\s*none/is,
+  );
+  assert.doesNotMatch(
+    css,
+    /\.workspace-split\.mod-right-split\s+\.workspace-leaf-content\[data-type=properties\]\s+\.metadata-container[^{}]*\{[^}]*display:\s*none/is,
+  );
+});
+
 test("native property rows expose readable key-value, focus, validation, and action cues", async () => {
   const css = await readTheme();
   const property = ruleBody(

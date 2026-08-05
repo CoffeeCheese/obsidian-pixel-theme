@@ -102,7 +102,7 @@ test("Bases leaves native menus, resizers, editors, scrolling, and keyboard cont
 
   assert.doesNotMatch(
     css,
-    /(?:bases-toolbar|bases-table-header-resizer|bases-metadata-value|metadata-input|bases-view)[^{]*\{[^}]*(?:display:\s*none|pointer-events:\s*none|overflow:\s*hidden)/is,
+    /(?:^|})\s*[^{}]*(?:\.bases-toolbar|\.bases-table-header-resizer|\.bases-metadata-value|\.metadata-input|\.bases-view)[^{]*\{[^}]*(?:display:\s*none|pointer-events:\s*none|overflow:\s*hidden)/is,
   );
   assert.doesNotMatch(
     css,
