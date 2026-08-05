@@ -11,6 +11,8 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { isDeepStrictEqual } from "node:util";
 
+import { pathLeavesDirectory } from "./path-boundary.mjs";
+
 const ownershipFileName = ".pixel-h5-run.json";
 
 export const H5_RUN_CAPABILITIES = Object.freeze([
@@ -219,8 +221,12 @@ async function assertEvidenceFile(requestedPath, returnedPath, runDirectory) {
   if (!stat.isFile() || stat.isSymbolicLink()) {
     throw new Error("adapter evidence must be a regular non-symbolic-link file");
   }
-  const relative = path.relative(await realpath(runDirectory), await realpath(returnedPath));
-  if (relative.startsWith("..") || path.isAbsolute(relative)) {
+  if (
+    pathLeavesDirectory(
+      await realpath(runDirectory),
+      await realpath(returnedPath),
+    )
+  ) {
     throw new Error("adapter evidence must remain inside the runner-owned directory");
   }
 }

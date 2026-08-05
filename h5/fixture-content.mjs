@@ -2,6 +2,8 @@ import { createHash } from "node:crypto";
 import { readFile, realpath } from "node:fs/promises";
 import path from "node:path";
 
+import { pathLeavesDirectory } from "./path-boundary.mjs";
+
 const sha256Pattern = /^[a-f0-9]{64}$/;
 
 function assertObject(value, label) {
@@ -78,13 +80,11 @@ export async function verifyFixtureContent({
     if (!entry) throw new Error(`fixture content catalog is missing ${contentId}`);
     for (const file of entry.files) {
       const requestedPath = path.resolve(realVaultPath, file.path);
-      const relative = path.relative(realVaultPath, requestedPath);
-      if (relative.startsWith("..") || path.isAbsolute(relative)) {
+      if (pathLeavesDirectory(realVaultPath, requestedPath)) {
         throw new Error(`fixture content ${file.path} leaves the dedicated Vault`);
       }
       const realFilePath = await realpath(requestedPath);
-      const realRelative = path.relative(realVaultPath, realFilePath);
-      if (realRelative.startsWith("..") || path.isAbsolute(realRelative)) {
+      if (pathLeavesDirectory(realVaultPath, realFilePath)) {
         throw new Error(`fixture content ${file.path} traverses a symbolic link`);
       }
       const actualHash = createHash("sha256")
