@@ -43,6 +43,25 @@ OBSIDIAN_THEME_DIR=/absolute/path/to/dev-test/.obsidian/themes/Pixel npm run bui
 
 The trusted Vault ID lives in `development.json` and is resolved through Obsidian's system registry. Deployment atomically replaces only `theme.css` and `manifest.json`; it refuses relative, symlinked, mismatched-Vault, and out-of-scope destinations and does not delete other files.
 
+### H5 visual runner
+
+With Obsidian 1.12.7 running against the dedicated H5 profile and fixture Vault, run the guided desktop capture lifecycle with:
+
+```sh
+npm run visual:h5
+```
+
+Before changing the workspace, the command verifies the dedicated Vault/profile, exact Obsidian version, active Pixel theme, desktop/default-zoom state, installed package hashes, versioned fixture-content hashes, and required Obsidian CLI developer commands. It then snapshots the current workspace, creates an owned operating-system temporary directory, establishes each catalog fixture, verifies native topology, exercises the declared transitions, and captures evidence only after verification. The original workspace is restored and temporary evidence is removed after success, failure, or interruption.
+
+Focused diagnostic reruns use the same fail-closed path:
+
+```sh
+npm run visual:h5 -- --case=canonical-mixed-tabs --theme=dark
+npm run visual:h5 -- --case=narrow-mixed-stress-light --keep-temp
+```
+
+`--keep-temp` is only a local diagnostic exception; it does not approve a visual result. Set `OBSIDIAN_H5_PROFILE_DIR` when the dedicated profile is not at the default ignored `.scratch/pixel-desktop-h5-fidelity/runtime-profile` path. An alternative adapter can be injected with `--adapter=/absolute/path/to/adapter.mjs`; it must implement the lifecycle contract documented in [`h5/README.md`](h5/README.md).
+
 See [COMPATIBILITY.md](COMPATIBILITY.md) for the authoritative component/accessibility matrix and [DEVICE_TEST_PLAN.md](DEVICE_TEST_PLAN.md) for the tester-operated physical iOS/Android release gate.
 
 ## Distribution contract

@@ -6,7 +6,8 @@
     "build": "node build.mjs",
     "dev": "node build.mjs --watch",
     "check": "node build.mjs --check",
-    "test": "node --test --test-concurrency=1"
+    "test": "node --test --test-concurrency=1",
+    "visual:h5": "node h5/visual-h5.mjs"
   },
   "devDependencies": {
     "chokidar": "^4.0.3",
