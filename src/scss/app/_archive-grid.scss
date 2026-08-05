@@ -68,6 +68,12 @@ body:not(.is-mobile) .workspace.workspace .workspace-tab-header {
   color: var(--pixel-text-muted);
 }
 
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header {
+  max-inline-size: 180px;
+  border-radius: 6px 6px 0 0;
+  overflow: hidden;
+}
+
 body:not(.is-mobile) .workspace.workspace .workspace-tab-header.is-active {
   border: 0;
   border-inline-end: var(--pixel-border-decoration) solid var(--pixel-line);
@@ -186,6 +192,41 @@ body:not(.is-mobile) .titlebar .clickable-icon {
   border-radius: 0;
   background-color: transparent;
   box-shadow: none;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header-new-tab {
+  inline-size: 44px;
+  min-inline-size: 44px;
+  margin: 0;
+  padding: 0;
+  border-radius: 6px;
+}
+
+// The prototype treats the file explorer controls as the navigation cabin's
+// cyan instrument strip. Keep the side-dock tab rail quiet and put the signal
+// on the native file explorer toolbar that actually owns these actions.
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] .nav-header {
+  min-block-size: 44px;
+  padding: 0 9px;
+  background-color: var(--pixel-nav-label);
+  background-image: repeating-linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--pixel-cyan) 18%, transparent) 0 1px,
+    transparent 1px 8px
+  );
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] .nav-files-container {
+  padding: 7px 8px 24px;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] :is(.nav-file-title, .nav-folder-title) {
+  border-radius: 5px;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] .nav-file-title.is-active {
+  background-color: var(--pixel-nav-label);
+  box-shadow: inset 4px 0 0 var(--pixel-cyan);
 }
 
 body:not(.is-mobile) .workspace.workspace :is(

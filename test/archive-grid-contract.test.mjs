@@ -78,6 +78,60 @@ test("H5 Archive Grid maps native root tabs to the prototype cartridge rail", as
   );
 });
 
+test("H5 Archive Grid gives root tabs the H5 S1 cartridge geometry", async () => {
+  const css = await readTheme();
+  const tab = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header",
+  );
+  const newTab = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header-new-tab",
+  );
+
+  assert.equal(declaration(tab, "max-inline-size"), "180px");
+  assert.equal(declaration(tab, "border-radius"), "6px 6px 0 0");
+  assert.equal(declaration(tab, "overflow"), "hidden");
+  assert.equal(declaration(newTab, "inline-size"), "44px");
+  assert.equal(declaration(newTab, "min-inline-size"), "44px");
+  assert.equal(declaration(newTab, "border-radius"), "6px");
+});
+
+test("H5 Archive Grid maps the native file browser to the H5 S1 navigation cabin", async () => {
+  const css = await readTheme();
+  const tools = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] .nav-header",
+  );
+  const list = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] .nav-files-container",
+  );
+  const row = ruleBody(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] :is(.nav-file-title, .nav-folder-title)",
+  );
+  const active = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] .nav-file-title.is-active",
+  );
+
+  assert.equal(declaration(tools, "min-block-size"), "44px");
+  assert.equal(declaration(tools, "padding"), "0 9px");
+  assert.equal(declaration(tools, "background-color"), "var(--pixel-nav-label)");
+  assert.match(
+    declaration(tools, "background-image"),
+    /^repeating-linear-gradient\(90deg, color-mix\(in srgb, var\(--pixel-cyan\) 18%, transparent\) 0 1px, transparent 1px 8px\)$/,
+  );
+  assert.equal(declaration(list, "padding"), "7px 8px 24px");
+  assert.equal(declaration(row, "border-radius"), "5px");
+  assert.equal(declaration(active, "background-color"), "var(--pixel-nav-label)");
+  assert.equal(
+    declaration(active, "box-shadow"),
+    "inset 4px 0 0 var(--pixel-cyan)",
+  );
+});
+
 test("H5 Archive Grid keeps the native file-header chain left aligned and prototype-sized", async () => {
   const css = await readTheme();
   const container = ruleBodyForSelector(
