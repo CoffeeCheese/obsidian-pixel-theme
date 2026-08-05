@@ -14,8 +14,19 @@ import test from "node:test";
 import {
   H5_RUN_CAPABILITIES,
   cleanupOwnedRunDirectory,
-  runVisualH5,
+  runVisualH5 as runVisualH5Implementation,
 } from "../h5/visual-runner.mjs";
+
+const objectiveContractResults = [
+  { check: "repository-contracts", result: "Pass" },
+];
+
+function runVisualH5(options) {
+  return runVisualH5Implementation({
+    objectiveContractResults,
+    ...options,
+  });
+}
 
 const packageIdentity = {
   themeName: "Pixel",
@@ -149,6 +160,10 @@ function fakeAdapter(events, overrides = {}) {
       await writeFile(outputPath, fixture.id);
       return outputPath;
     },
+    async verifyObjectiveVetoes() {
+      events.push("objective-vetoes");
+      return [{ check: "error-buffers", result: "Pass" }];
+    },
     async restoreWorkspace(snapshot) {
       assert.deepEqual(snapshot, { layout: "original" });
       events.push("restore");
@@ -169,6 +184,22 @@ async function withTempParent(callback) {
 async function assertTempParentEmpty(tempParent) {
   assert.deepEqual(await readdir(tempParent), []);
 }
+
+test("review-time repository contracts must actually pass before preflight", async () => {
+  const events = [];
+  await assert.rejects(
+    runVisualH5Implementation({
+      adapter: fakeAdapter(events),
+      catalog,
+      packageIdentity,
+      objectiveContractResults: [
+        { check: "repository-contracts", result: "Fail" },
+      ],
+    }),
+    /review-time objective contracts must report Pass/,
+  );
+  assert.deepEqual(events, []);
+});
 
 test("preflight rejection happens before workspace snapshot or temporary allocation", async () => {
   await withTempParent(async (tempParent) => {
@@ -215,6 +246,7 @@ test("successful run verifies topology around transitions and restores before cl
       `transitions:${fixtures[1].id}`,
       `verify:post-transitions:${fixtures[1].id}`,
       `capture:${fixtures[1].id}`,
+      "objective-vetoes",
       "restore",
     ]);
     await assertTempParentEmpty(tempParent);
@@ -247,6 +279,26 @@ test("transient review bench is available for the human session then removed", a
 
     assert.deepEqual(result.fixtureIds, fixtures.map(({ id }) => id));
     assert.equal(events.at(-2), "review-session");
+    assert.equal(events.at(-1), "restore");
+    await assertTempParentEmpty(tempParent);
+  });
+});
+
+test("captured runtime errors veto the review bench and approval export", async () => {
+  await withTempParent(async (tempParent) => {
+    const events = [];
+    const adapter = fakeAdapter(events, {
+      async verifyObjectiveVetoes() {
+        events.push("objective-vetoes:failed");
+        throw new Error("Obsidian error-level console buffer vetoed H5 approval");
+      },
+    });
+
+    await assert.rejects(
+      runVisualH5({ adapter, catalog, packageIdentity, tempParent }),
+      /failed during verify-objective-vetoes.*console buffer vetoed H5 approval/,
+    );
+    assert.ok(!events.includes("review-session"));
     assert.equal(events.at(-1), "restore");
     await assertTempParentEmpty(tempParent);
   });

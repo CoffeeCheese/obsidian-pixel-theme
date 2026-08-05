@@ -7,6 +7,7 @@ import test from "node:test";
 import {
   H5_APPROVAL_GATE_IDS,
   H5_APPROVAL_OBJECTIVE_CHECKS,
+  H5_APPROVAL_CONTRACT,
   createApprovedH5Record,
   verifyApprovalFile,
   verifyApprovalRecord,
@@ -88,7 +89,7 @@ test("named visual owner can export one exact-artifact Approved record", () => {
 
 test("approval export fails closed for objective vetoes and human non-approval", () => {
   const objectiveFailure = approvedReview();
-  objectiveFailure.objectiveResults[0].result = "Fail";
+  objectiveFailure.objectiveResults[1].result = "Fail";
   assert.throws(
     () => createApprovedH5Record(objectiveFailure),
     /objective check package-identity must be Pass/,
@@ -212,6 +213,10 @@ test("repository ships a strict image-free canonical approval schema", async () 
   assert.equal(
     schema.properties.signature.properties.type.const,
     "named-visual-owner",
+  );
+  assert.equal(
+    schema.properties.signature.properties.statement.const,
+    H5_APPROVAL_CONTRACT.approvalStatement,
   );
   assert.doesNotMatch(JSON.stringify(schema), /image|screenshot|overlay/i);
 });

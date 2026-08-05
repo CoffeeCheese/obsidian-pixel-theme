@@ -24,6 +24,7 @@ export const H5_RUN_CAPABILITIES = Object.freeze([
   "verify-topology",
   "exercise-transitions",
   "capture-evidence",
+  "verify-objective-vetoes",
   "restore-workspace",
 ]);
 
@@ -35,6 +36,7 @@ const adapterMethods = [
   "verifyFixture",
   "exerciseTransitions",
   "captureEvidence",
+  "verifyObjectiveVetoes",
   "restoreWorkspace",
 ];
 
@@ -57,6 +59,13 @@ function assertStringArrayIncludes(actual, expected, label) {
   const missing = expected.filter((item) => !actual.includes(item));
   if (missing.length > 0) {
     throw new Error(`${label} is missing ${missing.join(", ")}`);
+  }
+}
+
+function assertPassingObjectiveResults(actual, expectedChecks, label) {
+  const expected = expectedChecks.map((check) => ({ check, result: "Pass" }));
+  if (!isDeepStrictEqual(actual, expected)) {
+    throw new Error(`${label} must report Pass for ${expectedChecks.join(", ")}`);
   }
 }
 
@@ -279,7 +288,13 @@ export async function runVisualH5({
   source = { commit: "not-recorded", dirty: true, author: "Not asserted" },
   capturedAt = new Date().toISOString(),
   reviewSession = async () => {},
+  objectiveContractResults,
 }) {
+  assertPassingObjectiveResults(
+    objectiveContractResults,
+    ["repository-contracts"],
+    "review-time objective contracts",
+  );
   assertAdapter(adapter);
   const selectedFixtures = selectFixtures(catalog, caseFilter, themeFilter);
   const preflight = await adapter.preflight({
@@ -366,6 +381,34 @@ export async function runVisualH5({
     }
 
     activeFixtureId = undefined;
+    phase = "verify-objective-vetoes";
+    const objectiveVetoResults = await adapter.verifyObjectiveVetoes({ signal });
+    assertPassingObjectiveResults(
+      objectiveVetoResults,
+      ["error-buffers"],
+      "runtime objective vetoes",
+    );
+    const completeMatrix = selectedFixtures.length === catalog.fixtures.length;
+    const objectiveResults = [
+      ...objectiveContractResults,
+      { check: "package-identity", result: "Pass" },
+      { check: "runtime-environment", result: "Pass" },
+      {
+        check: "fixture-matrix",
+        result: completeMatrix ? "Pass" : "NotRun",
+      },
+      { check: "topology-observations", result: "Pass" },
+      { check: "transition-observations", result: "Pass" },
+      { check: "native-control-boundaries", result: "Pass" },
+      ...objectiveVetoResults,
+    ];
+    if (completeMatrix) {
+      assertPassingObjectiveResults(
+        objectiveResults,
+        H5_APPROVAL_OBJECTIVE_CHECKS,
+        "approval objective results",
+      );
+    }
     phase = "build-review-bench";
     benchPath = await writeReviewBench({
       runDirectory: ownedRun.runDirectory,
@@ -375,10 +418,7 @@ export async function runVisualH5({
       environmentIdentity: preflight,
       source,
       capturedAt,
-      objectiveResults: H5_APPROVAL_OBJECTIVE_CHECKS.map((check) => ({
-        check,
-        result: "Pass",
-      })),
+      objectiveResults,
     });
     await assertEvidenceFile(benchPath, benchPath, ownedRun.runDirectory);
     await onEvent({ type: "review-bench", path: benchPath });

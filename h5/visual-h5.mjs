@@ -6,6 +6,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { verifyApprovalFile } from "./approval.mjs";
 import { readFixtureCatalog } from "./fixture-catalog.mjs";
+import { runObjectiveContractChecks } from "./objective-checks.mjs";
 import {
   assertInteractiveReview,
   openReviewSession,
@@ -147,15 +148,17 @@ export async function main(argumentsList = process.argv.slice(2)) {
   }
   assertInteractiveReview();
 
-  const [catalog, packageIdentity, adapter, source] = await Promise.all([
-    readFixtureCatalog(new URL("./fixtures.v1.json", import.meta.url)),
-    readPackageIdentity({
-      themePath: path.join(root, "theme.css"),
-      manifestPath: path.join(root, "manifest.json"),
-    }),
-    loadAdapter(options.adapterPath),
-    readSourceProvenance({ root }),
-  ]);
+  const [catalog, packageIdentity, adapter, source, objectiveContractResults] =
+    await Promise.all([
+      readFixtureCatalog(new URL("./fixtures.v1.json", import.meta.url)),
+      readPackageIdentity({
+        themePath: path.join(root, "theme.css"),
+        manifestPath: path.join(root, "manifest.json"),
+      }),
+      loadAdapter(options.adapterPath),
+      readSourceProvenance({ root }),
+      runObjectiveContractChecks({ root }),
+    ]);
 
   const controller = new AbortController();
   const interrupt = (signalName) => {
@@ -182,6 +185,7 @@ export async function main(argumentsList = process.argv.slice(2)) {
       signal: controller.signal,
       source,
       reviewSession: openReviewSession,
+      objectiveContractResults,
       onEvent(event) {
         if (event.type === "run-directory") {
           process.stdout.write(`Temporary H5 run: ${event.path}\n`);

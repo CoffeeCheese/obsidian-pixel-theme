@@ -1,7 +1,10 @@
 import { writeFile } from "node:fs/promises";
 import path from "node:path";
 
-import { createApprovedH5Record } from "./approval.mjs";
+import {
+  H5_APPROVAL_CONTRACT,
+  createApprovedH5Record,
+} from "./approval.mjs";
 
 function escapeHtml(value) {
   return String(value)
@@ -404,6 +407,7 @@ export async function writeReviewBench({
     const validateReviewDraft = ${validateReviewDraft.toString()};
     const validateVisualOwnerClaim = ${validateVisualOwnerClaim.toString()};
     const createApprovedH5Record = ${createApprovedH5Record.toString()};
+    const approvalContract = ${serializeForScript(H5_APPROVAL_CONTRACT)};
     const sourceAuthor = ${serializeForScript(source.author || "")};
     const selectA = document.querySelector("#view-a");
     const selectB = document.querySelector("#view-b");
@@ -595,7 +599,10 @@ export async function writeReviewBench({
       document.querySelector("#download-approval").addEventListener("click", () => {
         const copyStatus = document.querySelector("#copy-status");
         try {
-          const record = createApprovedH5Record(removeBlankFindings(buildReviewDraft()));
+          const record = createApprovedH5Record(
+            removeBlankFindings(buildReviewDraft()),
+            { contract: approvalContract },
+          );
           downloadJson(record);
           copyStatus.value = "Canonical Approved attestation downloaded; replace h5/approval.json only after verification.";
         } catch (error) {

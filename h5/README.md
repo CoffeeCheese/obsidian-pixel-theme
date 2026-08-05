@@ -10,7 +10,9 @@ Fixture bytes are pinned by `fixture-content.v1.json`. A missing file, symlink e
 
 ## Transient review bench
 
-After every selected fixture is captured, the runner builds and opens a self-contained `review.html` inside the owned operating-system temporary directory. The page binds the captured views to the exact `theme.css` and `manifest.json` hashes, source commit/worktree state, fixture and rubric versions, Obsidian version, desktop/zoom state, dedicated Vault/profile, and capture time.
+Before workspace mutation, the guided command executes the repository's actual Node contract suite; failure vetoes the run rather than being rewritten as a passing fact. After runtime preflight it clears the dedicated Obsidian error and console buffers. Every fixture must then pass package/environment identity, topology, transition, required-control and content checks; after the final capture, both runtime buffers must still be empty.
+
+After every selected fixture is captured and the objective veto check succeeds, the runner builds and opens a self-contained `review.html` inside the owned operating-system temporary directory. The page binds the captured views to the exact `theme.css` and `manifest.json` hashes, source commit/worktree state, fixture and rubric versions, Obsidian version, desktop/zoom state, dedicated Vault/profile, capture time, and the objective results that actually ran.
 
 The default run presents all ten views grouped by canonical/narrow state and native topology. View A and View B can be inspected side by side with synchronized zoom/pan, overlaid at an adjustable opacity, or rendered with the browser's `difference` blend for localization. These are diagnostic views only: the bench does not calculate a percentage, threshold, perceptual measure, or equality result.
 
@@ -71,6 +73,7 @@ Without `--keep-temp`, evidence and the review page are removed after the origin
 - `verifyFixture({ fixture, phase, signal })`
 - `exerciseTransitions({ fixture, transitions, signal })`
 - `captureEvidence({ fixture, outputPath, signal })`
+- `verifyObjectiveVetoes({ signal })`
 - `restoreWorkspace(snapshot)`
 
-Preflight must report a dedicated Vault and profile, exact Obsidian/theme/zoom/platform/candidate-package identity, verified content IDs, and every capability declared by `H5_RUN_CAPABILITIES`. `installPackage` must return the installed hashes. `verifyFixture` returns the observed viewport, theme, native views, topology, and content IDs. The runner compares the observation to the catalog before capture and again after transitions; `exerciseTransitions` must return an independently observed `{ transition, verified: true }` result for every catalog transition. Adapters cannot weaken these checks.
+Preflight must report a dedicated Vault and profile, exact Obsidian/theme/zoom/platform/candidate-package identity, verified content IDs, and every capability declared by `H5_RUN_CAPABILITIES`. `installPackage` must return the installed hashes. `verifyFixture` returns the observed viewport, theme, native views, topology, and content IDs. The runner compares the observation to the catalog before capture and again after transitions; `exerciseTransitions` must return an independently observed `{ transition, verified: true }` result for every catalog transition. `verifyObjectiveVetoes` runs after all selected captures and must fail on any captured runtime error rather than manufacture a `Pass`. Adapters cannot weaken these checks.

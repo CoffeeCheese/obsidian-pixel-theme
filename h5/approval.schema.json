@@ -72,9 +72,13 @@
     },
     "objectiveResults": {
       "type": "array",
-      "minItems": 5,
-      "maxItems": 5,
+      "minItems": 8,
+      "maxItems": 8,
       "prefixItems": [
+        {
+          "$ref": "#/$defs/passResult",
+          "properties": { "check": { "const": "repository-contracts" } }
+        },
         {
           "$ref": "#/$defs/passResult",
           "properties": { "check": { "const": "package-identity" } }
@@ -94,6 +98,14 @@
         {
           "$ref": "#/$defs/passResult",
           "properties": { "check": { "const": "transition-observations" } }
+        },
+        {
+          "$ref": "#/$defs/passResult",
+          "properties": { "check": { "const": "native-control-boundaries" } }
+        },
+        {
+          "$ref": "#/$defs/passResult",
+          "properties": { "check": { "const": "error-buffers" } }
         }
       ],
       "items": false

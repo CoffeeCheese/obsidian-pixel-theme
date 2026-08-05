@@ -1,24 +1,33 @@
 import { readFile } from "node:fs/promises";
 
-export const H5_APPROVAL_GATE_IDS = Object.freeze([
-  "workspace-composition",
-  "material-depth",
-  "semantic-color",
-  "typography-geometry",
-  "hardware-identity",
-  "four-state-continuity",
-]);
+export const H5_APPROVAL_CONTRACT = Object.freeze({
+  gateIds: Object.freeze([
+    "workspace-composition",
+    "material-depth",
+    "semantic-color",
+    "typography-geometry",
+    "hardware-identity",
+    "four-state-continuity",
+  ]),
+  objectiveChecks: Object.freeze([
+    "repository-contracts",
+    "package-identity",
+    "runtime-environment",
+    "fixture-matrix",
+    "topology-observations",
+    "transition-observations",
+    "native-control-boundaries",
+    "error-buffers",
+  ]),
+  approvalStatement:
+    "I am the authorized visual owner and approve this exact Pixel H5 artifact.",
+});
 
-export const H5_APPROVAL_OBJECTIVE_CHECKS = Object.freeze([
-  "package-identity",
-  "runtime-environment",
-  "fixture-matrix",
-  "topology-observations",
-  "transition-observations",
-]);
+export const H5_APPROVAL_GATE_IDS = H5_APPROVAL_CONTRACT.gateIds;
+export const H5_APPROVAL_OBJECTIVE_CHECKS =
+  H5_APPROVAL_CONTRACT.objectiveChecks;
 
-const approvalStatement =
-  "I am the authorized visual owner and approve this exact Pixel H5 artifact.";
+const approvalStatement = H5_APPROVAL_CONTRACT.approvalStatement;
 const sha256Pattern = /^[a-f0-9]{64}$/;
 const commitPattern = /^[a-f0-9]{40}$/;
 const semverPattern = /^\d+\.\d+\.\d+$/;
@@ -96,23 +105,10 @@ function assertExactResultSet(actual, expectedIds, label, idKey) {
 }
 
 export function createApprovedH5Record(reviewDraft, options = {}) {
-  const gateIds = [
-    "workspace-composition",
-    "material-depth",
-    "semantic-color",
-    "typography-geometry",
-    "hardware-identity",
-    "four-state-continuity",
-  ];
-  const objectiveChecks = [
-    "package-identity",
-    "runtime-environment",
-    "fixture-matrix",
-    "topology-observations",
-    "transition-observations",
-  ];
-  const statement =
-    "I am the authorized visual owner and approve this exact Pixel H5 artifact.";
+  const contract = options.contract || H5_APPROVAL_CONTRACT;
+  const gateIds = contract.gateIds;
+  const objectiveChecks = contract.objectiveChecks;
+  const statement = contract.approvalStatement;
   const fail = (message) => {
     throw new Error(message);
   };

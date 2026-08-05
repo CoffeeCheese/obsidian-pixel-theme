@@ -56,6 +56,13 @@ function terminalValue(output) {
   return line?.replace(/^[^:]+:\s*/, "").trim() || "";
 }
 
+function assertEmptyCapturedBuffer(output, label) {
+  const normalized = output.trim();
+  if (!/^No (?:errors|console messages) captured\.$/i.test(normalized)) {
+    throw new Error(`${label} vetoed H5 approval: ${normalized || "unknown output"}`);
+  }
+}
+
 function workspaceChangeCode(layout, colorTheme) {
   const serializedLayout = JSON.stringify(layout);
   const serializedTheme = JSON.stringify(colorTheme);
@@ -139,6 +146,8 @@ export async function createObsidianCliAdapter({
         "eval",
         "dev:cdp",
         "dev:screenshot",
+        "dev:errors",
+        "dev:console",
       ]) {
         await execute(["help", helpCommand], { signal });
       }
@@ -156,6 +165,10 @@ export async function createObsidianCliAdapter({
       }
 
       await command(["dev:debug", "on"], { signal });
+      await Promise.all([
+        command(["dev:errors", "clear"], { signal }),
+        command(["dev:console", "clear"], { signal }),
+      ]);
       const runtime = await evaluate(
         `JSON.stringify({desktop:!document.body.classList.contains("is-mobile"),zoomFactor:(()=>{try{return require("electron").webFrame.getZoomFactor()}catch{return null}})(),vaultPath:app.vault.adapter.getBasePath()})`,
         { signal },
@@ -266,6 +279,16 @@ export async function createObsidianCliAdapter({
     async captureEvidence({ outputPath, signal }) {
       await command(["dev:screenshot", `path=${outputPath}`], { signal });
       return outputPath;
+    },
+
+    async verifyObjectiveVetoes({ signal }) {
+      const [errors, consoleErrors] = await Promise.all([
+        command(["dev:errors"], { signal }),
+        command(["dev:console", "level=error", "limit=50"], { signal }),
+      ]);
+      assertEmptyCapturedBuffer(errors, "Obsidian captured errors");
+      assertEmptyCapturedBuffer(consoleErrors, "Obsidian error-level console buffer");
+      return [{ check: "error-buffers", result: "Pass" }];
     },
 
     async restoreWorkspace(snapshot) {
