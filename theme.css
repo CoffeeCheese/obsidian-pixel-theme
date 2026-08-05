@@ -2590,6 +2590,276 @@ body:not(.is-mobile) .workspace.workspace .metadata-property:last-child {
   border-block-end: 0;
 }
 
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .markdown-source-view,
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .markdown-reading-view {
+  container-type: inline-size;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-container {
+  --pixel-property-sheet-width: min(calc(100cqi - 56px), 820px);
+  inline-size: var(--pixel-property-sheet-width);
+  max-inline-size: none;
+  margin-block-start: 44px;
+  margin-block-end: var(--pixel-space-8);
+  margin-inline-start: calc((100% - var(--pixel-property-sheet-width)) / 2);
+  padding: 0;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-properties-heading {
+  display: flex;
+  min-block-size: 0;
+  margin: 0 0 13px;
+  padding: 0;
+  align-items: center;
+  gap: 10px;
+  color: var(--pixel-text);
+  font-family: var(--pixel-font-identity);
+  font-size: 11px;
+  font-weight: 720;
+  line-height: 1;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-properties-heading .collapse-indicator {
+  position: static;
+  display: block;
+  flex: 0 0 auto;
+  inline-size: 6px;
+  block-size: 6px;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  inset: auto;
+  transform: none;
+  background-color: var(--pixel-cyan);
+  box-shadow: 8px 0 0 var(--pixel-amber-text), 0 8px 0 rgb(from var(--pixel-cyan) r g b/45%);
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-properties-heading .collapse-indicator svg {
+  inline-size: 0;
+  block-size: 0;
+  opacity: 0;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] :is(.metadata-content, .metadata-properties) {
+  margin: 0;
+  padding: 0;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property {
+  display: flex;
+  min-block-size: 36px;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-key {
+  display: flex;
+  flex: 0 0 165px;
+  min-inline-size: 0;
+  padding: 0;
+  align-items: center;
+  gap: 10px;
+  background-color: transparent;
+  color: var(--pixel-text-muted);
+  font-family: var(--pixel-font-monospace);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-value {
+  display: flex;
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  padding: 0;
+  align-items: center;
+  background-color: transparent;
+  color: var(--pixel-text);
+  font-family: var(--pixel-font-text);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-icon {
+  display: grid;
+  flex: 0 0 17px;
+  inline-size: 17px;
+  block-size: 17px;
+  padding: 0;
+  place-items: center;
+  color: var(--pixel-text-muted);
+  overflow: visible;
+  font-family: var(--pixel-font-monospace);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 650;
+  line-height: 1;
+  text-align: center;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-icon::before {
+  content: "·";
+  grid-area: 1/1;
+  pointer-events: none;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:has(.metadata-property-value[data-property-type=text]) .metadata-property-icon::before,
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:has(.metadata-property-value[data-property-type=multitext]) .metadata-property-icon::before {
+  content: "≡";
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:has(.metadata-property-value[data-property-type=number]) .metadata-property-icon::before {
+  content: "01";
+  font-size: 9px;
+  letter-spacing: -1px;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:has(.metadata-property-value[data-property-type=date]) .metadata-property-icon::before,
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:has(.metadata-property-value[data-property-type=datetime]) .metadata-property-icon::before,
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:has(.metadata-property-value[data-property-type=checkbox]) .metadata-property-icon::before {
+  content: "□";
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:has(.metadata-property-value[data-property-type=tags]) .metadata-property-icon::before,
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:has(.metadata-property-value[data-property-type=aliases]) .metadata-property-icon::before {
+  content: "◇";
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-icon svg {
+  grid-area: 1/1;
+  inline-size: 0;
+  block-size: 0;
+  opacity: 0;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property :is(.metadata-property-key-input,
+.metadata-input,
+.metadata-input-text,
+.metadata-input-longtext,
+.metadata-link-inner,
+.multi-select-container) {
+  min-block-size: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-key-input {
+  color: var(--pixel-text-muted);
+  font-family: inherit;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-value :is(.metadata-input,
+.metadata-input-longtext,
+.metadata-link-inner,
+.multi-select-container) {
+  color: var(--pixel-text);
+  font-family: inherit;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-value[data-property-type=date] > .clickable-icon,
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-value[data-property-type=datetime] > .clickable-icon {
+  margin-inline-start: 0;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-input-longtext {
+  display: block;
+  inline-size: 100%;
+  max-inline-size: 100%;
+  padding-block: 6px;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  line-height: 1.55;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:focus-within {
+  outline: 0;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:has(.metadata-property-key:focus-within) {
+  padding-block-end: 64px;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-key:focus-within {
+  min-block-size: 32px;
+  padding-inline: 6px 8px;
+  background-color: color-mix(in srgb, var(--pixel-cyan) 8%, transparent);
+  box-shadow: inset 3px 0 0 var(--pixel-cyan);
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-key:focus-within .metadata-property-key-input {
+  color: var(--pixel-text);
+  caret-color: var(--pixel-cyan);
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-value:focus-within {
+  background-color: color-mix(in srgb, var(--pixel-cyan) 4%, transparent);
+  box-shadow: inset 0 -2px 0 var(--pixel-cyan);
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .multi-select-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .multi-select-pill {
+  display: inline-flex;
+  min-block-size: 0;
+  margin: 2px 5px 2px 0;
+  padding: 2px 9px;
+  border: var(--pixel-border-decoration) solid rgb(from var(--pixel-cyan) r g b/35%);
+  border-radius: 6px;
+  background-color: var(--pixel-nav-label);
+  color: var(--pixel-cyan);
+  box-shadow: inset 0 -2px 0 rgb(from var(--pixel-cyan) r g b/16%);
+  font-size: 11px;
+  line-height: 18px;
+  white-space: nowrap;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-add-button {
+  min-block-size: 0;
+  margin: 6px 0 0 -4px;
+  padding: 5px 7px;
+  border-radius: 6px;
+  color: var(--pixel-text-muted);
+  font-size: 12px;
+}
+
+body:not(.is-mobile):has(.workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-key:focus-within) .suggestion-container.mod-property-key {
+  border: var(--pixel-border-decoration) solid var(--pixel-cyan);
+  border-radius: 0 0 6px 6px;
+  background-color: var(--pixel-paper);
+  box-shadow: 3px 3px 0 color-mix(in srgb, var(--pixel-cyan) 24%, transparent);
+}
+
+body:not(.is-mobile):has(.workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-key:focus-within) .suggestion-container.mod-property-key .suggestion-item {
+  box-sizing: border-box;
+  min-block-size: 44px;
+  padding: 6px 10px;
+  border-radius: 0 0 5px 5px;
+  color: var(--pixel-text);
+  font-family: var(--pixel-font-monospace);
+  font-size: 12px;
+}
+
+body:not(.is-mobile):has(.workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-key:focus-within) .suggestion-container.mod-property-key .suggestion-item.is-selected {
+  background-color: var(--pixel-nav-label);
+  color: var(--pixel-text);
+}
+
+body:not(.is-mobile):has(.workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-key:focus-within) .suggestion-container.mod-property-key .suggestion-flair {
+  color: var(--pixel-cyan);
+}
+
 body:not(.is-mobile) .workspace.workspace :is(.metadata-add-button,
 .metadata-show-source-button) {
   border: 0;

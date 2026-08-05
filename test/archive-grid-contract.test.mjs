@@ -272,3 +272,110 @@ test("H5 Archive Grid keeps native controls and metadata light instead of cartri
     "var(--pixel-border-decoration) solid var(--pixel-line)",
   );
 });
+
+test("H5 Archive Grid reproduces the prototype property sheet in the central reader", async () => {
+  const css = await readTheme();
+  const scope =
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown]";
+  const view = ruleBodyForSelector(css, `${scope} .markdown-source-view`);
+  const sheet = ruleBodyForSelector(css, `${scope} .metadata-container`);
+  const heading = ruleBodyForSelector(css, `${scope} .metadata-properties-heading`);
+  const marker = ruleBodyForSelector(
+    css,
+    `${scope} .metadata-properties-heading .collapse-indicator`,
+  );
+  const markerIcon = ruleBodyForSelector(
+    css,
+    `${scope} .metadata-properties-heading .collapse-indicator svg`,
+  );
+  const row = ruleBodyForSelector(css, `${scope} .metadata-property`);
+  const key = ruleBodyForSelector(css, `${scope} .metadata-property-key`);
+  const value = ruleBodyForSelector(css, `${scope} .metadata-property-value`);
+  const propertyIcon = ruleBodyForSelector(css, `${scope} .metadata-property-icon`);
+  const propertyIconGlyph = ruleBodyForSelector(
+    css,
+    `${scope} .metadata-property-icon::before`,
+  );
+  const textIconGlyph = ruleBodyForSelector(
+    css,
+    `${scope} .metadata-property:has(.metadata-property-value[data-property-type=text]) .metadata-property-icon::before`,
+  );
+  const numberIconGlyph = ruleBodyForSelector(
+    css,
+    `${scope} .metadata-property:has(.metadata-property-value[data-property-type=number]) .metadata-property-icon::before`,
+  );
+  const dateIconGlyph = ruleBodyForSelector(
+    css,
+    `${scope} .metadata-property:has(.metadata-property-value[data-property-type=date]) .metadata-property-icon::before`,
+  );
+  const tagsIconGlyph = ruleBodyForSelector(
+    css,
+    `${scope} .metadata-property:has(.metadata-property-value[data-property-type=tags]) .metadata-property-icon::before`,
+  );
+  const propertyIconSvg = ruleBodyForSelector(
+    css,
+    `${scope} .metadata-property-icon svg`,
+  );
+  const focusedRow = ruleBodyForSelector(
+    css,
+    `${scope} .metadata-property:focus-within`,
+  );
+  const keyEditingRow = ruleBodyForSelector(
+    css,
+    `${scope} .metadata-property:has(.metadata-property-key:focus-within)`,
+  );
+  const focusedKey = ruleBodyForSelector(
+    css,
+    `${scope} .metadata-property-key:focus-within`,
+  );
+  const longText = ruleBodyForSelector(
+    css,
+    `${scope} .metadata-input-longtext`,
+  );
+  const dateAction = ruleBodyForSelector(
+    css,
+    `${scope} .metadata-property-value[data-property-type=date] > .clickable-icon`,
+  );
+  const pill = ruleBodyForSelector(css, `${scope} .multi-select-pill`);
+
+  assert.equal(declaration(view, "container-type"), "inline-size");
+  assert.equal(
+    declaration(sheet, "--pixel-property-sheet-width"),
+    "min(calc(100cqi - 56px), 820px)",
+  );
+  assert.equal(declaration(sheet, "inline-size"), "var(--pixel-property-sheet-width)");
+  assert.equal(declaration(sheet, "margin-block-start"), "44px");
+  assert.equal(declaration(heading, "gap"), "10px");
+  assert.equal(declaration(heading, "font-family"), "var(--pixel-font-identity)");
+  assert.equal(declaration(heading, "font-size"), "11px");
+  assert.equal(declaration(heading, "font-weight"), "720");
+  assert.equal(declaration(marker, "inline-size"), "6px");
+  assert.equal(declaration(marker, "block-size"), "6px");
+  assert.equal(declaration(marker, "position"), "static");
+  assert.match(declaration(marker, "box-shadow"), /var\(--pixel-amber-text\)/);
+  assert.equal(declaration(markerIcon, "opacity"), "0");
+  assert.equal(declaration(row, "min-block-size"), "36px");
+  assert.equal(declaration(row, "border"), "0");
+  assert.equal(declaration(key, "flex"), "0 0 165px");
+  assert.equal(declaration(key, "font-family"), "var(--pixel-font-monospace)");
+  assert.equal(declaration(value, "font-family"), "var(--pixel-font-text)");
+  assert.equal(declaration(propertyIcon, "font-family"), "var(--pixel-font-monospace)");
+  assert.equal(declaration(propertyIconGlyph, "content"), '"·"');
+  assert.equal(declaration(textIconGlyph, "content"), '"≡"');
+  assert.equal(declaration(numberIconGlyph, "content"), '"01"');
+  assert.equal(declaration(dateIconGlyph, "content"), '"□"');
+  assert.equal(declaration(tagsIconGlyph, "content"), '"◇"');
+  assert.equal(declaration(propertyIconSvg, "inline-size"), "0");
+  assert.equal(declaration(propertyIconSvg, "block-size"), "0");
+  assert.equal(declaration(propertyIconSvg, "opacity"), "0");
+  assert.equal(declaration(focusedRow, "outline"), "0");
+  assert.equal(declaration(keyEditingRow, "padding-block-end"), "64px");
+  assert.equal(
+    declaration(focusedKey, "background-color"),
+    "color-mix(in srgb, var(--pixel-cyan) 8%, transparent)",
+  );
+  assert.equal(declaration(longText, "white-space"), "normal");
+  assert.equal(declaration(longText, "overflow-wrap"), "anywhere");
+  assert.equal(declaration(dateAction, "margin-inline-start"), "0");
+  assert.equal(declaration(pill, "border-radius"), "6px");
+});
