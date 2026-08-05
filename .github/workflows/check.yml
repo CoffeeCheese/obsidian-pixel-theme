@@ -23,3 +23,4 @@ jobs:
       - run: git diff --exit-code -- theme.css
       - run: npm test
       - run: npm run check
+      - run: npm run visual:h5 -- --verify-approval

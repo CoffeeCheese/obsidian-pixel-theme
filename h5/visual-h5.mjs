@@ -4,6 +4,7 @@ import path from "node:path";
 import process from "node:process";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
+import { verifyApprovalFile } from "./approval.mjs";
 import { readFixtureCatalog } from "./fixture-catalog.mjs";
 import {
   assertInteractiveReview,
@@ -26,12 +27,19 @@ export function parseVisualH5Arguments(argumentsList) {
     themeFilter: undefined,
     keepTemp: false,
     adapterPath: undefined,
+    verifyApproval: false,
+    requireApproval: false,
+    approvalPath: undefined,
     help: false,
   };
 
   for (const argument of argumentsList) {
     if (argument === "--keep-temp") {
       options.keepTemp = true;
+    } else if (argument === "--verify-approval") {
+      options.verifyApproval = true;
+    } else if (argument === "--require-approval") {
+      options.requireApproval = true;
     } else if (argument === "--help" || argument === "-h") {
       options.help = true;
     } else if (argument.startsWith("--case=")) {
@@ -40,6 +48,8 @@ export function parseVisualH5Arguments(argumentsList) {
       options.themeFilter = optionValue(argument, "--theme");
     } else if (argument.startsWith("--adapter=")) {
       options.adapterPath = optionValue(argument, "--adapter");
+    } else if (argument.startsWith("--approval=")) {
+      options.approvalPath = optionValue(argument, "--approval");
     } else {
       throw new Error(`unknown option ${argument}`);
     }
@@ -51,6 +61,21 @@ export function parseVisualH5Arguments(argumentsList) {
   ) {
     throw new Error("--theme must be light or dark");
   }
+  if (options.requireApproval && !options.verifyApproval) {
+    throw new Error("--require-approval requires --verify-approval");
+  }
+  if (options.approvalPath !== undefined && !options.verifyApproval) {
+    throw new Error("--approval requires --verify-approval");
+  }
+  if (
+    options.verifyApproval &&
+    (options.caseFilter !== undefined ||
+      options.themeFilter !== undefined ||
+      options.keepTemp ||
+      options.adapterPath !== undefined)
+  ) {
+    throw new Error("capture options cannot be used with --verify-approval");
+  }
   return options;
 }
 
@@ -61,6 +86,9 @@ Options:
   --theme=<light|dark>         Run only one theme companion
   --keep-temp                 Retain the owned OS-temporary run directory
   --adapter=<module>          Inject an adapter module instead of the built-in CLI adapter
+  --verify-approval           Verify a present approval without starting Obsidian
+  --require-approval          Fail when approval is absent (tagged draft releases)
+  --approval=<path>           Verify a specific record instead of h5/approval.json
   --help                      Show this help
 `;
 
@@ -85,6 +113,37 @@ export async function main(argumentsList = process.argv.slice(2)) {
   if (options.help) {
     process.stdout.write(visualH5Help);
     return;
+  }
+  if (options.verifyApproval) {
+    const [catalog, packageIdentity] = await Promise.all([
+      readFixtureCatalog(new URL("./fixtures.v1.json", import.meta.url)),
+      readPackageIdentity({
+        themePath: path.join(root, "theme.css"),
+        manifestPath: path.join(root, "manifest.json"),
+      }),
+    ]);
+    const result = await verifyApprovalFile({
+      approvalPath: options.approvalPath
+        ? path.resolve(options.approvalPath)
+        : path.join(root, "h5", "approval.json"),
+      requireApproval: options.requireApproval,
+      binding: {
+        themeCssSha256: packageIdentity.themeCssSha256,
+        fixtureVersion: catalog.fixtureVersion,
+        rubricVersion: catalog.rubricVersion,
+        requiredObsidianVersion: catalog.requiredObsidianVersion,
+      },
+    });
+    if (result.status === "absent") {
+      process.stdout.write(
+        "No H5 approval record is present; development verification remains permitted.\n",
+      );
+    } else {
+      process.stdout.write(
+        `H5 approval is current and signed by ${result.reviewer} at ${result.reviewedAt}.\n`,
+      );
+    }
+    return result;
   }
   assertInteractiveReview();
 

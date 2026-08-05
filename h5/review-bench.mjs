@@ -1,6 +1,8 @@
 import { writeFile } from "node:fs/promises";
 import path from "node:path";
 
+import { createApprovedH5Record } from "./approval.mjs";
+
 function escapeHtml(value) {
   return String(value)
     .replaceAll("&", "&amp;")
@@ -190,6 +192,7 @@ export async function writeReviewBench({
   environmentIdentity,
   source,
   capturedAt,
+  objectiveResults,
 }) {
   const completeMatrix = coversCompleteMatrix(catalog, evidence);
   const identity = [
@@ -385,7 +388,11 @@ export async function writeReviewBench({
       </fieldset>
       <label class="identity-note"><span>Identity rationale</span><textarea data-human-decision disabled name="h5-identity-rationale" rows="4" placeholder="Record the holistic visual judgment in the owner's own words."></textarea></label>
     </article>
-    <div class="review-actions"><button data-human-decision disabled class="copy-review" id="copy-review" type="button">Copy text review draft</button><output id="copy-status" aria-live="polite">The draft contains text findings and identities only.</output></div>
+    <div class="review-actions">
+      <button data-human-decision disabled class="copy-review" id="copy-review" type="button">Copy text review draft</button>
+      <button data-human-decision disabled class="copy-review" id="download-approval" type="button">Download Approved attestation</button>
+      <output id="copy-status" aria-live="polite">Only a fully passing named-owner review can export canonical approval JSON.</output>
+    </div>
   </section>` : `<section class="diagnostic-only" aria-labelledby="diagnostic-only-heading">
     <p class="eyebrow">Approval controls unavailable</p>
     <h2 id="diagnostic-only-heading">Focused diagnostic rerun</h2>
@@ -396,6 +403,7 @@ export async function writeReviewBench({
     const visualGateIds = ${serializeForScript(visualGates.map(({ id }) => id))};
     const validateReviewDraft = ${validateReviewDraft.toString()};
     const validateVisualOwnerClaim = ${validateVisualOwnerClaim.toString()};
+    const createApprovedH5Record = ${createApprovedH5Record.toString()};
     const sourceAuthor = ${serializeForScript(source.author || "")};
     const selectA = document.querySelector("#view-a");
     const selectB = document.querySelector("#view-b");
@@ -511,15 +519,7 @@ export async function writeReviewBench({
         copyBuffer.remove();
         if (!copied) throw new Error("browser clipboard access was denied");
       }
-      reviewerName.addEventListener("input", updateHumanAuthority);
-      ownerAuthority.addEventListener("change", updateHumanAuthority);
-      document.querySelectorAll("[data-add-finding]").forEach((button) => button.addEventListener("click", () => {
-        const container = document.querySelector('[data-findings-for="' + button.dataset.addFinding + '"]');
-        const clone = container.querySelector(".finding-row").cloneNode(true);
-        clone.querySelectorAll("input, textarea").forEach((control) => { control.value = ""; });
-        container.append(clone);
-      }));
-      document.querySelector("#copy-review").addEventListener("click", async () => {
+      function buildReviewDraft() {
         const gates = visualGateIds.map((gateId) => {
           const card = document.querySelector('[data-gate="' + gateId + '"]');
           return {
@@ -532,7 +532,7 @@ export async function writeReviewBench({
             })),
           };
         });
-        const reviewDraft = {
+        return {
           kind: "h5-visual-review-draft",
           reviewer: reviewerName.value.trim(),
           source: ${serializeForScript(source)},
@@ -541,12 +541,43 @@ export async function writeReviewBench({
           fixtureVersion: ${serializeForScript(catalog.fixtureVersion)},
           rubricVersion: ${serializeForScript(catalog.rubricVersion)},
           capturedAt: ${serializeForScript(capturedAt)},
+          objectiveResults: ${serializeForScript(objectiveResults)},
           gates,
           identity: {
             decision: document.querySelector('input[name="h5-identity"]:checked')?.value || null,
             rationale: document.querySelector('[name="h5-identity-rationale"]').value.trim(),
           },
         };
+      }
+      function removeBlankFindings(reviewDraft) {
+        for (const gate of reviewDraft.gates) {
+          gate.findings = gate.findings.filter(
+            (finding) => finding.region !== "" && finding.finding !== "",
+          );
+        }
+        return reviewDraft;
+      }
+      function downloadJson(record) {
+        const blob = new Blob([JSON.stringify(record, null, 2) + "\\n"], {
+          type: "application/json",
+        });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "approval.json";
+        link.click();
+        URL.revokeObjectURL(url);
+      }
+      reviewerName.addEventListener("input", updateHumanAuthority);
+      ownerAuthority.addEventListener("change", updateHumanAuthority);
+      document.querySelectorAll("[data-add-finding]").forEach((button) => button.addEventListener("click", () => {
+        const container = document.querySelector('[data-findings-for="' + button.dataset.addFinding + '"]');
+        const clone = container.querySelector(".finding-row").cloneNode(true);
+        clone.querySelectorAll("input, textarea").forEach((control) => { control.value = ""; });
+        container.append(clone);
+      }));
+      document.querySelector("#copy-review").addEventListener("click", async () => {
+        const reviewDraft = buildReviewDraft();
         const validation = validateReviewDraft(reviewDraft);
         const copyStatus = document.querySelector("#copy-status");
         if (!validation.valid) {
@@ -554,16 +585,21 @@ export async function writeReviewBench({
           document.querySelector('[data-gate="' + validation.gateId + '"] .finding-row input').focus();
           return;
         }
-        for (const gate of reviewDraft.gates) {
-          gate.findings = gate.findings.filter(
-            (finding) => finding.region !== "" && finding.finding !== "",
-          );
-        }
         try {
-          await copyText(JSON.stringify(reviewDraft, null, 2));
+          await copyText(JSON.stringify(removeBlankFindings(reviewDraft), null, 2));
           copyStatus.value = "Text review draft copied. It is not an approval attestation.";
         } catch (error) {
           copyStatus.value = "Copy failed: " + error.message;
+        }
+      });
+      document.querySelector("#download-approval").addEventListener("click", () => {
+        const copyStatus = document.querySelector("#copy-status");
+        try {
+          const record = createApprovedH5Record(removeBlankFindings(buildReviewDraft()));
+          downloadJson(record);
+          copyStatus.value = "Canonical Approved attestation downloaded; replace h5/approval.json only after verification.";
+        } catch (error) {
+          copyStatus.value = "Approval not exported: " + error.message;
         }
       });
       updateHumanAuthority();

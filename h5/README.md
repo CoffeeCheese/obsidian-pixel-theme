@@ -14,7 +14,7 @@ After every selected fixture is captured, the runner builds and opens a self-con
 
 The default run presents all ten views grouped by canonical/narrow state and native topology. View A and View B can be inspected side by side with synchronized zoom/pan, overlaid at an adjustable opacity, or rendered with the browser's `difference` blend for localization. These are diagnostic views only: the bench does not calculate a percentage, threshold, perceptual measure, or equality result.
 
-The six non-compensatory visual gates each expose only `Pass`, `Revise`, and `Fail`, with repeatable fixture/region findings. H5 Identity is a separate holistic `Approved` or `Rejected` judgment and is never derived from the local gates. All decision controls remain disabled until a named reviewer explicitly claims visual-owner authority; the automation labels, generic implementer placeholders, and displayed source author are rejected as owner names. A `Revise` or `Fail` draft cannot be copied without at least one complete fixture, region, and finding. Automation and source-author identity remain read-only provenance and cannot mark decisions. The optional clipboard draft contains text and identities only; it is not an approval attestation.
+The six non-compensatory visual gates each expose only `Pass`, `Revise`, and `Fail`, with repeatable fixture/region findings. H5 Identity is a separate holistic `Approved` or `Rejected` judgment and is never derived from the local gates. All decision controls remain disabled until a named reviewer explicitly claims visual-owner authority; the automation labels, generic implementer placeholders, and displayed source author are rejected as owner names. A `Revise` or `Fail` draft cannot be copied without at least one complete fixture, region, and finding. Automation and source-author identity remain read-only provenance and cannot mark decisions. The optional clipboard draft contains text and identities only; it is not an approval attestation. The separate approval download fails closed unless all objective checks and six gates are `Pass`, H5 Identity is `Approved`, and the clean reviewed commit is signed by the authorized named owner.
 
 Focused fixture/theme runs show the same comparison tools but no gate, owner, H5 Identity, or draft controls. Only an exact full ten-view matrix can record decisions.
 
@@ -27,9 +27,29 @@ For a full run, verify the browser-visible behavior before pressing Enter:
 1. Confirm all ten fixture cards appear under canonical/narrow and single/split groups, with the exact identity panel visible.
 2. Switch among side-by-side, overlay, and difference localization; confirm overlay opacity appears only in overlay mode and the difference canvas renders.
 3. Change zoom and drag the comparison surface; both selected images must retain the same scale and translation.
-4. Confirm every decision is disabled, then enter a named visual owner and select the authority checkbox; gate, finding, identity, and copy controls must unlock together.
+4. Confirm every decision is disabled, then enter a named visual owner and select the authority checkbox; gate, finding, identity, draft, and approval controls must unlock together.
 5. Select `Revise` or `Fail` without a complete localized finding; text export must be rejected with an actionable gate message.
-6. Run a focused `--case`/`--theme` session and confirm it is explicitly diagnostic-only with no human decision controls.
+6. Confirm `Revise`, `Fail`, or `H5 Identity: Rejected` cannot download an approval, while six `Pass` results plus `H5 Identity: Approved` download `approval.json` without embedded visual evidence.
+7. Run a focused `--case`/`--theme` session and confirm it is explicitly diagnostic-only with no human decision controls.
+
+## Exact-artifact approval
+
+`approval.schema.json` defines the canonical strict JSON record. A valid record binds the generated `theme.css` SHA-256, clean reviewed commit provenance, fixture and rubric versions, exact required Obsidian version, review timestamp, named visual owner, objective results, the six visual gates, H5 Identity, and its named-owner signature. Only the stylesheet hash and the three environment versions determine freshness; a documentation- or test-only commit change does not manufacture a new visual review requirement.
+
+The current record, when one exists, is `h5/approval.json`. Replace that one file only with a newly downloaded record that passes verification; normal Git history is the text-only audit trail for the superseded record. Do not commit captured pages or visual evidence.
+
+```sh
+# Ordinary CI semantics: absence is allowed; any present validity claim is verified.
+npm run visual:h5 -- --verify-approval
+
+# Tagged draft-release semantics: a current signed approval is mandatory.
+npm run visual:h5 -- --verify-approval --require-approval
+
+# Inspect a downloaded candidate before replacing the current record.
+npm run visual:h5 -- --verify-approval --require-approval --approval=/path/to/approval.json
+```
+
+Verification is desktop-free: it reads the committed build, fixture catalog, and JSON record without opening Obsidian or constructing captures. The tag workflow runs it after the reproducible build/check path and before draft creation.
 
 ## Filters and temporary evidence
 

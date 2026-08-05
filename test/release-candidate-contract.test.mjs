@@ -80,7 +80,13 @@ test("bundled font attribution matches the redistributed files", async () => {
 });
 
 test("CI and draft release run the complete locked verification path", async () => {
-  for (const file of [".github/workflows/check.yml", ".github/workflows/release.yml"]) {
+  const workflows = {
+    ".github/workflows/check.yml":
+      "npm run visual:h5 -- --verify-approval",
+    ".github/workflows/release.yml":
+      "npm run visual:h5 -- --verify-approval --require-approval",
+  };
+  for (const [file, approvalCommand] of Object.entries(workflows)) {
     const workflow = await read(file);
     assert.match(workflow, /node-version:\s*24/);
     assert.match(workflow, /- run: npm ci/);
@@ -88,6 +94,7 @@ test("CI and draft release run the complete locked verification path", async () 
     assert.match(workflow, /- run: git diff --exit-code -- theme\.css/);
     assert.match(workflow, /- run: npm test/);
     assert.match(workflow, /- run: npm run check/);
+    assert.ok(workflow.includes(`- run: ${approvalCommand}`));
     assert.ok(workflow.indexOf("npm ci") < workflow.indexOf("npm run build"));
     assert.ok(
       workflow.indexOf("npm run build") <
@@ -98,7 +105,18 @@ test("CI and draft release run the complete locked verification path", async () 
         workflow.indexOf("npm test"),
     );
     assert.ok(workflow.indexOf("npm test") < workflow.indexOf("npm run check"));
+    assert.ok(
+      workflow.indexOf("npm run check") < workflow.indexOf(approvalCommand),
+    );
   }
+});
+
+test("tagged draft verifies a required exact-artifact approval before creation", async () => {
+  const workflow = await read(".github/workflows/release.yml");
+  const approval = "npm run visual:h5 -- --verify-approval --require-approval";
+
+  assert.ok(workflow.indexOf("npm run build") < workflow.indexOf(approval));
+  assert.ok(workflow.indexOf(approval) < workflow.indexOf("gh release create"));
 });
 
 test("handoff documents separate prepared artifacts from pending manual validation", async () => {

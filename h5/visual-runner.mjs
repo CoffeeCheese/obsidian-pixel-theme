@@ -12,6 +12,7 @@ import path from "node:path";
 import { isDeepStrictEqual } from "node:util";
 
 import { pathLeavesDirectory } from "./path-boundary.mjs";
+import { H5_APPROVAL_OBJECTIVE_CHECKS } from "./approval.mjs";
 import { writeReviewBench } from "./review-bench.mjs";
 
 const ownershipFileName = ".pixel-h5-run.json";
@@ -374,6 +375,10 @@ export async function runVisualH5({
       environmentIdentity: preflight,
       source,
       capturedAt,
+      objectiveResults: H5_APPROVAL_OBJECTIVE_CHECKS.map((check) => ({
+        check,
+        result: "Pass",
+      })),
     });
     await assertEvidenceFile(benchPath, benchPath, ownedRun.runDirectory);
     await onEvent({ type: "review-bench", path: benchPath });

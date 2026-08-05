@@ -4,6 +4,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
 
+import { H5_APPROVAL_OBJECTIVE_CHECKS } from "../h5/approval.mjs";
 import { readFixtureCatalog } from "../h5/fixture-catalog.mjs";
 import { writeReviewBench } from "../h5/review-bench.mjs";
 
@@ -55,6 +56,10 @@ async function createBench(runDirectory, options = {}) {
       author: "Theme Implementer",
     },
     capturedAt: "2026-08-05T04:00:00.000Z",
+    objectiveResults: H5_APPROVAL_OBJECTIVE_CHECKS.map((check) => ({
+      check,
+      result: "Pass",
+    })),
   });
   return {
     benchPath,
@@ -141,6 +146,11 @@ test("full matrix exposes six named-owner gates and an independent H5 identity j
     assert.match(text, /Named visual owner/);
     assert.match(text, /Theme Implementer/);
     assert.match(text, /Automation · facts only/);
+    assert.match(text, /Download Approved attestation/);
+    assert.match(
+      text,
+      /Only a fully passing named-owner review can export canonical approval JSON/,
+    );
     assert.match(
       text,
       /Revise or Fail requires a fixture, region, and finding/,
@@ -150,6 +160,7 @@ test("full matrix exposes six named-owner gates and an independent H5 identity j
       /Visual owner must differ from automation and source-author identities/,
     );
     assert.doesNotMatch(text, /Pass selected|Approved selected/);
+    assert.match(html, /pixel-h5-exact-artifact-approval/);
   });
 });
 
@@ -167,7 +178,7 @@ test("focused rerun remains diagnostic-only and cannot record approval decisions
     assert.match(text, /full ten-view run is required to record decisions/i);
     assert.doesNotMatch(
       text,
-      /Named visual owner|Owner decision|Approved Revise Rejected|Copy text review draft/,
+      /Named visual owner|Owner decision|Approved Revise Rejected|Copy text review draft|Download Approved attestation/,
     );
   });
 });
