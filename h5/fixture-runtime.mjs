@@ -186,6 +186,13 @@ function typeAndFile(leaf) {
   };
 }
 
+function idAndType(leaf) {
+  return {
+    id: leaf.id,
+    type: leaf.state?.type,
+  };
+}
+
 export function transitionLayoutSignature(layout) {
   return {
     active: layout.active,
@@ -198,10 +205,10 @@ export function transitionLayoutSignature(layout) {
       })),
     },
     left: (layout.left?.children || []).flatMap((group) =>
-      (group.children || []).map(typeAndFile),
+      (group.children || []).map(idAndType),
     ),
     right: (layout.right?.children || []).flatMap((group) =>
-      (group.children || []).map(typeAndFile),
+      (group.children || []).map(idAndType),
     ),
   };
 }
@@ -222,13 +229,12 @@ export function transitionObservationCode() {
 }
 
 export function assertTransitionObservation(plan, observation) {
-  if (
-    !isDeepStrictEqual(
-      transitionLayoutSignature(observation.layout),
-      transitionLayoutSignature(plan.layout),
-    )
-  ) {
-    throw new Error(`${plan.transition} transition layout was not established`);
+  const actualSignature = transitionLayoutSignature(observation.layout);
+  const expectedSignature = transitionLayoutSignature(plan.layout);
+  if (!isDeepStrictEqual(actualSignature, expectedSignature)) {
+    throw new Error(
+      `${plan.transition} transition layout was not established; expected ${JSON.stringify(expectedSignature)}, received ${JSON.stringify(actualSignature)}`,
+    );
   }
   if (observation.rootGroupCount !== plan.layout.main.children.length) {
     throw new Error(`${plan.transition} transition produced an invalid root shell count`);
@@ -238,12 +244,127 @@ export function assertTransitionObservation(plan, observation) {
   }
 }
 
+function assertObservedRole(actual, expected, message) {
+  if (!isDeepStrictEqual(actual, expected)) {
+    throw new Error(
+      `${message}; expected ${JSON.stringify(expected)}, received ${JSON.stringify(actual)}`,
+    );
+  }
+}
+
+export function assertN1ShellObservation(fixture, observation) {
+  const expectedSpacing = fixture.topology.edgeFoldExpected ? "8px" : "12px";
+  assertObservedRole(
+    observation.workspace,
+    {
+      gridSize: "24px 24px",
+      gap: expectedSpacing,
+      padding: expectedSpacing,
+    },
+    `${fixture.id} must preserve the canonical canvas grid and workspace spacing`,
+  );
+  assertObservedRole(
+    observation.ribbon,
+    { shadowOffset: [4, 4], cornerRadii: [0, 0, 0, 0] },
+    `${fixture.id} ribbon must remain an independent square native utility`,
+  );
+  if (observation.sideModules.length !== 2) {
+    throw new Error(`${fixture.id} must expose two independent side modules`);
+  }
+  for (const sideModule of observation.sideModules) {
+    assertObservedRole(
+      sideModule,
+      { shadowOffset: [4, 4], cornerRadii: [0, 0, 0, 0] },
+      `${fixture.id} side modules must use the square side-module role`,
+    );
+  }
+  if (observation.rootGroups.length !== fixture.topology.rootGroups.length) {
+    throw new Error(`${fixture.id} must expose one Cockpit Unit per root tab group`);
+  }
+  for (const rootGroup of observation.rootGroups) {
+    assertObservedRole(
+      rootGroup,
+      {
+        shadowOffset: [5, 5],
+        borderWidths: [4, 4, 4, 4],
+        cornerRadii: [9, 9, 22, 9],
+      },
+      `${fixture.id} root groups must own the Cockpit Unit shadow role and contour`,
+    );
+  }
+  if (observation.statusBars.length !== 1) {
+    throw new Error(`${fixture.id} must expose the sole global Buffer Cartridge`);
+  }
+  assertObservedRole(
+    observation.statusBars[0],
+    {
+      shadowOffset: [3, 3],
+      borderWidths: [2, 2, 2, 2],
+      cornerRadii: [0, 0, 0, 0],
+      insetInlineEnd: 18,
+      insetBlockEnd: 14,
+    },
+    `${fixture.id} status bar must own the Buffer Cartridge role`,
+  );
+  if (observation.gridOwnerCount !== 1) {
+    throw new Error(`${fixture.id} canvas grid must belong only to the workspace`);
+  }
+  assertObservedRole(
+    observation.textZoom200,
+    {
+      rootGroupCount: fixture.topology.rootGroups.length,
+      statusBarCount: 1,
+      nativeActionsVisible: true,
+    },
+    `${fixture.id} must preserve native topology and actions at 200% text zoom`,
+  );
+}
+
 export function fixtureObservationCode(fixture) {
   const expectedReader = JSON.stringify(fixtureReaderPath(fixture));
   const expectedContentIds = JSON.stringify(fixture.requiredContentIds);
   const fixtureId = JSON.stringify(fixture.id);
   return `(()=>{${visibleControlsCode}
     const layout=app.workspace.getLayout();
+    const pixelValues=(value)=>[...value.matchAll(/(-?\\d+(?:\\.\\d+)?)px/g)].map(match=>Number(match[1]));
+    const shadowOffset=(style)=>pixelValues(style.boxShadow).slice(0,2);
+    const cornerRadii=(style)=>[
+      style.borderTopLeftRadius,
+      style.borderTopRightRadius,
+      style.borderBottomRightRadius,
+      style.borderBottomLeftRadius
+    ].map(value=>Number.parseFloat(value));
+    const borderWidths=(style)=>[
+      style.borderTopWidth,
+      style.borderRightWidth,
+      style.borderBottomWidth,
+      style.borderLeftWidth
+    ].map(value=>Number.parseFloat(value));
+    const squareRole=(element)=>{const style=getComputedStyle(element);return {shadowOffset:shadowOffset(style),cornerRadii:cornerRadii(style)}};
+    const framedRole=(element)=>{const style=getComputedStyle(element);return {shadowOffset:shadowOffset(style),borderWidths:borderWidths(style),cornerRadii:cornerRadii(style)}};
+    const bufferRole=(element)=>{const style=getComputedStyle(element);return {...framedRole(element),insetInlineEnd:Number.parseFloat(style.insetInlineEnd),insetBlockEnd:Number.parseFloat(style.insetBlockEnd)}};
+    const backgroundSizes=(style)=>style.backgroundSize.split(",").map(value=>value.trim());
+    const workspaceElement=document.querySelector(".workspace");
+    const workspaceStyle=getComputedStyle(workspaceElement);
+    const rootGroupElements=[...document.querySelectorAll(".workspace-split.mod-root .workspace-tabs")];
+    const statusBarElements=[...document.querySelectorAll(".status-bar")];
+    const shell={
+      workspace:{gridSize:[...new Set(backgroundSizes(workspaceStyle))].join(", "),gap:workspaceStyle.gap,padding:workspaceStyle.padding},
+      ribbon:squareRole(document.querySelector(".workspace-ribbon")),
+      sideModules:[...document.querySelectorAll(".workspace-split.mod-left-split:not(.is-sidedock-collapsed),.workspace-split.mod-right-split:not(.is-sidedock-collapsed)")].map(squareRole),
+      rootGroups:rootGroupElements.map(framedRole),
+      statusBars:statusBarElements.map(bufferRole),
+      gridOwnerCount:[...document.querySelectorAll("body *")].filter(element=>backgroundSizes(getComputedStyle(element)).includes("24px 24px")).length,
+      textZoom200:null
+    };
+    const originalZoom=document.body.style.zoom;
+    document.body.style.zoom="2";
+    shell.textZoom200={
+      rootGroupCount:document.querySelectorAll(".workspace-split.mod-root .workspace-tabs").length,
+      statusBarCount:document.querySelectorAll(".status-bar").length,
+      nativeActionsVisible:requiredControlSelectors.every(selector=>[...document.querySelectorAll(selector)].some(visible))
+    };
+    document.body.style.zoom=originalZoom;
     const normalizeType=(type)=>type==="file-properties"?"properties":type;
     const groups=(layout.main?.children||[]).map(group=>{
       const tabs=(group.children||[]).map(child=>normalizeType(child.state?.type));
@@ -287,6 +408,7 @@ export function fixtureObservationCode(fixture) {
         rootGroups:groups,
         nativeActionsVisible
       },
+      shell,
       requiredContentIds
     });
   })()`;

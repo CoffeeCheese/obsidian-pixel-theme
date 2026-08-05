@@ -8,6 +8,7 @@ import {
   verifyFixtureContent,
 } from "./fixture-content.mjs";
 import {
+  assertN1ShellObservation,
   assertTransitionObservation,
   buildFixtureLayout,
   buildTransitionPlans,
@@ -24,14 +25,14 @@ import { H5_RUN_CAPABILITIES } from "./visual-runner.mjs";
 
 const execFileAsync = promisify(execFile);
 
-function parseJsonOutput(output, label) {
+export function parseObsidianJsonOutput(output, label) {
   const trimmed = output.trim();
   for (const candidate of [
     trimmed,
     ...trimmed.split(/\r?\n/).reverse(),
   ]) {
     try {
-      const parsed = JSON.parse(candidate);
+      const parsed = JSON.parse(candidate.replace(/^=>\s*/, ""));
       if (typeof parsed === "string") {
         try {
           return JSON.parse(parsed);
@@ -67,6 +68,14 @@ function workspaceChangeCode(layout, colorTheme) {
   const serializedLayout = JSON.stringify(layout);
   const serializedTheme = JSON.stringify(colorTheme);
   return `(async()=>{app.vault.setConfig("theme",${serializedTheme});app.setTheme(${serializedTheme});await app.workspace.changeLayout(${serializedLayout});await new Promise(resolve=>setTimeout(resolve,120));return "ok"})()`;
+}
+
+function themeReloadCode(expectedThemeCssSha256) {
+  return `(async()=>{await app.customCss.reloadTheme();const expected=${JSON.stringify(expectedThemeCssSha256)};const sha256=async text=>{const digest=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(text));return [...new Uint8Array(digest)].map(value=>value.toString(16).padStart(2,"0")).join("")};const deadline=Date.now()+3000;while(Date.now()<deadline){if(await sha256(app.customCss.styleEl.textContent)===expected)return "ok";await new Promise(resolve=>setTimeout(resolve,50))}throw new Error("Pixel theme reload did not reach the installed artifact")})()`;
+}
+
+export function nativeColorTheme(fixtureTheme) {
+  return fixtureTheme === "light" ? "moonstone" : "obsidian";
 }
 
 export async function createObsidianCliAdapter({
@@ -106,7 +115,10 @@ export async function createObsidianCliAdapter({
   const command = (argumentsList, options) =>
     execute([`vault=${vaultId}`, ...argumentsList], options);
   const evaluate = async (code, options, label = "eval") =>
-    parseJsonOutput(await command(["eval", `code=${code}`], options), label);
+    parseObsidianJsonOutput(
+      await command(["eval", `code=${code}`], options),
+      label,
+    );
   const changeLayout = (layout, colorTheme, options) =>
     command(["eval", `code=${workspaceChangeCode(layout, colorTheme)}`], options);
 
@@ -219,7 +231,10 @@ export async function createObsidianCliAdapter({
     },
 
     async installPackage() {
-      await installPackageFiles(themeDirectory, await readPackageFiles(root));
+      const packageFiles = await readPackageFiles(root);
+      const hashes = packageHashes(packageFiles);
+      await installPackageFiles(themeDirectory, packageFiles);
+      await command(["eval", `code=${themeReloadCode(hashes.themeCssSha256)}`]);
       return packageHashes(await readPackageFiles(themeDirectory));
     },
 
@@ -239,21 +254,23 @@ export async function createObsidianCliAdapter({
       );
       await changeLayout(
         buildFixtureLayout(fixture),
-        fixture.theme === "light" ? "obsidian" : "moonstone",
+        nativeColorTheme(fixture.theme),
         { signal },
       );
     },
 
     async verifyFixture({ fixture, signal }) {
-      return evaluate(
+      const observation = await evaluate(
         fixtureObservationCode(fixture),
         { signal },
         `fixture observation ${fixture.id}`,
       );
+      assertN1ShellObservation(fixture, observation.shell);
+      return observation;
     },
 
     async exerciseTransitions({ fixture, transitions, signal }) {
-      const colorTheme = fixture.theme === "light" ? "obsidian" : "moonstone";
+      const colorTheme = nativeColorTheme(fixture.theme);
       const plans = buildTransitionPlans(fixture);
       if (
         plans.length !== transitions.length ||
@@ -300,6 +317,11 @@ export async function createObsidianCliAdapter({
       }
       try {
         await installPackageFiles(themeDirectory, snapshot.packageFiles);
+        const restoredHashes = packageHashes(snapshot.packageFiles);
+        await command([
+          "eval",
+          `code=${themeReloadCode(restoredHashes.themeCssSha256)}`,
+        ]);
       } catch (error) {
         restorationErrors.push(error);
       }

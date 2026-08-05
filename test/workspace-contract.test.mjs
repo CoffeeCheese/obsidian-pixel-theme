@@ -26,6 +26,28 @@ test("compiled desktop package exposes the H5 split-label material roles", async
   assert.equal(declaration(dark, "--pixel-context-label"), "#474135");
 });
 
+test("compiled desktop package exposes distinct N1 elevation and contour roles", async () => {
+  const css = await readTheme();
+  const body = ruleBody(css, "body");
+
+  assert.equal(
+    declaration(body, "--pixel-shadow-side-module"),
+    "4px 4px 0 var(--pixel-shadow-color)",
+  );
+  assert.equal(
+    declaration(body, "--pixel-shadow-cockpit"),
+    "5px 5px 0 var(--pixel-shadow-color)",
+  );
+  assert.equal(
+    declaration(body, "--pixel-shadow-buffer"),
+    "3px 3px 0 var(--pixel-shadow-color)",
+  );
+  assert.equal(
+    declaration(body, "--pixel-cockpit-contour"),
+    "9px 9px 22px 9px",
+  );
+});
+
 test("visible desktop side docks keep Paper bodies with cyan and amber labels", async () => {
   const css = await readTheme();
 
@@ -39,7 +61,11 @@ test("visible desktop side docks keep Paper bodies with cyan and amber labels", 
       declaration(dock, "border"),
       "var(--pixel-border-shell) solid var(--pixel-text)",
     );
-    assert.equal(declaration(dock, "box-shadow"), "var(--pixel-shadow-shell)");
+    assert.equal(
+      declaration(dock, "box-shadow"),
+      "var(--pixel-shadow-side-module)",
+    );
+    assert.equal(declaration(dock, "border-radius"), "0");
   }
 
   const dockContents = ruleBodyForSelector(
@@ -88,14 +114,37 @@ test("desktop notes remain the primary shallow reader console", async () => {
   );
   assert.equal(
     declaration(readerShell, "border"),
-    "var(--pixel-border-shell) solid var(--pixel-text)",
+    "4px solid var(--pixel-text)",
   );
   assert.equal(
     declaration(readerShell, "background-color"),
     "var(--pixel-surface-secondary)",
   );
-  assert.equal(declaration(readerShell, "box-shadow"), "var(--pixel-shadow-shell)");
+  assert.equal(
+    declaration(readerShell, "box-shadow"),
+    "var(--pixel-shadow-cockpit)",
+  );
+  assert.equal(
+    declaration(readerShell, "border-radius"),
+    "var(--pixel-cockpit-contour)",
+  );
+  assert.equal(declaration(readerShell, "overflow"), "hidden");
   assert.equal(declaration(readerShell, "background-image"), "none");
+
+  const cartridgeRail = ruleBody(
+    css,
+    ":where(body:not(.is-mobile) .workspace-split.mod-root) .workspace-tab-header-container",
+  );
+  assert.equal(declaration(cartridgeRail, "min-block-size"), "42px");
+  assert.equal(
+    declaration(cartridgeRail, "border-block-end"),
+    "var(--pixel-border-control) solid var(--pixel-text)",
+  );
+  const cartridge = ruleBody(
+    css,
+    "body:not(.is-mobile) .workspace-split.mod-root .workspace-tab-header",
+  );
+  assert.equal(declaration(cartridge, "min-inline-size"), "128px");
 
   const reader = ruleBodyForSelector(
     css,
@@ -106,8 +155,48 @@ test("desktop notes remain the primary shallow reader console", async () => {
   assert.equal(declaration(reader, "text-shadow"), "none");
 });
 
+test("first-party non-Markdown and empty root leaves keep honest content tiers", async () => {
+  const css = await readTheme();
+  const specialized = ruleBody(
+    css,
+    ":where(body:not(.is-mobile) .workspace-split.mod-root) .workspace-leaf-content:not([data-type=markdown]):not([data-type=empty]) .view-content",
+  );
+  assert.equal(
+    declaration(specialized, "background-color"),
+    "var(--pixel-paper)",
+  );
+  assert.equal(declaration(specialized, "background-image"), "none");
+  assert.equal(declaration(specialized, "box-shadow"), "none");
+
+  const neutral = ruleBodyForSelector(
+    css,
+    ":where(body:not(.is-mobile) .workspace-split.mod-root) .workspace-leaf-content[data-type=empty] .view-content",
+  );
+  assert.equal(
+    declaration(neutral, "background-color"),
+    "var(--pixel-surface-secondary)",
+  );
+  assert.equal(declaration(neutral, "background-image"), "none");
+
+  assert.doesNotMatch(
+    css,
+    /workspace-leaf-content:not\(\[data-type=["']markdown["']\]\)[^{]*\{[^}]*(?:read mode|pixel-screen-glow)/is,
+  );
+});
+
 test("desktop active tabs and panes use side-aware multi-cue signals", async () => {
   const css = await readTheme();
+  const activeCartridge = ruleBody(
+    css,
+    "body:not(.is-mobile) .workspace-split.mod-root .workspace-tab-header.is-active",
+  );
+  assert.equal(declaration(activeCartridge, "border"), "0");
+  assert.equal(
+    declaration(activeCartridge, "border-inline-start"),
+    "5px solid var(--pixel-cyan)",
+  );
+  assert.equal(declaration(activeCartridge, "box-shadow"), "none");
+
   const expectedTabs = new Map([
     [
       "body:not(.is-mobile) .workspace-split.mod-left-split .workspace-tab-header.is-active",
@@ -201,15 +290,46 @@ test("desktop chrome maps titlebar, ribbon, tabs, dividers, status, and scrollba
 
   const ribbon = ruleBody(css, "body:not(.is-mobile) .workspace-ribbon");
   assert.equal(
-    declaration(ribbon, "border-inline-end"),
-    "var(--pixel-border-shell) solid var(--pixel-border-meaningful)",
+    declaration(ribbon, "border"),
+    "var(--pixel-border-shell) solid var(--pixel-text)",
   );
+  assert.equal(
+    declaration(ribbon, "box-shadow"),
+    "var(--pixel-shadow-side-module)",
+  );
+  assert.equal(declaration(ribbon, "border-radius"), "0");
 
   const divider = ruleBody(css, "body:not(.is-mobile) .workspace-leaf-resize-handle");
   assert.equal(
     declaration(divider, "transition"),
     "background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear",
   );
+});
+
+test("the native global status bar is the sole Buffer Cartridge", async () => {
+  const css = await readTheme();
+  const buffer = ruleBody(css, "body:not(.is-mobile) .status-bar");
+
+  assert.equal(declaration(buffer, "min-block-size"), "30px");
+  assert.equal(declaration(buffer, "inset-inline-end"), "18px");
+  assert.equal(declaration(buffer, "inset-block-end"), "14px");
+  assert.equal(declaration(buffer, "padding"), "0 10px");
+  assert.equal(declaration(buffer, "gap"), "8px");
+  assert.equal(
+    declaration(buffer, "border"),
+    "var(--pixel-border-control) solid var(--pixel-text)",
+  );
+  assert.equal(declaration(buffer, "border-radius"), "0");
+  assert.equal(
+    declaration(buffer, "background-color"),
+    "var(--pixel-surface-secondary)",
+  );
+  assert.equal(
+    declaration(buffer, "box-shadow"),
+    "var(--pixel-shadow-buffer)",
+  );
+  assert.doesNotMatch(css, /\.status-bar::(?:before|after)\s*\{[^}]*content:/is);
+  assert.doesNotMatch(css, /\.workspace-(?:leaf|tabs)[^{]*::(?:before|after)\s*\{[^}]*content:\s*["'](?:buffer|count|words?)/is);
 });
 
 test("narrow desktop only reduces density and accessibility modes preserve D1", async () => {

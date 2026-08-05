@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 import {
+  assertN1ShellObservation,
   assertTransitionObservation,
   buildFixtureLayout,
   buildTransitionPlans,
@@ -79,5 +80,74 @@ test("transition plans define six independently observable native states", () =>
         nativeActionsVisible: true,
       }),
     /split transition layout was not established/,
+  );
+});
+
+test("runtime N1 shell observation enforces per-group ownership and role elevation", () => {
+  const fixture = catalog.fixtures.find(
+    ({ id }) => id === "canonical-split-units-light",
+  );
+  const observation = {
+    workspace: {
+      gridSize: "24px 24px",
+      gap: "12px",
+      padding: "12px",
+    },
+    ribbon: {
+      shadowOffset: [4, 4],
+      cornerRadii: [0, 0, 0, 0],
+    },
+    sideModules: [
+      { shadowOffset: [4, 4], cornerRadii: [0, 0, 0, 0] },
+      { shadowOffset: [4, 4], cornerRadii: [0, 0, 0, 0] },
+    ],
+    rootGroups: [
+      {
+        shadowOffset: [5, 5],
+        borderWidths: [4, 4, 4, 4],
+        cornerRadii: [9, 9, 22, 9],
+      },
+      {
+        shadowOffset: [5, 5],
+        borderWidths: [4, 4, 4, 4],
+        cornerRadii: [9, 9, 22, 9],
+      },
+    ],
+    statusBars: [
+      {
+        shadowOffset: [3, 3],
+        borderWidths: [2, 2, 2, 2],
+        cornerRadii: [0, 0, 0, 0],
+        insetInlineEnd: 18,
+        insetBlockEnd: 14,
+      },
+    ],
+    gridOwnerCount: 1,
+    textZoom200: {
+      rootGroupCount: 2,
+      statusBarCount: 1,
+      nativeActionsVisible: true,
+    },
+  };
+
+  assert.doesNotThrow(() => assertN1ShellObservation(fixture, observation));
+  assert.throws(
+    () =>
+      assertN1ShellObservation(fixture, {
+        ...observation,
+        rootGroups: observation.rootGroups.map((group) => ({
+          ...group,
+          shadowOffset: [4, 4],
+        })),
+      }),
+    /Cockpit Unit shadow role/,
+  );
+  assert.throws(
+    () =>
+      assertN1ShellObservation(fixture, {
+        ...observation,
+        gridOwnerCount: 2,
+      }),
+    /canvas grid must belong only to the workspace/,
   );
 });

@@ -337,8 +337,13 @@ test("structured content uses no decorative motion or raised content-card shadow
     "",
   );
   assert.doesNotMatch(cssWithoutEmbeddedFonts, /scanline|crt/i);
-  assert.doesNotMatch(
-    css,
-    /(?:callout|markdown-embed|file-embed|image-embed|video-embed|audio-embed|table-wrapper|el-table|markdown-rendered\s+table)[^{]*\{[^}]*box-shadow:\s*var\(--pixel-shadow/is,
-  );
+  const contentSurface = /(?:callout|markdown-embed|file-embed|image-embed|video-embed|audio-embed|table-wrapper|el-table|markdown-rendered\s+table)/i;
+  for (const match of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+    if (contentSurface.test(match[1])) {
+      assert.doesNotMatch(
+        match[2],
+        /box-shadow:\s*var\(--pixel-shadow/i,
+      );
+    }
+  }
 });

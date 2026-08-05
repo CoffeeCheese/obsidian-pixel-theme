@@ -1,7 +1,26 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { createObsidianCliAdapter } from "../h5/obsidian-cli-adapter.mjs";
+import {
+  createObsidianCliAdapter,
+  nativeColorTheme,
+  parseObsidianJsonOutput,
+} from "../h5/obsidian-cli-adapter.mjs";
+
+test("built-in adapter accepts the native eval result prefix", () => {
+  assert.deepEqual(
+    parseObsidianJsonOutput(
+      '=> {"desktop":true,"zoomFactor":1,"vaultPath":"/tmp/dev-test"}\n',
+      "runtime preflight",
+    ),
+    { desktop: true, zoomFactor: 1, vaultPath: "/tmp/dev-test" },
+  );
+});
+
+test("fixture themes map to Obsidian's native color scheme identifiers", () => {
+  assert.equal(nativeColorTheme("light"), "moonstone");
+  assert.equal(nativeColorTheme("dark"), "obsidian");
+});
 
 test("built-in adapter reads both Obsidian error buffers before approval", async () => {
   const commands = [];

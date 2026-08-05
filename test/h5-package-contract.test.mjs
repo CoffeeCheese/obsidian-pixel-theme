@@ -121,6 +121,16 @@ test("compiled H5 package preserves accessibility modes without topology changes
     declaration(ruleBodyForSelector(forced, ".theme-light"), "--pixel-paper"),
     "canvas",
   );
+  for (const shadowRole of [
+    "--pixel-shadow-side-module",
+    "--pixel-shadow-cockpit",
+    "--pixel-shadow-buffer",
+  ]) {
+    assert.equal(
+      declaration(ruleBodyForSelector(forced, ".theme-light"), shadowRole),
+      "none",
+    );
+  }
   assert.equal(
     declaration(
       ruleBodyForSelector(stronger, ".theme-light"),
@@ -167,6 +177,44 @@ test("compiled H5 package forbids forced panes and hidden native actions", async
   }
 
   assert.doesNotMatch(css, /\.dataview|\.kanban|\.tasks-|\.calendar-container|\.plugin-/i);
+});
+
+test("compiled H5 package rejects shell ownership drift", async () => {
+  const css = await readTheme();
+  const rootSplit = ruleBody(css, "body:not(.is-mobile) .workspace-split.mod-root");
+  const cockpit = ruleBody(
+    css,
+    "body:not(.is-mobile) .workspace-split.mod-root .workspace-tabs",
+  );
+  const workspace = ruleBody(css, "body:not(.is-mobile) .workspace");
+
+  assert.doesNotMatch(rootSplit, /(?:border|border-radius|box-shadow)\s*:/i);
+  assert.equal(
+    declaration(cockpit, "box-shadow"),
+    "var(--pixel-shadow-cockpit)",
+  );
+  assert.equal(
+    declaration(cockpit, "border-radius"),
+    "var(--pixel-cockpit-contour)",
+  );
+  assert.equal(
+    declaration(workspace, "background-size"),
+    "var(--pixel-workspace-grid-size) var(--pixel-workspace-grid-size)",
+  );
+
+  for (const rule of flatRules(css)) {
+    if (/border-radius:\s*var\(--pixel-cockpit-contour\)/i.test(rule.body)) {
+      assert.ok(
+        rule.selectors.every((selector) =>
+          selector.includes(".workspace-split.mod-root .workspace-tabs"),
+        ),
+        "the asymmetric contour must remain exclusive to Cockpit Units",
+      );
+    }
+    if (/background-size:\s*var\(--pixel-workspace-grid-size\)/i.test(rule.body)) {
+      assert.deepEqual(rule.selectors, ["body:not(.is-mobile) .workspace"]);
+    }
+  }
 });
 
 test("compiled H5 package remains self-contained and within package budgets", async () => {

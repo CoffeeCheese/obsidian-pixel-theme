@@ -1,6 +1,9 @@
 body:not(.is-mobile) {
   .workspace-ribbon {
-    border-inline-end: var(--pixel-border-shell) solid var(--pixel-border-meaningful);
+    border: var(--pixel-border-shell) solid var(--pixel-text);
+    border-radius: 0;
+    background-color: var(--pixel-surface-secondary);
+    box-shadow: var(--pixel-shadow-side-module);
   }
 
   .workspace {
@@ -16,8 +19,9 @@ body:not(.is-mobile) {
   .workspace-split.mod-left-split:not(.is-sidedock-collapsed),
   .workspace-split.mod-right-split:not(.is-sidedock-collapsed) {
     border: var(--pixel-border-shell) solid var(--pixel-text);
+    border-radius: 0;
     background-color: var(--pixel-paper);
-    box-shadow: var(--pixel-shadow-shell);
+    box-shadow: var(--pixel-shadow-side-module);
   }
 
   .workspace-split.mod-left-split .workspace-tabs,
@@ -55,10 +59,12 @@ body:not(.is-mobile) {
   .workspace-split.mod-root .workspace-tabs {
     min-inline-size: 0;
     min-block-size: 0;
-    border: var(--pixel-border-shell) solid var(--pixel-text);
+    overflow: hidden;
+    border: 4px solid var(--pixel-text);
+    border-radius: var(--pixel-cockpit-contour);
     background-color: var(--pixel-surface-secondary);
     background-image: none;
-    box-shadow: var(--pixel-shadow-shell);
+    box-shadow: var(--pixel-shadow-cockpit);
   }
 
   .workspace-split.mod-root .workspace-leaf,
@@ -74,6 +80,12 @@ body:not(.is-mobile) {
     color: var(--pixel-text);
     box-shadow: inset 0 -4px 0 var(--pixel-cyan);
     font-weight: 600;
+  }
+
+  .workspace-split.mod-root .workspace-tab-header.is-active {
+    border: 0;
+    border-inline-start: 5px solid var(--pixel-cyan);
+    box-shadow: none;
   }
 
   .workspace-split.mod-right-split .workspace-tab-header.is-active {
@@ -108,6 +120,18 @@ body:not(.is-mobile) {
       background-color var(--pixel-motion-state) linear,
       border-color var(--pixel-motion-state) linear;
   }
+
+  .status-bar {
+    inset-inline-end: 18px;
+    inset-block-end: 14px;
+    min-block-size: 30px;
+    padding: 0 10px;
+    gap: 8px;
+    border: var(--pixel-border-control) solid var(--pixel-text);
+    border-radius: 0;
+    background-color: var(--pixel-surface-secondary);
+    box-shadow: var(--pixel-shadow-buffer);
+  }
 }
 
 .workspace-ribbon,
@@ -121,13 +145,30 @@ body:not(.is-mobile) {
 }
 
 :where(body:not(.is-mobile) .workspace-split.mod-root) .workspace-tab-header-container {
-  min-block-size: 36px;
+  min-block-size: 42px;
   border-block-end: var(--pixel-border-control) solid var(--pixel-text);
   background-color: var(--pixel-surface-secondary);
 }
 
+body:not(.is-mobile) .workspace-split.mod-root .workspace-tab-header {
+  min-inline-size: 128px;
+}
+
 :where(body:not(.is-mobile) .workspace-split.mod-root) .workspace-tab-container {
   background-color: var(--pixel-surface-secondary);
+}
+
+:where(body:not(.is-mobile) .workspace-split.mod-root) .workspace-leaf-content:not([data-type="markdown"]):not([data-type="empty"]) .view-content {
+  background-color: var(--pixel-paper);
+  background-image: none;
+  box-shadow: none;
+}
+
+:where(body:not(.is-mobile) .workspace-split.mod-root) .workspace-leaf-content[data-type="empty"] .view-content,
+:where(body:not(.is-mobile) .workspace-split.mod-root) .workspace-leaf-content[data-type="empty"] .empty-state-container {
+  background-color: var(--pixel-surface-secondary);
+  background-image: none;
+  box-shadow: none;
 }
 
 :where(body:not(.is-mobile) .workspace-split.mod-root) .workspace-leaf-content[data-type="markdown"] .view-content {
