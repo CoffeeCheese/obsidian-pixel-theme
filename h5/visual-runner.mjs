@@ -12,6 +12,7 @@ import path from "node:path";
 import { isDeepStrictEqual } from "node:util";
 
 import { pathLeavesDirectory } from "./path-boundary.mjs";
+import { writeReviewBench } from "./review-bench.mjs";
 
 const ownershipFileName = ".pixel-h5-run.json";
 
@@ -274,6 +275,9 @@ export async function runVisualH5({
   tempParent = tmpdir(),
   signal,
   onEvent = () => {},
+  source = { commit: "not-recorded", dirty: true, author: "Not asserted" },
+  capturedAt = new Date().toISOString(),
+  reviewSession = async () => {},
 }) {
   assertAdapter(adapter);
   const selectedFixtures = selectFixtures(catalog, caseFilter, themeFilter);
@@ -289,13 +293,21 @@ export async function runVisualH5({
   let snapshot;
   let ownedRun;
   let primaryError;
+  let benchPath;
+  let phase = "snapshot-workspace";
+  let activeFixtureId;
+  let workspaceRestored = false;
+  let transientCleaned = false;
   const lifecycleErrors = [];
+  const evidence = [];
 
   try {
+    phase = "snapshot-workspace";
     snapshot = await adapter.snapshotWorkspace({ signal });
     throwIfAborted(signal);
     ownedRun = await createOwnedRunDirectory(tempParent);
     await onEvent({ type: "run-directory", path: ownedRun.runDirectory });
+    phase = "install-package";
     const installedPackage = await adapter.installPackage({
       packageIdentity,
       runDirectory: ownedRun.runDirectory,
@@ -305,6 +317,8 @@ export async function runVisualH5({
     throwIfAborted(signal);
 
     for (const fixture of selectedFixtures) {
+      activeFixtureId = fixture.id;
+      phase = "establish-fixture";
       throwIfAborted(signal);
       await adapter.establishFixture({
         fixture,
@@ -313,6 +327,7 @@ export async function runVisualH5({
       });
       throwIfAborted(signal);
 
+      phase = "verify-established";
       const established = await adapter.verifyFixture({
         fixture,
         phase: "established",
@@ -320,6 +335,7 @@ export async function runVisualH5({
       });
       assertFixtureObservation(fixture, established, "established");
 
+      phase = "exercise-transitions";
       const exercised = await adapter.exerciseTransitions({
         fixture,
         transitions: catalog.transitions,
@@ -328,6 +344,7 @@ export async function runVisualH5({
       assertTransitions(fixture, exercised, catalog.transitions);
       throwIfAborted(signal);
 
+      phase = "verify-post-transitions";
       const postTransitions = await adapter.verifyFixture({
         fixture,
         phase: "post-transitions",
@@ -335,6 +352,7 @@ export async function runVisualH5({
       });
       assertFixtureObservation(fixture, postTransitions, "post-transitions");
 
+      phase = "capture-evidence";
       const outputPath = path.join(ownedRun.runDirectory, `${fixture.id}.png`);
       const evidencePath = await adapter.captureEvidence({
         fixture,
@@ -342,14 +360,37 @@ export async function runVisualH5({
         signal,
       });
       await assertEvidenceFile(outputPath, evidencePath, ownedRun.runDirectory);
+      evidence.push({ fixture, evidencePath });
       await onEvent({ type: "fixture-captured", fixtureId: fixture.id });
     }
+
+    activeFixtureId = undefined;
+    phase = "build-review-bench";
+    benchPath = await writeReviewBench({
+      runDirectory: ownedRun.runDirectory,
+      catalog,
+      evidence,
+      packageIdentity,
+      environmentIdentity: preflight,
+      source,
+      capturedAt,
+    });
+    await assertEvidenceFile(benchPath, benchPath, ownedRun.runDirectory);
+    await onEvent({ type: "review-bench", path: benchPath });
+    phase = "review-bench";
+    await reviewSession({
+      benchPath,
+      fixtureIds: selectedFixtures.map(({ id }) => id),
+      signal,
+    });
+    throwIfAborted(signal);
   } catch (error) {
     primaryError = error;
   } finally {
     if (snapshot !== undefined) {
       try {
         await adapter.restoreWorkspace(snapshot, { signal: undefined });
+        workspaceRestored = true;
       } catch (error) {
         lifecycleErrors.push(
           new Error(`failed to restore the original H5 review workspace: ${error.message}`, {
@@ -361,18 +402,36 @@ export async function runVisualH5({
     if (ownedRun && !keepTemp) {
       try {
         await cleanupOwnedRunDirectory(ownedRun);
+        transientCleaned = true;
       } catch (error) {
         lifecycleErrors.push(error);
       }
     }
   }
 
-  if (primaryError && lifecycleErrors.length === 0) throw primaryError;
   if (primaryError || lifecycleErrors.length > 0) {
     const errors = [primaryError, ...lifecycleErrors].filter(Boolean);
+    const failurePhase = primaryError ? phase : "lifecycle-recovery";
+    const fixtureContext = activeFixtureId ? ` for ${activeFixtureId}` : "";
+    const workspaceOutcome =
+      snapshot === undefined
+        ? "workspace unchanged"
+        : workspaceRestored
+          ? "original workspace restored"
+          : "original workspace restoration failed";
+    const artifactOutcome =
+      ownedRun === undefined
+        ? "no temporary artifacts created"
+        : keepTemp
+          ? `temporary artifacts retained at ${ownedRun.runDirectory}`
+          : transientCleaned
+            ? "temporary review page and images removed"
+            : `temporary artifact cleanup failed at ${ownedRun.runDirectory}`;
     throw new AggregateError(
       errors,
-      `H5 visual run failed: ${errors.map((error) => error.message).join("; ")}`,
+      `H5 visual run failed during ${failurePhase}${fixtureContext}: ${errors
+        .map((error) => error.message)
+        .join("; ")}. Recovery: ${workspaceOutcome}; ${artifactOutcome}.`,
       { cause: primaryError },
     );
   }
@@ -380,6 +439,8 @@ export async function runVisualH5({
   return {
     fixtureIds: selectedFixtures.map(({ id }) => id),
     preflight,
-    ...(keepTemp ? { runDirectory: ownedRun.runDirectory } : {}),
+    ...(keepTemp
+      ? { runDirectory: ownedRun.runDirectory, benchPath }
+      : {}),
   };
 }

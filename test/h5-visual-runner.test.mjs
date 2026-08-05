@@ -1,5 +1,12 @@
 import assert from "node:assert/strict";
-import { access, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import {
+  access,
+  mkdtemp,
+  readFile,
+  readdir,
+  rm,
+  writeFile,
+} from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -159,6 +166,10 @@ async function withTempParent(callback) {
   }
 }
 
+async function assertTempParentEmpty(tempParent) {
+  assert.deepEqual(await readdir(tempParent), []);
+}
+
 test("preflight rejection happens before workspace snapshot or temporary allocation", async () => {
   await withTempParent(async (tempParent) => {
     const events = [];
@@ -174,7 +185,7 @@ test("preflight rejection happens before workspace snapshot or temporary allocat
       /active theme must be Pixel/,
     );
     assert.deepEqual(events, ["preflight"]);
-    assert.deepEqual(await import("node:fs/promises").then(({ readdir }) => readdir(tempParent)), []);
+    await assertTempParentEmpty(tempParent);
   });
 });
 
@@ -206,7 +217,38 @@ test("successful run verifies topology around transitions and restores before cl
       `capture:${fixtures[1].id}`,
       "restore",
     ]);
-    assert.deepEqual(await import("node:fs/promises").then(({ readdir }) => readdir(tempParent)), []);
+    await assertTempParentEmpty(tempParent);
+  });
+});
+
+test("transient review bench is available for the human session then removed", async () => {
+  await withTempParent(async (tempParent) => {
+    const events = [];
+    const result = await runVisualH5({
+      adapter: fakeAdapter(events),
+      catalog,
+      packageIdentity,
+      tempParent,
+      source: {
+        commit: "c".repeat(40),
+        dirty: false,
+        author: "Theme Implementer",
+      },
+      capturedAt: "2026-08-05T04:00:00.000Z",
+      async reviewSession({ benchPath, fixtureIds }) {
+        events.push("review-session");
+        assert.deepEqual(fixtureIds, fixtures.map(({ id }) => id));
+        assert.equal(events.includes("restore"), false);
+        const html = await readFile(benchPath, "utf8");
+        assert.match(html, /H5 review bench/);
+        assert.match(html, /Theme Implementer/);
+      },
+    });
+
+    assert.deepEqual(result.fixtureIds, fixtures.map(({ id }) => id));
+    assert.equal(events.at(-2), "review-session");
+    assert.equal(events.at(-1), "restore");
+    await assertTempParentEmpty(tempParent);
   });
 });
 
@@ -226,7 +268,33 @@ test("adapter failure restores the snapshot and removes owned transient evidence
       /adapter capture failed/,
     );
     assert.equal(events.at(-1), "restore");
-    assert.deepEqual(await import("node:fs/promises").then(({ readdir }) => readdir(tempParent)), []);
+    await assertTempParentEmpty(tempParent);
+  });
+});
+
+test("cancelled human review reports its phase and completed recovery after cleanup", async () => {
+  await withTempParent(async (tempParent) => {
+    const events = [];
+    await assert.rejects(
+      runVisualH5({
+        adapter: fakeAdapter(events),
+        catalog,
+        packageIdentity,
+        tempParent,
+        async reviewSession() {
+          throw new Error("visual owner cancelled the review");
+        },
+      }),
+      (error) => {
+        assert.match(error.message, /failed during review-bench/);
+        assert.match(error.message, /visual owner cancelled the review/);
+        assert.match(error.message, /original workspace restored/);
+        assert.match(error.message, /temporary review page and images removed/);
+        return true;
+      },
+    );
+    assert.equal(events.at(-1), "restore");
+    await assertTempParentEmpty(tempParent);
   });
 });
 
@@ -250,7 +318,7 @@ test("package installation failure restores before removing the owned run", asyn
       "install-package:failed",
       "restore",
     ]);
-    assert.deepEqual(await import("node:fs/promises").then(({ readdir }) => readdir(tempParent)), []);
+    await assertTempParentEmpty(tempParent);
   });
 });
 
@@ -276,7 +344,7 @@ test("interruption after snapshot restores and cleans the owned run", async () =
       /reviewer interrupted the run/,
     );
     assert.equal(events.at(-1), "restore");
-    assert.deepEqual(await import("node:fs/promises").then(({ readdir }) => readdir(tempParent)), []);
+    await assertTempParentEmpty(tempParent);
   });
 });
 
