@@ -228,7 +228,6 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-t
 // cyan instrument strip. Keep the side-dock tab rail quiet and put the signal
 // on the native file explorer toolbar that actually owns these actions.
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] .nav-header {
-  position: relative;
   // Grid keeps the full-width toolbar stretched horizontally while the
   // 44px instrument strip centers it vertically.
   display: grid;
@@ -242,17 +241,6 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .works
     color-mix(in srgb, var(--pixel-cyan) 18%, transparent) 0 1px,
     transparent 1px 8px
   );
-}
-
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] .nav-header::after {
-  content: "A-01";
-  position: absolute;
-  inset: auto 10px 2px auto;
-  color: var(--pixel-cyan);
-  font-family: var(--pixel-font-identity);
-  font-size: 6px;
-  line-height: 1;
-  pointer-events: none;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] .nav-header .clickable-icon {

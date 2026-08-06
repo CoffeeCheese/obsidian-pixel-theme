@@ -2519,7 +2519,6 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-t
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] .nav-header {
-  position: relative;
   display: grid;
   align-items: center;
   min-block-size: 44px;
@@ -2527,17 +2526,6 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .works
   border-block-end: var(--pixel-border-decoration) solid var(--pixel-line);
   background-color: color-mix(in srgb, var(--pixel-cyan) 8%, var(--pixel-paper));
   background-image: repeating-linear-gradient(90deg, color-mix(in srgb, var(--pixel-cyan) 18%, transparent) 0 1px, transparent 1px 8px);
-}
-
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] .nav-header::after {
-  content: "A-01";
-  position: absolute;
-  inset: auto 10px 2px auto;
-  color: var(--pixel-cyan);
-  font-family: var(--pixel-font-identity);
-  font-size: 6px;
-  line-height: 1;
-  pointer-events: none;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] .nav-header .clickable-icon {

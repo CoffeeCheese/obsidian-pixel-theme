@@ -166,10 +166,6 @@ test("H5 Archive Grid maps the native file browser to the H5 S1 navigation cabin
     css,
     "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] .nav-file-title.is-active",
   );
-  const toolsAfter = ruleBodyForSelector(
-    css,
-    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] .nav-header::after",
-  );
   const toolButton = ruleBodyForSelector(
     css,
     "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] .nav-header .clickable-icon",
@@ -205,7 +201,12 @@ test("H5 Archive Grid maps the native file browser to the H5 S1 navigation cabin
   assert.equal(declaration(row, "border-radius"), "5px");
   assert.equal(declaration(active, "background-color"), "var(--pixel-nav-label)");
   assert.equal(declaration(active, "box-shadow"), "none");
-  assert.equal(declaration(toolsAfter, "content"), '"a-01"');
+  // The instrument strip keeps only the native toolbar; the prototype
+  // part-number label that sat in its bottom-right corner is removed.
+  assert.ok(
+    !/content:\s*"a-01"/i.test(css),
+    "compiled theme.css must not render the A-01 part-number label",
+  );
   assert.equal(declaration(toolButton, "border-radius"), "6px");
   assert.equal(declaration(activeBefore, "inline-size"), "4px");
   assert.equal(declaration(activeBefore, "background-color"), "var(--pixel-cyan)");
