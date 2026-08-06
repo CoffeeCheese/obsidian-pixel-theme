@@ -16,9 +16,9 @@ Pixel `0.1.0` is prepared as a local release candidate for tester-operated revie
 - Minimum Obsidian version: `1.12.0`
 - Compatibility map: `versions.json` → `"0.1.0": "1.12.0"`
 - Install files: `manifest.json`, `theme.css`
-- `theme.css` SHA-256: `8ead70cfbe35a504af9fd0fccc543e084ec25f35627996a506e1daf730fbddb5`
+- `theme.css` SHA-256: `1ffdeb8a81e55208f49203878460f3e288feb98f84a57629841cf17d29d4fc97`
 - `manifest.json` SHA-256: `fbe28b5a338651b3b318680bb0b450dad4f64cf71ea25672af7c3e599da7d40b`
-- Generated CSS: `1,210,809` bytes (limit: 1.5 MiB)
+- Generated CSS: `1,239,095` bytes (limit: 1.5 MiB)
 - Encoded font payload: `1,131,736` bytes (limit: 1.2 MiB)
 - Runtime network assets: none
 - Theme license: MIT; bundled fonts: SIL Open Font License 1.1

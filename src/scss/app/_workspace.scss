@@ -1,7 +1,7 @@
 body:not(.is-mobile) {
   .workspace-ribbon {
     border: var(--pixel-border-shell) solid var(--pixel-text);
-    border-radius: 0;
+    border-radius: var(--pixel-radius-large);
     background-color: var(--pixel-surface-secondary);
     box-shadow: var(--pixel-shadow-side-module);
   }
@@ -19,7 +19,7 @@ body:not(.is-mobile) {
   .workspace-split.mod-left-split:not(.is-sidedock-collapsed),
   .workspace-split.mod-right-split:not(.is-sidedock-collapsed) {
     border: var(--pixel-border-shell) solid var(--pixel-text);
-    border-radius: 0;
+    border-radius: var(--pixel-radius-large);
     background-color: var(--pixel-paper);
     box-shadow: var(--pixel-shadow-side-module);
   }
@@ -128,7 +128,7 @@ body:not(.is-mobile) {
     padding: 0 10px;
     gap: 8px;
     border: var(--pixel-border-control) solid var(--pixel-text);
-    border-radius: 0;
+    border-radius: var(--pixel-radius-large);
     background-color: var(--pixel-surface-secondary);
     box-shadow: var(--pixel-shadow-buffer);
   }

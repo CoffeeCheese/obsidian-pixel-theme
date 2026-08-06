@@ -74,14 +74,15 @@ test("H5 Archive Grid maps native root tabs to the prototype cartridge rail", as
     css,
     "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header.is-active",
   );
-  const before = ruleBodyForSelector(
-    css,
-    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header::before",
-  );
-  const after = ruleBodyForSelector(
-    css,
-    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header::after",
-  );
+  const beforeSelector =
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header::before";
+  const afterSelector =
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header::after";
+  const beforeRules = matchingRuleBodies(css, beforeSelector);
+  const afterRules = matchingRuleBodies(css, afterSelector);
+  const before = beforeRules.at(-1);
+  const after = afterRules[0];
+  const tabSignal = afterRules.at(-1);
   const activeAfter = ruleBodyForSelector(
     css,
     "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header.is-active::after",
@@ -96,16 +97,19 @@ test("H5 Archive Grid maps native root tabs to the prototype cartridge rail", as
   );
   assert.equal(declaration(active, "background-image"), "none");
   assert.equal(declaration(before, "content"), "none");
-  assert.equal(declaration(before, "box-shadow"), "none");
-  assert.equal(declaration(after, "content"), "none");
   assert.equal(declaration(after, "box-shadow"), "none");
-  assert.equal(declaration(activeAfter, "display"), "block");
-  assert.equal(declaration(activeAfter, "content"), '""');
-  assert.equal(declaration(activeAfter, "inset"), "auto 15px 0");
-  assert.equal(declaration(activeAfter, "height"), "4px");
+  assert.equal(declaration(tabSignal, "display"), "block");
+  assert.equal(declaration(tabSignal, "content"), '""');
+  assert.equal(declaration(tabSignal, "inset"), "auto 15px 0");
+  assert.equal(declaration(tabSignal, "height"), "3px");
+  assert.equal(declaration(tabSignal, "background"), "var(--pixel-cyan)");
+  assert.equal(declaration(tabSignal, "opacity"), "0");
+  assert.equal(declaration(tabSignal, "transform"), "scalex(0.45)");
+  assert.equal(declaration(activeAfter, "opacity"), "1");
+  assert.equal(declaration(activeAfter, "transform"), "scalex(1)");
   assert.match(
-    declaration(activeAfter, "background"),
-    /^repeating-linear-gradient\(90deg, var\(--pixel-cyan\) 0 12px, transparent 12px 16px\)$/,
+    declaration(tabSignal, "transition"),
+    /transform var\(--pixel-motion-surface\) var\(--pixel-ease-out\)/,
   );
 });
 
@@ -137,7 +141,10 @@ test("H5 Archive Grid gives root tabs the H5 S1 cartridge geometry", async () =>
     "var(--pixel-border-decoration) solid transparent",
   );
   assert.equal(declaration(tab, "border-block-end"), "0");
-  assert.equal(declaration(tab, "border-radius"), "6px 6px 0 0");
+  assert.equal(
+    declaration(tab, "border-radius"),
+    "var(--pixel-radius-large) var(--pixel-radius-large) 0 0",
+  );
   assert.equal(declaration(tab, "overflow"), "hidden");
   assert.equal(
     declaration(active, "border-color"),
@@ -145,7 +152,7 @@ test("H5 Archive Grid gives root tabs the H5 S1 cartridge geometry", async () =>
   );
   assert.equal(declaration(newTab, "inline-size"), "44px");
   assert.equal(declaration(newTab, "min-inline-size"), "44px");
-  assert.equal(declaration(newTab, "border-radius"), "6px");
+  assert.equal(declaration(newTab, "border-radius"), "var(--pixel-radius)");
 });
 
 test("H5 Archive Grid maps the native file browser to the H5 S1 navigation cabin", async () => {
@@ -169,6 +176,10 @@ test("H5 Archive Grid maps the native file browser to the H5 S1 navigation cabin
   const toolButton = ruleBodyForSelector(
     css,
     "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] .nav-header .clickable-icon",
+  );
+  const rowSignal = ruleBody(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] :is(.nav-file-title, .nav-folder-title)::before",
   );
   const activeBefore = ruleBodyForSelector(
     css,
@@ -198,7 +209,7 @@ test("H5 Archive Grid maps the native file browser to the H5 S1 navigation cabin
     /^repeating-linear-gradient\(90deg, color-mix\(in srgb, var\(--pixel-cyan\) 18%, transparent\) 0 1px, transparent 1px 8px\)$/,
   );
   assert.equal(declaration(list, "padding"), "7px 8px 24px");
-  assert.equal(declaration(row, "border-radius"), "5px");
+  assert.equal(declaration(row, "border-radius"), "var(--pixel-radius)");
   assert.equal(declaration(active, "background-color"), "var(--pixel-nav-label)");
   assert.equal(declaration(active, "box-shadow"), "none");
   // The instrument strip keeps only the native toolbar; the prototype
@@ -207,15 +218,14 @@ test("H5 Archive Grid maps the native file browser to the H5 S1 navigation cabin
     !/content:\s*"a-01"/i.test(css),
     "compiled theme.css must not render the A-01 part-number label",
   );
-  assert.equal(declaration(toolButton, "border-radius"), "6px");
-  assert.equal(declaration(activeBefore, "inline-size"), "4px");
-  assert.equal(declaration(activeBefore, "background-color"), "var(--pixel-cyan)");
-  assert.equal(declaration(activeAfter, "inline-size"), "5px");
-  assert.equal(declaration(activeAfter, "block-size"), "5px");
-  assert.equal(
-    declaration(activeAfter, "box-shadow"),
-    "-7px 0 0 color-mix(in srgb, var(--pixel-cyan) 50%, transparent)",
-  );
+  assert.equal(declaration(toolButton, "border-radius"), "var(--pixel-radius)");
+  assert.equal(declaration(rowSignal, "inline-size"), "4px");
+  assert.equal(declaration(rowSignal, "background-color"), "var(--pixel-cyan)");
+  assert.equal(declaration(rowSignal, "opacity"), "0");
+  assert.equal(declaration(rowSignal, "transform"), "translatex(-4px)");
+  assert.equal(declaration(activeBefore, "opacity"), "1");
+  assert.equal(declaration(activeBefore, "transform"), "translatex(0)");
+  assert.equal(declaration(activeAfter, "content"), "none");
 });
 
 test("H5 Archive Grid keeps the native file-header chain left aligned and prototype-sized", async () => {

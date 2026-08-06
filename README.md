@@ -7,6 +7,8 @@ The implemented production slices install the approved Light/Dark palette, 4px p
 ## Design foundation
 
 - Light and Dark use fixed semantic companions: cyan for navigation and focus, amber for context and emphasis, and brick for danger and power states.
+- A 4/6/10px radius scale softens controls, rows, and floating surfaces while joined workspace planes and the 4px archive grid retain Pixel's structural edges.
+- Selection uses a quiet tinted surface and one cyan pixel cursor; short surface and cursor transitions provide orientation and stop under reduced-motion preferences.
 - Long-form text uses a local/system Source Han and CJK fallback stack. Pixel does not bundle a CJK body font, so rare characters can continue through the operating system's natural font fallback.
 - Fusion Pixel is reserved for the inline title and H1–H3 identity. JetBrains Mono Regular/Bold is reserved for code and technical state.
 - The default reading measure is `72ch` at Obsidian's user-owned editor text size. Appearance settings can still override the theme font, text size, and accent color.

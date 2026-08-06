@@ -14,7 +14,11 @@ body {
   --pixel-border-decoration: 1px;
   --pixel-border-control: 2px;
   --pixel-border-shell: 3px;
-  --pixel-radius: 0;
+  // Rounded interaction islands soften the workspace without rounding away
+  // the 4px grid that gives Pixel its identity.
+  --pixel-radius-small: 4px;
+  --pixel-radius: 6px;
+  --pixel-radius-large: 10px;
   --pixel-shadow-control: 2px 2px 0 var(--pixel-shadow-color);
   --pixel-shadow-shell: 4px 4px 0 var(--pixel-shadow-color);
   --pixel-shadow-side-module: 4px 4px 0 var(--pixel-shadow-color);
@@ -29,6 +33,7 @@ body {
   --pixel-motion-press: 80ms;
   --pixel-motion-state: 120ms;
   --pixel-motion-surface: 160ms;
+  --pixel-ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
   --pixel-control-min: 32px;
   --pixel-icon-size: 18px;
   --pixel-state-min-block-size: 48px;

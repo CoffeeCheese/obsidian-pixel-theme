@@ -70,7 +70,10 @@ test("visible desktop side docks keep Paper bodies with cyan and amber labels", 
       declaration(dock, "box-shadow"),
       "var(--pixel-shadow-side-module)",
     );
-    assert.equal(declaration(dock, "border-radius"), "0");
+    assert.equal(
+      declaration(dock, "border-radius"),
+      "var(--pixel-radius-large)",
+    );
   }
 
   const dockContents = ruleBodyForSelector(
@@ -302,7 +305,7 @@ test("desktop chrome maps titlebar, ribbon, tabs, dividers, status, and scrollba
     "--status-bar-background": "var(--pixel-paper)",
     "--status-bar-border-color": "var(--pixel-border-meaningful)",
     "--status-bar-border-width": "var(--pixel-border-control) 0 0 var(--pixel-border-control)",
-    "--status-bar-radius": "var(--pixel-radius)",
+    "--status-bar-radius": "var(--pixel-radius-large)",
     "--scrollbar-bg": "var(--pixel-canvas)",
     "--scrollbar-thumb-bg": "var(--pixel-border-meaningful)",
     "--scrollbar-active-thumb-bg": "var(--pixel-cyan)",
@@ -324,7 +327,10 @@ test("desktop chrome maps titlebar, ribbon, tabs, dividers, status, and scrollba
     declaration(ribbon, "box-shadow"),
     "var(--pixel-shadow-side-module)",
   );
-  assert.equal(declaration(ribbon, "border-radius"), "0");
+  assert.equal(
+    declaration(ribbon, "border-radius"),
+    "var(--pixel-radius-large)",
+  );
 
   const divider = ruleBody(css, "body:not(.is-mobile) .workspace-leaf-resize-handle");
   assert.equal(
@@ -346,7 +352,10 @@ test("the native global status bar is the sole Buffer Cartridge", async () => {
     declaration(buffer, "border"),
     "var(--pixel-border-control) solid var(--pixel-text)",
   );
-  assert.equal(declaration(buffer, "border-radius"), "0");
+  assert.equal(
+    declaration(buffer, "border-radius"),
+    "var(--pixel-radius-large)",
+  );
   assert.equal(
     declaration(buffer, "background-color"),
     "var(--pixel-surface-secondary)",

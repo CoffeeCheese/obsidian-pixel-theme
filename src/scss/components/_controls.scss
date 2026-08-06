@@ -125,10 +125,14 @@ select:disabled,
 .suggestion-item.is-selected,
 .menu-item.is-selected,
 .menu-item.is-checked {
-  background-color: var(--pixel-surface-secondary);
+  border-radius: var(--pixel-radius-small);
+  background-color: color-mix(in srgb, var(--pixel-cyan) 10%, var(--pixel-paper));
   color: var(--pixel-text);
-  box-shadow: inset 4px 0 0 var(--pixel-cyan);
+  box-shadow: inset 3px 0 0 var(--pixel-cyan);
   font-weight: 600;
+  transition:
+    background-color var(--pixel-motion-state) linear,
+    box-shadow var(--pixel-motion-state) var(--pixel-ease-out);
 }
 
 .suggestion-item.is-selected,
@@ -208,7 +212,7 @@ button.mod-loading::after {
 .notice,
 .tooltip {
   border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
-  border-radius: var(--pixel-radius);
+  border-radius: var(--pixel-radius-large);
   background-color: var(--pixel-paper);
   color: var(--pixel-text);
   box-shadow: var(--pixel-shadow-shell);

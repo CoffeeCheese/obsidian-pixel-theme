@@ -121,11 +121,11 @@ test("disabled, selected, warning, danger, loading, and empty states use multipl
   const selected = ruleBodyForSelector(css, ".suggestion-item.is-selected");
   assert.equal(
     declaration(selected, "box-shadow"),
-    "inset 4px 0 0 var(--pixel-cyan)",
+    "inset 3px 0 0 var(--pixel-cyan)",
   );
   assert.equal(
     declaration(selected, "background-color"),
-    "var(--pixel-surface-secondary)",
+    "color-mix(in srgb, var(--pixel-cyan) 10%, var(--pixel-paper))",
   );
   assert.equal(declaration(selected, "color"), "var(--pixel-text)");
   assert.equal(declaration(selected, "font-weight"), "600");

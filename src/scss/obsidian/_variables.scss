@@ -30,9 +30,9 @@ body {
   --h6-line-height: var(--line-height-tight);
   --code-size: 0.9em;
   --border-width: var(--pixel-border-control);
-  --radius-s: var(--pixel-radius);
+  --radius-s: var(--pixel-radius-small);
   --radius-m: var(--pixel-radius);
-  --radius-l: var(--pixel-radius);
+  --radius-l: var(--pixel-radius-large);
   --input-radius: var(--pixel-radius);
   --tab-radius-active: var(--pixel-radius);
   --checkbox-radius: var(--pixel-radius);
@@ -89,7 +89,7 @@ body {
   --status-bar-background: var(--pixel-paper);
   --status-bar-border-color: var(--pixel-border-meaningful);
   --status-bar-border-width: var(--pixel-border-control) 0 0 var(--pixel-border-control);
-  --status-bar-radius: var(--pixel-radius);
+  --status-bar-radius: var(--pixel-radius-large);
   --scrollbar-bg: var(--pixel-canvas);
   --scrollbar-thumb-bg: var(--pixel-border-meaningful);
   --scrollbar-active-thumb-bg: var(--pixel-cyan);
@@ -180,7 +180,7 @@ body {
   --bases-cards-radius: var(--pixel-radius);
   --bases-embed-border-color: var(--pixel-border-meaningful);
   --bases-embed-border-width: var(--pixel-border-control);
-  --bases-embed-border-radius: var(--pixel-radius);
+  --bases-embed-border-radius: var(--pixel-radius-large);
   --embed-max-height: min(60vh, 720px);
   --embed-background: var(--pixel-paper);
   --embed-border-start: 4px solid var(--pixel-cyan);

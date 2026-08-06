@@ -82,8 +82,12 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-t
   max-inline-size: 180px;
   border: var(--pixel-border-decoration) solid transparent;
   border-block-end: 0;
-  border-radius: 6px 6px 0 0;
+  border-radius: var(--pixel-radius-large) var(--pixel-radius-large) 0 0;
   overflow: hidden;
+  transition:
+    background-color var(--pixel-motion-state) linear,
+    border-color var(--pixel-motion-state) linear,
+    color var(--pixel-motion-state) linear;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-tab-header.is-active {
@@ -103,9 +107,8 @@ body:not(.is-mobile) .workspace.workspace .workspace-tab-header.is-active {
   font-weight: 600;
 }
 
-// Obsidian draws rounded tab shoulders with both pseudo-elements. The H5 rail
-// is flat, so clear those masks before reusing the active tab's trailing
-// pseudo-element for the segmented navigation signal.
+// Obsidian draws tab shoulders with both pseudo-elements. Clear those masks
+// and reuse the trailing element as one quiet cyan activity rail.
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header-inner-title {
   font-family: var(--pixel-font-identity);
   font-size: 10px;
@@ -119,25 +122,35 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-t
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header::before,
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header::after {
-  content: none;
   box-shadow: none;
 }
 
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header.is-active::after {
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header::before {
+  content: none;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header::after {
   content: "";
   position: absolute;
   inset: auto 15px 0;
   display: block;
   width: auto;
-  height: 4px;
-  border-radius: 0;
-  background: repeating-linear-gradient(
-    90deg,
-    var(--pixel-cyan) 0 12px,
-    transparent 12px 16px
-  );
+  height: 3px;
+  border-radius: var(--pixel-radius-small) var(--pixel-radius-small) 0 0;
+  background: var(--pixel-cyan);
   clip-path: none;
+  opacity: 0;
+  transform: scaleX(0.45);
+  transform-origin: left center;
+  transition:
+    opacity var(--pixel-motion-state) linear,
+    transform var(--pixel-motion-surface) var(--pixel-ease-out);
   pointer-events: none;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header.is-active::after {
+  opacity: 1;
+  transform: scaleX(1);
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split .workspace-tab-header-container {
@@ -203,7 +216,7 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .works
 
 body:not(.is-mobile) .workspace.workspace .clickable-icon {
   border: 0;
-  border-radius: 0;
+  border-radius: var(--pixel-radius);
   background-color: transparent;
   box-shadow: none;
 }
@@ -211,7 +224,7 @@ body:not(.is-mobile) .workspace.workspace .clickable-icon {
 body:not(.is-mobile) .workspace.workspace .workspace-tab-header-new-tab,
 body:not(.is-mobile) .titlebar .clickable-icon {
   border: 0;
-  border-radius: 0;
+  border-radius: var(--pixel-radius);
   background-color: transparent;
   box-shadow: none;
 }
@@ -221,7 +234,7 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-t
   min-inline-size: 44px;
   margin: 0;
   padding: 0;
-  border-radius: 6px;
+  border-radius: var(--pixel-radius);
 }
 
 // The prototype treats the file explorer controls as the navigation cabin's
@@ -244,7 +257,7 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .works
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] .nav-header .clickable-icon {
-  border-radius: 6px;
+  border-radius: var(--pixel-radius);
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] .nav-files-container {
@@ -253,7 +266,26 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .works
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] :is(.nav-file-title, .nav-folder-title) {
   position: relative;
-  border-radius: 5px;
+  border-radius: var(--pixel-radius);
+  transition:
+    background-color var(--pixel-motion-state) linear,
+    color var(--pixel-motion-state) linear;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] :is(.nav-file-title, .nav-folder-title)::before {
+  content: "";
+  position: absolute;
+  inset-block: 4px;
+  inset-inline-start: -12px;
+  inline-size: 4px;
+  border-radius: 0 var(--pixel-radius-small) var(--pixel-radius-small) 0;
+  background-color: var(--pixel-cyan);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition:
+    opacity var(--pixel-motion-state) linear,
+    transform var(--pixel-motion-surface) var(--pixel-ease-out);
+  pointer-events: none;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] .nav-file-title.is-active {
@@ -262,26 +294,12 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .works
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] .nav-file-title.is-active::before {
-  content: "";
-  position: absolute;
-  inset-block: 4px;
-  inset-inline-start: -12px;
-  inline-size: 4px;
-  background-color: var(--pixel-cyan);
-  pointer-events: none;
+  opacity: 1;
+  transform: translateX(0);
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] .nav-file-title.is-active::after {
-  content: "";
-  position: absolute;
-  inset-block-start: 50%;
-  inset-inline-end: 7px;
-  inline-size: 5px;
-  block-size: 5px;
-  transform: translateY(-50%);
-  background-color: var(--pixel-cyan);
-  box-shadow: -7px 0 0 color-mix(in srgb, var(--pixel-cyan) 50%, transparent);
-  pointer-events: none;
+  content: none;
 }
 
 body:not(.is-mobile) .workspace.workspace :is(
@@ -294,7 +312,7 @@ body:not(.is-mobile) .workspace.workspace :is(
   select
 ) {
   border: var(--pixel-border-decoration) solid var(--pixel-border-meaningful);
-  border-radius: 0;
+  border-radius: var(--pixel-radius-small);
   background-color: var(--pixel-paper);
   box-shadow: none;
 }
@@ -601,7 +619,7 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-l
 
 body:not(.is-mobile):has(.workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] .metadata-property-key:focus-within) .suggestion-container.mod-property-key {
   border: var(--pixel-border-decoration) solid var(--pixel-cyan);
-  border-radius: 0 0 6px 6px;
+  border-radius: 0 0 var(--pixel-radius-large) var(--pixel-radius-large);
   background-color: var(--pixel-paper);
   box-shadow: 3px 3px 0 color-mix(in srgb, var(--pixel-cyan) 24%, transparent);
 }
@@ -610,7 +628,7 @@ body:not(.is-mobile):has(.workspace.workspace .workspace-split.mod-root .workspa
   box-sizing: border-box;
   min-block-size: 44px;
   padding: 6px 10px;
-  border-radius: 0 0 5px 5px;
+  border-radius: 0 0 var(--pixel-radius) var(--pixel-radius);
   color: var(--pixel-text);
   font-family: var(--pixel-font-monospace);
   font-size: 12px;
@@ -676,12 +694,15 @@ body:not(.is-mobile) .workspace.workspace :is(.nav-file-title, .nav-folder-title
   transform: none;
   border-inline-start-color: var(--pixel-cyan);
   background-color: var(--pixel-nav-label);
-  background-image: linear-gradient(
-    90deg,
-    transparent calc(100% - 10px),
-    rgb(from var(--pixel-cyan) r g b / 14%) calc(100% - 10px)
-  );
+  background-image: none;
   box-shadow: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body:not(.is-mobile) .workspace.workspace .clickable-icon:hover,
+  body:not(.is-mobile) .workspace.workspace :is(.nav-file-title, .nav-folder-title):not(.is-active):not(.is-selected):hover {
+    background-color: color-mix(in srgb, var(--pixel-cyan) 6%, var(--pixel-paper));
+  }
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split :is(

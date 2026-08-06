@@ -4,6 +4,10 @@
 .tag-pane-tag {
   border-inline-start: 4px solid transparent;
   border-radius: var(--pixel-radius);
+  transition:
+    background-color var(--pixel-motion-state) linear,
+    border-color var(--pixel-motion-state) linear,
+    color var(--pixel-motion-state) linear;
 }
 
 .tree-item-self:is(.is-active, .is-selected),
