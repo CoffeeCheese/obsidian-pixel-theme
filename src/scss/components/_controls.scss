@@ -233,6 +233,7 @@ button.mod-loading::after {
   border-radius: var(--pixel-radius);
   background-color: var(--pixel-paper);
   box-shadow: none;
+  align-items: flex-start;
 }
 
 input[type="checkbox"],
