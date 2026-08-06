@@ -1345,8 +1345,8 @@ input[type=radio]:checked {
   border-radius: var(--pixel-radius);
   background-color: var(--pixel-paper);
   box-shadow: var(--pixel-shadow-control);
-  translate: 0 0;
-  transition: transform var(--pixel-motion-state) ease-out, translate var(--pixel-motion-press) ease-out, box-shadow var(--pixel-motion-press) ease-out, width var(--pixel-motion-press) ease-out, height var(--pixel-motion-press) ease-out, margin-top var(--pixel-motion-press) ease-out, left var(--pixel-motion-press) ease-out, opacity var(--pixel-motion-press) linear;
+  bottom: 0;
+  transition: transform var(--pixel-motion-state) ease-out, box-shadow var(--pixel-motion-press) ease-out, opacity var(--pixel-motion-press) linear;
 }
 
 .checkbox-container.is-enabled {
@@ -1355,7 +1355,7 @@ input[type=radio]:checked {
 }
 
 .checkbox-container:not(.is-disabled):active::after {
-  translate: 2px 2px;
+  transform: translate(2px, 2px);
   box-shadow: none;
 }
 
@@ -2393,6 +2393,8 @@ body:not(.is-mobile) .workspace.workspace .workspace-tab-header {
   min-block-size: 44px;
   border-inline-end: var(--pixel-border-decoration) solid var(--pixel-line);
   color: var(--pixel-text-muted);
+  font-family: var(--pixel-font-identity);
+  font-size: 11px;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header {
@@ -2421,7 +2423,7 @@ body:not(.is-mobile) .workspace.workspace .workspace-tab-header.is-active {
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header-inner-title {
   font-family: var(--pixel-font-identity);
-  font-size: 10px;
+  font-size: 11px;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header.is-active {
@@ -2489,12 +2491,14 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header-title-parent {
   gap: 7px;
+  font-family: var(--pixel-font-identity);
   font-size: 11px;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header-breadcrumb {
   padding: 0;
   color: var(--pixel-text-muted);
+  font-family: var(--pixel-font-identity);
   font-size: 11px;
   font-weight: 450;
 }
@@ -2503,13 +2507,15 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header
   margin: 0;
   padding: 0;
   color: var(--pixel-line-strong);
+  font-family: var(--pixel-font-identity);
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header-title {
   padding: 0;
   color: var(--pixel-text);
+  font-family: var(--pixel-font-identity);
   font-size: 11px;
-  font-weight: 450;
+  font-weight: 600;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf.mod-active::after,
@@ -2711,15 +2717,15 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-l
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-icon {
   display: grid;
-  flex: 0 0 17px;
-  inline-size: 17px;
-  block-size: 17px;
+  flex: 0 0 22px;
+  inline-size: 22px;
+  block-size: 22px;
   padding: 0;
   place-items: center;
   color: var(--pixel-text-muted);
   overflow: visible;
   font-family: var(--pixel-font-monospace);
-  font-size: 12px;
+  font-size: 15px;
   font-variant-numeric: tabular-nums;
   font-weight: 650;
   line-height: 1;
@@ -2739,7 +2745,7 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-l
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:has(.metadata-property-value[data-property-type=number]) .metadata-property-icon::before {
   content: "01";
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: -1px;
 }
 
@@ -2967,4 +2973,8 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split :is(.
 .metadata-container:focus-within .metadata-property.is-selected) {
   border-inline-start-color: var(--pixel-cyan);
   background-color: var(--pixel-nav-label);
+}
+
+.view-header-nav-buttons .clickable-icon {
+  font-family: var(--pixel-font-identity);
 }

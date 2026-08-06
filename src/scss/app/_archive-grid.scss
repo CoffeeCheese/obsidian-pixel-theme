@@ -74,6 +74,8 @@ body:not(.is-mobile) .workspace.workspace .workspace-tab-header {
   min-block-size: 44px;
   border-inline-end: var(--pixel-border-decoration) solid var(--pixel-line);
   color: var(--pixel-text-muted);
+  font-family: var(--pixel-font-identity);
+  font-size: 11px;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header {
@@ -111,7 +113,7 @@ body:not(.is-mobile) .workspace.workspace .workspace-tab-header.is-active {
 // and reuse the trailing element as one quiet cyan activity rail.
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header-inner-title {
   font-family: var(--pixel-font-identity);
-  font-size: 10px;
+  font-size: 11px;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header.is-active {
@@ -183,12 +185,14 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header-title-parent {
   gap: 7px;
+  font-family: var(--pixel-font-identity);
   font-size: 11px;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header-breadcrumb {
   padding: 0;
   color: var(--pixel-text-muted);
+  font-family: var(--pixel-font-identity);
   font-size: 11px;
   font-weight: 450;
 }
@@ -197,13 +201,15 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header
   margin: 0;
   padding: 0;
   color: var(--pixel-line-strong);
+  font-family: var(--pixel-font-identity);
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header-title {
   padding: 0;
   color: var(--pixel-text);
+  font-family: var(--pixel-font-identity);
   font-size: 11px;
-  font-weight: 450;
+  font-weight: 600;
 }
 
 // The ribbon, navigation cabin, and reader share one paper plane in the H5
@@ -433,15 +439,15 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-l
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] .metadata-property-icon {
   display: grid;
-  flex: 0 0 17px;
-  inline-size: 17px;
-  block-size: 17px;
+  flex: 0 0 22px;
+  inline-size: 22px;
+  block-size: 22px;
   padding: 0;
   place-items: center;
   color: var(--pixel-text-muted);
   overflow: visible;
   font-family: var(--pixel-font-monospace);
-  font-size: 12px;
+  font-size: 15px;
   font-variant-numeric: tabular-nums;
   font-weight: 650;
   line-height: 1;
@@ -461,7 +467,7 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-l
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] .metadata-property:has(.metadata-property-value[data-property-type="number"]) .metadata-property-icon::before {
   content: "01";
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: -1px;
 }
 
@@ -712,4 +718,9 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split :is(
 ) {
   border-inline-start-color: var(--pixel-cyan);
   background-color: var(--pixel-nav-label);
+}
+
+// View header navigation buttons — keep the pixel identity font.
+.view-header-nav-buttons .clickable-icon {
+  font-family: var(--pixel-font-identity);
 }

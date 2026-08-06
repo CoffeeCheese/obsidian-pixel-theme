@@ -266,15 +266,10 @@ input[type="radio"]:checked {
   border-radius: var(--pixel-radius);
   background-color: var(--pixel-paper);
   box-shadow: var(--pixel-shadow-control);
-  translate: 0 0;
+  bottom: 0;
   transition:
     transform var(--pixel-motion-state) ease-out,
-    translate var(--pixel-motion-press) ease-out,
     box-shadow var(--pixel-motion-press) ease-out,
-    width var(--pixel-motion-press) ease-out,
-    height var(--pixel-motion-press) ease-out,
-    margin-top var(--pixel-motion-press) ease-out,
-    left var(--pixel-motion-press) ease-out,
     opacity var(--pixel-motion-press) linear;
 }
 
@@ -284,7 +279,7 @@ input[type="radio"]:checked {
 }
 
 .checkbox-container:not(.is-disabled):active::after {
-  translate: 2px 2px;
+  transform: translate(2px, 2px);
   box-shadow: none;
 }
 
