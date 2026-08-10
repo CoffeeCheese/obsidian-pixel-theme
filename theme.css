@@ -2740,18 +2740,65 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-l
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-properties-heading .collapse-indicator {
-  position: static;
-  display: block;
-  flex: 0 0 auto;
-  inline-size: 6px;
-  block-size: 6px;
-  margin: 0;
+  position: relative;
+  display: grid;
+  flex: 0 0 24px;
+  inline-size: 24px;
+  block-size: 22px;
+  margin: 0 2px 2px 0;
   padding: 0;
+  place-items: center;
   overflow: visible;
   inset: auto;
+  opacity: 1;
   transform: none;
-  background-color: var(--pixel-cyan);
-  box-shadow: 8px 0 0 var(--pixel-amber-text), 0 8px 0 rgb(from var(--pixel-cyan) r g b/45%);
+  border: var(--pixel-border-control) solid var(--pixel-text-muted);
+  border-radius: 4px 4px 3px 3px;
+  background: linear-gradient(90deg, var(--pixel-cyan) 0 4px, transparent 4px), color-mix(in srgb, var(--pixel-cyan) 7%, var(--pixel-paper));
+  box-shadow: 2px 2px 0 color-mix(in srgb, var(--pixel-cyan) 28%, var(--pixel-line));
+  color: var(--pixel-text-muted);
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-properties-heading .collapse-indicator::before {
+  content: "";
+  position: absolute;
+  inline-size: 2px;
+  block-size: 2px;
+  inset-block-start: 6px;
+  inset-inline-start: 8px;
+  background-color: currentColor;
+  box-shadow: 6px 0 0 currentColor, 2px 6px 0 var(--pixel-cyan), 4px 7px 0 var(--pixel-cyan), 6px 6px 0 var(--pixel-cyan);
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-properties-heading .collapse-indicator::after {
+  content: "";
+  position: absolute;
+  inline-size: 6px;
+  block-size: 6px;
+  inset-block-start: -2px;
+  inset-inline-end: -2px;
+  border-block-end: var(--pixel-border-decoration) solid var(--pixel-line-strong);
+  border-inline-start: var(--pixel-border-decoration) solid var(--pixel-line-strong);
+  background-color: var(--pixel-paper);
+  clip-path: polygon(0 0, 100% 100%, 0 100%);
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-properties-heading.is-collapsed .collapse-indicator {
+  background: linear-gradient(90deg, var(--pixel-cyan) 0 4px, transparent 4px), var(--pixel-surface-secondary);
+  box-shadow: 1px 1px 0 color-mix(in srgb, var(--pixel-cyan) 22%, var(--pixel-line));
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-properties-heading.is-collapsed .collapse-indicator::before {
+  inline-size: 4px;
+  block-size: 2px;
+  inset-block-start: 9px;
+  inset-inline-start: 7px;
+  box-shadow: 6px 0 0 currentColor;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-properties-heading:focus-visible .collapse-indicator {
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: 2px;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-properties-heading .collapse-indicator svg {
@@ -2805,13 +2852,14 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-l
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-icon {
+  position: relative;
   display: grid;
   flex: 0 0 22px;
   inline-size: 22px;
   block-size: 22px;
   padding: 0;
   place-items: center;
-  color: var(--pixel-text-muted);
+  color: var(--pixel-cyan);
   overflow: visible;
   font-family: var(--pixel-font-monospace);
   font-size: 15px;
@@ -2822,31 +2870,67 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-l
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-icon::before {
-  content: "·";
+  content: "•";
+  position: relative;
+  z-index: 1;
   grid-area: 1/1;
+  inline-size: auto;
   pointer-events: none;
 }
 
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:has(.metadata-property-value[data-property-type=text]) .metadata-property-icon::before,
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-icon::after {
+  content: "";
+  grid-area: 1/1;
+  inline-size: 18px;
+  block-size: 18px;
+  border: var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-text-muted) 58%, var(--pixel-line));
+  border-radius: 3px 3px 4px 3px;
+  background-color: color-mix(in srgb, var(--pixel-cyan) 6%, var(--pixel-paper));
+  box-shadow: 2px 2px 0 color-mix(in srgb, var(--pixel-cyan) 24%, var(--pixel-line));
+  pointer-events: none;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:has(.metadata-property-value[data-property-type=text]) .metadata-property-icon::before {
+  content: "T";
+  font-size: 10px;
+  font-weight: 780;
+}
+
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:has(.metadata-property-value[data-property-type=multitext]) .metadata-property-icon::before {
   content: "≡";
+  font-size: 12px;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:has(.metadata-property-value[data-property-type=number]) .metadata-property-icon::before {
   content: "01";
   font-size: 11px;
-  letter-spacing: -1px;
+  letter-spacing: 0;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:has(.metadata-property-value[data-property-type=date]) .metadata-property-icon::before,
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:has(.metadata-property-value[data-property-type=datetime]) .metadata-property-icon::before,
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:has(.metadata-property-value[data-property-type=checkbox]) .metadata-property-icon::before {
-  content: "□";
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:has(.metadata-property-value[data-property-type=datetime]) .metadata-property-icon::before {
+  content: "▦";
+  font-size: 12px;
 }
 
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:has(.metadata-property-value[data-property-type=tags]) .metadata-property-icon::before,
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:has(.metadata-property-value[data-property-type=checkbox]) .metadata-property-icon::before {
+  content: "✓";
+  font-family: var(--pixel-font-identity);
+  font-size: 12px;
+  font-weight: 720;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:has(.metadata-property-value[data-property-type=tags]) .metadata-property-icon::before {
+  content: "#";
+  font-size: 11px;
+  font-weight: 780;
+}
+
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:has(.metadata-property-value[data-property-type=aliases]) .metadata-property-icon::before {
-  content: "◇";
+  content: "↗";
+  font-family: var(--pixel-font-identity);
+  font-size: 11px;
+  font-weight: 720;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-icon svg {

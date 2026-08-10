@@ -8,6 +8,20 @@ import {
   ruleBodyForSelector,
 } from "../test-support/theme-css.mjs";
 
+function horizontalPixelPaintCenter(rule) {
+  const start = Number.parseFloat(declaration(rule, "inset-inline-start"));
+  const width = Number.parseFloat(declaration(rule, "inline-size"));
+  const shadowOffsets = [
+    ...declaration(rule, "box-shadow").matchAll(
+      /(-?\d+(?:\.\d+)?)px\s+(?:-?\d+(?:\.\d+)?px|0)/g,
+    ),
+  ].map((match) => Number.parseFloat(match[1]));
+  const minimumOffset = Math.min(0, ...shadowOffsets);
+  const maximumOffset = Math.max(0, ...shadowOffsets);
+
+  return start + (minimumOffset + maximumOffset + width) / 2;
+}
+
 test("H5 Archive Grid keeps the desktop workspace as one continuous paper plane", async () => {
   const css = await readTheme();
   const workspace = ruleBody(css, "body:not(.is-mobile) .workspace.workspace");
@@ -237,6 +251,26 @@ test("H5 Archive Grid reproduces the prototype property sheet in the central rea
     css,
     `${scope} .metadata-properties-heading .collapse-indicator svg`,
   );
+  const markerFace = ruleBodyForSelector(
+    css,
+    `${scope} .metadata-properties-heading .collapse-indicator::before`,
+  );
+  const markerFold = ruleBodyForSelector(
+    css,
+    `${scope} .metadata-properties-heading .collapse-indicator::after`,
+  );
+  const collapsedMarker = ruleBodyForSelector(
+    css,
+    `${scope} .metadata-properties-heading.is-collapsed .collapse-indicator`,
+  );
+  const collapsedMarkerFace = ruleBodyForSelector(
+    css,
+    `${scope} .metadata-properties-heading.is-collapsed .collapse-indicator::before`,
+  );
+  const focusedMarker = ruleBodyForSelector(
+    css,
+    `${scope} .metadata-properties-heading:focus-visible .collapse-indicator`,
+  );
   const row = ruleBodyForSelector(css, `${scope} .metadata-property`);
   const key = ruleBodyForSelector(css, `${scope} .metadata-property-key`);
   const value = ruleBodyForSelector(css, `${scope} .metadata-property-value`);
@@ -245,6 +279,10 @@ test("H5 Archive Grid reproduces the prototype property sheet in the central rea
     css,
     `${scope} .metadata-property-icon::before`,
   );
+  const propertyIconBadge = ruleBodyForSelector(
+    css,
+    `${scope} .metadata-property-icon::after`,
+  );
   const textIconGlyph = ruleBodyForSelector(
     css,
     `${scope} .metadata-property:has(.metadata-property-value[data-property-type=text]) .metadata-property-icon::before`,
@@ -252,6 +290,10 @@ test("H5 Archive Grid reproduces the prototype property sheet in the central rea
   const numberIconGlyph = ruleBodyForSelector(
     css,
     `${scope} .metadata-property:has(.metadata-property-value[data-property-type=number]) .metadata-property-icon::before`,
+  );
+  const checkboxIconGlyph = ruleBodyForSelector(
+    css,
+    `${scope} .metadata-property:has(.metadata-property-value[data-property-type=checkbox]) .metadata-property-icon::before`,
   );
   const dateIconGlyph = ruleBodyForSelector(
     css,
@@ -332,10 +374,27 @@ test("H5 Archive Grid reproduces the prototype property sheet in the central rea
   assert.equal(declaration(heading, "font-weight"), "720");
   assert.equal(declaration(heading, "line-height"), "1.2");
   assert.equal(declaration(heading, "padding"), "4px");
-  assert.equal(declaration(marker, "inline-size"), "6px");
-  assert.equal(declaration(marker, "block-size"), "6px");
-  assert.equal(declaration(marker, "position"), "static");
-  assert.match(declaration(marker, "box-shadow"), /var\(--pixel-amber-text\)/);
+  assert.equal(declaration(marker, "inline-size"), "24px");
+  assert.equal(declaration(marker, "block-size"), "22px");
+  assert.equal(declaration(marker, "position"), "relative");
+  assert.equal(declaration(marker, "opacity"), "1");
+  assert.equal(
+    declaration(marker, "border"),
+    "var(--pixel-border-control) solid var(--pixel-text-muted)",
+  );
+  assert.match(declaration(marker, "background"), /var\(--pixel-cyan\) 0 4px/);
+  assert.match(declaration(markerFace, "box-shadow"), /6px 0 0 currentcolor/);
+  assert.equal(horizontalPixelPaintCenter(markerFace), 12);
+  assert.equal(declaration(markerFold, "clip-path"), "polygon(0 0, 100% 100%, 0 100%)");
+  assert.equal(declaration(collapsedMarker, "box-shadow"), "1px 1px 0 color-mix(in srgb, var(--pixel-cyan) 22%, var(--pixel-line))");
+  assert.equal(declaration(collapsedMarkerFace, "inline-size"), "4px");
+  assert.equal(declaration(collapsedMarkerFace, "box-shadow"), "6px 0 0 currentcolor");
+  assert.equal(horizontalPixelPaintCenter(collapsedMarkerFace), 12);
+  assert.equal(
+    declaration(focusedMarker, "outline"),
+    "var(--pixel-border-control) solid var(--pixel-cyan)",
+  );
+  assert.equal(declaration(focusedMarker, "outline-offset"), "2px");
   assert.equal(declaration(markerIcon, "opacity"), "0");
   assert.equal(declaration(row, "min-block-size"), "29px");
   assert.equal(declaration(row, "border"), "0");
@@ -346,11 +405,17 @@ test("H5 Archive Grid reproduces the prototype property sheet in the central rea
   assert.equal(declaration(value, "font-family"), "var(--pixel-font-text)");
   assert.equal(declaration(value, "font-size"), "16px");
   assert.equal(declaration(propertyIcon, "font-family"), "var(--pixel-font-monospace)");
-  assert.equal(declaration(propertyIconGlyph, "content"), '"·"');
-  assert.equal(declaration(textIconGlyph, "content"), '"≡"');
+  assert.equal(declaration(propertyIconGlyph, "content"), '"•"');
+  assert.equal(declaration(propertyIconGlyph, "inline-size"), "auto");
+  assert.equal(declaration(propertyIconBadge, "inline-size"), "18px");
+  assert.equal(declaration(propertyIconBadge, "block-size"), "18px");
+  assert.match(declaration(propertyIconBadge, "box-shadow"), /2px 2px 0/);
+  assert.equal(declaration(textIconGlyph, "content"), '"t"');
   assert.equal(declaration(numberIconGlyph, "content"), '"01"');
-  assert.equal(declaration(dateIconGlyph, "content"), '"□"');
-  assert.equal(declaration(tagsIconGlyph, "content"), '"◇"');
+  assert.equal(declaration(numberIconGlyph, "letter-spacing"), "0");
+  assert.equal(declaration(dateIconGlyph, "content"), '"▦"');
+  assert.equal(declaration(checkboxIconGlyph, "content"), '"✓"');
+  assert.equal(declaration(tagsIconGlyph, "content"), '"#"');
   assert.equal(declaration(propertyIconSvg, "inline-size"), "0");
   assert.equal(declaration(propertyIconSvg, "block-size"), "0");
   assert.equal(declaration(propertyIconSvg, "opacity"), "0");
