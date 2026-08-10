@@ -281,6 +281,10 @@ test("H5 Archive Grid reproduces the prototype property sheet in the central rea
     css,
     `${scope} .metadata-property-key:focus-within`,
   );
+  const focusedValue = ruleBodyForSelector(
+    css,
+    `${scope} .metadata-property-value:focus-within`,
+  );
   const longText = ruleBodyForSelector(
     css,
     `${scope} .metadata-input-longtext`,
@@ -302,6 +306,17 @@ test("H5 Archive Grid reproduces the prototype property sheet in the central rea
   const hoveredAddButton = ruleBodyForSelector(
     css,
     `${scope} .metadata-add-button:hover`,
+  );
+  const propertyKeyMenuScope =
+    "body:not(.is-mobile):has(.workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-key:focus-within) .suggestion-container.mod-property-key";
+  const propertyKeyMenu = ruleBodyForSelector(css, propertyKeyMenuScope);
+  const propertyKeyMenuItem = ruleBodyForSelector(
+    css,
+    `${propertyKeyMenuScope} .suggestion-item`,
+  );
+  const selectedPropertyKeyMenuItem = ruleBodyForSelector(
+    css,
+    `${propertyKeyMenuScope} .suggestion-item.is-selected`,
   );
 
   assert.equal(declaration(view, "container-type"), "inline-size");
@@ -343,18 +358,28 @@ test("H5 Archive Grid reproduces the prototype property sheet in the central rea
     declaration(hoveredRow, "box-shadow"),
     "0 0 0 var(--pixel-border-decoration) var(--pixel-line)",
   );
+  assert.equal(
+    declaration(hoveredRow, "background-color"),
+    "color-mix(in srgb, var(--pixel-cyan) 3%, transparent)",
+  );
   assert.equal(declaration(focusedRow, "outline"), "0");
   assert.equal(
     declaration(focusedRow, "box-shadow"),
-    "0 0 0 var(--pixel-border-control) var(--pixel-line-strong)",
+    "inset 2px 0 0 var(--pixel-cyan), 0 0 0 var(--pixel-border-decoration) var(--pixel-line-strong)",
+  );
+  assert.equal(
+    declaration(focusedRow, "background-color"),
+    "color-mix(in srgb, var(--pixel-cyan) 5%, var(--pixel-paper))",
   );
   assert.equal(declaration(propertyInput, "min-block-size"), "28px");
   assert.equal(declaration(propertyInput, "padding"), "4px 8px");
-  assert.equal(declaration(keyEditingRow, "padding-block-end"), "64px");
-  assert.equal(
-    declaration(focusedKey, "background-color"),
-    "color-mix(in srgb, var(--pixel-cyan) 8%, transparent)",
-  );
+  assert.equal(declaration(keyEditingRow, "padding-block-end"), "0");
+  assert.equal(declaration(focusedKey, "min-block-size"), "28px");
+  assert.equal(declaration(focusedKey, "padding-inline"), "0");
+  assert.equal(declaration(focusedKey, "background-color"), "transparent");
+  assert.equal(declaration(focusedKey, "box-shadow"), "none");
+  assert.equal(declaration(focusedValue, "background-color"), "transparent");
+  assert.equal(declaration(focusedValue, "box-shadow"), "none");
   assert.equal(declaration(longText, "white-space"), "normal");
   assert.equal(declaration(longText, "overflow-wrap"), "anywhere");
   assert.equal(declaration(dateInput, "padding-inline-start"), "24px");
@@ -367,5 +392,28 @@ test("H5 Archive Grid reproduces the prototype property sheet in the central rea
   assert.equal(
     declaration(hoveredAddButton, "background-color"),
     "var(--pixel-surface-secondary)",
+  );
+  assert.equal(
+    declaration(propertyKeyMenu, "border"),
+    "var(--pixel-border-decoration) solid var(--pixel-line-strong)",
+  );
+  assert.equal(
+    declaration(propertyKeyMenu, "border-radius"),
+    "var(--pixel-radius-large)",
+  );
+  assert.equal(
+    declaration(propertyKeyMenu, "box-shadow"),
+    "0 10px 24px rgb(from var(--pixel-shadow-color) r g b/20%)",
+  );
+  assert.equal(declaration(propertyKeyMenuItem, "min-block-size"), "36px");
+  assert.equal(
+    declaration(propertyKeyMenuItem, "font-family"),
+    "var(--pixel-font-text)",
+  );
+  assert.equal(declaration(propertyKeyMenuItem, "font-size"), "14px");
+  assert.equal(declaration(selectedPropertyKeyMenuItem, "outline"), "0");
+  assert.equal(
+    declaration(selectedPropertyKeyMenuItem, "box-shadow"),
+    "inset 2px 0 0 var(--pixel-cyan)",
   );
 });

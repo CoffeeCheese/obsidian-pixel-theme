@@ -2905,25 +2905,27 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-l
 @media (hover: hover) and (pointer: fine) {
   body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:hover {
     border-radius: 6px;
-    background-color: transparent;
+    background-color: color-mix(in srgb, var(--pixel-cyan) 3%, transparent);
     box-shadow: 0 0 0 var(--pixel-border-decoration) var(--pixel-line);
   }
 }
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:focus-within {
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:focus-within,
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-container:focus-within .metadata-property.is-selected {
   outline: 0;
   border-radius: 6px;
-  box-shadow: 0 0 0 var(--pixel-border-control) var(--pixel-line-strong);
+  background-color: color-mix(in srgb, var(--pixel-cyan) 5%, var(--pixel-paper));
+  box-shadow: inset 2px 0 0 var(--pixel-cyan), 0 0 0 var(--pixel-border-decoration) var(--pixel-line-strong);
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property:has(.metadata-property-key:focus-within) {
-  padding-block-end: 64px;
+  padding-block-end: 0;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-key:focus-within {
-  min-block-size: 32px;
-  padding-inline: 6px 8px;
-  background-color: color-mix(in srgb, var(--pixel-cyan) 8%, transparent);
-  box-shadow: inset 3px 0 0 var(--pixel-cyan);
+  min-block-size: 28px;
+  padding-inline: 0;
+  background-color: transparent;
+  box-shadow: none;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-key:focus-within .metadata-property-key-input {
@@ -2932,8 +2934,8 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-l
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-value:focus-within {
-  background-color: color-mix(in srgb, var(--pixel-cyan) 4%, transparent);
-  box-shadow: inset 0 -2px 0 var(--pixel-cyan);
+  background-color: transparent;
+  box-shadow: none;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .multi-select-container {
@@ -2975,25 +2977,28 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-l
   }
 }
 body:not(.is-mobile):has(.workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-key:focus-within) .suggestion-container.mod-property-key {
-  border: var(--pixel-border-decoration) solid var(--pixel-cyan);
-  border-radius: 0 0 var(--pixel-radius-large) var(--pixel-radius-large);
+  border: var(--pixel-border-decoration) solid var(--pixel-line-strong);
+  border-radius: var(--pixel-radius-large);
   background-color: var(--pixel-paper);
-  box-shadow: 3px 3px 0 color-mix(in srgb, var(--pixel-cyan) 24%, transparent);
+  box-shadow: 0 10px 24px rgb(from var(--pixel-shadow-color) r g b/20%);
 }
 
 body:not(.is-mobile):has(.workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-key:focus-within) .suggestion-container.mod-property-key .suggestion-item {
   box-sizing: border-box;
-  min-block-size: 44px;
+  min-block-size: 36px;
   padding: 6px 10px;
-  border-radius: 0 0 var(--pixel-radius) var(--pixel-radius);
+  border-radius: var(--pixel-radius-small);
   color: var(--pixel-text);
-  font-family: var(--pixel-font-monospace);
-  font-size: 12px;
+  font-family: var(--pixel-font-text);
+  font-size: 14px;
 }
 
 body:not(.is-mobile):has(.workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-key:focus-within) .suggestion-container.mod-property-key .suggestion-item.is-selected {
-  background-color: var(--pixel-nav-label);
-  color: var(--pixel-text);
+  outline: 0;
+  background-color: color-mix(in srgb, var(--pixel-cyan) 10%, var(--pixel-paper));
+  color: var(--pixel-cyan);
+  box-shadow: inset 2px 0 0 var(--pixel-cyan);
+  font-weight: 600;
 }
 
 body:not(.is-mobile):has(.workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-key:focus-within) .suggestion-container.mod-property-key .suggestion-flair {
