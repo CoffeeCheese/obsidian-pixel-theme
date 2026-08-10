@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="352" height="20" viewBox="0 0 352 20" role="img" aria-label="Pixel semantic color rail">
+  <g shape-rendering="crispEdges">
+    <rect x="0" y="3" width="14" height="14" fill="#197d8c"/>
+    <rect x="18" y="3" width="14" height="14" fill="#197d8c"/>
+    <rect x="36" y="3" width="14" height="14" fill="#197d8c"/>
+    <rect x="54" y="3" width="14" height="14" fill="#197d8c"/>
+    <rect x="72" y="3" width="14" height="14" fill="#197d8c"/>
+    <rect x="90" y="3" width="14" height="14" fill="#d2dde2"/>
+    <rect x="108" y="3" width="14" height="14" fill="#d2dde2"/>
+    <rect x="126" y="3" width="14" height="14" fill="#d48732"/>
+    <rect x="144" y="3" width="14" height="14" fill="#d48732"/>
+    <rect x="162" y="3" width="14" height="14" fill="#d48732"/>
+    <rect x="180" y="3" width="14" height="14" fill="#d48732"/>
+    <rect x="198" y="3" width="14" height="14" fill="#d2dde2"/>
+    <rect x="216" y="3" width="14" height="14" fill="#ae4e32"/>
+    <rect x="234" y="3" width="14" height="14" fill="#ae4e32"/>
+    <rect x="252" y="3" width="14" height="14" fill="#d2dde2"/>
+    <rect x="270" y="3" width="14" height="14" fill="#607184"/>
+    <rect x="288" y="3" width="14" height="14" fill="#607184"/>
+    <rect x="306" y="3" width="14" height="14" fill="#182434"/>
+    <rect x="324" y="3" width="14" height="14" fill="#182434"/>
+    <rect x="342" y="3" width="10" height="14" fill="#182434"/>
+  </g>
+</svg>

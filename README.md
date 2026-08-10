@@ -1,22 +1,202 @@
-# Pixel
+<h1 align="center">P I X E L</h1>
 
-Pixel is an independent Obsidian theme focused on long-form Markdown writing and knowledge management. Its confirmed production baseline combines the H5 material system, D1 balanced desktop layout, and M1 native dual-drawer mobile workspace.
+<p align="center">
+  <strong>纸上像素 · 专注写作</strong><br>
+  一款为长文写作与知识管理设计的 Obsidian 主题
+</p>
 
-The implemented production slices install the approved Light/Dark palette, 4px pixel geometry, reading typography, embedded identity/code fonts, shared controls, the H5/D1 desktop shell, complete cyan navigation and amber context docks, and a unified Markdown experience across Source, Live Preview, and Reading. Callouts, code, tables, embeds, media, attachments, footnotes, math, tasks, tags, and highlights share restrained Paper surfaces. Global and local Graph views use semantic cyan, amber, and brick renderer roles, while Canvas preserves native cards, groups, media, edges, selection, editing, menus, and spatial interaction on the cool-gray canvas. Bases keeps dense table, list, and card data editable with meaningful boundaries and no decorative shadows; PDF keeps its document canvas untouched while Pixel frames the toolbar, sidebar, pages, thumbnails, search, and selection states. On Obsidian mobile, M1 keeps the note persistent beneath the native cyan navigation and amber context drawers without replacing their interaction logic. Pixel does not replace native editing, scrolling, folding, navigation, drawers, SVG icons, or media controls.
+<p align="center">
+  <img src="src/assets/screenshots/pixel-status-rail.svg" width="352" alt="Pixel 语义色像素轨">
+</p>
 
-## Design foundation
+<p align="center">
+  <kbd>0.1.0</kbd>
+  <kbd>OBSIDIAN 1.12+</kbd>
+  <kbd>LIGHT / DARK</kbd>
+  <kbd>DESKTOP / MOBILE</kbd>
+</p>
 
-- Light and Dark use fixed semantic companions: cyan for navigation and focus, amber for context and emphasis, and brick for danger and power states.
-- A 4/6/10px surface radius scale and 12px soft-key button radius soften controls, rows, and floating surfaces while joined workspace planes and the 4px archive grid retain Pixel's structural edges.
-- Selection uses a quiet tinted surface and one cyan pixel cursor; short surface and cursor transitions provide orientation and stop under reduced-motion preferences.
-- Long-form text uses a local/system Source Han and CJK fallback stack. Pixel does not bundle a CJK body font, so rare characters can continue through the operating system's natural font fallback.
-- Fusion Pixel is reserved for the inline title and H1–H3 identity. JetBrains Mono Regular/Bold is reserved for code and technical state.
-- The default reading measure is `72ch` at Obsidian's user-owned editor text size. Appearance settings can still override the theme font, text size, and accent color.
-- Source, Live Preview, and Reading share heading rhythm, semantic link/emphasis/list roles, and visible selection, caret, active-line, folding, indentation, and task signals without adding vertical margins to editable blocks.
+<p align="center">
+  <a href="#成果预览">成果预览</a> ·
+  <a href="#主题特点">主题特点</a> ·
+  <a href="#安装">安装</a> ·
+  <a href="#开发">开发</a>
+</p>
 
-## Development
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="src/assets/screenshots/pixel-desktop-dark.png">
+  <img src="src/assets/screenshots/pixel-desktop-light.png" alt="Pixel 主题桌面端界面，展示文件导航、笔记属性与中英文混排" width="100%">
+</picture>
 
-Requirements: Node.js 24 and npm.
+<p align="center"><sub>桌面成果图会跟随 GitHub 的浅色 / 深色外观自动切换</sub></p>
+
+Pixel 以冷静的纸张界面承载内容，把像素字体留给标题和少量身份元素。它不是给 Obsidian 套上一层复古滤镜，而是在保留原生交互的前提下，让文件导航、笔记阅读、属性编辑和数据视图拥有清晰、稳定且容易辨认的层级。
+
+主题覆盖桌面端与移动端，提供完整的浅色、深色方案，并针对中英文混排、长篇 Markdown、Bases、Canvas、Graph 和 PDF 等常用工作流进行了统一设计。
+
+## 成果预览
+
+### 桌面端 · Light / Dark
+
+桌面端使用连续的 Paper 工作平面：左侧负责导航，中央保持宽阔阅读区，当前文件、属性和状态通过青色信号建立关联。
+
+<details>
+<summary>展开查看浅色与深色完整对照</summary>
+
+<table>
+  <tr>
+    <td align="center"><strong>LIGHT</strong></td>
+    <td align="center"><strong>DARK</strong></td>
+  </tr>
+  <tr>
+    <td><img src="src/assets/screenshots/pixel-desktop-light.png" alt="Pixel 桌面端浅色主题"></td>
+    <td><img src="src/assets/screenshots/pixel-desktop-dark.png" alt="Pixel 桌面端深色主题"></td>
+  </tr>
+</table>
+
+</details>
+
+### 移动端 · Note & Properties
+
+移动端重新安排标题、属性卡和底部导航的比例。属性保持可扫读的键值层级，长文本自然换行，触摸控件保留足够热区。
+
+<p align="center">
+  <img src="src/assets/screenshots/pixel-mobile-light.png" width="390" alt="Pixel 主题移动端笔记属性界面">
+</p>
+
+<p align="center"><sub>真实 Obsidian 390 × 844 移动视口 · Light</sub></p>
+
+## 主题特点
+
+| 特点 | 说明 |
+| --- | --- |
+| 像素身份 | Fusion Pixel 用于笔记标题与 H1–H3，保留鲜明个性，同时避免正文阅读疲劳。 |
+| 纸张阅读 | 正文使用适合长文的字体栈、`72ch` 默认行宽和克制的背景层级。 |
+| 语义配色 | 青色表示导航与焦点，琥珀色表示上下文与强调，砖红色表示警告与危险状态。 |
+| 桌面工作区 | 左侧导航、中央笔记和右侧上下文区域形成连续、清晰的工作平面。 |
+| 移动端适配 | 为手机重新调整标题、文件列表、笔记属性、抽屉和底部导航的比例，而不是简单缩小桌面界面。 |
+| 原生优先 | 不替换 Obsidian 的编辑、折叠、滚动、手势、抽屉、SVG 图标或媒体控制。 |
+
+## 视觉语言
+
+Pixel 使用一套固定的视觉语法，让状态不仅依赖颜色表达：
+
+- **Paper**：笔记、菜单和主要阅读区域使用安静的纸张表面。
+- **Canvas**：工作区外围使用冷灰画布，帮助内容区域建立边界。
+- **Cyan**：当前文件、链接、插入光标和键盘焦点的主信号。
+- **Amber**：属性、上下文信息与需要注意的内容。
+- **Brick**：错误、警告和破坏性操作。
+- **4 / 6 / 10px 圆角体系**：兼顾 Pixel 的结构感和现代触控界面的舒适度。
+
+浅色与深色模式使用独立调校的语义颜色，而不是简单反相。正文、次要文字、焦点和有意义的控件边界均以可访问对比度为基线。
+
+## 支持的 Obsidian 界面
+
+### Markdown 写作
+
+- Source、Live Preview 与 Reading 三种模式保持一致的标题节奏。
+- 支持链接、强调、列表、引用、任务、标签、高亮和脚注。
+- 代码块、表格、嵌入内容和媒体在需要时保留局部滚动，不挤压整篇笔记。
+- 选区、光标、当前行、折叠与缩进状态保持清晰可见。
+
+### 知识管理
+
+- 文件导航、标签、搜索、书签、大纲、反向链接和出链。
+- 笔记属性与属性建议菜单，包括移动端编辑状态。
+- Graph 与 Local Graph 的节点、连线和语义状态。
+- Canvas 的卡片、分组、媒体、边、选择和编辑界面。
+- Bases 的表格、列表、卡片、筛选、排序和属性编辑。
+- PDF 工具栏、侧栏、缩略图、搜索与选区；文档页面本身保持原始显示。
+
+### 桌面与移动端
+
+桌面端强调连续工作区和长时间阅读；移动端则保留 Obsidian 原生双抽屉、系统返回、软键盘调整和安全区域行为，并为触摸操作提供至少 `44px` 的目标尺寸。
+
+Pixel 的移动布局由 Obsidian 原生 `body.is-mobile` 状态触发，不使用窗口宽度猜测设备类型。
+
+## 安装
+
+Pixel `0.1.0` 当前仍是候选版本，尚未发布到 Obsidian 社区主题目录。现阶段请使用手动安装。
+
+### 手动安装
+
+1. 下载仓库根目录中的 [`manifest.json`](manifest.json) 和 [`theme.css`](theme.css)。
+2. 在你的 Vault 中创建目录：
+
+   ```text
+   .obsidian/themes/Pixel/
+   ```
+
+3. 将两个文件复制到该目录：
+
+   ```text
+   .obsidian/themes/Pixel/manifest.json
+   .obsidian/themes/Pixel/theme.css
+   ```
+
+4. 重新打开 Obsidian，进入「设置 → 外观 → 主题」，选择 **Pixel**。
+
+在 iOS 或 Android 上使用同步 Vault 时，请等待 `.obsidian/themes/Pixel/` 完成同步；如果主题没有立即出现，可完全退出并重新打开 Obsidian。
+
+## 个性化
+
+Pixel 尊重 Obsidian 自身的外观设置，无需配套插件即可调整：
+
+- 浅色或深色模式
+- 正文字体与界面字体
+- 基础字号
+- 强调色
+
+主题内置以下字体资源：
+
+- **Fusion Pixel**：用于标题身份。
+- **JetBrains Mono**：用于代码和技术状态。
+- **系统中文字体栈**：用于正文与长文阅读，稀有字符继续使用操作系统字体回退。
+
+Pixel 不注入社区插件专用选择器。遵循 Obsidian 官方 CSS 变量的插件通常可以自然继承主题颜色与控件样式，但项目不对单个社区插件作兼容承诺。
+
+## 可访问性
+
+- 普通文本目标对比度不低于 `4.5:1`。
+- 有意义的图标与控件边界目标对比度不低于 `3:1`。
+- 键盘焦点同时使用轮廓、背景和位置提示，不只依赖颜色。
+- 支持减少动态效果、强制颜色与增强对比度偏好。
+- 支持 Obsidian 用户设置的字体、字号、强调色、选区与光标颜色。
+- 长文本、代码和表格优先重排或局部滚动，避免隐藏内容与操作。
+
+完整验证记录见 [兼容性与可访问性矩阵](COMPATIBILITY.md)。
+
+## 兼容性
+
+| 项目 | 当前基线 |
+| --- | --- |
+| Pixel 版本 | `0.1.0` |
+| 最低 Obsidian 版本 | `1.12.0` |
+| 已审计桌面环境 | Obsidian `1.12.7` / macOS |
+| 主题模式 | Light / Dark |
+| 安装文件 | `manifest.json`、`theme.css` |
+| 主题许可 | MIT |
+| 内置字体许可 | SIL Open Font License 1.1 |
+
+桌面人工验收和实体 iOS / Android 设备验证仍属于候选版本发布门禁，当前状态可查看 [候选版本说明](RELEASE_CANDIDATE.md) 与 [设备测试计划](DEVICE_TEST_PLAN.md)。
+
+<details>
+<summary>开发者注记：内部布局基线</summary>
+
+仓库契约中的完整基线名称为 **H5 material system, D1 balanced desktop layout, and M1 native dual-drawer mobile workspace**。这些名称用于自动化测试和视觉验收，不要求普通用户理解。
+
+安装包将内嵌字体限制在 **1.2 MiB** 以内，并将生成的 CSS 限制在 **1.5 MiB** 以内。主题源码包含 **no plugin-specific selectors**；**Prototype markup, JavaScript state, simulated controls** 仅用于设计与测试，不属于发布资产。
+
+</details>
+
+## 开发
+
+### 环境要求
+
+- Node.js 24
+- npm
+
+安装依赖并验证主题：
 
 ```sh
 npm ci
@@ -25,73 +205,70 @@ npm test
 npm run check
 ```
 
-`src/scss/index.scss` is the only Sass entry point. Edit source modules under `src/`; do not edit the generated root `theme.css` directly.
+- `npm run build`：编译 `theme.css`，并在配置了开发 Vault 时部署主题。
+- `npm run dev`：监听 Sass 源文件并持续构建。
+- `npm test`：执行主题结构、兼容性和发布契约测试。
+- `npm run check`：确认生成文件与源码一致，不修改文件。
 
-For continuous compilation:
+`src/scss/index.scss` 是唯一 Sass 入口。请修改 `src/` 下的源模块，不要直接编辑根目录中生成的 `theme.css`。
 
-```sh
-npm run dev
-```
+### 部署到开发 Vault
 
-Before committing or preparing a release candidate, run the full sequence above from the lockfile. `npm run build` is the only command that writes the generated root stylesheet. `npm test` exercises the installed-package contracts and rejected release paths. `npm run check` is read-only and fails when the committed artifact differs from source.
-
-### Dedicated Vault deployment
-
-Copy `.env.example` to `.env` and set `OBSIDIAN_THEME_DIR` to the absolute, non-symlink Pixel theme directory inside the dedicated `dev-test` Vault. Then run:
+复制 `.env.example` 为 `.env`，把 `OBSIDIAN_THEME_DIR` 设置为专用测试 Vault 中 Pixel 主题目录的绝对路径：
 
 ```sh
 OBSIDIAN_THEME_DIR=/absolute/path/to/dev-test/.obsidian/themes/Pixel npm run build
 ```
 
-The trusted Vault ID lives in `development.json` and is resolved through Obsidian's system registry. Deployment atomically replaces only `theme.css` and `manifest.json`; it refuses relative, symlinked, mismatched-Vault, and out-of-scope destinations and does not delete other files.
+构建脚本只会原子替换目标目录中的 `theme.css` 和 `manifest.json`，并拒绝相对路径、符号链接、错误 Vault 和越界目标。
 
-### H5 visual runner
+### 视觉验收
 
-With Obsidian 1.12.7 running against the dedicated H5 profile and fixture Vault, run the guided desktop capture lifecycle with:
+在专用 H5 测试环境中运行：
 
 ```sh
 npm run visual:h5
 ```
 
-Before changing the workspace, the command runs the repository's real objective contract suite, then verifies the dedicated Vault/profile, exact Obsidian version, active Pixel theme, desktop/default-zoom state, candidate package hashes, versioned fixture-content hashes, and required Obsidian CLI developer commands. It clears the dedicated runtime's captured error buffers, snapshots the current workspace and installed package, creates an owned operating-system temporary directory, atomically installs the exact repository `theme.css` and `manifest.json`, establishes each catalog fixture, verifies native topology and every declared transition, and captures evidence only after verification. Any contract failure, captured Obsidian error, or error-level console message vetoes the review before an approval can be exported.
+该流程会先验证构建、固定测试内容、Obsidian 版本和主题包，再生成桌面 Light / Dark 对比视图。详细说明见 [H5 视觉测试文档](h5/README.md)。
 
-After capture, the command opens a transient H5 review bench and waits for the reviewer. The page shows exact build/environment provenance, groups the ten canonical/narrow Light/Dark views by topology, and provides side-by-side synchronized zoom/pan, overlay, and difference localization. A complete ten-view run records six independent `Pass`/`Revise`/`Fail` gates with localized findings plus a separate named-owner H5 Identity judgment; focused reruns remain diagnostic-only and expose no decision path. Diagnostic imagery never produces an acceptance score. The text draft remains available for any review outcome, while canonical approval JSON can be downloaded only when every objective check and visual gate is `Pass`, H5 Identity is `Approved`, and a non-implementer named visual owner signs the record. Press Enter after reviewing or exporting. The original workspace/package is then restored and the temporary HTML and images are removed. Failure and cancellation retain an actionable text diagnostic in the terminal while still restoring and cleaning by default.
+## 项目结构
 
-Focused diagnostic reruns use the same fail-closed path:
-
-```sh
-npm run visual:h5 -- --case=canonical-mixed-tabs --theme=dark
-npm run visual:h5 -- --case=narrow-mixed-stress-light --keep-temp
+```text
+src/scss/             Sass 主题源码
+src/assets/fonts/     内置字体、来源与许可证
+src/assets/screenshots/ README 成果截图与像素视觉资源
+test/                 主题与发布契约测试
+h5/                   桌面视觉验收工具和固定测试内容
+manifest.json         Obsidian 主题清单
+versions.json         版本兼容映射
+theme.css             生成的可安装样式表
 ```
 
-`--keep-temp` is only a local diagnostic exception; it does not approve a visual result. Set `OBSIDIAN_H5_PROFILE_DIR` when the dedicated profile is not at the default ignored `.scratch/pixel-desktop-h5-fidelity/runtime-profile` path. An alternative adapter can be injected with `--adapter=/absolute/path/to/adapter.mjs`; it must implement the lifecycle contract documented in [`h5/README.md`](h5/README.md).
+## 发布约束
 
-`npm run visual:h5 -- --verify-approval` performs the ordinary desktop-free check: development may have no `h5/approval.json`, but a present malformed, stale, unsigned, non-Pass, or rejected record fails. Tagged draft releases add `--require-approval`, so release creation cannot proceed without a current exact-artifact approval.
+- `manifest.json` 是主题版本的唯一权威来源。
+- `theme.css` 是唯一生成的安装样式表。
+- 发布标签必须与 `manifest.json` 中的版本完全一致。
+- 主题运行时不加载远程字体或图片资源。
+- GitHub Release 工作流只创建草稿版本，不会自动发布到 Obsidian 社区目录。
 
-See [COMPATIBILITY.md](COMPATIBILITY.md) for the authoritative component/accessibility matrix and [DEVICE_TEST_PLAN.md](DEVICE_TEST_PLAN.md) for the tester-operated physical iOS/Android release gate.
+## 参与贡献
 
-## Distribution contract
+欢迎通过 [Issues](https://github.com/dszblackmagic/obsidian-pixel-theme/issues) 报告显示问题、兼容性问题或提出改进建议，也欢迎提交 Pull Request。
 
-- `manifest.json` is the theme-version authority.
-- `theme.css` is the only generated installable stylesheet.
-- A user installs exactly `manifest.json` and `theme.css` in `.obsidian/themes/Pixel/`.
-- `versions.json` maps each theme version to its minimum Obsidian version; Pixel `0.1.0` requires Obsidian `1.12.0`.
-- Runtime assets must be embedded; remote font and image requests are rejected.
-- Encoded fonts are capped at 1.2 MiB and generated CSS at 1.5 MiB.
-- Release tags must exactly match `manifest.json.version`.
-- The release workflow creates a draft containing only the two install files. It does not publish to the Obsidian community directory.
+报告视觉问题时，建议同时提供：
 
-## Scope boundaries
+- Obsidian 与 Pixel 版本
+- 操作系统和设备
+- Light / Dark 模式
+- 能复现问题的截图或最小笔记内容
+- 是否启用了 CSS snippets 或社区插件
 
-- H5, D1, and M1 prototypes are visual/structural references only. Prototype markup, JavaScript state, simulated controls, screenshots, and Vault fixtures are not release assets.
-- Pixel is a CSS theme, not a plugin. It does not inject DOM, register commands, replace platform gestures, or add synthetic drawer behavior.
-- Community plugins that use documented Obsidian variables inherit Pixel naturally. The project ships no plugin-specific selectors and makes no individual plugin support promise.
-- Screenshots, contrast captures, diagnostics, device records, and local Vault material remain ignored development evidence rather than tracked release files.
+## 许可
 
-## Bundled fonts
+Pixel 主题源码使用 [MIT License](LICENSE)。内置的 Fusion Pixel 与 JetBrains Mono 字体仍分别遵循随字体附带的 SIL Open Font License 1.1；完整来源、校验信息和许可证位于 [`src/assets/fonts/`](src/assets/fonts/)。
 
-Pixel embeds unmodified WOFF2 files from [Fusion Pixel 2026.07.20](https://github.com/TakWolf/fusion-pixel-font/releases/tag/2026.07.20) and [JetBrains Mono 2.304](https://github.com/JetBrains/JetBrainsMono/releases/tag/v2.304). Both are distributed under SIL Open Font License 1.1. Pinned checksums, attribution, and the complete license texts are stored in [`src/assets/fonts/`](src/assets/fonts/).
+---
 
-## License
-
-Pixel's theme source is available under the [MIT License](LICENSE). Bundled font software remains under its accompanying SIL Open Font License 1.1.
+Pixel is an independent Obsidian theme for focused writing and knowledge management. This README is primarily maintained in Chinese.
