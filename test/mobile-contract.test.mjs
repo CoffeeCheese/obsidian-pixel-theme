@@ -55,8 +55,9 @@ test("M1 keeps the note as the Paper base and styles native drawers by ownership
   assert.equal(declaration(left, "--pixel-tree-active-surface"), "var(--pixel-nav-label)");
   assert.equal(
     declaration(left, "border-inline-end"),
-    "var(--pixel-border-shell) solid var(--pixel-cyan)",
+    "var(--pixel-border-decoration) solid var(--pixel-line-strong)",
   );
+  assert.match(declaration(left, "box-shadow"), /8px 0 24px/);
 
   const right = ruleBody(css, "body.is-mobile .workspace-drawer.mod-right");
   assert.equal(declaration(right, "--pixel-tree-signal"), "var(--pixel-amber-text)");
@@ -166,6 +167,77 @@ test("mobile note chrome uses a compact index-card rhythm", async () => {
   assert.equal(declaration(navbarAction, "min-block-size"), "var(--pixel-control-min)");
   assert.equal(declaration(navbarAction, "border"), "0");
   assert.equal(declaration(navbarAction, "box-shadow"), "none");
+});
+
+test("mobile left drawer uses a compact file-index type scale", async () => {
+  const css = await readTheme();
+  const mobile = combinedRuleBody(css, "body.is-mobile");
+
+  assert.equal(declaration(mobile, "--pixel-mobile-tree-file-size"), "14px");
+  assert.equal(declaration(mobile, "--pixel-mobile-tree-folder-size"), "14px");
+  assert.equal(declaration(mobile, "--pixel-mobile-drawer-label-size"), "15px");
+  assert.equal(declaration(mobile, "--pixel-mobile-drawer-meta-size"), "12px");
+
+  const treeItem = ruleBody(
+    css,
+    "body.is-mobile .workspace-drawer.mod-left :is(.nav-file-title, .nav-folder-title)",
+  );
+  assert.equal(declaration(treeItem, "min-block-size"), "32px");
+  assert.equal(declaration(treeItem, "padding-block"), "var(--pixel-space-1)");
+
+  const file = ruleBody(
+    css,
+    "body.is-mobile .workspace-drawer.mod-left .nav-file-title",
+  );
+  assert.equal(declaration(file, "font-size"), "var(--pixel-mobile-tree-file-size)");
+  assert.equal(declaration(file, "line-height"), "1.45");
+
+  const folder = ruleBody(
+    css,
+    "body.is-mobile .workspace-drawer.mod-left .nav-folder-title",
+  );
+  assert.equal(declaration(folder, "font-size"), "var(--pixel-mobile-tree-folder-size)");
+  assert.equal(declaration(folder, "line-height"), "1.45");
+
+  const treeLabel = ruleBody(
+    css,
+    "body.is-mobile .workspace-drawer.mod-left :is(.nav-file-title-content, .nav-folder-title-content)",
+  );
+  assert.equal(declaration(treeLabel, "overflow"), "hidden");
+  assert.equal(declaration(treeLabel, "text-overflow"), "ellipsis");
+  assert.equal(declaration(treeLabel, "white-space"), "nowrap");
+
+  const activeFile = ruleBody(
+    css,
+    "body.is-mobile .workspace-drawer.mod-left .nav-file-title:is(.is-active, .is-selected)",
+  );
+  assert.equal(
+    declaration(activeFile, "background-color"),
+    "color-mix(in srgb, var(--pixel-cyan) 7%, transparent)",
+  );
+  assert.equal(declaration(activeFile, "color"), "var(--pixel-cyan)");
+  assert.equal(declaration(activeFile, "border-inline-start-color"), "transparent");
+
+  const vaultName = ruleBody(
+    css,
+    "body.is-mobile .workspace-drawer.mod-left .workspace-drawer-header-name-text",
+  );
+  assert.equal(declaration(vaultName, "font-size"), "16px");
+
+  const toolbarButton = ruleBody(
+    css,
+    "body.is-mobile .workspace-drawer.mod-left .nav-action-button",
+  );
+  assert.equal(declaration(toolbarButton, "border"), "0");
+  assert.equal(declaration(toolbarButton, "background"), "transparent");
+  assert.equal(declaration(toolbarButton, "box-shadow"), "none");
+
+  const drawerHeader = ruleBody(
+    css,
+    "body.is-mobile .workspace-drawer.mod-left .workspace-drawer-header",
+  );
+  assert.equal(declaration(drawerHeader, "background-color"), "var(--pixel-paper)");
+  assert.equal(declaration(drawerHeader, "box-shadow"), "inset 0 1px 0 var(--pixel-line)");
 });
 
 test("M1 adds no custom gestures, hover dependencies, or fake controls", async () => {

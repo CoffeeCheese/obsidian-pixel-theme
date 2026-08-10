@@ -11,6 +11,10 @@ body.is-mobile {
   --mobile-toolbar-height: 56px;
   --inline-title-size: 1.75em;
   --inline-title-line-height: 1.24;
+  --pixel-mobile-tree-file-size: 14px;
+  --pixel-mobile-tree-folder-size: 14px;
+  --pixel-mobile-drawer-label-size: 15px;
+  --pixel-mobile-drawer-meta-size: 12px;
 
   .workspace {
     background-color: var(--pixel-canvas);
@@ -39,7 +43,117 @@ body.is-mobile {
   .workspace-drawer.mod-left {
     --pixel-tree-signal: var(--pixel-cyan);
     --pixel-tree-active-surface: var(--pixel-nav-label);
-    border-inline-end: var(--pixel-border-shell) solid var(--pixel-cyan);
+    border-inline-end: var(--pixel-border-decoration) solid var(--pixel-line-strong);
+    box-shadow: 8px 0 24px color-mix(in srgb, var(--pixel-shadow-color) 16%, transparent);
+  }
+
+  // Treat the mobile file explorer as a pocket index, not a scaled desktop
+  // tree. Folders lead the scan by one typographic step; files stay compact
+  // enough for mixed Chinese/Latin names to wrap without dominating the pane.
+  .workspace-drawer.mod-left .nav-files-container {
+    padding-inline: var(--pixel-space-2);
+  }
+
+  .workspace-drawer.mod-left :is(.nav-file-title, .nav-folder-title) {
+    min-block-size: 32px;
+    padding-block: var(--pixel-space-1);
+    padding-inline-end: var(--pixel-space-2);
+    border-radius: var(--pixel-radius-small);
+  }
+
+  .workspace-drawer.mod-left .nav-file-title {
+    color: var(--pixel-text-muted);
+    font-size: var(--pixel-mobile-tree-file-size);
+    font-weight: 400;
+    line-height: 1.45;
+  }
+
+  .workspace-drawer.mod-left .nav-folder-title {
+    color: var(--pixel-text-muted);
+    font-size: var(--pixel-mobile-tree-folder-size);
+    font-weight: 500;
+    line-height: 1.45;
+  }
+
+  // A quiet highlighter band carries the current-file state. The cyan ink is
+  // the one pixel-theme signature retained inside this otherwise light pane.
+  .workspace-drawer.mod-left .nav-file-title:is(.is-active, .is-selected) {
+    border-inline-start-color: transparent;
+    border-radius: var(--pixel-radius-large);
+    background-color: color-mix(in srgb, var(--pixel-cyan) 7%, transparent);
+    color: var(--pixel-cyan);
+    font-weight: 500;
+    box-shadow: none;
+  }
+
+  .workspace-drawer.mod-left :is(.nav-file-title-content, .nav-folder-title-content) {
+    overflow: hidden;
+    overflow-wrap: normal;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: inherit;
+  }
+
+  .workspace-drawer.mod-left .nav-folder-title .collapse-icon {
+    block-size: 20px;
+    color: color-mix(in srgb, var(--pixel-text-muted) 72%, transparent);
+  }
+
+  .workspace-drawer.mod-left .nav-folder-title .collapse-icon .svg-icon {
+    inline-size: 16px;
+    block-size: 16px;
+  }
+
+  .workspace-drawer.mod-left .nav-folder-children {
+    border-inline-start-color: color-mix(in srgb, var(--pixel-line) 72%, transparent);
+  }
+
+  .workspace-drawer.mod-left .workspace-drawer-tab-select .workspace-tab-header-inner-title {
+    font-size: var(--pixel-mobile-drawer-label-size);
+    line-height: 1.4;
+  }
+
+  .workspace-drawer.mod-left .workspace-drawer-header-name-text {
+    font-size: 16px;
+    line-height: 1.35;
+  }
+
+  .workspace-drawer.mod-left .workspace-drawer-header-info {
+    margin-block-start: 2px;
+    font-size: var(--pixel-mobile-drawer-meta-size);
+    line-height: 1.4;
+  }
+
+  .workspace-drawer.mod-left .nav-buttons-container {
+    gap: var(--pixel-space-1);
+  }
+
+  .workspace-drawer.mod-left .nav-action-button {
+    border: 0;
+    border-radius: var(--pixel-radius-small);
+    background: transparent;
+    color: var(--pixel-text-muted);
+    box-shadow: none;
+  }
+
+  .workspace-drawer.mod-left .nav-action-button .svg-icon {
+    inline-size: 22px;
+    block-size: 22px;
+  }
+
+  .workspace-drawer.mod-left .workspace-drawer-tab-select {
+    border: 0;
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  .workspace-drawer.mod-left .workspace-drawer-header-icon.mod-settings {
+    border: 0;
+    border-radius: 50%;
+    background: var(--pixel-paper);
+    box-shadow:
+      0 2px 8px color-mix(in srgb, var(--pixel-shadow-color) 10%, transparent),
+      0 8px 24px color-mix(in srgb, var(--pixel-shadow-color) 12%, transparent);
   }
 
   .workspace-drawer.mod-right {
@@ -56,8 +170,8 @@ body.is-mobile {
   }
 
   .workspace-drawer.mod-left .workspace-drawer-header {
-    background-color: var(--pixel-nav-label);
-    box-shadow: inset 0 -4px 0 var(--pixel-cyan);
+    background-color: var(--pixel-paper);
+    box-shadow: inset 0 1px 0 var(--pixel-line);
   }
 
   .workspace-drawer.mod-right .workspace-drawer-header {
@@ -157,6 +271,12 @@ body.is-mobile {
     background-color: var(--pixel-tree-active-surface);
     color: var(--pixel-text);
     font-weight: 600;
+  }
+
+  .workspace-drawer.mod-left .workspace-tab-header.is-active {
+    border-inline-start-color: transparent;
+    background-color: transparent;
+    color: var(--pixel-text);
   }
 
   .workspace-drawer-backdrop {
