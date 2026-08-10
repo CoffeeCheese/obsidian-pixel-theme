@@ -27,12 +27,9 @@
 
 :where(.markdown-source-view.mod-cm6) .cm-line.cm-active {
   background-color: var(--pixel-active-line);
-  // Extend the paper strip behind the text instead of moving the CodeMirror
-  // line itself. The cursor and line wrapping stay fixed while the first glyph
-  // gains a full grid step of breathing room, with no start-edge rule.
-  box-shadow:
-    calc(0px - var(--pixel-space-2)) 0 0 var(--pixel-active-line),
-    0 var(--pixel-border-control) 0 color-mix(in srgb, var(--pixel-cyan) 18%, transparent);
+  // Paint one flat grid step behind the first glyph without shifting the
+  // CodeMirror line. No edge rule or depth shadow is added to the ink wash.
+  box-shadow: calc(0px - var(--pixel-space-2)) 0 0 var(--pixel-active-line);
 }
 
 .markdown-rendered :is(p, ul, ol, table) {
