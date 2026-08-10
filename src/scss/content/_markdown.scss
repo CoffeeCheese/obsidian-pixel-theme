@@ -16,6 +16,15 @@
   overflow: visible;
 }
 
+:where(.markdown-source-view.mod-cm6)
+  .cm-line.HyperMD-header:is(
+    .HyperMD-header-1,
+    .HyperMD-header-2,
+    .HyperMD-header-3
+  ) {
+  padding-block: calc(var(--p-spacing) / 2);
+}
+
 :where(.markdown-source-view.mod-cm6) .cm-line.cm-active {
   background-color: var(--pixel-active-line);
   box-shadow: inset 2px 0 0 var(--pixel-cyan);
