@@ -130,7 +130,7 @@ test("mobile bars and native backdrop preserve safe-area and dismissal behavior"
   assert.doesNotMatch(backdrop, /(?:pointer-events|display)\s*:/);
 });
 
-test("mobile note chrome uses a compact index-card rhythm", async () => {
+test("mobile note chrome uses a soft index-card editing rhythm", async () => {
   const css = await readTheme();
 
   const headerAction = ruleBody(
@@ -145,8 +145,15 @@ test("mobile note chrome uses a compact index-card rhythm", async () => {
     'body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-content',
   );
   assert.equal(declaration(metadataContent, "inline-size"), "100%");
-  assert.equal(declaration(metadataContent, "border-radius"), "0");
-  assert.equal(declaration(metadataContent, "background-color"), "transparent");
+  assert.equal(
+    declaration(metadataContent, "border-radius"),
+    "calc(var(--pixel-radius-large) * 2)",
+  );
+  assert.match(
+    declaration(metadataContent, "background-color"),
+    /var\(--pixel-surface-secondary\) 28%/,
+  );
+  assert.equal(declaration(metadataContent, "box-shadow"), "none");
 
   const property = ruleBody(
     css,
@@ -155,10 +162,47 @@ test("mobile note chrome uses a compact index-card rhythm", async () => {
   assert.equal(declaration(property, "display"), "grid");
   assert.equal(
     declaration(property, "grid-template-columns"),
-    "minmax(0, 104px) minmax(0, 1fr) auto",
+    "minmax(0, 124px) minmax(0, 1fr) auto",
   );
   assert.equal(declaration(property, "min-block-size"), "44px");
-  assert.equal(declaration(property, "border-radius"), "0");
+  assert.equal(declaration(property, "border-radius"), "var(--pixel-radius-large)");
+
+  const focusedProperty = ruleBodyForSelector(
+    css,
+    'body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-property:focus-within',
+  );
+  assert.equal(declaration(focusedProperty, "z-index"), "1");
+  assert.match(declaration(focusedProperty, "box-shadow"), /inset 3px 0 0 var\(--pixel-cyan\)/);
+
+  const propertyMenu = ruleBody(
+    css,
+    'body.is-mobile:has(.workspace-leaf-content[data-type=markdown] .metadata-property-key:focus-within) .suggestion-container.mod-property-key',
+  );
+  assert.equal(
+    declaration(propertyMenu, "inline-size"),
+    "min(200px, 100vw - var(--pixel-space-4) * 2)",
+  );
+  assert.equal(declaration(propertyMenu, "max-block-size"), "min(240px, 36vh)");
+  assert.match(declaration(propertyMenu, "box-shadow"), /0 10px 24px/);
+
+  const propertyAction = ruleBodyForSelector(
+    css,
+    'body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-property-value > .clickable-icon',
+  );
+  assert.equal(declaration(propertyAction, "border"), "0");
+  assert.equal(declaration(propertyAction, "background-color"), "transparent");
+  assert.equal(declaration(propertyAction, "box-shadow"), "none");
+
+  const selectedSuggestion = ruleBody(
+    css,
+    'body.is-mobile:has(.workspace-leaf-content[data-type=markdown] .metadata-property-key:focus-within) .suggestion-container.mod-property-key .suggestion-item.is-selected',
+  );
+  assert.equal(declaration(selectedSuggestion, "outline"), "0");
+  assert.equal(declaration(selectedSuggestion, "color"), "var(--pixel-cyan)");
+  assert.match(
+    declaration(selectedSuggestion, "background-color"),
+    /var\(--pixel-cyan\) 8%/,
+  );
 
   const navbarAction = ruleBody(
     css,

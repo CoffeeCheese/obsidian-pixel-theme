@@ -2580,10 +2580,12 @@ body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-content {
   box-sizing: border-box;
   inline-size: 100%;
   margin-inline: 0;
-  padding: var(--pixel-space-1) 0 0;
-  border-block: var(--pixel-border-decoration) solid var(--pixel-line-strong);
-  border-radius: 0;
-  background-color: transparent;
+  padding: var(--pixel-space-2);
+  overflow: visible;
+  border: 0;
+  border-radius: calc(var(--pixel-radius-large) * 2);
+  background-color: color-mix(in srgb, var(--pixel-surface-secondary) 28%, var(--pixel-paper));
+  box-shadow: none;
 }
 body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-properties {
   gap: 0;
@@ -2591,18 +2593,17 @@ body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-properties 
 body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-property {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 104px) minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 124px) minmax(0, 1fr) auto;
   min-block-size: 44px;
-  padding: var(--pixel-space-1) 0;
+  padding: var(--pixel-space-1) var(--pixel-space-2);
   align-items: start;
   border: 0;
-  border-block-end: var(--pixel-border-decoration) solid var(--pixel-line);
-  border-radius: 0;
+  border-radius: var(--pixel-radius-large);
   background-color: transparent;
   box-shadow: none;
 }
-body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-property:last-child {
-  border-block-end: 0;
+body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-property + .metadata-property {
+  margin-block-start: 2px;
 }
 body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-property-key,
 body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-property-value {
@@ -2617,8 +2618,9 @@ body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-property-va
 body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-property-key {
   gap: var(--pixel-space-1);
   color: var(--pixel-text-muted);
-  font-family: var(--pixel-font-monospace);
+  font-family: var(--pixel-font-text);
   font-size: 14px;
+  font-weight: 500;
 }
 body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-property-icon {
   flex: 0 0 20px;
@@ -2626,7 +2628,7 @@ body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-property-ic
   min-inline-size: 20px;
   block-size: 36px;
   padding: 0;
-  color: var(--pixel-cyan);
+  color: color-mix(in srgb, var(--pixel-text-muted) 78%, transparent);
 }
 body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-property-icon .svg-icon {
   inline-size: 17px;
@@ -2652,6 +2654,7 @@ body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-property-ke
   padding-inline: 4px;
   color: var(--pixel-text-muted);
   font-family: inherit;
+  font-weight: inherit;
 }
 body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-property-value {
   color: var(--pixel-text);
@@ -2668,15 +2671,27 @@ body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-input-longt
 }
 body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-property:focus-within,
 body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-container:focus-within .metadata-property.is-selected {
+  z-index: 1;
   outline: 0;
-  border-radius: var(--pixel-radius-small);
-  background-color: color-mix(in srgb, var(--pixel-cyan) 5%, transparent);
-  box-shadow: inset 2px 0 0 var(--pixel-cyan);
+  border-radius: var(--pixel-radius-large);
+  background-color: color-mix(in srgb, var(--pixel-paper) 78%, transparent);
+  box-shadow: inset 0 0 0 var(--pixel-border-control) var(--pixel-line-strong), inset 3px 0 0 var(--pixel-cyan);
 }
 body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-property-value:focus-within,
 body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-property-key:focus-within {
   background-color: transparent;
   box-shadow: none;
+}
+body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-property-key:focus-within .metadata-property-icon {
+  color: var(--pixel-cyan);
+}
+body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-property-key:focus-within .metadata-property-key-input {
+  border: 0;
+  outline: 0;
+  background-color: transparent;
+  box-shadow: none;
+  color: var(--pixel-text);
+  caret-color: var(--pixel-cyan);
 }
 body.is-mobile .workspace-leaf-content[data-type=markdown] .multi-select-container {
   display: flex;
@@ -2699,9 +2714,18 @@ body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-property-wa
   min-inline-size: 36px;
   min-block-size: 36px;
   block-size: 36px;
-  border-width: var(--pixel-border-decoration);
+  border: 0;
   border-radius: var(--pixel-radius-small);
+  background-color: transparent;
   box-shadow: none;
+}
+body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-property-warning-icon {
+  color: var(--pixel-brick);
+}
+body.is-mobile .workspace-leaf-content[data-type=markdown] :is(.metadata-property-value > .clickable-icon,
+.metadata-property-warning-icon) .svg-icon {
+  inline-size: 18px;
+  block-size: 18px;
 }
 body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-add-button {
   min-block-size: 44px;
@@ -2712,6 +2736,43 @@ body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-add-button 
   background-color: transparent;
   box-shadow: none;
   color: var(--pixel-text-muted);
+}
+body.is-mobile:has(.workspace-leaf-content[data-type=markdown] .metadata-property-key:focus-within) .suggestion-container.mod-property-key {
+  inline-size: min(200px, 100vw - var(--pixel-space-4) * 2);
+  max-inline-size: calc(100vw - var(--pixel-space-4) * 2);
+  max-block-size: min(240px, 36vh);
+  padding: 0;
+  overflow-y: auto;
+  border: var(--pixel-border-decoration) solid var(--pixel-line);
+  border-radius: calc(var(--pixel-radius-large) + var(--pixel-space-2));
+  background-color: color-mix(in srgb, var(--pixel-paper) 96%, transparent);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--pixel-shadow-color) 12%, transparent);
+}
+body.is-mobile:has(.workspace-leaf-content[data-type=markdown] .metadata-property-key:focus-within) .suggestion-container.mod-property-key .suggestion {
+  padding: var(--pixel-space-2);
+}
+body.is-mobile:has(.workspace-leaf-content[data-type=markdown] .metadata-property-key:focus-within) .suggestion-container.mod-property-key .suggestion-item {
+  box-sizing: border-box;
+  min-block-size: 42px;
+  padding: var(--pixel-space-2) var(--pixel-space-3);
+  border-radius: var(--pixel-radius-large);
+  color: var(--pixel-text);
+  font-family: var(--pixel-font-text);
+  font-size: 14px;
+  font-weight: 500;
+}
+body.is-mobile:has(.workspace-leaf-content[data-type=markdown] .metadata-property-key:focus-within) .suggestion-container.mod-property-key .suggestion-item.is-selected {
+  outline: 0;
+  background-color: color-mix(in srgb, var(--pixel-cyan) 8%, var(--pixel-paper));
+  color: var(--pixel-cyan);
+  box-shadow: inset 2px 0 0 var(--pixel-cyan);
+  font-weight: 650;
+}
+body.is-mobile:has(.workspace-leaf-content[data-type=markdown] .metadata-property-key:focus-within) .suggestion-container.mod-property-key .suggestion-flair {
+  color: color-mix(in srgb, var(--pixel-text-muted) 78%, transparent);
+}
+body.is-mobile:has(.workspace-leaf-content[data-type=markdown] .metadata-property-key:focus-within) .suggestion-container.mod-property-key .suggestion-item.is-selected .suggestion-flair {
+  color: var(--pixel-cyan);
 }
 
 body.is-mobile .workspace.is-left-sidedock-open:has(> .workspace-drawer.mod-left:not(.is-pinned)) .workspace-split.mod-root,

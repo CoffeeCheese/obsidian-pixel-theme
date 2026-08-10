@@ -349,8 +349,9 @@ body.is-mobile {
     margin-block-end: var(--pixel-space-3);
   }
 
-  // On a phone, note properties become a quiet index card: one narrow key
-  // rail, a fluid value column, and paper-like rules instead of nested fields.
+  // On a phone, note properties become a quiet index card: a soft shared
+  // surface keeps the rows together while the active row carries all editing
+  // chrome. This avoids stacking an input border, a row border, and a menu.
   .workspace-leaf-content[data-type="markdown"] .metadata-container {
     margin-block-end: var(--pixel-space-6);
   }
@@ -385,10 +386,12 @@ body.is-mobile {
     box-sizing: border-box;
     inline-size: 100%;
     margin-inline: 0;
-    padding: var(--pixel-space-1) 0 0;
-    border-block: var(--pixel-border-decoration) solid var(--pixel-line-strong);
-    border-radius: 0;
-    background-color: transparent;
+    padding: var(--pixel-space-2);
+    overflow: visible;
+    border: 0;
+    border-radius: calc(var(--pixel-radius-large) * 2);
+    background-color: color-mix(in srgb, var(--pixel-surface-secondary) 28%, var(--pixel-paper));
+    box-shadow: none;
   }
 
   .workspace-leaf-content[data-type="markdown"] .metadata-properties {
@@ -398,19 +401,18 @@ body.is-mobile {
   .workspace-leaf-content[data-type="markdown"] .metadata-property {
     position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 104px) minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 124px) minmax(0, 1fr) auto;
     min-block-size: 44px;
-    padding: var(--pixel-space-1) 0;
+    padding: var(--pixel-space-1) var(--pixel-space-2);
     align-items: start;
     border: 0;
-    border-block-end: var(--pixel-border-decoration) solid var(--pixel-line);
-    border-radius: 0;
+    border-radius: var(--pixel-radius-large);
     background-color: transparent;
     box-shadow: none;
   }
 
-  .workspace-leaf-content[data-type="markdown"] .metadata-property:last-child {
-    border-block-end: 0;
+  .workspace-leaf-content[data-type="markdown"] .metadata-property + .metadata-property {
+    margin-block-start: 2px;
   }
 
   .workspace-leaf-content[data-type="markdown"] .metadata-property-key,
@@ -427,8 +429,9 @@ body.is-mobile {
   .workspace-leaf-content[data-type="markdown"] .metadata-property-key {
     gap: var(--pixel-space-1);
     color: var(--pixel-text-muted);
-    font-family: var(--pixel-font-monospace);
+    font-family: var(--pixel-font-text);
     font-size: 14px;
+    font-weight: 500;
   }
 
   .workspace-leaf-content[data-type="markdown"] .metadata-property-icon {
@@ -437,7 +440,7 @@ body.is-mobile {
     min-inline-size: 20px;
     block-size: 36px;
     padding: 0;
-    color: var(--pixel-cyan);
+    color: color-mix(in srgb, var(--pixel-text-muted) 78%, transparent);
   }
 
   .workspace-leaf-content[data-type="markdown"] .metadata-property-icon .svg-icon {
@@ -468,6 +471,7 @@ body.is-mobile {
     padding-inline: 4px;
     color: var(--pixel-text-muted);
     font-family: inherit;
+    font-weight: inherit;
   }
 
   .workspace-leaf-content[data-type="markdown"] .metadata-property-value {
@@ -487,16 +491,32 @@ body.is-mobile {
 
   .workspace-leaf-content[data-type="markdown"] .metadata-property:focus-within,
   .workspace-leaf-content[data-type="markdown"] .metadata-container:focus-within .metadata-property.is-selected {
+    z-index: 1;
     outline: 0;
-    border-radius: var(--pixel-radius-small);
-    background-color: color-mix(in srgb, var(--pixel-cyan) 5%, transparent);
-    box-shadow: inset 2px 0 0 var(--pixel-cyan);
+    border-radius: var(--pixel-radius-large);
+    background-color: color-mix(in srgb, var(--pixel-paper) 78%, transparent);
+    box-shadow:
+      inset 0 0 0 var(--pixel-border-control) var(--pixel-line-strong),
+      inset 3px 0 0 var(--pixel-cyan);
   }
 
   .workspace-leaf-content[data-type="markdown"] .metadata-property-value:focus-within,
   .workspace-leaf-content[data-type="markdown"] .metadata-property-key:focus-within {
     background-color: transparent;
     box-shadow: none;
+  }
+
+  .workspace-leaf-content[data-type="markdown"] .metadata-property-key:focus-within .metadata-property-icon {
+    color: var(--pixel-cyan);
+  }
+
+  .workspace-leaf-content[data-type="markdown"] .metadata-property-key:focus-within .metadata-property-key-input {
+    border: 0;
+    outline: 0;
+    background-color: transparent;
+    box-shadow: none;
+    color: var(--pixel-text);
+    caret-color: var(--pixel-cyan);
   }
 
   .workspace-leaf-content[data-type="markdown"] .multi-select-container {
@@ -522,9 +542,22 @@ body.is-mobile {
     min-inline-size: 36px;
     min-block-size: 36px;
     block-size: 36px;
-    border-width: var(--pixel-border-decoration);
+    border: 0;
     border-radius: var(--pixel-radius-small);
+    background-color: transparent;
     box-shadow: none;
+  }
+
+  .workspace-leaf-content[data-type="markdown"] .metadata-property-warning-icon {
+    color: var(--pixel-brick);
+  }
+
+  .workspace-leaf-content[data-type="markdown"] :is(
+    .metadata-property-value > .clickable-icon,
+    .metadata-property-warning-icon
+  ) .svg-icon {
+    inline-size: 18px;
+    block-size: 18px;
   }
 
   .workspace-leaf-content[data-type="markdown"] .metadata-add-button {
@@ -536,6 +569,52 @@ body.is-mobile {
     background-color: transparent;
     box-shadow: none;
     color: var(--pixel-text-muted);
+  }
+
+  // Property-key suggestions are rendered in a body-level portal. Give that
+  // transient editor enough width for mixed Chinese/Latin names while keeping
+  // its visual weight below the note itself.
+  &:has(.workspace-leaf-content[data-type="markdown"] .metadata-property-key:focus-within) .suggestion-container.mod-property-key {
+    inline-size: min(200px, calc(100vw - (var(--pixel-space-4) * 2)));
+    max-inline-size: calc(100vw - (var(--pixel-space-4) * 2));
+    max-block-size: min(240px, 36vh);
+    padding: 0;
+    overflow-y: auto;
+    border: var(--pixel-border-decoration) solid var(--pixel-line);
+    border-radius: calc(var(--pixel-radius-large) + var(--pixel-space-2));
+    background-color: color-mix(in srgb, var(--pixel-paper) 96%, transparent);
+    box-shadow: 0 10px 24px color-mix(in srgb, var(--pixel-shadow-color) 12%, transparent);
+  }
+
+  &:has(.workspace-leaf-content[data-type="markdown"] .metadata-property-key:focus-within) .suggestion-container.mod-property-key .suggestion {
+    padding: var(--pixel-space-2);
+  }
+
+  &:has(.workspace-leaf-content[data-type="markdown"] .metadata-property-key:focus-within) .suggestion-container.mod-property-key .suggestion-item {
+    box-sizing: border-box;
+    min-block-size: 42px;
+    padding: var(--pixel-space-2) var(--pixel-space-3);
+    border-radius: var(--pixel-radius-large);
+    color: var(--pixel-text);
+    font-family: var(--pixel-font-text);
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  &:has(.workspace-leaf-content[data-type="markdown"] .metadata-property-key:focus-within) .suggestion-container.mod-property-key .suggestion-item.is-selected {
+    outline: 0;
+    background-color: color-mix(in srgb, var(--pixel-cyan) 8%, var(--pixel-paper));
+    color: var(--pixel-cyan);
+    box-shadow: inset 2px 0 0 var(--pixel-cyan);
+    font-weight: 650;
+  }
+
+  &:has(.workspace-leaf-content[data-type="markdown"] .metadata-property-key:focus-within) .suggestion-container.mod-property-key .suggestion-flair {
+    color: color-mix(in srgb, var(--pixel-text-muted) 78%, transparent);
+  }
+
+  &:has(.workspace-leaf-content[data-type="markdown"] .metadata-property-key:focus-within) .suggestion-container.mod-property-key .suggestion-item.is-selected .suggestion-flair {
+    color: var(--pixel-cyan);
   }
 }
 
