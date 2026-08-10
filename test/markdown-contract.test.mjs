@@ -81,3 +81,24 @@ test("Light and Dark provide mode-neutral editing surface roles", async () => {
   assert.equal(declaration(dark, "--pixel-active-line"), "#1d3039");
   assert.equal(declaration(dark, "--pixel-selection"), "rgba(88, 199, 207, 0.35)");
 });
+
+test("active editing lines use an offset pixel-paper strip without a start rule", async () => {
+  const css = await readTheme();
+  const activeLine = ruleBody(
+    css,
+    ":where(.markdown-source-view.mod-cm6) .cm-line.cm-active",
+  );
+
+  assert.equal(
+    declaration(activeLine, "background-color"),
+    "var(--pixel-active-line)",
+  );
+  assert.equal(
+    declaration(activeLine, "box-shadow"),
+    "calc(0px - var(--pixel-space-2)) 0 0 var(--pixel-active-line), 0 var(--pixel-border-control) 0 color-mix(in srgb, var(--pixel-cyan) 18%, transparent)",
+  );
+  assert.doesNotMatch(
+    activeLine,
+    /(?:\binset\b|border-(?:left|inline-start))\s*:/,
+  );
+});
