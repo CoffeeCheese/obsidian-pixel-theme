@@ -19,7 +19,18 @@ body {
   --pixel-radius-small: 4px;
   --pixel-radius: 6px;
   --pixel-radius-large: 10px;
+  --pixel-radius-button: 12px;
   --pixel-shadow-control: 2px 2px 0 var(--pixel-shadow-color);
+  --pixel-shadow-button:
+    0 2px 0 color-mix(in srgb, var(--pixel-shadow-color) 76%, var(--pixel-paper)),
+    0 5px 10px color-mix(in srgb, var(--pixel-shadow-color) 16%, transparent);
+  --pixel-shadow-button-hover:
+    0 3px 0 color-mix(in srgb, var(--pixel-shadow-color) 72%, var(--pixel-paper)),
+    0 7px 14px color-mix(in srgb, var(--pixel-shadow-color) 18%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--pixel-cyan) 22%, transparent);
+  --pixel-shadow-button-active:
+    0 1px 0 color-mix(in srgb, var(--pixel-shadow-color) 72%, var(--pixel-paper)),
+    inset 0 0 0 1px color-mix(in srgb, var(--pixel-cyan) 18%, transparent);
   --pixel-shadow-shell: 4px 4px 0 var(--pixel-shadow-color);
   --pixel-shadow-side-module: 4px 4px 0 var(--pixel-shadow-color);
   --pixel-shadow-cockpit: 5px 5px 0 var(--pixel-shadow-color);
@@ -33,7 +44,13 @@ body {
   --pixel-motion-press: 80ms;
   --pixel-motion-state: 120ms;
   --pixel-motion-surface: 160ms;
+  --pixel-motion-button: 160ms;
+  --pixel-motion-toggle: 260ms;
+  --pixel-motion-toggle-color: 220ms;
+  --pixel-motion-toggle-press: 150ms;
   --pixel-ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --pixel-ease-button: cubic-bezier(0.22, 1, 0.36, 1);
+  --pixel-ease-toggle: cubic-bezier(0.42, 0, 0.25, 1);
   --pixel-control-min: 32px;
   --pixel-icon-size: 18px;
   --pixel-state-min-block-size: 48px;

@@ -17,6 +17,10 @@ test("compiled controls share Pixel surfaces, meaningful boundaries, and motion"
     "--pixel-motion-press": "80ms",
     "--pixel-motion-state": "120ms",
     "--pixel-motion-surface": "160ms",
+    "--pixel-motion-button": "160ms",
+    "--pixel-motion-toggle": "260ms",
+    "--pixel-motion-toggle-color": "220ms",
+    "--pixel-motion-toggle-press": "150ms",
     "--pixel-control-min": "32px",
     "--pixel-state-min-block-size": "48px",
   };
@@ -48,6 +52,34 @@ test("compiled controls share Pixel surfaces, meaningful boundaries, and motion"
   }
 });
 
+test("settings toggles glide between edges with a cushioned press", async () => {
+  const css = await readTheme();
+  const track = ruleBody(css, ".checkbox-container");
+  assert.match(
+    declaration(track, "transition"),
+    /background-color var\(--pixel-motion-toggle-color\) var\(--pixel-ease-toggle\)/,
+  );
+
+  const thumb = ruleBody(css, ".modal label.checkbox-container::after");
+  assert.equal(declaration(thumb, "transform"), "scaley(1)");
+  assert.equal(declaration(thumb, "transform-origin"), "center");
+  assert.match(
+    declaration(thumb, "transition"),
+    /inset-inline-start var\(--pixel-motion-toggle\) var\(--pixel-ease-toggle\)/,
+  );
+  assert.match(
+    declaration(thumb, "transition"),
+    /transform var\(--pixel-motion-toggle-press\) var\(--pixel-ease-toggle\)/,
+  );
+
+  const pressed = ruleBody(
+    css,
+    ".modal label.checkbox-container:not(.is-disabled):active::after",
+  );
+  assert.equal(declaration(pressed, "transform"), "scaley(0.9)");
+  assert.equal(declaration(pressed, "opacity"), "1");
+});
+
 test("controls expose pointer, keyboard, and pressed feedback without layout shifts", async () => {
   const css = await readTheme();
   const raisedControl = ruleBodyForSelector(css, "button:not(.clickable-icon)");
@@ -62,6 +94,31 @@ test("controls expose pointer, keyboard, and pressed feedback without layout shi
   assert.match(
     declaration(raisedControl, "transition"),
     /transform var\(--pixel-motion-press\) ease-out/,
+  );
+
+  const roundedButton = ruleBody(css, "button:not(.clickable-icon)");
+  assert.equal(
+    declaration(roundedButton, "border-radius"),
+    "var(--pixel-radius-button)",
+  );
+  assert.equal(
+    declaration(roundedButton, "box-shadow"),
+    "var(--pixel-shadow-button)",
+  );
+  assert.equal(declaration(roundedButton, "transform"), "translatey(0) scale(1)");
+  assert.match(
+    declaration(roundedButton, "transition"),
+    /transform var\(--pixel-motion-button\) var\(--pixel-ease-button\)/,
+  );
+
+  const pressedButton = ruleBodyForSelector(
+    css,
+    'button:not(.clickable-icon):not(:disabled):not([aria-disabled=true]):active',
+  );
+  assert.equal(declaration(pressedButton, "transform"), "translatey(1px) scale(0.98)");
+  assert.equal(
+    declaration(pressedButton, "box-shadow"),
+    "var(--pixel-shadow-button-active)",
   );
 
   const textField = ruleBodyForSelector(css, "input[type=text]");
@@ -102,6 +159,15 @@ test("controls expose pointer, keyboard, and pressed feedback without layout shi
   assert.equal(
     declaration(hover, "background-color"),
     "var(--pixel-surface-secondary)",
+  );
+  const buttonHover = ruleBodyForSelector(
+    pointerHover,
+    'button:not(.clickable-icon):not(:disabled):not([aria-disabled=true]):not(:active):hover',
+  );
+  assert.equal(declaration(buttonHover, "transform"), "translatey(-1px) scale(1)");
+  assert.equal(
+    declaration(buttonHover, "box-shadow"),
+    "var(--pixel-shadow-button-hover)",
   );
 });
 
@@ -176,6 +242,12 @@ test("accessibility preferences remove motion and preserve system-authoritative 
   const motionlessControls = ruleBodyForSelector(reducedMotion, ".clickable-icon");
   assert.equal(declaration(motionlessControls, "transition-duration"), "0ms");
   assert.equal(declaration(motionlessControls, "animation"), "none");
+  const motionlessToggleThumb = ruleBodyForSelector(
+    reducedMotion,
+    ".checkbox-container::after",
+  );
+  assert.equal(declaration(motionlessToggleThumb, "transition-duration"), "0ms");
+  assert.equal(declaration(motionlessToggleThumb, "animation"), "none");
   const motionlessDrawers = ruleBodyForSelector(reducedMotion, ".workspace-drawer");
   assert.equal(declaration(motionlessDrawers, "transition-duration"), "0ms");
   assert.equal(declaration(motionlessDrawers, "animation"), "none");
@@ -188,6 +260,9 @@ test("accessibility preferences remove motion and preserve system-authoritative 
   assert.equal(declaration(systemRoles, "--pixel-text-muted"), "graytext");
   assert.equal(declaration(systemRoles, "--pixel-cyan"), "highlight");
   assert.equal(declaration(systemRoles, "--pixel-shadow-control"), "none");
+  assert.equal(declaration(systemRoles, "--pixel-shadow-button"), "none");
+  assert.equal(declaration(systemRoles, "--pixel-shadow-button-hover"), "none");
+  assert.equal(declaration(systemRoles, "--pixel-shadow-button-active"), "none");
   assert.equal(declaration(systemRoles, "--pixel-shadow-shell"), "none");
 
   const highContrast = atRuleBody(css, "@media (prefers-contrast: more)");

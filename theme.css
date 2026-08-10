@@ -268,7 +268,18 @@ body {
   --pixel-radius-small: 4px;
   --pixel-radius: 6px;
   --pixel-radius-large: 10px;
+  --pixel-radius-button: 12px;
   --pixel-shadow-control: 2px 2px 0 var(--pixel-shadow-color);
+  --pixel-shadow-button:
+    0 2px 0 color-mix(in srgb, var(--pixel-shadow-color) 76%, var(--pixel-paper)),
+    0 5px 10px color-mix(in srgb, var(--pixel-shadow-color) 16%, transparent);
+  --pixel-shadow-button-hover:
+    0 3px 0 color-mix(in srgb, var(--pixel-shadow-color) 72%, var(--pixel-paper)),
+    0 7px 14px color-mix(in srgb, var(--pixel-shadow-color) 18%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--pixel-cyan) 22%, transparent);
+  --pixel-shadow-button-active:
+    0 1px 0 color-mix(in srgb, var(--pixel-shadow-color) 72%, var(--pixel-paper)),
+    inset 0 0 0 1px color-mix(in srgb, var(--pixel-cyan) 18%, transparent);
   --pixel-shadow-shell: 4px 4px 0 var(--pixel-shadow-color);
   --pixel-shadow-side-module: 4px 4px 0 var(--pixel-shadow-color);
   --pixel-shadow-cockpit: 5px 5px 0 var(--pixel-shadow-color);
@@ -282,7 +293,13 @@ body {
   --pixel-motion-press: 80ms;
   --pixel-motion-state: 120ms;
   --pixel-motion-surface: 160ms;
+  --pixel-motion-button: 160ms;
+  --pixel-motion-toggle: 260ms;
+  --pixel-motion-toggle-color: 220ms;
+  --pixel-motion-toggle-press: 150ms;
   --pixel-ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --pixel-ease-button: cubic-bezier(0.22, 1, 0.36, 1);
+  --pixel-ease-toggle: cubic-bezier(0.42, 0, 0.25, 1);
   --pixel-control-min: 32px;
   --pixel-icon-size: 18px;
   --pixel-state-min-block-size: 48px;
@@ -1090,6 +1107,13 @@ button:not(.clickable-icon),
   transition: transform var(--pixel-motion-press) ease-out, box-shadow var(--pixel-motion-press) ease-out, background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, color var(--pixel-motion-state) linear;
 }
 
+button:not(.clickable-icon) {
+  border-radius: var(--pixel-radius-button);
+  box-shadow: var(--pixel-shadow-button);
+  transform: translateY(0) scale(1);
+  transition: transform var(--pixel-motion-button) var(--pixel-ease-button), box-shadow var(--pixel-motion-button) var(--pixel-ease-button), background-color var(--pixel-motion-state) var(--pixel-ease-out), border-color var(--pixel-motion-state) var(--pixel-ease-out), color var(--pixel-motion-state) var(--pixel-ease-out);
+}
+
 textarea,
 .multi-select-container,
 input.metadata-input-text,
@@ -1110,7 +1134,12 @@ select,
   transition: background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, color var(--pixel-motion-state) linear;
 }
 
-button:not(.clickable-icon):not(:disabled):not([aria-disabled=true]):active,
+button:not(.clickable-icon):not(:disabled):not([aria-disabled=true]):active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: var(--pixel-shadow-button-active);
+  transition-duration: var(--pixel-motion-press);
+}
+
 .clickable-icon:not([aria-disabled=true]):active {
   transform: translate(2px, 2px);
   box-shadow: none;
@@ -1157,6 +1186,10 @@ select:focus-visible,
     background-color: var(--pixel-surface-secondary);
     border-color: var(--pixel-cyan);
     color: var(--pixel-text);
+  }
+  button:not(.clickable-icon):not(:disabled):not([aria-disabled=true]):not(:active):hover {
+    box-shadow: var(--pixel-shadow-button-hover);
+    transform: translateY(-1px) scale(1);
   }
   textarea:hover,
   .multi-select-container:hover,
@@ -1344,7 +1377,7 @@ input[type=radio]:checked {
   border-radius: var(--pixel-radius);
   background-color: color-mix(in srgb, var(--pixel-border-meaningful) 16%, var(--pixel-paper));
   box-shadow: none;
-  transition: background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear;
+  transition: background-color var(--pixel-motion-toggle-color) var(--pixel-ease-toggle), border-color var(--pixel-motion-toggle-color) var(--pixel-ease-toggle);
 }
 
 .modal label.checkbox-container {
@@ -1378,8 +1411,9 @@ input[type=radio]:checked {
   inset-inline-start: var(--pixel-toggle-position);
   inset-inline-end: auto;
   margin: 0;
-  transform: none;
-  transition: inset-inline-start var(--pixel-motion-state) var(--pixel-ease-out), background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, opacity var(--pixel-motion-press) linear;
+  transform: scaleY(1);
+  transform-origin: center;
+  transition: inset-inline-start var(--pixel-motion-toggle) var(--pixel-ease-toggle), background-color var(--pixel-motion-toggle-color) var(--pixel-ease-toggle), border-color var(--pixel-motion-toggle-color) var(--pixel-ease-toggle), transform var(--pixel-motion-toggle-press) var(--pixel-ease-toggle);
 }
 
 .checkbox-container.is-enabled {
@@ -1397,7 +1431,7 @@ input[type=radio]:checked {
 }
 
 .modal label.checkbox-container.is-enabled::after {
-  transform: none;
+  transform: scaleY(1);
 }
 
 .modal label.checkbox-container:not(.is-disabled):active::after {
@@ -1405,9 +1439,9 @@ input[type=radio]:checked {
   height: var(--pixel-toggle-thumb-size);
   inset-inline-start: var(--pixel-toggle-position);
   margin: 0;
-  transform: none;
+  transform: scaleY(0.9);
   box-shadow: none;
-  opacity: 0.72;
+  opacity: 1;
 }
 
 .checkbox-container.is-disabled::after,
@@ -1464,6 +1498,7 @@ button .svg-icon {
   textarea,
   select,
   .checkbox-container,
+  .checkbox-container::after,
   .menu,
   .suggestion-container,
   .prompt,
@@ -1514,6 +1549,9 @@ button .svg-icon {
     --pixel-nav-label: Canvas;
     --pixel-context-label: Canvas;
     --pixel-shadow-control: none;
+    --pixel-shadow-button: none;
+    --pixel-shadow-button-hover: none;
+    --pixel-shadow-button-active: none;
     --pixel-shadow-shell: none;
     --pixel-shadow-side-module: none;
     --pixel-shadow-cockpit: none;

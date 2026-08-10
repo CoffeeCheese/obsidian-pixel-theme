@@ -116,9 +116,12 @@ test("compiled package exposes the approved Pixel palette and geometry", async (
     "--pixel-radius-small": "4px",
     "--pixel-radius": "6px",
     "--pixel-radius-large": "10px",
+    "--pixel-radius-button": "12px",
     "--pixel-shadow-control": "2px 2px 0 var(--pixel-shadow-color)",
     "--pixel-shadow-shell": "4px 4px 0 var(--pixel-shadow-color)",
     "--pixel-ease-out": "cubic-bezier(0.2, 0.8, 0.2, 1)",
+    "--pixel-ease-button": "cubic-bezier(0.22, 1, 0.36, 1)",
+    "--pixel-ease-toggle": "cubic-bezier(0.42, 0, 0.25, 1)",
   };
 
   for (const [property, value] of Object.entries(expectedGeometry)) {

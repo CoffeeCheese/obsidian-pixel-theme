@@ -37,6 +37,18 @@ button:not(.clickable-icon),
     color var(--pixel-motion-state) linear;
 }
 
+button:not(.clickable-icon) {
+  border-radius: var(--pixel-radius-button);
+  box-shadow: var(--pixel-shadow-button);
+  transform: translateY(0) scale(1);
+  transition:
+    transform var(--pixel-motion-button) var(--pixel-ease-button),
+    box-shadow var(--pixel-motion-button) var(--pixel-ease-button),
+    background-color var(--pixel-motion-state) var(--pixel-ease-out),
+    border-color var(--pixel-motion-state) var(--pixel-ease-out),
+    color var(--pixel-motion-state) var(--pixel-ease-out);
+}
+
 @include form-controls {
   border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
   border-radius: var(--pixel-radius);
@@ -48,7 +60,12 @@ button:not(.clickable-icon),
     color var(--pixel-motion-state) linear;
 }
 
-button:not(.clickable-icon):not(:disabled):not([aria-disabled="true"]):active,
+button:not(.clickable-icon):not(:disabled):not([aria-disabled="true"]):active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: var(--pixel-shadow-button-active);
+  transition-duration: var(--pixel-motion-press);
+}
+
 .clickable-icon:not([aria-disabled="true"]):active {
   transform: translate(2px, 2px);
   box-shadow: none;
@@ -81,6 +98,11 @@ input[type="range"]:focus-visible,
     background-color: var(--pixel-surface-secondary);
     border-color: var(--pixel-cyan);
     color: var(--pixel-text);
+  }
+
+  button:not(.clickable-icon):not(:disabled):not([aria-disabled="true"]):not(:active):hover {
+    box-shadow: var(--pixel-shadow-button-hover);
+    transform: translateY(-1px) scale(1);
   }
 
   @include form-controls(":hover") {
@@ -262,8 +284,8 @@ input[type="radio"]:checked {
   );
   box-shadow: none;
   transition:
-    background-color var(--pixel-motion-state) linear,
-    border-color var(--pixel-motion-state) linear;
+    background-color var(--pixel-motion-toggle-color) var(--pixel-ease-toggle),
+    border-color var(--pixel-motion-toggle-color) var(--pixel-ease-toggle);
 }
 
 .modal label.checkbox-container {
@@ -298,12 +320,13 @@ input[type="radio"]:checked {
   inset-inline-start: var(--pixel-toggle-position);
   inset-inline-end: auto;
   margin: 0;
-  transform: none;
+  transform: scaleY(1);
+  transform-origin: center;
   transition:
-    inset-inline-start var(--pixel-motion-state) var(--pixel-ease-out),
-    background-color var(--pixel-motion-state) linear,
-    border-color var(--pixel-motion-state) linear,
-    opacity var(--pixel-motion-press) linear;
+    inset-inline-start var(--pixel-motion-toggle) var(--pixel-ease-toggle),
+    background-color var(--pixel-motion-toggle-color) var(--pixel-ease-toggle),
+    border-color var(--pixel-motion-toggle-color) var(--pixel-ease-toggle),
+    transform var(--pixel-motion-toggle-press) var(--pixel-ease-toggle);
 }
 
 .checkbox-container.is-enabled {
@@ -329,7 +352,7 @@ input[type="radio"]:checked {
 }
 
 .modal label.checkbox-container.is-enabled::after {
-  transform: none;
+  transform: scaleY(1);
 }
 
 .modal label.checkbox-container:not(.is-disabled):active::after {
@@ -337,9 +360,9 @@ input[type="radio"]:checked {
   height: var(--pixel-toggle-thumb-size);
   inset-inline-start: var(--pixel-toggle-position);
   margin: 0;
-  transform: none;
+  transform: scaleY(0.9);
   box-shadow: none;
-  opacity: 0.72;
+  opacity: 1;
 }
 
 .checkbox-container.is-disabled::after,
