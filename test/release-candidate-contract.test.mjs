@@ -111,6 +111,17 @@ test("CI and draft release run the complete locked verification path", async () 
   }
 });
 
+test("routine development does not automatically trigger GitHub Actions", async () => {
+  const [check, release] = await Promise.all([
+    read(".github/workflows/check.yml"),
+    read(".github/workflows/release.yml"),
+  ]);
+
+  assert.match(check, /^on:\s*\n  workflow_dispatch:\s*$/m);
+  assert.doesNotMatch(check, /^  (?:push|pull_request):/m);
+  assert.match(release, /^on:\s*\n  push:\s*\n    tags:\s*\n      - "\*\.\*\.\*"/m);
+});
+
 test("tagged draft verifies a required exact-artifact approval before creation", async () => {
   const workflow = await read(".github/workflows/release.yml");
   const approval = "npm run visual:h5 -- --verify-approval --require-approval";
@@ -145,7 +156,7 @@ test("handoff documents separate prepared artifacts from pending manual validati
   assert.match(devices, /Android \| Tablet/);
   assert.match(devices, /iPhone Mirroring/);
   assert.match(devices, /evidence\/ticket-13\/devices\//);
-  assert.match(ignore, /^\.scratch\/$/m);
+  assert.match(ignore, /^\/?\.scratch\/$/m);
   assert.match(ignore, /^evidence\/$/m);
   assert.match(ignore, /^prototypes\/$/m);
 });
