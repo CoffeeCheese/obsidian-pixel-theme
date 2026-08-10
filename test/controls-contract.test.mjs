@@ -206,15 +206,69 @@ test("shared surfaces and native control shapes remain readable and icon-safe", 
   const toggle = ruleBody(css, ".checkbox-container");
   assert.equal(
     declaration(toggle, "border"),
-    "var(--pixel-border-control) solid var(--pixel-border-meaningful)",
+    "var(--pixel-border-decoration) solid var(--pixel-border-meaningful)",
   );
   assert.equal(declaration(toggle, "border-radius"), "var(--pixel-radius)");
+  assert.equal(
+    declaration(toggle, "background-color"),
+    "color-mix(in srgb, var(--pixel-border-meaningful) 16%, var(--pixel-paper))",
+  );
+  assert.equal(declaration(toggle, "box-shadow"), "none");
+
+  const modalToggle = ruleBody(css, ".modal label.checkbox-container");
+  assert.equal(
+    declaration(modalToggle, "width"),
+    "var(--pixel-toggle-inline-size)",
+  );
+  assert.equal(
+    declaration(modalToggle, "height"),
+    "var(--pixel-toggle-block-size)",
+  );
+  assert.equal(
+    declaration(modalToggle, "--pixel-toggle-inline-size"),
+    "44px",
+  );
+  assert.equal(
+    declaration(modalToggle, "--pixel-toggle-block-size"),
+    "22px",
+  );
+
+  const modalToggleThumb = ruleBody(
+    css,
+    ".modal label.checkbox-container::after",
+  );
+  assert.equal(
+    declaration(modalToggleThumb, "width"),
+    "var(--pixel-toggle-thumb-size)",
+  );
+  assert.equal(
+    declaration(modalToggleThumb, "height"),
+    "var(--pixel-toggle-thumb-size)",
+  );
+  assert.equal(declaration(modalToggleThumb, "margin"), "0");
+  assert.equal(declaration(modalToggleThumb, "transform"), "none");
+
+  const enabledToggle = ruleBody(css, ".checkbox-container.is-enabled");
+  assert.equal(
+    declaration(enabledToggle, "background-color"),
+    "color-mix(in srgb, var(--pixel-cyan) 24%, var(--pixel-paper))",
+  );
+  const enabledToggleThumb = ruleBody(
+    css,
+    ".checkbox-container.is-enabled::after",
+  );
+  assert.equal(
+    declaration(enabledToggleThumb, "background-color"),
+    "color-mix(in srgb, var(--pixel-cyan) 68%, var(--pixel-paper))",
+  );
+
   const pressedToggle = ruleBodyForSelector(
     css,
-    ".checkbox-container:not(.is-disabled):active::after",
+    ".modal label.checkbox-container:not(.is-disabled):active::after",
   );
-  assert.equal(declaration(pressedToggle, "translate"), "2px 2px");
+  assert.equal(declaration(pressedToggle, "transform"), "none");
   assert.equal(declaration(pressedToggle, "box-shadow"), "none");
+  assert.equal(declaration(pressedToggle, "opacity"), "0.72");
   const disabledToggleThumb = ruleBodyForSelector(
     css,
     ".checkbox-container.is-disabled::after",
