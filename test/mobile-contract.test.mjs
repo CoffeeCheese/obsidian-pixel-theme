@@ -19,6 +19,7 @@ test("M1 belongs to the mobile platform at every viewport", async () => {
   assert.equal(declaration(mobile, "--view-header-height"), "56px");
   assert.equal(declaration(mobile, "--navbar-height"), "56px");
   assert.equal(declaration(mobile, "--mobile-toolbar-height"), "56px");
+  assert.equal(declaration(mobile, "--inline-title-size"), "1.75em");
 
   for (const widthRule of css.matchAll(/@media\s*\([^)]*width[^)]*\)\s*\{/gi)) {
     const block = atRuleBody(css, widthRule[0].replace(/\s*\{$/, ""));
@@ -102,14 +103,11 @@ test("mobile bars and native backdrop preserve safe-area and dismissal behavior"
   const mobile = combinedRuleBody(css, "body.is-mobile");
   assert.equal(
     declaration(mobile, "--navbar-bottom-offset"),
-    "max(var(--safe-area-inset-bottom), var(--pixel-space-3))",
+    "max(var(--safe-area-inset-bottom), var(--pixel-space-2))",
   );
 
-  const navbarChrome = ruleBodyForSelector(
-    css,
-    "body.is-mobile .mobile-navbar.mod-raised",
-  );
-  assert.equal(declaration(navbarChrome, "min-block-size"), "56px");
+  const navbarChrome = combinedRuleBody(css, "body.is-mobile .mobile-navbar.mod-raised");
+  assert.equal(declaration(navbarChrome, "min-block-size"), "52px");
   const navbarPosition = ruleBody(
     css,
     "body.is-mobile .mobile-navbar.mod-raised",
@@ -119,7 +117,7 @@ test("mobile bars and native backdrop preserve safe-area and dismissal behavior"
     "var(--navbar-bottom-offset)",
   );
 
-  const toolbarChrome = ruleBodyForSelector(css, "body.is-mobile .mobile-toolbar");
+  const toolbarChrome = combinedRuleBody(css, "body.is-mobile .mobile-toolbar");
   assert.equal(declaration(toolbarChrome, "min-block-size"), "56px");
   assert.doesNotMatch(toolbarChrome, /(?:position|inset-block-end|bottom)\s*:/);
 
@@ -129,6 +127,45 @@ test("mobile bars and native backdrop preserve safe-area and dismissal behavior"
     "var(--background-modifier-cover)",
   );
   assert.doesNotMatch(backdrop, /(?:pointer-events|display)\s*:/);
+});
+
+test("mobile note chrome uses a compact index-card rhythm", async () => {
+  const css = await readTheme();
+
+  const headerAction = ruleBody(
+    css,
+    "body.is-mobile .view-header :is(.view-action, .sidebar-toggle-button)",
+  );
+  assert.equal(declaration(headerAction, "inline-size"), "var(--pixel-control-min)");
+  assert.equal(declaration(headerAction, "border-radius"), "var(--pixel-radius)");
+
+  const metadataContent = ruleBody(
+    css,
+    'body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-content',
+  );
+  assert.equal(declaration(metadataContent, "inline-size"), "100%");
+  assert.equal(declaration(metadataContent, "border-radius"), "0");
+  assert.equal(declaration(metadataContent, "background-color"), "transparent");
+
+  const property = ruleBody(
+    css,
+    'body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-property',
+  );
+  assert.equal(declaration(property, "display"), "grid");
+  assert.equal(
+    declaration(property, "grid-template-columns"),
+    "minmax(0, 104px) minmax(0, 1fr) auto",
+  );
+  assert.equal(declaration(property, "min-block-size"), "44px");
+  assert.equal(declaration(property, "border-radius"), "0");
+
+  const navbarAction = ruleBody(
+    css,
+    "body.is-mobile .mobile-navbar-action .clickable-icon",
+  );
+  assert.equal(declaration(navbarAction, "min-block-size"), "var(--pixel-control-min)");
+  assert.equal(declaration(navbarAction, "border"), "0");
+  assert.equal(declaration(navbarAction, "box-shadow"), "none");
 });
 
 test("M1 adds no custom gestures, hover dependencies, or fake controls", async () => {

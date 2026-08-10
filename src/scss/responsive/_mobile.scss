@@ -7,8 +7,10 @@ body.is-mobile {
   --view-header-height: 56px;
   --navbar-height: 56px;
   --navbar-radius: var(--pixel-radius);
-  --navbar-bottom-offset: max(var(--safe-area-inset-bottom), var(--pixel-space-3));
+  --navbar-bottom-offset: max(var(--safe-area-inset-bottom), var(--pixel-space-2));
   --mobile-toolbar-height: 56px;
+  --inline-title-size: 1.75em;
+  --inline-title-line-height: 1.24;
 
   .workspace {
     background-color: var(--pixel-canvas);
@@ -68,6 +70,11 @@ body.is-mobile {
     min-block-size: 56px;
   }
 
+  .view-header {
+    padding-inline: var(--pixel-space-4);
+    gap: var(--pixel-space-2);
+  }
+
   .workspace-drawer-header,
   .workspace-drawer .nav-buttons-container,
   .workspace-drawer-tab-options-list,
@@ -88,6 +95,37 @@ body.is-mobile {
   .mobile-toolbar-option {
     min-inline-size: var(--pixel-control-min);
     min-block-size: var(--pixel-control-min);
+  }
+
+  // Mobile chrome is a compact instrument rail, not a row of floating
+  // bubbles. Keep the native hit areas while matching the desktop cartridge
+  // controls' small-radius silhouette.
+  .view-header :is(.view-action, .sidebar-toggle-button) {
+    inline-size: var(--pixel-control-min);
+    block-size: var(--pixel-control-min);
+    padding: 0;
+    border: var(--pixel-border-decoration) solid var(--pixel-border-meaningful);
+    border-radius: var(--pixel-radius);
+    background: rgb(from var(--pixel-paper) r g b / 96%);
+    box-shadow: 2px 2px 0 color-mix(in srgb, var(--pixel-shadow-color) 72%, transparent);
+    backdrop-filter: none;
+  }
+
+  .view-header .view-actions.mod-raised {
+    min-block-size: 48px;
+    padding: 2px;
+    gap: 0;
+    border: var(--pixel-border-decoration) solid var(--pixel-border-meaningful);
+    border-radius: var(--pixel-radius);
+    background: var(--pixel-paper);
+    box-shadow: 2px 2px 0 color-mix(in srgb, var(--pixel-shadow-color) 72%, transparent);
+    backdrop-filter: none;
+  }
+
+  .view-header .view-actions.mod-raised .view-action {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
   }
 
   .workspace-drawer :is(
@@ -128,15 +166,256 @@ body.is-mobile {
 
   .mobile-navbar.mod-raised,
   .mobile-toolbar {
-    min-block-size: 56px;
     border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
     border-radius: var(--pixel-radius);
-    background-color: var(--pixel-paper);
-    box-shadow: var(--pixel-shadow-shell);
+    background: var(--pixel-paper);
+    box-shadow: 2px 2px 0 color-mix(in srgb, var(--pixel-shadow-color) 72%, transparent);
   }
 
   .mobile-navbar.mod-raised {
+    min-block-size: 52px;
     inset-block-end: var(--navbar-bottom-offset);
+    inline-size: calc(100% - var(--pixel-space-8));
+    max-inline-size: 360px;
+    padding: var(--pixel-space-1);
+    backdrop-filter: none;
+  }
+
+  .mobile-toolbar {
+    min-block-size: 56px;
+  }
+
+  .mobile-navbar-actions {
+    inline-size: 100%;
+    gap: 0;
+  }
+
+  .mobile-navbar-action {
+    flex: 1 1 0;
+  }
+
+  .mobile-navbar-action .clickable-icon {
+    inline-size: 100%;
+    min-inline-size: var(--pixel-control-min);
+    block-size: var(--pixel-control-min);
+    min-block-size: var(--pixel-control-min);
+    padding: 0;
+    border: 0;
+    border-radius: var(--pixel-radius-small);
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .mobile-navbar-action .clickable-icon[aria-disabled="true"] {
+    border: 0;
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  .mobile-navbar-action-tabs .mobile-navbar-tabs-number {
+    z-index: 1;
+    color: var(--pixel-text);
+    font-family: var(--pixel-font-monospace);
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .mobile-navbar-action-tabs .clickable-icon {
+    position: relative;
+  }
+
+  .workspace-leaf-content[data-type="markdown"] .inline-title {
+    padding-block-start: var(--pixel-space-2);
+    margin-block-end: var(--pixel-space-3);
+  }
+
+  // On a phone, note properties become a quiet index card: one narrow key
+  // rail, a fluid value column, and paper-like rules instead of nested fields.
+  .workspace-leaf-content[data-type="markdown"] .metadata-container {
+    margin-block-end: var(--pixel-space-6);
+  }
+
+  .workspace-leaf-content[data-type="markdown"] .metadata-properties-heading {
+    min-block-size: 36px;
+    margin-block-end: var(--pixel-space-1);
+    padding: 0;
+    gap: var(--pixel-space-2);
+    color: var(--pixel-text);
+    font-family: var(--pixel-font-identity);
+    font-size: 16px;
+    font-weight: 720;
+  }
+
+  .workspace-leaf-content[data-type="markdown"] .metadata-properties-heading .collapse-indicator {
+    inline-size: 24px;
+    block-size: 24px;
+    margin: 0;
+    border: var(--pixel-border-decoration) solid var(--pixel-line-strong);
+    border-radius: var(--pixel-radius-small);
+    background-color: color-mix(in srgb, var(--pixel-cyan) 6%, var(--pixel-paper));
+    color: var(--pixel-cyan);
+  }
+
+  .workspace-leaf-content[data-type="markdown"] .metadata-properties-heading .collapse-indicator .svg-icon {
+    inline-size: 16px;
+    block-size: 16px;
+  }
+
+  .workspace-leaf-content[data-type="markdown"] .metadata-content {
+    box-sizing: border-box;
+    inline-size: 100%;
+    margin-inline: 0;
+    padding: var(--pixel-space-1) 0 0;
+    border-block: var(--pixel-border-decoration) solid var(--pixel-line-strong);
+    border-radius: 0;
+    background-color: transparent;
+  }
+
+  .workspace-leaf-content[data-type="markdown"] .metadata-properties {
+    gap: 0;
+  }
+
+  .workspace-leaf-content[data-type="markdown"] .metadata-property {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 104px) minmax(0, 1fr) auto;
+    min-block-size: 44px;
+    padding: var(--pixel-space-1) 0;
+    align-items: start;
+    border: 0;
+    border-block-end: var(--pixel-border-decoration) solid var(--pixel-line);
+    border-radius: 0;
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  .workspace-leaf-content[data-type="markdown"] .metadata-property:last-child {
+    border-block-end: 0;
+  }
+
+  .workspace-leaf-content[data-type="markdown"] .metadata-property-key,
+  .workspace-leaf-content[data-type="markdown"] .metadata-property-value {
+    box-sizing: border-box;
+    inline-size: auto;
+    min-inline-size: 0;
+    min-block-size: 36px;
+    padding: 0;
+    align-items: flex-start;
+    background-color: transparent;
+  }
+
+  .workspace-leaf-content[data-type="markdown"] .metadata-property-key {
+    gap: var(--pixel-space-1);
+    color: var(--pixel-text-muted);
+    font-family: var(--pixel-font-monospace);
+    font-size: 14px;
+  }
+
+  .workspace-leaf-content[data-type="markdown"] .metadata-property-icon {
+    flex: 0 0 20px;
+    inline-size: 20px;
+    min-inline-size: 20px;
+    block-size: 36px;
+    padding: 0;
+    color: var(--pixel-cyan);
+  }
+
+  .workspace-leaf-content[data-type="markdown"] .metadata-property-icon .svg-icon {
+    inline-size: 17px;
+    block-size: 17px;
+  }
+
+  .workspace-leaf-content[data-type="markdown"] .metadata-property :is(
+    .metadata-property-key-input,
+    .metadata-input,
+    .metadata-input-text,
+    .metadata-input-longtext,
+    .metadata-link-inner,
+    .multi-select-container
+  ) {
+    box-sizing: border-box;
+    min-inline-size: 0;
+    min-block-size: 36px;
+    padding: 4px 6px;
+    border: 0;
+    border-radius: var(--pixel-radius-small);
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  .workspace-leaf-content[data-type="markdown"] .metadata-property-key-input {
+    inline-size: 100%;
+    padding-inline: 4px;
+    color: var(--pixel-text-muted);
+    font-family: inherit;
+  }
+
+  .workspace-leaf-content[data-type="markdown"] .metadata-property-value {
+    color: var(--pixel-text);
+    font-family: var(--pixel-font-text);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .workspace-leaf-content[data-type="markdown"] .metadata-input-longtext {
+    display: block;
+    inline-size: 100%;
+    max-inline-size: 100%;
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+
+  .workspace-leaf-content[data-type="markdown"] .metadata-property:focus-within,
+  .workspace-leaf-content[data-type="markdown"] .metadata-container:focus-within .metadata-property.is-selected {
+    outline: 0;
+    border-radius: var(--pixel-radius-small);
+    background-color: color-mix(in srgb, var(--pixel-cyan) 5%, transparent);
+    box-shadow: inset 2px 0 0 var(--pixel-cyan);
+  }
+
+  .workspace-leaf-content[data-type="markdown"] .metadata-property-value:focus-within,
+  .workspace-leaf-content[data-type="markdown"] .metadata-property-key:focus-within {
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  .workspace-leaf-content[data-type="markdown"] .multi-select-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--pixel-space-1);
+  }
+
+  .workspace-leaf-content[data-type="markdown"] .multi-select-pill {
+    min-block-size: 28px;
+    margin: 0;
+    border: var(--pixel-border-decoration) solid rgb(from var(--pixel-cyan) r g b / 42%);
+    border-radius: var(--pixel-radius-small);
+    background-color: var(--pixel-nav-label);
+    color: var(--pixel-cyan);
+    box-shadow: none;
+    font-size: 14px;
+  }
+
+  .workspace-leaf-content[data-type="markdown"] .metadata-property-value > .clickable-icon,
+  .workspace-leaf-content[data-type="markdown"] .metadata-property-warning-icon {
+    min-inline-size: 36px;
+    min-block-size: 36px;
+    block-size: 36px;
+    border-width: var(--pixel-border-decoration);
+    border-radius: var(--pixel-radius-small);
+    box-shadow: none;
+  }
+
+  .workspace-leaf-content[data-type="markdown"] .metadata-add-button {
+    min-block-size: 44px;
+    margin-block-start: var(--pixel-space-1);
+    padding-inline: var(--pixel-space-2);
+    border: 0;
+    border-radius: var(--pixel-radius-small);
+    background-color: transparent;
+    box-shadow: none;
+    color: var(--pixel-text-muted);
   }
 }
 
