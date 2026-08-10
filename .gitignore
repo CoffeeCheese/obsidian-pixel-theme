@@ -7,8 +7,8 @@ node_modules/
 .env.*
 !.env.example
 
-# Wayfinder notes and disposable design material
-.scratch/
+# Local scratch work, Wayfinder notes, and disposable design material
+/.scratch/
 CONTEXT.md
 prototypes/
 doc/
