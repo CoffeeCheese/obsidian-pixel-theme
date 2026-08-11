@@ -3795,6 +3795,10 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-t
   line-height: 20px;
 }
 
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header-inner::after {
+  content: none;
+}
+
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header.is-active {
   border-color: var(--pixel-line);
   background-color: color-mix(in srgb, var(--pixel-canvas) 45%, var(--pixel-paper));

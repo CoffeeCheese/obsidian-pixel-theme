@@ -147,6 +147,23 @@ test("H5 Archive Grid gives root tabs the H5 S1 cartridge geometry", async () =>
   assert.equal(declaration(newTab, "border-radius"), "var(--pixel-radius)");
 });
 
+test("H5 Archive Grid removes the native inner tab divider but keeps its activity rail", async () => {
+  const css = await readTheme();
+  const nativeDivider = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header-inner::after",
+  );
+  const activityRail = matchingRuleBodies(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header::after",
+  ).find((body) => /(?:^|[;\n])\s*content:/.test(body));
+
+  assert.equal(declaration(nativeDivider, "content"), "none");
+  assert.ok(activityRail);
+  assert.equal(declaration(activityRail, "content"), '\"\"');
+  assert.equal(declaration(activityRail, "background"), "var(--pixel-cyan)");
+});
+
 test("H5 Archive Grid gives mixed-language document identity a readable hierarchy", async () => {
   const css = await readTheme();
   const tabTitle = ruleBodyForSelector(
