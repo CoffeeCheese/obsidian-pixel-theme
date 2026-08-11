@@ -335,6 +335,8 @@ body {
   --pixel-nav-controller: #e3eef0;
   --pixel-nav-controller-edge: #a9c3c8;
   --pixel-context-label: #f3eee3;
+  --pixel-context-control-hover: #edf4f6;
+  --pixel-context-control-active: #dcebed;
   --pixel-tree-signal: var(--pixel-cyan);
   --pixel-tree-active-surface: var(--pixel-nav-label);
   --pixel-selection: rgba(25, 125, 140, 0.28);
@@ -368,6 +370,8 @@ body {
   --pixel-nav-controller: #20343c;
   --pixel-nav-controller-edge: #44656c;
   --pixel-context-label: #2a2926;
+  --pixel-context-control-hover: #1d3038;
+  --pixel-context-control-active: #234047;
   --pixel-tree-signal: var(--pixel-cyan);
   --pixel-tree-active-surface: var(--pixel-nav-label);
   --pixel-selection: rgba(88, 199, 207, 0.35);
@@ -743,9 +747,9 @@ body:not(.is-mobile) .workspace-split.mod-root .workspace-tab-header.is-active {
   box-shadow: none;
 }
 body:not(.is-mobile) .workspace-split.mod-right-split .workspace-tab-header.is-active {
-  background-color: var(--pixel-paper);
+  background-color: var(--pixel-context-control-active);
   color: var(--pixel-text);
-  box-shadow: inset 0 -4px 0 var(--pixel-amber-text);
+  box-shadow: inset 0 -4px 0 var(--pixel-cyan);
   font-weight: 600;
 }
 body:not(.is-mobile) .workspace-split.mod-root .workspace-leaf.mod-active,
@@ -1556,6 +1560,8 @@ button .svg-icon {
     --pixel-nav-controller: Canvas;
     --pixel-nav-controller-edge: Highlight;
     --pixel-context-label: Canvas;
+    --pixel-context-control-hover: ButtonFace;
+    --pixel-context-control-active: Canvas;
     --pixel-shadow-control: none;
     --pixel-shadow-button: none;
     --pixel-shadow-button-hover: none;
@@ -3838,8 +3844,14 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split .work
   border-inline-end: 0;
 }
 
+@media (hover: hover) {
+  body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split .workspace-tab-header:not(.is-active):hover {
+    background-color: var(--pixel-context-control-hover);
+    color: var(--pixel-text);
+  }
+}
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split .workspace-tab-header.is-active {
-  background-color: var(--pixel-context-label);
+  background-color: var(--pixel-context-control-active);
   box-shadow: inset 0 -4px 0 var(--pixel-cyan);
 }
 

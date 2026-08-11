@@ -22,8 +22,12 @@ test("compiled desktop package exposes the H5 split-label material roles", async
   assert.equal(declaration(body, "--pixel-workspace-inset"), "12px");
   assert.equal(declaration(light, "--pixel-nav-label"), "#dcebed");
   assert.equal(declaration(light, "--pixel-context-label"), "#f3eee3");
+  assert.equal(declaration(light, "--pixel-context-control-hover"), "#edf4f6");
+  assert.equal(declaration(light, "--pixel-context-control-active"), "#dcebed");
   assert.equal(declaration(dark, "--pixel-nav-label"), "#203d46");
   assert.equal(declaration(dark, "--pixel-context-label"), "#2a2926");
+  assert.equal(declaration(dark, "--pixel-context-control-hover"), "#1d3038");
+  assert.equal(declaration(dark, "--pixel-context-control-active"), "#234047");
 });
 
 test("compiled desktop package exposes distinct N1 elevation and contour roles", async () => {
@@ -230,17 +234,23 @@ test("desktop active tabs and panes use side-aware multi-cue signals", async () 
   const expectedTabs = new Map([
     [
       "body:not(.is-mobile) .workspace-split.mod-left-split .workspace-tab-header.is-active",
-      "var(--pixel-cyan)",
+      {
+        background: "var(--pixel-paper)",
+        signal: "var(--pixel-cyan)",
+      },
     ],
     [
       "body:not(.is-mobile) .workspace-split.mod-right-split .workspace-tab-header.is-active",
-      "var(--pixel-amber-text)",
+      {
+        background: "var(--pixel-context-control-active)",
+        signal: "var(--pixel-cyan)",
+      },
     ],
   ]);
 
-  for (const [selector, signal] of expectedTabs) {
+  for (const [selector, { background, signal }] of expectedTabs) {
     const activeTab = ruleBody(css, selector);
-    assert.equal(declaration(activeTab, "background-color"), "var(--pixel-paper)");
+    assert.equal(declaration(activeTab, "background-color"), background);
     assert.equal(
       declaration(activeTab, "box-shadow"),
       `inset 0 -4px 0 ${signal}`,

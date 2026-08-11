@@ -79,6 +79,32 @@ test("H5 Archive Grid keeps the navigation toolbar free of vertical tab dividers
   assert.equal(declaration(navigationTab, "border-inline-end"), "0");
 });
 
+test("H5 Archive Grid gives the context toolbar cool cyan interaction surfaces", async () => {
+  const css = await readTheme();
+  const hover = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split .workspace-tab-header:not(.is-active):hover",
+  );
+  const active = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split .workspace-tab-header.is-active",
+  );
+
+  assert.equal(
+    declaration(hover, "background-color"),
+    "var(--pixel-context-control-hover)",
+  );
+  assert.equal(declaration(hover, "color"), "var(--pixel-text)");
+  assert.equal(
+    declaration(active, "background-color"),
+    "var(--pixel-context-control-active)",
+  );
+  assert.equal(
+    declaration(active, "box-shadow"),
+    "inset 0 -4px 0 var(--pixel-cyan)",
+  );
+});
+
 test("H5 Archive Grid gives root tabs the H5 S1 cartridge geometry", async () => {
   const css = await readTheme();
   const rail = ruleBodyForSelector(

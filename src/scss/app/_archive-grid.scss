@@ -169,8 +169,15 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split .work
   border-inline-end: 0;
 }
 
+@media (hover: hover) {
+  body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split .workspace-tab-header:not(.is-active):hover {
+    background-color: var(--pixel-context-control-hover);
+    color: var(--pixel-text);
+  }
+}
+
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split .workspace-tab-header.is-active {
-  background-color: var(--pixel-context-label);
+  background-color: var(--pixel-context-control-active);
   box-shadow: inset 0 -4px 0 var(--pixel-cyan);
 }
 
