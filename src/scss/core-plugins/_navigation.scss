@@ -81,6 +81,170 @@
   box-shadow: var(--pixel-shadow-control);
 }
 
+// Obsidian does not expose a dedicated quick-switcher modifier. Its native
+// instruction set has more actions than the command palette, so the fourth
+// instruction is the narrowest stable hook that survives empty search results.
+// Treat the switcher as a quiet file index: one hairline shell, readable rows,
+// and a single pixel-cursor rail to carry the theme identity.
+$pixel-quick-switcher: ".prompt:has(.prompt-instructions > .prompt-instruction:nth-child(4))";
+
+#{$pixel-quick-switcher} {
+  border: var(--pixel-border-decoration) solid var(--pixel-line-strong);
+  border-radius: var(--pixel-radius);
+  background-color: var(--pixel-paper);
+  box-shadow: 2px 2px 0 color-mix(
+    in srgb,
+    var(--pixel-shadow-color) 38%,
+    transparent
+  );
+}
+
+#{$pixel-quick-switcher} .prompt-input-container {
+  min-block-size: 52px;
+  border-block-end: var(--pixel-border-decoration) solid var(--pixel-cyan);
+  background-color: color-mix(
+    in srgb,
+    var(--pixel-surface-secondary) 18%,
+    var(--pixel-paper)
+  );
+}
+
+#{$pixel-quick-switcher} .prompt-input-container::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset-block-end: -1px;
+  inset-inline-start: var(--pixel-space-4);
+  inline-size: var(--pixel-space-4);
+  block-size: 3px;
+  background-color: var(--pixel-cyan);
+  pointer-events: none;
+}
+
+#{$pixel-quick-switcher} input.prompt-input,
+#{$pixel-quick-switcher} input.prompt-input:hover,
+#{$pixel-quick-switcher} input.prompt-input:focus-visible {
+  block-size: 52px;
+  padding-block: 0;
+  padding-inline: var(--pixel-space-4) 44px;
+  border: 0;
+  border-radius: 0;
+  outline: 0;
+  background-color: transparent;
+  color: var(--pixel-text);
+  box-shadow: none;
+  font-family: var(--pixel-font-identity);
+  font-size: var(--font-ui-medium);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+#{$pixel-quick-switcher} input.prompt-input::placeholder {
+  color: var(--pixel-text-muted);
+  opacity: 1;
+}
+
+#{$pixel-quick-switcher} .search-input-clear-button {
+  inset-inline-end: var(--pixel-space-2);
+  border-radius: var(--pixel-radius-small);
+  color: var(--pixel-text-muted);
+}
+
+#{$pixel-quick-switcher} .prompt-results {
+  padding: 6px var(--pixel-space-2) var(--pixel-space-2);
+  background-color: var(--pixel-paper);
+  scroll-padding-block: 6px;
+}
+
+#{$pixel-quick-switcher} .suggestion-item {
+  min-block-size: 34px;
+  margin: 1px 0;
+  padding: 6px var(--pixel-space-3);
+  border: 0;
+  border-radius: var(--pixel-radius-small);
+  background-color: transparent;
+  color: var(--pixel-text);
+  box-shadow: none;
+  font-family: var(--pixel-font-text);
+  font-size: var(--font-ui-medium);
+  font-weight: 400;
+  transition:
+    background-color 90ms var(--pixel-ease-out),
+    box-shadow 90ms var(--pixel-ease-out),
+    color 90ms var(--pixel-ease-out);
+}
+
+#{$pixel-quick-switcher} .suggestion-item.is-selected {
+  border: 0;
+  outline: 0;
+  outline-offset: 0;
+  background-color: color-mix(
+    in srgb,
+    var(--pixel-cyan) 10%,
+    var(--pixel-paper)
+  );
+  box-shadow: inset 3px 0 0 var(--pixel-cyan);
+  color: var(--pixel-text);
+  font-weight: 600;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  #{$pixel-quick-switcher} .suggestion-item:not(.is-selected):hover {
+    background-color: color-mix(
+      in srgb,
+      var(--pixel-surface-secondary) 42%,
+      var(--pixel-paper)
+    );
+  }
+}
+
+#{$pixel-quick-switcher} .prompt-instructions {
+  gap: var(--pixel-space-3);
+  padding: var(--pixel-space-2) var(--pixel-space-3);
+  border-block-start: var(--pixel-border-decoration) solid var(--pixel-line);
+  background-color: color-mix(
+    in srgb,
+    var(--pixel-surface-secondary) 22%,
+    var(--pixel-paper)
+  );
+  color: var(--pixel-text-muted);
+}
+
+#{$pixel-quick-switcher} .prompt-instruction {
+  margin: 0;
+  font-family: var(--pixel-font-text);
+  font-size: var(--font-ui-smaller);
+}
+
+#{$pixel-quick-switcher} .prompt-instruction-command {
+  margin-inline-end: var(--pixel-space-1);
+  color: var(--pixel-cyan);
+  font-family: var(--pixel-font-monospace);
+  font-size: 0.92em;
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #{$pixel-quick-switcher} .suggestion-item {
+    transition-duration: 0ms;
+  }
+}
+
+@media (forced-colors: active) {
+  #{$pixel-quick-switcher} {
+    border-color: CanvasText;
+    box-shadow: none;
+  }
+
+  #{$pixel-quick-switcher} .suggestion-item.is-selected {
+    outline: var(--pixel-border-control) solid Highlight;
+    outline-offset: calc(-1 * var(--pixel-border-control));
+    background-color: Highlight;
+    box-shadow: inset 3px 0 0 HighlightText;
+    color: HighlightText;
+  }
+}
+
 // Global search is a narrow, task-focused surface. Keep its controls on one
 // quiet paper plane and reserve the pixel identity for query syntax, section
 // labels, and the cyan selection cursor.

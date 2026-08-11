@@ -128,6 +128,70 @@ test("search results use shared surfaces without changing native replace-button 
   );
 });
 
+test("quick switcher uses a light index-card shell and a pixel cursor rail", async () => {
+  const css = await readTheme();
+  const quickSwitcher =
+    ".prompt:has(.prompt-instructions > .prompt-instruction:nth-child(4))";
+
+  const shell = ruleBody(css, quickSwitcher);
+  assert.equal(
+    declaration(shell, "border"),
+    "var(--pixel-border-decoration) solid var(--pixel-line-strong)",
+  );
+  assert.equal(declaration(shell, "border-radius"), "var(--pixel-radius)");
+  assert.equal(
+    declaration(shell, "box-shadow"),
+    "2px 2px 0 color-mix(in srgb, var(--pixel-shadow-color) 38%, transparent)",
+  );
+
+  const input = ruleBody(
+    css,
+    `${quickSwitcher} input.prompt-input,\n${quickSwitcher} input.prompt-input:hover,\n${quickSwitcher} input.prompt-input:focus-visible`,
+  );
+  assert.equal(declaration(input, "border"), "0");
+  assert.equal(declaration(input, "outline"), "0");
+  assert.equal(declaration(input, "box-shadow"), "none");
+  assert.equal(
+    declaration(input, "font-family"),
+    "var(--pixel-font-identity)",
+  );
+
+  const cursorRail = ruleBody(
+    css,
+    `${quickSwitcher} .prompt-input-container::after`,
+  );
+  assert.equal(declaration(cursorRail, "inline-size"), "var(--pixel-space-4)");
+  assert.equal(declaration(cursorRail, "block-size"), "3px");
+  assert.equal(
+    declaration(cursorRail, "background-color"),
+    "var(--pixel-cyan)",
+  );
+
+  const selected = ruleBody(
+    css,
+    `${quickSwitcher} .suggestion-item.is-selected`,
+  );
+  assert.equal(declaration(selected, "border"), "0");
+  assert.equal(declaration(selected, "outline"), "0");
+  assert.equal(
+    declaration(selected, "background-color"),
+    "color-mix(in srgb, var(--pixel-cyan) 10%, var(--pixel-paper))",
+  );
+  assert.equal(
+    declaration(selected, "box-shadow"),
+    "inset 3px 0 0 var(--pixel-cyan)",
+  );
+
+  const instructions = ruleBody(
+    css,
+    `${quickSwitcher} .prompt-instructions`,
+  );
+  assert.equal(
+    declaration(instructions, "border-block-start"),
+    "var(--pixel-border-decoration) solid var(--pixel-line)",
+  );
+});
+
 test("global search stays inside the navigation pane with flat query and toggle surfaces", async () => {
   const css = await readTheme();
 
