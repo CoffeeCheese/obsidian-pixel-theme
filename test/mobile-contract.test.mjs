@@ -16,10 +16,17 @@ test("M1 belongs to the mobile platform at every viewport", async () => {
   assert.equal(declaration(mobile, "--mobile-sidebar-width"), "min(88vw, 420px)");
   assert.equal(declaration(mobile, "--mobile-sidebar-min-width"), "0px");
   assert.equal(declaration(mobile, "--mobile-sidebar-max-width"), "420px");
-  assert.equal(declaration(mobile, "--view-header-height"), "56px");
-  assert.equal(declaration(mobile, "--navbar-height"), "56px");
-  assert.equal(declaration(mobile, "--mobile-toolbar-height"), "56px");
-  assert.equal(declaration(mobile, "--inline-title-size"), "1.75em");
+  assert.equal(declaration(mobile, "--view-header-height"), "64px");
+  assert.equal(declaration(mobile, "--navbar-height"), "64px");
+  assert.equal(declaration(mobile, "--mobile-toolbar-height"), "64px");
+  assert.equal(declaration(mobile, "--inline-title-size"), "1.55em");
+  assert.equal(declaration(mobile, "--pixel-mobile-control-size"), "48px");
+  assert.equal(declaration(mobile, "--pixel-mobile-control-radius"), "14px");
+  assert.equal(declaration(mobile, "--pixel-mobile-panel-radius"), "20px");
+  assert.match(
+    declaration(mobile, "--pixel-mobile-control-border"),
+    /var\(--pixel-border-meaningful\) 76%/,
+  );
 
   for (const widthRule of css.matchAll(/@media\s*\([^)]*width[^)]*\)\s*\{/gi)) {
     const block = atRuleBody(css, widthRule[0].replace(/\s*\{$/, ""));
@@ -47,8 +54,8 @@ test("M1 keeps the note as the Paper base and styles native drawers by ownership
   const drawer = ruleBody(css, "body.is-mobile .workspace-drawer");
   assert.equal(declaration(drawer, "inline-size"), "var(--mobile-sidebar-width)");
   assert.equal(declaration(drawer, "background-color"), "var(--pixel-paper)");
-  assert.equal(declaration(drawer, "border-radius"), "var(--pixel-radius)");
-  assert.equal(declaration(drawer, "box-shadow"), "var(--pixel-shadow-shell)");
+  assert.equal(declaration(drawer, "border-radius"), "var(--mobile-sidebar-radius)");
+  assert.equal(declaration(drawer, "box-shadow"), "var(--pixel-mobile-floating-shadow)");
 
   const left = ruleBody(css, "body.is-mobile .workspace-drawer.mod-left");
   assert.equal(declaration(left, "--pixel-tree-signal"), "var(--pixel-cyan)");
@@ -108,7 +115,7 @@ test("mobile bars and native backdrop preserve safe-area and dismissal behavior"
   );
 
   const navbarChrome = combinedRuleBody(css, "body.is-mobile .mobile-navbar.mod-raised");
-  assert.equal(declaration(navbarChrome, "min-block-size"), "52px");
+  assert.equal(declaration(navbarChrome, "min-block-size"), "var(--navbar-height)");
   const navbarPosition = ruleBody(
     css,
     "body.is-mobile .mobile-navbar.mod-raised",
@@ -119,7 +126,7 @@ test("mobile bars and native backdrop preserve safe-area and dismissal behavior"
   );
 
   const toolbarChrome = combinedRuleBody(css, "body.is-mobile .mobile-toolbar");
-  assert.equal(declaration(toolbarChrome, "min-block-size"), "56px");
+  assert.equal(declaration(toolbarChrome, "min-block-size"), "var(--mobile-toolbar-height)");
   assert.doesNotMatch(toolbarChrome, /(?:position|inset-block-end|bottom)\s*:/);
 
   const backdrop = ruleBody(css, "body.is-mobile .workspace-drawer-backdrop");
@@ -137,8 +144,46 @@ test("mobile note chrome uses a soft index-card editing rhythm", async () => {
     css,
     "body.is-mobile .view-header :is(.view-action, .sidebar-toggle-button)",
   );
-  assert.equal(declaration(headerAction, "inline-size"), "var(--pixel-control-min)");
-  assert.equal(declaration(headerAction, "border-radius"), "var(--pixel-radius)");
+  assert.equal(
+    declaration(headerAction, "inline-size"),
+    "var(--pixel-mobile-control-size)",
+  );
+  assert.equal(
+    declaration(headerAction, "border-radius"),
+    "var(--pixel-mobile-control-radius)",
+  );
+  assert.equal(
+    declaration(headerAction, "box-shadow"),
+    "var(--pixel-mobile-pixel-step)",
+  );
+
+  const propertyDisclosure = ruleBody(
+    css,
+    'body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-properties-heading .collapse-indicator',
+  );
+  assert.equal(declaration(propertyDisclosure, "position"), "static");
+  assert.equal(declaration(propertyDisclosure, "inline-size"), "32px");
+  assert.equal(declaration(propertyDisclosure, "opacity"), "1");
+
+  const propertyHeading = ruleBody(
+    css,
+    'body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-properties-heading',
+  );
+  assert.equal(declaration(propertyHeading, "display"), "inline-flex");
+  assert.equal(declaration(propertyHeading, "align-items"), "center");
+
+  const mobileMenu = ruleBody(
+    css,
+    "body.is-mobile :is(.menu, .suggestion-container, .prompt, .modal, .notice, .tooltip)",
+  );
+  assert.equal(
+    declaration(mobileMenu, "border-radius"),
+    "var(--pixel-mobile-panel-radius)",
+  );
+  assert.equal(
+    declaration(mobileMenu, "box-shadow"),
+    "var(--pixel-mobile-floating-shadow)",
+  );
 
   const metadataContent = ruleBody(
     css,
@@ -147,7 +192,7 @@ test("mobile note chrome uses a soft index-card editing rhythm", async () => {
   assert.equal(declaration(metadataContent, "inline-size"), "100%");
   assert.equal(
     declaration(metadataContent, "border-radius"),
-    "calc(var(--pixel-radius-large) * 2)",
+    "var(--pixel-mobile-panel-radius)",
   );
   assert.match(
     declaration(metadataContent, "background-color"),
@@ -162,10 +207,10 @@ test("mobile note chrome uses a soft index-card editing rhythm", async () => {
   assert.equal(declaration(property, "display"), "grid");
   assert.equal(
     declaration(property, "grid-template-columns"),
-    "minmax(0, 124px) minmax(0, 1fr) auto",
+    "minmax(104px, 30%) minmax(0, 1fr) auto",
   );
-  assert.equal(declaration(property, "min-block-size"), "44px");
-  assert.equal(declaration(property, "border-radius"), "var(--pixel-radius-large)");
+  assert.equal(declaration(property, "min-block-size"), "48px");
+  assert.equal(declaration(property, "border-radius"), "12px");
 
   const focusedProperty = ruleBodyForSelector(
     css,
@@ -211,6 +256,13 @@ test("mobile note chrome uses a soft index-card editing rhythm", async () => {
   assert.equal(declaration(navbarAction, "min-block-size"), "var(--pixel-control-min)");
   assert.equal(declaration(navbarAction, "border"), "0");
   assert.equal(declaration(navbarAction, "box-shadow"), "none");
+
+  const primaryAction = ruleBody(
+    css,
+    "body.is-mobile .mobile-navbar-action-new-tab .clickable-icon",
+  );
+  assert.equal(declaration(primaryAction, "background-color"), "var(--pixel-cyan)");
+  assert.equal(declaration(primaryAction, "color"), "var(--pixel-paper)");
 });
 
 test("mobile left drawer uses a compact file-index type scale", async () => {
@@ -226,8 +278,8 @@ test("mobile left drawer uses a compact file-index type scale", async () => {
     css,
     "body.is-mobile .workspace-drawer.mod-left :is(.nav-file-title, .nav-folder-title)",
   );
-  assert.equal(declaration(treeItem, "min-block-size"), "32px");
-  assert.equal(declaration(treeItem, "padding-block"), "var(--pixel-space-1)");
+  assert.equal(declaration(treeItem, "min-block-size"), "var(--pixel-control-min)");
+  assert.equal(declaration(treeItem, "padding-block"), "var(--pixel-space-2)");
 
   const file = ruleBody(
     css,
@@ -257,7 +309,7 @@ test("mobile left drawer uses a compact file-index type scale", async () => {
   );
   assert.equal(
     declaration(activeFile, "background-color"),
-    "color-mix(in srgb, var(--pixel-cyan) 7%, transparent)",
+    "var(--pixel-mobile-control-active)",
   );
   assert.equal(declaration(activeFile, "color"), "var(--pixel-cyan)");
   assert.equal(declaration(activeFile, "border-inline-start-color"), "transparent");
@@ -301,6 +353,10 @@ test("M1 drawer motion follows preferences and forced colors", async () => {
   const drawer = ruleBodyForSelector(reduced, "body.is-mobile .workspace-drawer");
   assert.equal(declaration(drawer, "transition-duration"), "0ms");
   assert.equal(declaration(drawer, "animation"), "none");
+
+  const button = ruleBodyForSelector(reduced, "body.is-mobile button");
+  assert.equal(declaration(button, "transition-duration"), "0ms");
+  assert.equal(declaration(button, "animation"), "none");
 
   const forced = atRuleBody(mobileCss, "@media (forced-colors: active)");
   const forcedDrawer = ruleBodyForSelector(forced, "body.is-mobile .workspace-drawer");

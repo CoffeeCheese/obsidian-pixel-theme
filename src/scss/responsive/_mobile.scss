@@ -2,15 +2,43 @@ body.is-mobile {
   --mobile-sidebar-width: min(88vw, 420px);
   --mobile-sidebar-min-width: 0px;
   --mobile-sidebar-max-width: 420px;
-  --mobile-sidebar-radius: var(--pixel-radius);
+  --mobile-sidebar-radius: 20px;
   --mobile-sidebar-background: var(--pixel-paper);
-  --view-header-height: 56px;
-  --navbar-height: 56px;
-  --navbar-radius: var(--pixel-radius);
+  --view-header-height: 64px;
+  --navbar-height: 64px;
+  --navbar-radius: 20px;
   --navbar-bottom-offset: max(var(--safe-area-inset-bottom), var(--pixel-space-2));
-  --mobile-toolbar-height: 56px;
-  --inline-title-size: 1.75em;
-  --inline-title-line-height: 1.24;
+  --mobile-toolbar-height: 64px;
+  --inline-title-size: 1.55em;
+  --inline-title-line-height: 1.3;
+  --pixel-mobile-control-size: 48px;
+  --pixel-mobile-control-radius: 14px;
+  --pixel-mobile-panel-radius: 20px;
+  --pixel-mobile-control-border: color-mix(
+    in srgb,
+    var(--pixel-border-meaningful) 76%,
+    var(--pixel-paper)
+  );
+  --pixel-mobile-control-surface: color-mix(
+    in srgb,
+    var(--pixel-surface-secondary) 44%,
+    var(--pixel-paper)
+  );
+  --pixel-mobile-control-active: color-mix(
+    in srgb,
+    var(--pixel-cyan) 12%,
+    var(--pixel-paper)
+  );
+  --pixel-mobile-pixel-step: inset 0 -2px 0 color-mix(
+    in srgb,
+    var(--pixel-line-strong) 72%,
+    transparent
+  );
+  --pixel-mobile-floating-shadow: 0 8px 24px color-mix(
+    in srgb,
+    var(--pixel-shadow-color) 14%,
+    transparent
+  );
   --pixel-mobile-tree-file-size: 14px;
   --pixel-mobile-tree-folder-size: 14px;
   --pixel-mobile-drawer-label-size: 15px;
@@ -32,9 +60,9 @@ body.is-mobile {
     inline-size: var(--mobile-sidebar-width);
     min-inline-size: var(--mobile-sidebar-min-width);
     max-inline-size: var(--mobile-sidebar-max-width);
-    border-radius: var(--pixel-radius);
+    border-radius: var(--mobile-sidebar-radius);
     background-color: var(--pixel-paper);
-    box-shadow: var(--pixel-shadow-shell);
+    box-shadow: var(--pixel-mobile-floating-shadow);
     transition:
       transform var(--pixel-motion-surface) ease-out,
       width var(--pixel-motion-surface) ease-out;
@@ -44,7 +72,7 @@ body.is-mobile {
     --pixel-tree-signal: var(--pixel-cyan);
     --pixel-tree-active-surface: var(--pixel-nav-label);
     border-inline-end: var(--pixel-border-decoration) solid var(--pixel-line-strong);
-    box-shadow: 8px 0 24px color-mix(in srgb, var(--pixel-shadow-color) 16%, transparent);
+    box-shadow: 8px 0 24px color-mix(in srgb, var(--pixel-shadow-color) 14%, transparent);
   }
 
   // Treat the mobile file explorer as a pocket index, not a scaled desktop
@@ -55,10 +83,10 @@ body.is-mobile {
   }
 
   .workspace-drawer.mod-left :is(.nav-file-title, .nav-folder-title) {
-    min-block-size: 32px;
-    padding-block: var(--pixel-space-1);
+    min-block-size: var(--pixel-control-min);
+    padding-block: var(--pixel-space-2);
     padding-inline-end: var(--pixel-space-2);
-    border-radius: var(--pixel-radius-small);
+    border-radius: 12px;
   }
 
   .workspace-drawer.mod-left .nav-file-title {
@@ -79,8 +107,8 @@ body.is-mobile {
   // the one pixel-theme signature retained inside this otherwise light pane.
   .workspace-drawer.mod-left .nav-file-title:is(.is-active, .is-selected) {
     border-inline-start-color: transparent;
-    border-radius: var(--pixel-radius-large);
-    background-color: color-mix(in srgb, var(--pixel-cyan) 7%, transparent);
+    border-radius: 12px;
+    background-color: var(--pixel-mobile-control-active);
     color: var(--pixel-cyan);
     font-weight: 500;
     box-shadow: none;
@@ -130,7 +158,7 @@ body.is-mobile {
 
   .workspace-drawer.mod-left .nav-action-button {
     border: 0;
-    border-radius: var(--pixel-radius-small);
+    border-radius: 12px;
     background: transparent;
     color: var(--pixel-text-muted);
     box-shadow: none;
@@ -148,12 +176,10 @@ body.is-mobile {
   }
 
   .workspace-drawer.mod-left .workspace-drawer-header-icon.mod-settings {
-    border: 0;
-    border-radius: 50%;
-    background: var(--pixel-paper);
-    box-shadow:
-      0 2px 8px color-mix(in srgb, var(--pixel-shadow-color) 10%, transparent),
-      0 8px 24px color-mix(in srgb, var(--pixel-shadow-color) 12%, transparent);
+    border: var(--pixel-border-decoration) solid var(--pixel-mobile-control-border);
+    border-radius: var(--pixel-mobile-control-radius);
+    background: var(--pixel-mobile-control-surface);
+    box-shadow: var(--pixel-mobile-pixel-step);
   }
 
   .workspace-drawer.mod-right {
@@ -181,11 +207,15 @@ body.is-mobile {
 
   .workspace-drawer-header,
   .view-header {
-    min-block-size: 56px;
+    min-block-size: var(--view-header-height);
   }
 
   .view-header {
     padding-inline: var(--pixel-space-4);
+    gap: var(--pixel-space-2);
+  }
+
+  .view-header .view-actions {
     gap: var(--pixel-space-2);
   }
 
@@ -211,35 +241,102 @@ body.is-mobile {
     min-block-size: var(--pixel-control-min);
   }
 
-  // Mobile chrome is a compact instrument rail, not a row of floating
-  // bubbles. Keep the native hit areas while matching the desktop cartridge
-  // controls' small-radius silhouette.
+  // Mobile chrome uses soft interaction islands. A two-pixel inset ledge is
+  // the only retro detail; the shape, spacing, and feedback stay native and
+  // comfortable for touch.
   .view-header :is(.view-action, .sidebar-toggle-button) {
-    inline-size: var(--pixel-control-min);
-    block-size: var(--pixel-control-min);
+    inline-size: var(--pixel-mobile-control-size);
+    min-inline-size: var(--pixel-mobile-control-size);
+    block-size: var(--pixel-mobile-control-size);
+    min-block-size: var(--pixel-mobile-control-size);
     padding: 0;
-    border: var(--pixel-border-decoration) solid var(--pixel-border-meaningful);
-    border-radius: var(--pixel-radius);
-    background: rgb(from var(--pixel-paper) r g b / 96%);
-    box-shadow: 2px 2px 0 color-mix(in srgb, var(--pixel-shadow-color) 72%, transparent);
+    border: var(--pixel-border-decoration) solid var(--pixel-mobile-control-border);
+    border-radius: var(--pixel-mobile-control-radius);
+    background: var(--pixel-mobile-control-surface);
+    box-shadow: var(--pixel-mobile-pixel-step);
     backdrop-filter: none;
   }
 
   .view-header .view-actions.mod-raised {
-    min-block-size: 48px;
-    padding: 2px;
-    gap: 0;
-    border: var(--pixel-border-decoration) solid var(--pixel-border-meaningful);
-    border-radius: var(--pixel-radius);
-    background: var(--pixel-paper);
-    box-shadow: 2px 2px 0 color-mix(in srgb, var(--pixel-shadow-color) 72%, transparent);
+    min-block-size: var(--pixel-mobile-control-size);
+    padding: 0;
+    gap: var(--pixel-space-2);
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
     backdrop-filter: none;
   }
 
   .view-header .view-actions.mod-raised .view-action {
-    border: 0;
-    background: transparent;
+    border: var(--pixel-border-decoration) solid var(--pixel-mobile-control-border);
+    background: var(--pixel-mobile-control-surface);
+    box-shadow: var(--pixel-mobile-pixel-step);
+  }
+
+  :is(
+    .view-header .view-action,
+    .view-header .sidebar-toggle-button,
+    .workspace-drawer-header-icon,
+    .nav-action-button,
+    .mobile-navbar-action .clickable-icon,
+    .mobile-toolbar-option
+  ):not([aria-disabled="true"]):active {
+    transform: translateY(1px) scale(0.97);
+    background-color: var(--pixel-mobile-control-active);
+    box-shadow: inset 0 -1px 0 var(--pixel-mobile-control-border);
+    transition-duration: var(--pixel-motion-press);
+  }
+
+  button:not(.clickable-icon) {
+    min-block-size: var(--pixel-control-min);
+    border-width: var(--pixel-border-decoration);
+    border-color: var(--pixel-mobile-control-border);
+    border-radius: var(--pixel-mobile-control-radius);
+    background-color: var(--pixel-mobile-control-surface);
+    box-shadow: var(--pixel-mobile-pixel-step);
+  }
+
+  button:not(.clickable-icon):not(:disabled):not([aria-disabled="true"]):active {
+    transform: translateY(1px) scale(0.98);
+    background-color: var(--pixel-mobile-control-active);
+    box-shadow: inset 0 -1px 0 var(--pixel-mobile-control-border);
+  }
+
+  :is(
+    textarea,
+    .multi-select-container,
+    input.metadata-input-text,
+    input[type="date"],
+    input[type="datetime-local"],
+    input[type="text"],
+    input[type="search"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"],
+    select,
+    .combobox-button,
+    .dropdown
+  ) {
+    min-block-size: var(--pixel-control-min);
+    border-width: var(--pixel-border-decoration);
+    border-color: var(--pixel-mobile-control-border);
+    border-radius: 12px;
+    background-color: var(--pixel-paper);
     box-shadow: none;
+  }
+
+  :is(.menu, .suggestion-container, .prompt, .modal, .notice, .tooltip) {
+    border-width: var(--pixel-border-decoration);
+    border-color: var(--pixel-mobile-control-border);
+    border-radius: var(--pixel-mobile-panel-radius);
+    box-shadow: var(--pixel-mobile-floating-shadow);
+  }
+
+  .setting-item {
+    border-width: var(--pixel-border-decoration);
+    border-color: var(--pixel-mobile-control-border);
+    border-radius: var(--pixel-mobile-control-radius);
   }
 
   .workspace-drawer :is(
@@ -286,28 +383,30 @@ body.is-mobile {
 
   .mobile-navbar.mod-raised,
   .mobile-toolbar {
-    border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
-    border-radius: var(--pixel-radius);
+    border: var(--pixel-border-decoration) solid var(--pixel-mobile-control-border);
+    border-radius: var(--pixel-mobile-panel-radius);
     background: var(--pixel-paper);
-    box-shadow: 2px 2px 0 color-mix(in srgb, var(--pixel-shadow-color) 72%, transparent);
+    box-shadow:
+      var(--pixel-mobile-pixel-step),
+      var(--pixel-mobile-floating-shadow);
   }
 
   .mobile-navbar.mod-raised {
-    min-block-size: 52px;
+    min-block-size: var(--navbar-height);
     inset-block-end: var(--navbar-bottom-offset);
-    inline-size: calc(100% - var(--pixel-space-8));
-    max-inline-size: 360px;
-    padding: var(--pixel-space-1);
+    inline-size: calc(100% - var(--pixel-space-6));
+    max-inline-size: 440px;
+    padding: var(--pixel-space-2);
     backdrop-filter: none;
   }
 
   .mobile-toolbar {
-    min-block-size: 56px;
+    min-block-size: var(--mobile-toolbar-height);
   }
 
   .mobile-navbar-actions {
     inline-size: 100%;
-    gap: 0;
+    gap: var(--pixel-space-2);
   }
 
   .mobile-navbar-action {
@@ -321,9 +420,15 @@ body.is-mobile {
     min-block-size: var(--pixel-control-min);
     padding: 0;
     border: 0;
-    border-radius: var(--pixel-radius-small);
+    border-radius: 12px;
     background: transparent;
     box-shadow: none;
+  }
+
+  .mobile-navbar-action-new-tab .clickable-icon {
+    background-color: var(--pixel-cyan);
+    color: var(--pixel-paper);
+    box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--pixel-shadow-color) 30%, transparent);
   }
 
   .mobile-navbar-action .clickable-icon[aria-disabled="true"] {
@@ -345,8 +450,9 @@ body.is-mobile {
   }
 
   .workspace-leaf-content[data-type="markdown"] .inline-title {
-    padding-block-start: var(--pixel-space-2);
-    margin-block-end: var(--pixel-space-3);
+    padding-block-start: var(--pixel-space-3);
+    margin-block-end: var(--pixel-space-4);
+    text-wrap: balance;
   }
 
   // On a phone, note properties become a quiet index card: a soft shared
@@ -357,10 +463,15 @@ body.is-mobile {
   }
 
   .workspace-leaf-content[data-type="markdown"] .metadata-properties-heading {
-    min-block-size: 36px;
-    margin-block-end: var(--pixel-space-1);
-    padding: 0;
+    display: inline-flex;
+    min-block-size: 44px;
+    margin-block-end: var(--pixel-space-2);
+    padding: var(--pixel-space-1) var(--pixel-space-2);
     gap: var(--pixel-space-2);
+    border: var(--pixel-border-decoration) solid transparent;
+    border-radius: var(--pixel-mobile-control-radius);
+    background-color: color-mix(in srgb, var(--pixel-surface-secondary) 36%, transparent);
+    align-items: center;
     color: var(--pixel-text);
     font-family: var(--pixel-font-identity);
     font-size: 16px;
@@ -368,13 +479,17 @@ body.is-mobile {
   }
 
   .workspace-leaf-content[data-type="markdown"] .metadata-properties-heading .collapse-indicator {
-    inline-size: 24px;
-    block-size: 24px;
+    position: static;
+    flex: 0 0 32px;
+    inline-size: 32px;
+    block-size: 32px;
     margin: 0;
-    border: var(--pixel-border-decoration) solid var(--pixel-line-strong);
-    border-radius: var(--pixel-radius-small);
-    background-color: color-mix(in srgb, var(--pixel-cyan) 6%, var(--pixel-paper));
+    padding: 0;
+    border: var(--pixel-border-decoration) solid var(--pixel-mobile-control-border);
+    border-radius: 10px;
+    background-color: var(--pixel-paper);
     color: var(--pixel-cyan);
+    opacity: 1;
   }
 
   .workspace-leaf-content[data-type="markdown"] .metadata-properties-heading .collapse-indicator .svg-icon {
@@ -389,7 +504,7 @@ body.is-mobile {
     padding: var(--pixel-space-2);
     overflow: visible;
     border: 0;
-    border-radius: calc(var(--pixel-radius-large) * 2);
+    border-radius: var(--pixel-mobile-panel-radius);
     background-color: color-mix(in srgb, var(--pixel-surface-secondary) 28%, var(--pixel-paper));
     box-shadow: none;
   }
@@ -401,12 +516,12 @@ body.is-mobile {
   .workspace-leaf-content[data-type="markdown"] .metadata-property {
     position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 124px) minmax(0, 1fr) auto;
-    min-block-size: 44px;
+    grid-template-columns: minmax(104px, 30%) minmax(0, 1fr) auto;
+    min-block-size: 48px;
     padding: var(--pixel-space-1) var(--pixel-space-2);
     align-items: start;
     border: 0;
-    border-radius: var(--pixel-radius-large);
+    border-radius: 12px;
     background-color: transparent;
     box-shadow: none;
   }
@@ -493,7 +608,7 @@ body.is-mobile {
   .workspace-leaf-content[data-type="markdown"] .metadata-container:focus-within .metadata-property.is-selected {
     z-index: 1;
     outline: 0;
-    border-radius: var(--pixel-radius-large);
+    border-radius: 12px;
     background-color: color-mix(in srgb, var(--pixel-paper) 78%, transparent);
     box-shadow:
       inset 0 0 0 var(--pixel-border-control) var(--pixel-line-strong),
@@ -530,7 +645,7 @@ body.is-mobile {
     min-block-size: 28px;
     margin: 0;
     border: var(--pixel-border-decoration) solid rgb(from var(--pixel-cyan) r g b / 42%);
-    border-radius: var(--pixel-radius-small);
+    border-radius: 10px;
     background-color: var(--pixel-nav-label);
     color: var(--pixel-cyan);
     box-shadow: none;
@@ -565,8 +680,8 @@ body.is-mobile {
     margin-block-start: var(--pixel-space-1);
     padding-inline: var(--pixel-space-2);
     border: 0;
-    border-radius: var(--pixel-radius-small);
-    background-color: transparent;
+    border-radius: 12px;
+    background-color: var(--pixel-mobile-control-active);
     box-shadow: none;
     color: var(--pixel-text-muted);
   }
@@ -581,7 +696,7 @@ body.is-mobile {
     padding: 0;
     overflow-y: auto;
     border: var(--pixel-border-decoration) solid var(--pixel-line);
-    border-radius: calc(var(--pixel-radius-large) + var(--pixel-space-2));
+    border-radius: var(--pixel-mobile-panel-radius);
     background-color: color-mix(in srgb, var(--pixel-paper) 96%, transparent);
     box-shadow: 0 10px 24px color-mix(in srgb, var(--pixel-shadow-color) 12%, transparent);
   }
@@ -634,6 +749,14 @@ body.is-mobile:has(.workspace.is-right-sidedock-open > .workspace-drawer.mod-rig
 @media (prefers-reduced-motion: reduce) {
   body.is-mobile .workspace-drawer,
   body.is-mobile .workspace-drawer-backdrop {
+    transition-duration: 0ms;
+    animation: none;
+  }
+
+  body.is-mobile button,
+  body.is-mobile .clickable-icon,
+  body.is-mobile .nav-action-button,
+  body.is-mobile .mobile-toolbar-option {
     transition-duration: 0ms;
     animation: none;
   }
