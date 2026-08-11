@@ -13,16 +13,18 @@ test("M1 belongs to the mobile platform at every viewport", async () => {
   const css = await readTheme();
   const mobile = combinedRuleBody(css, "body.is-mobile");
 
-  assert.equal(declaration(mobile, "--mobile-sidebar-width"), "min(88vw, 420px)");
+  assert.equal(declaration(mobile, "--mobile-sidebar-width"), "min(84vw, 400px)");
   assert.equal(declaration(mobile, "--mobile-sidebar-min-width"), "0px");
-  assert.equal(declaration(mobile, "--mobile-sidebar-max-width"), "420px");
+  assert.equal(declaration(mobile, "--mobile-sidebar-max-width"), "400px");
   assert.equal(declaration(mobile, "--view-header-height"), "64px");
   assert.equal(declaration(mobile, "--navbar-height"), "64px");
   assert.equal(declaration(mobile, "--mobile-toolbar-height"), "64px");
   assert.equal(declaration(mobile, "--inline-title-size"), "1.55em");
   assert.equal(declaration(mobile, "--pixel-mobile-control-size"), "48px");
-  assert.equal(declaration(mobile, "--pixel-mobile-control-radius"), "14px");
-  assert.equal(declaration(mobile, "--pixel-mobile-panel-radius"), "20px");
+  assert.equal(declaration(mobile, "--pixel-mobile-control-radius"), "16px");
+  assert.equal(declaration(mobile, "--pixel-mobile-panel-radius"), "24px");
+  assert.equal(declaration(mobile, "--pixel-mobile-header-tile-radius"), "18px");
+  assert.equal(declaration(mobile, "--pixel-mobile-header-tray-radius"), "24px");
   assert.match(
     declaration(mobile, "--pixel-mobile-control-border"),
     /var\(--pixel-border-meaningful\) 76%/,
@@ -111,7 +113,7 @@ test("mobile bars and native backdrop preserve safe-area and dismissal behavior"
   const mobile = combinedRuleBody(css, "body.is-mobile");
   assert.equal(
     declaration(mobile, "--navbar-bottom-offset"),
-    "max(var(--safe-area-inset-bottom), var(--pixel-space-2))",
+    "max(var(--safe-area-inset-bottom), var(--pixel-space-3))",
   );
 
   const navbarChrome = combinedRuleBody(css, "body.is-mobile .mobile-navbar.mod-raised");
@@ -150,11 +152,90 @@ test("mobile note chrome uses a soft index-card editing rhythm", async () => {
   );
   assert.equal(
     declaration(headerAction, "border-radius"),
-    "var(--pixel-mobile-control-radius)",
+    "var(--pixel-mobile-header-tile-radius)",
   );
   assert.equal(
+    declaration(headerAction, "border"),
+    "0",
+  );
+  assert.equal(declaration(headerAction, "background"), "var(--pixel-paper)");
+  assert.equal(
     declaration(headerAction, "box-shadow"),
-    "var(--pixel-mobile-pixel-step)",
+    "var(--pixel-mobile-header-shadow)",
+  );
+
+  const headerShell = combinedRuleBody(css, "body.is-mobile .view-header");
+  assert.equal(declaration(headerShell, "border-radius"), "0");
+  assert.equal(declaration(headerShell, "background"), "transparent");
+  assert.equal(declaration(headerShell, "box-shadow"), "none");
+  assert.equal(declaration(headerShell, "--raised-background"), "transparent");
+  assert.equal(declaration(headerShell, "--raised-shadow"), "none");
+  assert.equal(declaration(headerShell, "--raised-blur"), "none");
+  assert.equal(declaration(headerShell, "--raised-mask-display"), "none");
+  assert.equal(declaration(headerShell, "--raised-mask-background"), "transparent");
+  assert.equal(declaration(headerShell, "--raised-mask-border-width"), "0px");
+
+  const leftDrawerToggle = ruleBody(
+    css,
+    "body.is-mobile .view-header .sidebar-toggle-button.mod-left",
+  );
+  assert.equal(declaration(leftDrawerToggle, "border"), "0");
+  assert.equal(
+    declaration(leftDrawerToggle, "border-radius"),
+    "var(--pixel-mobile-header-tile-radius)",
+  );
+  assert.equal(declaration(leftDrawerToggle, "background"), "var(--pixel-paper)");
+  assert.equal(
+    declaration(leftDrawerToggle, "box-shadow"),
+    "var(--pixel-mobile-header-shadow)",
+  );
+
+  const headerGroup = ruleBody(
+    css,
+    "body.is-mobile .view-header .view-actions.mod-raised",
+  );
+  assert.equal(
+    declaration(headerGroup, "border-radius"),
+    "var(--pixel-mobile-header-tray-radius)",
+  );
+  assert.equal(declaration(headerGroup, "gap"), "0");
+  assert.equal(
+    declaration(headerGroup, "block-size"),
+    "var(--pixel-mobile-control-size)",
+  );
+  assert.equal(declaration(headerGroup, "background"), "var(--pixel-paper)");
+  assert.equal(
+    declaration(headerGroup, "box-shadow"),
+    "var(--pixel-mobile-header-shadow)",
+  );
+  assert.equal(declaration(headerGroup, "align-self"), "center");
+
+  const groupedAction = ruleBody(
+    css,
+    "body.is-mobile .view-header .view-actions.mod-raised .view-action",
+  );
+  assert.equal(
+    declaration(groupedAction, "inline-size"),
+    "var(--pixel-mobile-control-size)",
+  );
+  assert.equal(declaration(groupedAction, "box-shadow"), "none");
+
+  const groupedActionStart = ruleBody(
+    css,
+    "body.is-mobile .view-header .view-actions.mod-raised .view-action:first-child",
+  );
+  assert.equal(
+    declaration(groupedActionStart, "border-start-start-radius"),
+    "var(--pixel-mobile-header-tray-radius)",
+  );
+
+  const groupedActionEnd = ruleBody(
+    css,
+    "body.is-mobile .view-header .view-actions.mod-raised .view-action:last-child",
+  );
+  assert.equal(
+    declaration(groupedActionEnd, "border-start-end-radius"),
+    "var(--pixel-mobile-header-tray-radius)",
   );
 
   const propertyDisclosure = ruleBody(
@@ -162,7 +243,7 @@ test("mobile note chrome uses a soft index-card editing rhythm", async () => {
     'body.is-mobile .workspace-leaf-content[data-type=markdown] .metadata-properties-heading .collapse-indicator',
   );
   assert.equal(declaration(propertyDisclosure, "position"), "static");
-  assert.equal(declaration(propertyDisclosure, "inline-size"), "32px");
+  assert.equal(declaration(propertyDisclosure, "inline-size"), "28px");
   assert.equal(declaration(propertyDisclosure, "opacity"), "1");
 
   const propertyHeading = ruleBody(
@@ -261,8 +342,11 @@ test("mobile note chrome uses a soft index-card editing rhythm", async () => {
     css,
     "body.is-mobile .mobile-navbar-action-new-tab .clickable-icon",
   );
-  assert.equal(declaration(primaryAction, "background-color"), "var(--pixel-cyan)");
-  assert.equal(declaration(primaryAction, "color"), "var(--pixel-paper)");
+  assert.equal(
+    declaration(primaryAction, "background-color"),
+    "var(--pixel-mobile-control-active)",
+  );
+  assert.equal(declaration(primaryAction, "color"), "var(--pixel-cyan)");
 });
 
 test("mobile left drawer uses a compact file-index type scale", async () => {
@@ -313,6 +397,7 @@ test("mobile left drawer uses a compact file-index type scale", async () => {
   );
   assert.equal(declaration(activeFile, "color"), "var(--pixel-cyan)");
   assert.equal(declaration(activeFile, "border-inline-start-color"), "transparent");
+  assert.equal(declaration(activeFile, "box-shadow"), "inset 4px 0 0 var(--pixel-cyan)");
 
   const vaultName = ruleBody(
     css,
@@ -333,7 +418,7 @@ test("mobile left drawer uses a compact file-index type scale", async () => {
     "body.is-mobile .workspace-drawer.mod-left .workspace-drawer-header",
   );
   assert.equal(declaration(drawerHeader, "background-color"), "var(--pixel-paper)");
-  assert.equal(declaration(drawerHeader, "box-shadow"), "inset 0 1px 0 var(--pixel-line)");
+  assert.equal(declaration(drawerHeader, "box-shadow"), "none");
 });
 
 test("M1 adds no custom gestures, hover dependencies, or fake controls", async () => {
@@ -343,7 +428,7 @@ test("M1 adds no custom gestures, hover dependencies, or fake controls", async (
   assert.doesNotMatch(mobileSource, /edge-swipe|touch-action|overscroll-behavior/);
   assert.doesNotMatch(mobileSource, /body\.is-mobile[^{}]*:hover/);
   assert.doesNotMatch(mobileSource, /body\.is-mobile[^{}]*::(?:before|after)/);
-  assert.doesNotMatch(mobileSource, /display:\s*none/);
+  assert.doesNotMatch(mobileSource, /(?:^|[;{])\s*display:\s*none/m);
 });
 
 test("M1 drawer motion follows preferences and forced colors", async () => {
