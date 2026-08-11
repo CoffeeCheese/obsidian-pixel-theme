@@ -128,6 +128,141 @@ test("search results use shared surfaces without changing native replace-button 
   );
 });
 
+test("global search stays inside the navigation pane with flat query and toggle surfaces", async () => {
+  const css = await readTheme();
+
+  const activeRow = ruleBody(
+    css,
+    "body .workspace.workspace .workspace-leaf.mod-active .workspace-leaf-content[data-type=search] .search-row",
+  );
+  assert.equal(
+    declaration(activeRow, "anchor-name"),
+    "--pixel-global-search-row",
+  );
+
+  const field = ruleBody(
+    css,
+    "body .workspace.workspace .workspace-leaf-content[data-type=search] .search-input-container.global-search-input-container input",
+  );
+  assert.equal(declaration(field, "block-size"), "36px");
+  assert.equal(
+    declaration(field, "border"),
+    "var(--pixel-border-decoration) solid var(--pixel-line-strong)",
+  );
+  assert.equal(
+    declaration(field, "border-radius"),
+    "var(--pixel-radius-large)",
+  );
+
+  const settings = ruleBody(
+    css,
+    "body .workspace.workspace .workspace-leaf-content[data-type=search] .search-params",
+  );
+  assert.equal(
+    declaration(settings, "border"),
+    "var(--pixel-border-decoration) solid var(--pixel-line)",
+  );
+  assert.doesNotMatch(settings, /box-shadow\s*:/i);
+
+  const toggle = ruleBody(
+    css,
+    "body .workspace.workspace .workspace-leaf-content[data-type=search] .search-params .checkbox-container",
+  );
+  assert.equal(declaration(toggle, "inline-size"), "40px");
+  assert.equal(declaration(toggle, "block-size"), "22px");
+  assert.equal(declaration(toggle, "box-shadow"), "none");
+
+  const toggleThumb = ruleBody(
+    css,
+    "body .workspace.workspace .workspace-leaf-content[data-type=search] .search-params .checkbox-container::after",
+  );
+  assert.equal(declaration(toggleThumb, "inline-size"), "14px");
+  assert.equal(declaration(toggleThumb, "block-size"), "14px");
+  assert.equal(declaration(toggleThumb, "border"), "0");
+  assert.equal(declaration(toggleThumb, "transform"), "none");
+
+  const enabledToggle = ruleBody(
+    css,
+    "body .workspace.workspace .workspace-leaf-content[data-type=search] .search-params .checkbox-container.is-enabled",
+  );
+  assert.equal(
+    declaration(enabledToggle, "--pixel-search-toggle-position"),
+    "21px",
+  );
+
+  const suggestions = ruleBody(
+    css,
+    ".suggestion-container.mod-search-suggestion",
+  );
+  assert.equal(
+    declaration(suggestions, "max-inline-size"),
+    "anchor-size(--pixel-global-search-row width)",
+  );
+  assert.equal(
+    declaration(suggestions, "border"),
+    "var(--pixel-border-decoration) solid var(--pixel-line-strong)",
+  );
+  assert.equal(declaration(suggestions, "box-shadow"), "none");
+  assert.doesNotMatch(suggestions, /position-anchor\s*:/i);
+
+  const selectedSuggestion = ruleBody(
+    css,
+    ".suggestion-container.mod-search-suggestion .search-suggest-item.is-selected",
+  );
+  assert.equal(declaration(selectedSuggestion, "outline"), "0");
+  assert.equal(
+    declaration(selectedSuggestion, "border-color"),
+    "color-mix(in srgb, var(--pixel-cyan) 58%, var(--pixel-line-strong))",
+  );
+  assert.equal(
+    declaration(selectedSuggestion, "background-color"),
+    "color-mix(in srgb, var(--pixel-cyan) 26%, var(--pixel-paper))",
+  );
+  assert.equal(
+    declaration(selectedSuggestion, "box-shadow"),
+    "inset 4px 0 0 var(--pixel-cyan)",
+  );
+
+  const selectedDescription = ruleBody(
+    css,
+    ".suggestion-container.mod-search-suggestion .search-suggest-item.is-selected .search-suggest-info-text",
+  );
+  assert.equal(
+    declaration(selectedDescription, "color"),
+    "var(--pixel-text)",
+  );
+
+  const selectedGroup = ruleBody(
+    css,
+    ".suggestion-container.mod-search-suggestion .search-suggest-item.mod-group.is-selected",
+  );
+  assert.equal(
+    declaration(selectedGroup, "background-color"),
+    "color-mix(in srgb, var(--pixel-cyan) 26%, var(--pixel-paper))",
+  );
+  assert.equal(
+    declaration(selectedGroup, "box-shadow"),
+    "inset 4px 0 0 var(--pixel-cyan)",
+  );
+
+  const groupLabel = ruleBody(
+    css,
+    ".suggestion-container.mod-search-suggestion .search-suggest-item.mod-group",
+  );
+  assert.equal(
+    declaration(groupLabel, "font-family"),
+    "var(--pixel-font-identity)",
+  );
+  const queryOperator = ruleBody(
+    css,
+    ".suggestion-container.mod-search-suggestion .search-suggest-item:not(.mod-group) .suggestion-title > span:first-child:not(:only-child)",
+  );
+  assert.equal(
+    declaration(queryOperator, "font-family"),
+    "var(--pixel-font-monospace)",
+  );
+});
+
 test("bookmarks, tags, badges, and empty states retain native structure", async () => {
   const css = await readTheme();
   const tag = ruleBodyForSelector(css, ".tag-pane-tag.is-active");
