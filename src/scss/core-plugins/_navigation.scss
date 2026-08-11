@@ -542,6 +542,118 @@ $pixel-tag-pane: 'body .workspace.workspace .workspace-leaf-content[data-type="t
   gap: var(--pixel-space-1);
 }
 
+// Opening tag filtering changes the header from a single toolbar into a small
+// two-deck instrument: actions stay in the 44px upper rail while the query gets
+// its own quiet scan line below. This prevents the native input focus ring,
+// form border, and pane divider from reading as one crowded stack of frames.
+#{$pixel-tag-pane} .nav-header:has(
+  > .search-input-container:not([style*="display: none"])
+) {
+  padding: 0;
+}
+
+#{$pixel-tag-pane} .nav-header:has(
+  > .search-input-container:not([style*="display: none"])
+) .nav-buttons-container {
+  min-block-size: 44px;
+  padding: 6px var(--pixel-space-3);
+  border-block-end: var(--pixel-border-decoration) solid var(--pixel-line);
+  background-color: color-mix(
+    in srgb,
+    var(--pixel-nav-label) 28%,
+    var(--pixel-paper)
+  );
+}
+
+#{$pixel-tag-pane} .nav-header:has(
+  > .search-input-container:not([style*="display: none"])
+) .nav-action-button:not(:last-child) {
+  border-color: transparent;
+  background-color: transparent;
+  color: color-mix(in srgb, var(--pixel-text-muted) 76%, var(--pixel-paper));
+}
+
+#{$pixel-tag-pane} .nav-header > .search-input-container:not([style*="display: none"]) {
+  --pixel-tag-search-gutter: 42px;
+  --pixel-tag-search-icon-offset: 10px;
+
+  min-block-size: 51px;
+  margin: 0;
+  padding: var(--pixel-space-2) var(--pixel-space-3) 10px;
+  border-radius: 0;
+  background-color: var(--pixel-paper);
+}
+
+#{$pixel-tag-pane} .nav-header > .search-input-container:not([style*="display: none"])::before {
+  z-index: 2;
+  inset-block-start: 16px;
+  inset-inline-start: calc(
+    var(--pixel-space-3) + var(--pixel-tag-search-icon-offset)
+  );
+  color: var(--pixel-text-muted);
+}
+
+#{$pixel-tag-pane} .nav-header > .search-input-container:not([style*="display: none"])::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset-block-end: 10px;
+  inset-inline-start: calc(
+    var(--pixel-space-3) + var(--pixel-tag-search-gutter)
+  );
+  inline-size: 28px;
+  block-size: var(--pixel-border-control);
+  background-color: var(--pixel-cyan);
+  pointer-events: none;
+}
+
+#{$pixel-tag-pane} .nav-header > .search-input-container:not([style*="display: none"]) input,
+#{$pixel-tag-pane} .nav-header > .search-input-container:not([style*="display: none"]) input:hover,
+#{$pixel-tag-pane} .nav-header > .search-input-container:not([style*="display: none"]) input:focus,
+#{$pixel-tag-pane} .nav-header > .search-input-container:not([style*="display: none"]) input:focus-visible {
+  block-size: 33px;
+  padding-block: 0;
+  padding-inline-start: var(--pixel-tag-search-gutter);
+  border: 0;
+  border-block-end: var(--pixel-border-control) solid var(--pixel-line-strong);
+  border-radius: 0;
+  outline: 0;
+  background-color: transparent;
+  background-image: linear-gradient(var(--pixel-line) 0 0);
+  background-position: calc(var(--pixel-tag-search-gutter) - 8px) center;
+  background-repeat: no-repeat;
+  background-size: var(--pixel-border-decoration) 17px;
+  color: var(--pixel-text);
+  box-shadow: none;
+  font-family: var(--pixel-font-text);
+  font-size: var(--font-ui-small);
+}
+
+#{$pixel-tag-pane} .nav-header > .search-input-container:not([style*="display: none"]):focus-within input {
+  border-block-end-color: var(--pixel-cyan);
+  background-color: color-mix(
+    in srgb,
+    var(--pixel-cyan) 5%,
+    var(--pixel-paper)
+  );
+  box-shadow: none;
+}
+
+#{$pixel-tag-pane} .nav-header > .search-input-container:not([style*="display: none"]):focus-within::before {
+  color: var(--pixel-cyan);
+}
+
+#{$pixel-tag-pane} .nav-header > .search-input-container:not([style*="display: none"]) input::placeholder {
+  color: var(--pixel-text-muted);
+  opacity: 0.82;
+}
+
+#{$pixel-tag-pane} .nav-header > .search-input-container:not([style*="display: none"]) .search-input-clear-button {
+  inset-inline-end: calc(var(--pixel-space-3) + 2px);
+  border-radius: var(--pixel-radius-small);
+  color: var(--pixel-text-muted);
+}
+
 #{$pixel-tag-pane} .nav-action-button {
   border: var(--pixel-border-decoration) solid transparent;
   border-radius: var(--pixel-radius-small);
@@ -721,6 +833,18 @@ $pixel-tag-pane: 'body .workspace.workspace .workspace-leaf-content[data-type="t
     border-color: Highlight;
     background-color: Highlight;
     color: HighlightText;
+  }
+
+  #{$pixel-tag-pane} .nav-header > .search-input-container:not([style*="display: none"]) input,
+  #{$pixel-tag-pane} .nav-header > .search-input-container:not([style*="display: none"]):focus-within input {
+    border-block-end-color: CanvasText;
+    background-color: Canvas;
+    box-shadow: none;
+  }
+
+  #{$pixel-tag-pane} .nav-header > .search-input-container:not([style*="display: none"]):focus-within input {
+    outline: var(--pixel-border-control) solid Highlight;
+    outline-offset: calc(-1 * var(--pixel-border-control));
   }
 }
 

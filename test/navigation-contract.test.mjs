@@ -379,6 +379,74 @@ test("tag pane reads as a compact pixel index with keycaps and hierarchy", async
     "var(--pixel-nav-label)",
   );
 
+  const openHeader = ruleBody(
+    css,
+    `${tagPane} .nav-header:has(> .search-input-container:not([style*="display: none"]))`,
+  );
+  assert.equal(declaration(openHeader, "padding"), "0");
+
+  const openToolbar = ruleBody(
+    css,
+    `${tagPane} .nav-header:has(> .search-input-container:not([style*="display: none"])) .nav-buttons-container`,
+  );
+  assert.equal(declaration(openToolbar, "min-block-size"), "44px");
+  assert.equal(
+    declaration(openToolbar, "border-block-end"),
+    "var(--pixel-border-decoration) solid var(--pixel-line)",
+  );
+
+  const openSearch = ruleBody(
+    css,
+    `${tagPane} .nav-header > .search-input-container:not([style*="display: none"])`,
+  );
+  assert.equal(declaration(openSearch, "min-block-size"), "51px");
+  assert.equal(declaration(openSearch, "margin"), "0");
+  assert.equal(declaration(openSearch, "border-radius"), "0");
+  assert.equal(declaration(openSearch, "--pixel-tag-search-gutter"), "42px");
+
+  const openSearchIcon = ruleBody(
+    css,
+    `${tagPane} .nav-header > .search-input-container:not([style*="display: none"])::before`,
+  );
+  assert.equal(declaration(openSearchIcon, "inset-block-start"), "16px");
+  assert.equal(
+    declaration(openSearchIcon, "inset-inline-start"),
+    "calc(var(--pixel-space-3) + var(--pixel-tag-search-icon-offset))",
+  );
+
+  const openSearchInput = ruleBodyForSelector(
+    css,
+    `${tagPane} .nav-header > .search-input-container:not([style*="display: none"]) input`,
+  );
+  assert.equal(declaration(openSearchInput, "border"), "0");
+  assert.equal(
+    declaration(openSearchInput, "border-block-end"),
+    "var(--pixel-border-control) solid var(--pixel-line-strong)",
+  );
+  assert.equal(declaration(openSearchInput, "border-radius"), "0");
+  assert.equal(declaration(openSearchInput, "box-shadow"), "none");
+  assert.equal(
+    declaration(openSearchInput, "padding-inline-start"),
+    "var(--pixel-tag-search-gutter)",
+  );
+  assert.equal(
+    declaration(openSearchInput, "background-position"),
+    "calc(var(--pixel-tag-search-gutter) - 8px) center",
+  );
+
+  const focusedSearchInput = ruleBody(
+    css,
+    `${tagPane} .nav-header > .search-input-container:not([style*="display: none"]):focus-within input`,
+  );
+  assert.equal(
+    declaration(focusedSearchInput, "border-block-end-color"),
+    "var(--pixel-cyan)",
+  );
+  assert.equal(
+    declaration(focusedSearchInput, "box-shadow"),
+    "none",
+  );
+
   const row = ruleBody(css, `${tagPane} .tag-pane-tag`);
   assert.equal(declaration(row, "min-block-size"), "var(--pixel-tag-row-min)");
   assert.equal(
