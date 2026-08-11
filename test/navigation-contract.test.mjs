@@ -356,3 +356,97 @@ test("bookmarks, tags, badges, and empty states retain native structure", async 
     /(?:nav-action-button|tree-item-self|tag-pane-tag|search-result-file-match)[^{]*\{[^}]*(?:display:\s*none|pointer-events:\s*none)/is,
   );
 });
+
+test("tag pane reads as a compact pixel index with keycaps and hierarchy", async () => {
+  const css = await readTheme();
+  const tagPane =
+    "body .workspace.workspace .workspace-leaf-content[data-type=tag]";
+
+  const header = ruleBody(css, `${tagPane} .nav-header`);
+  assert.equal(
+    declaration(header, "border-block-end"),
+    "var(--pixel-border-decoration) solid var(--pixel-line)",
+  );
+  assert.equal(declaration(header, "background-color"), "var(--pixel-paper)");
+
+  const activeAction = ruleBody(
+    css,
+    `${tagPane} .nav-action-button.is-active`,
+  );
+  assert.equal(declaration(activeAction, "border-color"), "var(--pixel-cyan)");
+  assert.equal(
+    declaration(activeAction, "background-color"),
+    "var(--pixel-nav-label)",
+  );
+
+  const row = ruleBody(css, `${tagPane} .tag-pane-tag`);
+  assert.equal(declaration(row, "min-block-size"), "var(--pixel-tag-row-min)");
+  assert.equal(
+    declaration(row, "border"),
+    "var(--pixel-border-decoration) solid transparent",
+  );
+  assert.equal(declaration(row, "border-radius"), "var(--pixel-radius-small)");
+
+  const label = ruleBody(css, `${tagPane} .tag-pane-tag > .tree-item-inner`);
+  assert.equal(declaration(label, "display"), "flex");
+  assert.equal(declaration(label, "min-inline-size"), "0");
+
+  const labelText = ruleBody(
+    css,
+    `${tagPane} .tag-pane-tag > .tree-item-inner > .tree-item-inner-text`,
+  );
+  assert.equal(
+    declaration(labelText, "font-family"),
+    "var(--pixel-font-identity)",
+  );
+  assert.equal(declaration(labelText, "overflow-wrap"), "anywhere");
+
+  const keycap = ruleBody(
+    css,
+    `${tagPane} .tag-pane-tag > .tree-item-inner::before`,
+  );
+  assert.equal(declaration(keycap, "content"), '"#"');
+  assert.equal(declaration(keycap, "inline-size"), "var(--pixel-tag-key-size)");
+  assert.equal(declaration(keycap, "border-radius"), "2px");
+  assert.equal(
+    declaration(keycap, "font-family"),
+    "var(--pixel-font-monospace)",
+  );
+  assert.equal(declaration(keycap, "background-color"), "var(--pixel-paper)");
+  assert.equal(declaration(keycap, "color"), "var(--pixel-cyan)");
+
+  const count = ruleBody(css, `${tagPane} .tag-pane-tag-count`);
+  assert.equal(declaration(count, "min-inline-size"), "24px");
+  assert.equal(declaration(count, "border-radius"), "2px");
+  assert.equal(declaration(count, "background-color"), "var(--pixel-paper)");
+  assert.equal(declaration(count, "font-variant-numeric"), "tabular-nums");
+
+  const hierarchy = ruleBody(css, `${tagPane} .tree-item-children`);
+  assert.equal(
+    declaration(hierarchy, "border-inline-start"),
+    "var(--pixel-border-decoration) dashed var(--pixel-line-strong)",
+  );
+
+  const active = ruleBody(css, `${tagPane} .tag-pane-tag.is-active`);
+  assert.equal(declaration(active, "transform"), "translate(1px, 1px)");
+  assert.equal(
+    declaration(active, "border-color"),
+    "var(--pixel-cyan)",
+  );
+  assert.equal(
+    declaration(active, "background-color"),
+    "var(--pixel-nav-label)",
+  );
+
+  const tagPaneRules = [
+    ...css.matchAll(
+      /body \.workspace\.workspace \.workspace-leaf-content\[data-type=tag\][^{]*\{([^}]*)\}/g,
+    ),
+  ]
+    .map((match) => match[1])
+    .join("\n");
+  assert.doesNotMatch(
+    tagPaneRules,
+    /--pixel-(?:amber|amber-text|context-label|tree-signal)/,
+  );
+});

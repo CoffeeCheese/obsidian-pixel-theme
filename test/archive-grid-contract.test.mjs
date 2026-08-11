@@ -49,9 +49,14 @@ test("H5 Archive Grid joins its workspace cabins without active cyan dividers", 
     css,
     "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf.mod-active::after",
   );
+  const contextLeadingEdgeSignal = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split .workspace-leaf.mod-active::after",
+  );
 
   assert.equal(declaration(readerLeadingEdgeSignal, "content"), "none");
   assert.equal(declaration(navigationLeadingEdgeSignal, "content"), "none");
+  assert.equal(declaration(contextLeadingEdgeSignal, "content"), "none");
 });
 
 test("H5 Archive Grid keeps the context toolbar free of vertical tab dividers", async () => {

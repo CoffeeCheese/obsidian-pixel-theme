@@ -218,11 +218,12 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header
   line-height: 20px;
 }
 
-// The ribbon, navigation cabin, and reader share one paper plane in the H5
-// shell. The generic active-pane signal would otherwise become a full-height
-// cyan divider at either join; tabs and the active file row retain state cues.
+// The navigation cabin, reader, and context cabin share one continuous paper
+// plane in the H5 shell. The generic active-pane signal would otherwise become
+// a full-height divider at either join; tabs and selected rows retain state cues.
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf.mod-active::after,
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf.mod-active::after {
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf.mod-active::after,
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split .workspace-leaf.mod-active::after {
   content: none;
 }
 

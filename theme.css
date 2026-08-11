@@ -2152,6 +2152,181 @@ body .workspace.workspace .workspace-leaf-content[data-type=search] .search-empt
   color: var(--pixel-text);
 }
 
+body .workspace.workspace .workspace-leaf-content[data-type=tag] {
+  --pixel-tag-key-size: 20px;
+  --pixel-tag-row-min: 36px;
+}
+
+body .workspace.workspace .workspace-leaf-content[data-type=tag] .nav-header {
+  margin: 0;
+  padding: var(--pixel-space-2) var(--pixel-space-3);
+  border-block-end: var(--pixel-border-decoration) solid var(--pixel-line);
+  background-color: var(--pixel-paper);
+}
+
+body .workspace.workspace .workspace-leaf-content[data-type=tag] .nav-buttons-container {
+  gap: var(--pixel-space-1);
+}
+
+body .workspace.workspace .workspace-leaf-content[data-type=tag] .nav-action-button {
+  border: var(--pixel-border-decoration) solid transparent;
+  border-radius: var(--pixel-radius-small);
+  color: var(--pixel-text-muted);
+  box-shadow: none;
+}
+
+body .workspace.workspace .workspace-leaf-content[data-type=tag] .nav-action-button.is-active {
+  border-color: var(--pixel-cyan);
+  background-color: var(--pixel-nav-label);
+  color: var(--pixel-text);
+}
+
+body .workspace.workspace .workspace-leaf-content[data-type=tag] .tag-container {
+  padding: var(--pixel-space-2) var(--pixel-space-3) var(--pixel-space-4);
+  scroll-padding-block: var(--pixel-space-2);
+}
+
+body .workspace.workspace .workspace-leaf-content[data-type=tag] .tree-item-children {
+  margin-inline-start: var(--pixel-space-3);
+  padding-inline-start: var(--pixel-space-2);
+  border-inline-start: var(--pixel-border-decoration) dashed var(--pixel-line-strong);
+}
+
+body .workspace.workspace .workspace-leaf-content[data-type=tag] .tag-pane-tag {
+  position: relative;
+  min-block-size: var(--pixel-tag-row-min);
+  margin-block: 2px;
+  padding-block: var(--pixel-space-1);
+  padding-inline: var(--pixel-space-1) var(--pixel-space-2);
+  border: var(--pixel-border-decoration) solid transparent;
+  border-inline-start-width: var(--pixel-border-control);
+  border-radius: var(--pixel-radius-small);
+  background-color: transparent;
+  color: var(--pixel-text-muted);
+  font-family: var(--pixel-font-text);
+  transition: transform var(--pixel-motion-press) var(--pixel-ease-out), background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, box-shadow var(--pixel-motion-state) linear, color var(--pixel-motion-state) linear;
+}
+
+body .workspace.workspace .workspace-leaf-content[data-type=tag] .tree-item-children .tag-pane-tag::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: calc(-1 * var(--pixel-space-2) - 1px);
+  inline-size: var(--pixel-space-2);
+  border-block-start: var(--pixel-border-decoration) dashed var(--pixel-line-strong);
+}
+
+body .workspace.workspace .workspace-leaf-content[data-type=tag] .tag-pane-tag > .tree-item-inner {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: var(--pixel-space-2);
+  min-inline-size: 0;
+}
+
+body .workspace.workspace .workspace-leaf-content[data-type=tag] .tag-pane-tag > .tree-item-inner > .tree-item-inner-text {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+  font-family: var(--pixel-font-identity);
+  font-size: var(--font-ui-small);
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+body .workspace.workspace .workspace-leaf-content[data-type=tag] .tag-pane-tag > .tree-item-inner::before {
+  content: "#";
+  display: inline-grid;
+  flex: 0 0 var(--pixel-tag-key-size);
+  place-items: center;
+  inline-size: var(--pixel-tag-key-size);
+  block-size: var(--pixel-tag-key-size);
+  border: var(--pixel-border-decoration) solid var(--pixel-line-strong);
+  border-radius: 2px;
+  background-color: var(--pixel-paper);
+  color: var(--pixel-cyan);
+  box-shadow: 1px 1px 0 color-mix(in srgb, var(--pixel-shadow-color) 70%, transparent);
+  font-family: var(--pixel-font-monospace);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+body .workspace.workspace .workspace-leaf-content[data-type=tag] .tag-pane-tag-count {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: 24px;
+  block-size: 20px;
+  padding-inline: 5px;
+  border-color: var(--pixel-line-strong);
+  border-radius: 2px;
+  background-color: var(--pixel-paper);
+  color: var(--pixel-text-muted);
+  font-family: var(--pixel-font-monospace);
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+body .workspace.workspace .workspace-leaf-content[data-type=tag] .tag-pane-tag.is-active {
+  transform: translate(1px, 1px);
+  border-color: var(--pixel-cyan);
+  border-inline-start-width: var(--pixel-border-control);
+  background-color: var(--pixel-nav-label);
+  box-shadow: 2px 2px 0 color-mix(in srgb, var(--pixel-shadow-color) 72%, transparent);
+  color: var(--pixel-text);
+}
+
+body .workspace.workspace .workspace-leaf-content[data-type=tag] .tag-pane-tag.is-active > .tree-item-inner::before {
+  border-color: var(--pixel-cyan);
+  background-color: var(--pixel-cyan);
+  color: var(--pixel-paper);
+  box-shadow: none;
+}
+
+body .workspace.workspace .workspace-leaf-content[data-type=tag] .tag-pane-tag.is-active .tag-pane-tag-count {
+  border-color: var(--pixel-cyan);
+  background-color: var(--pixel-paper);
+  color: var(--pixel-text);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body .workspace.workspace .workspace-leaf-content[data-type=tag] .tag-pane-tag:not(.is-active):hover {
+    border-color: var(--pixel-line);
+    border-inline-start-color: var(--pixel-cyan);
+    background-color: color-mix(in srgb, var(--pixel-nav-label) 54%, var(--pixel-paper));
+    color: var(--pixel-text);
+  }
+  body .workspace.workspace .workspace-leaf-content[data-type=tag] .tag-pane-tag.is-active:hover {
+    background-color: var(--pixel-nav-label);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  body .workspace.workspace .workspace-leaf-content[data-type=tag] .tag-pane-tag {
+    transition-duration: 0ms;
+  }
+}
+@media (forced-colors: active) {
+  body .workspace.workspace .workspace-leaf-content[data-type=tag] .tag-pane-tag > .tree-item-inner::before,
+  body .workspace.workspace .workspace-leaf-content[data-type=tag] .tag-pane-tag-count {
+    border-color: CanvasText;
+    background-color: Canvas;
+    color: CanvasText;
+    box-shadow: none;
+  }
+  body .workspace.workspace .workspace-leaf-content[data-type=tag] .tag-pane-tag.is-active {
+    outline: var(--pixel-border-control) solid Highlight;
+    outline-offset: calc(-1 * var(--pixel-border-control));
+    box-shadow: none;
+  }
+  body .workspace.workspace .workspace-leaf-content[data-type=tag] .tag-pane-tag.is-active > .tree-item-inner::before {
+    border-color: Highlight;
+    background-color: Highlight;
+    color: HighlightText;
+  }
+}
 .tree-item-self.has-focus,
 .tree-item.has-focus > .tag-pane-tag {
   outline: var(--pixel-border-control) solid var(--pixel-cyan);
@@ -3383,7 +3558,8 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf.mod-active::after,
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf.mod-active::after {
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf.mod-active::after,
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split .workspace-leaf.mod-active::after {
   content: none;
 }
 
