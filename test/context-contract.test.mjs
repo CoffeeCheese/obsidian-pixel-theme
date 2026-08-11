@@ -143,6 +143,96 @@ test("native property rows expose readable key-value, focus, validation, and act
   assert.equal(declaration(error, "background-color"), "var(--pixel-paper)");
 });
 
+test("the All Properties catalogue mirrors the document property sheet", async () => {
+  const css = await readTheme();
+  const scope =
+    "body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf-content[data-type=all-properties]";
+
+  const catalogue = ruleBody(css, scope);
+  assert.equal(declaration(catalogue, "--pixel-property-catalog-row"), "38px");
+  assert.equal(declaration(catalogue, "--pixel-property-catalog-icon"), "22px");
+
+  const row = ruleBodyForSelector(css, `${scope} .tree-item-self`);
+  assert.equal(
+    declaration(row, "min-block-size"),
+    "var(--pixel-property-catalog-row)",
+  );
+  assert.equal(
+    declaration(row, "border"),
+    "var(--pixel-border-decoration) solid transparent",
+  );
+  assert.equal(declaration(row, "font-size"), "14px");
+
+  const icon = ruleBodyForSelector(css, `${scope} .tree-item-icon`);
+  assert.equal(declaration(icon, "display"), "grid");
+  assert.equal(declaration(icon, "color"), "var(--pixel-cyan)");
+  assert.equal(
+    declaration(icon, "font-family"),
+    "var(--pixel-font-monospace)",
+  );
+
+  const textGlyph = ruleBodyForSelector(
+    css,
+    `${scope} .tree-item-icon:has(.lucide-text)::before`,
+  );
+  const numberGlyph = ruleBodyForSelector(
+    css,
+    `${scope} .tree-item-icon:has(.lucide-binary)::before`,
+  );
+  const dateGlyph = ruleBodyForSelector(
+    css,
+    `${scope} .tree-item-icon:has(.lucide-calendar)::before`,
+  );
+  assert.equal(declaration(textGlyph, "content"), '"t"');
+  assert.equal(declaration(numberGlyph, "content"), '"01"');
+  assert.equal(declaration(dateGlyph, "content"), '"▦"');
+
+  const nativeIcon = ruleBodyForSelector(css, `${scope} .tree-item-icon svg`);
+  assert.equal(declaration(nativeIcon, "inline-size"), "0");
+  assert.equal(declaration(nativeIcon, "opacity"), "0");
+
+  const name = ruleBodyForSelector(css, `${scope} .tree-item-inner-text`);
+  assert.equal(
+    declaration(name, "font-family"),
+    "var(--pixel-font-monospace)",
+  );
+  assert.equal(declaration(name, "text-overflow"), "ellipsis");
+
+  const count = ruleBodyForSelector(css, `${scope} .tree-item-flair`);
+  assert.equal(
+    declaration(count, "background-color"),
+    "var(--pixel-context-label)",
+  );
+  assert.equal(declaration(count, "color"), "var(--pixel-amber-text)");
+  assert.equal(
+    declaration(count, "font-family"),
+    "var(--pixel-font-monospace)",
+  );
+
+  const selected = ruleBody(
+    css,
+    `${scope} .tree-item-self:is(.is-active, .is-selected, .has-focus)`,
+  );
+  assert.equal(
+    declaration(selected, "background-color"),
+    "color-mix(in srgb, var(--pixel-cyan) 8%, var(--pixel-paper))",
+  );
+  assert.equal(
+    declaration(selected, "box-shadow"),
+    "inset 3px 0 0 var(--pixel-cyan)",
+  );
+
+  const search = ruleBodyForSelector(
+    css,
+    `${scope} .search-input-container input[type=search]`,
+  );
+  assert.equal(
+    declaration(search, "border"),
+    "var(--pixel-border-decoration) solid var(--pixel-line-strong)",
+  );
+  assert.equal(declaration(search, "font-size"), "14px");
+});
+
 test("outline, backlinks, and outgoing links share amber multi-cue context selection", async () => {
   const css = await readTheme();
 
