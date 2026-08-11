@@ -279,39 +279,74 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .works
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] :is(.nav-file-title, .nav-folder-title) {
   position: relative;
   border-radius: var(--pixel-radius);
-  transition:
-    background-color var(--pixel-motion-state) linear,
-    color var(--pixel-motion-state) linear;
+  // Only position participates in motion. Selection paint must lock in on the
+  // same frame as Obsidian's active class, otherwise the controller shell
+  // briefly fades back through the ordinary transparent row state.
+  transition: transform var(--pixel-motion-surface) var(--pixel-ease-out);
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] :is(.nav-file-title, .nav-folder-title)::before {
   content: "";
   position: absolute;
-  inset-block: 4px;
-  inset-inline-start: -12px;
-  inline-size: 4px;
-  border-radius: 0 var(--pixel-radius-small) var(--pixel-radius-small) 0;
-  background-color: var(--pixel-cyan);
+  inset-block-start: 50%;
+  inset-inline-start: 9px;
+  inline-size: 11px;
+  block-size: 11px;
+  border-radius: 1px;
   opacity: 0;
-  transform: translateX(-4px);
-  transition:
-    opacity var(--pixel-motion-state) linear,
-    transform var(--pixel-motion-surface) var(--pixel-ease-out);
+  transform: translateY(-50%);
   pointer-events: none;
 }
 
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] .nav-file-title.is-active {
-  background-color: var(--pixel-nav-label);
-  box-shadow: none;
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] .nav-file-title:is(.is-active, .is-selected) {
+  padding-inline: 28px 38px;
+  transform: translateX(2px);
+  border: var(--pixel-border-decoration) solid var(--pixel-nav-controller-edge);
+  border-radius: var(--pixel-radius-large);
+  background-color: var(--pixel-nav-controller);
+  color: var(--pixel-text);
+  box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--pixel-nav-controller-edge) 38%, transparent);
 }
 
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] .nav-file-title.is-active::before {
-  opacity: 1;
-  transform: translateX(0);
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] .nav-file-title:is(.is-active, .is-selected)::before {
+  background:
+    linear-gradient(var(--pixel-text-muted) 0 0) center / 4px 100% no-repeat,
+    linear-gradient(var(--pixel-text-muted) 0 0) center / 100% 4px no-repeat;
+  opacity: 0.68;
 }
 
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] .nav-file-title.is-active::after {
-  content: none;
+// The active file becomes a quiet handheld-controller strip: a subdued D-pad
+// at the start and two compact action buttons at the end. Nothing animates or
+// glows, so the game-console signature stays legible during long work sessions.
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] .nav-file-title:is(.is-active, .is-selected)::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: 8px;
+  inline-size: 24px;
+  block-size: 16px;
+  background:
+    radial-gradient(
+      circle at 6px 10px,
+      var(--pixel-cyan) 0 3px,
+      var(--pixel-nav-controller-edge) 3.5px 4.5px,
+      transparent 5px
+    ),
+    radial-gradient(
+      circle at 17px 6px,
+      var(--pixel-amber) 0 3px,
+      var(--pixel-nav-controller-edge) 3.5px 4.5px,
+      transparent 5px
+    );
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] :is(.nav-file-title, .nav-folder-title):not(.is-active):not(.is-selected):hover {
+    transform: translateX(2px);
+    background-color: color-mix(in srgb, var(--pixel-cyan) 5%, var(--pixel-paper));
+  }
 }
 
 body:not(.is-mobile) .workspace.workspace :is(

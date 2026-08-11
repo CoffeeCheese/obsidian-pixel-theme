@@ -8,6 +8,7 @@
     "check": "node build.mjs --check",
     "test": "node --test --test-concurrency=1",
     "test:context-heading-layout": "node h5/context-heading-layout-check.mjs",
+    "test:controller-transition": "node h5/controller-transition-check.mjs",
     "test:due-date-layout": "node h5/due-date-layout-check.mjs",
     "test:left-tab-rail-layout": "node h5/left-tab-rail-layout-check.mjs",
     "test:toggle-edge-layout": "node h5/toggle-edge-layout-check.mjs",

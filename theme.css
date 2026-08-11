@@ -332,6 +332,8 @@ body {
   --pixel-border-meaningful-rgb: 96, 113, 132;
   --pixel-shadow-color: #8fa5b2;
   --pixel-nav-label: #dcebed;
+  --pixel-nav-controller: #e3eef0;
+  --pixel-nav-controller-edge: #a9c3c8;
   --pixel-context-label: #f3eee3;
   --pixel-tree-signal: var(--pixel-cyan);
   --pixel-tree-active-surface: var(--pixel-nav-label);
@@ -363,6 +365,8 @@ body {
   --pixel-border-meaningful-rgb: 143, 162, 173;
   --pixel-shadow-color: #091016;
   --pixel-nav-label: #203d46;
+  --pixel-nav-controller: #20343c;
+  --pixel-nav-controller-edge: #44656c;
   --pixel-context-label: #2a2926;
   --pixel-tree-signal: var(--pixel-cyan);
   --pixel-tree-active-surface: var(--pixel-nav-label);
@@ -1512,6 +1516,8 @@ button .svg-icon {
   .nav-folder-title,
   .nav-file-title::before,
   .nav-folder-title::before,
+  .nav-file-title::after,
+  .nav-folder-title::after,
   .workspace-tab-header::after,
   .workspace-drawer,
   .callout-fold .svg-icon,
@@ -1547,6 +1553,8 @@ button .svg-icon {
     --pixel-line: CanvasText;
     --pixel-border-meaningful: CanvasText;
     --pixel-nav-label: Canvas;
+    --pixel-nav-controller: Canvas;
+    --pixel-nav-controller-edge: Highlight;
     --pixel-context-label: Canvas;
     --pixel-shadow-control: none;
     --pixel-shadow-button: none;
@@ -3055,37 +3063,55 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .works
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] :is(.nav-file-title, .nav-folder-title) {
   position: relative;
   border-radius: var(--pixel-radius);
-  transition: background-color var(--pixel-motion-state) linear, color var(--pixel-motion-state) linear;
+  transition: transform var(--pixel-motion-surface) var(--pixel-ease-out);
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] :is(.nav-file-title, .nav-folder-title)::before {
   content: "";
   position: absolute;
-  inset-block: 4px;
-  inset-inline-start: -12px;
-  inline-size: 4px;
-  border-radius: 0 var(--pixel-radius-small) var(--pixel-radius-small) 0;
-  background-color: var(--pixel-cyan);
+  inset-block-start: 50%;
+  inset-inline-start: 9px;
+  inline-size: 11px;
+  block-size: 11px;
+  border-radius: 1px;
   opacity: 0;
-  transform: translateX(-4px);
-  transition: opacity var(--pixel-motion-state) linear, transform var(--pixel-motion-surface) var(--pixel-ease-out);
+  transform: translateY(-50%);
   pointer-events: none;
 }
 
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] .nav-file-title.is-active {
-  background-color: var(--pixel-nav-label);
-  box-shadow: none;
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] .nav-file-title:is(.is-active, .is-selected) {
+  padding-inline: 28px 38px;
+  transform: translateX(2px);
+  border: var(--pixel-border-decoration) solid var(--pixel-nav-controller-edge);
+  border-radius: var(--pixel-radius-large);
+  background-color: var(--pixel-nav-controller);
+  color: var(--pixel-text);
+  box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--pixel-nav-controller-edge) 38%, transparent);
 }
 
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] .nav-file-title.is-active::before {
-  opacity: 1;
-  transform: translateX(0);
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] .nav-file-title:is(.is-active, .is-selected)::before {
+  background: linear-gradient(var(--pixel-text-muted) 0 0) center/4px 100% no-repeat, linear-gradient(var(--pixel-text-muted) 0 0) center/100% 4px no-repeat;
+  opacity: 0.68;
 }
 
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] .nav-file-title.is-active::after {
-  content: none;
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] .nav-file-title:is(.is-active, .is-selected)::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: 8px;
+  inline-size: 24px;
+  block-size: 16px;
+  background: radial-gradient(circle at 6px 10px, var(--pixel-cyan) 0 3px, var(--pixel-nav-controller-edge) 3.5px 4.5px, transparent 5px), radial-gradient(circle at 17px 6px, var(--pixel-amber) 0 3px, var(--pixel-nav-controller-edge) 3.5px 4.5px, transparent 5px);
+  transform: translateY(-50%);
+  pointer-events: none;
 }
 
+@media (hover: hover) and (pointer: fine) {
+  body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] :is(.nav-file-title, .nav-folder-title):not(.is-active):not(.is-selected):hover {
+    transform: translateX(2px);
+    background-color: color-mix(in srgb, var(--pixel-cyan) 5%, var(--pixel-paper));
+  }
+}
 body:not(.is-mobile) .workspace.workspace :is(.metadata-input-text,
 .metadata-property-key-input,
 .multi-select-container,

@@ -19,6 +19,8 @@
   .nav-folder-title,
   .nav-file-title::before,
   .nav-folder-title::before,
+  .nav-file-title::after,
+  .nav-folder-title::after,
   .workspace-tab-header::after,
   .workspace-drawer,
   .callout-fold .svg-icon,
@@ -55,6 +57,8 @@
     --pixel-line: CanvasText;
     --pixel-border-meaningful: CanvasText;
     --pixel-nav-label: Canvas;
+    --pixel-nav-controller: Canvas;
+    --pixel-nav-controller-edge: Highlight;
     --pixel-context-label: Canvas;
     --pixel-shadow-control: none;
     --pixel-shadow-button: none;

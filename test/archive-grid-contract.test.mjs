@@ -168,9 +168,9 @@ test("H5 Archive Grid maps the native file browser to the H5 S1 navigation cabin
     css,
     "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] :is(.nav-file-title, .nav-folder-title)",
   );
-  const active = ruleBodyForSelector(
+  const active = ruleBody(
     css,
-    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] .nav-file-title.is-active",
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] .nav-file-title:is(.is-active, .is-selected)",
   );
   const toolButton = ruleBodyForSelector(
     css,
@@ -180,13 +180,17 @@ test("H5 Archive Grid maps the native file browser to the H5 S1 navigation cabin
     css,
     "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] :is(.nav-file-title, .nav-folder-title)::before",
   );
-  const activeBefore = ruleBodyForSelector(
+  const activeBefore = ruleBody(
     css,
-    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] .nav-file-title.is-active::before",
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] .nav-file-title:is(.is-active, .is-selected)::before",
   );
-  const activeAfter = ruleBodyForSelector(
+  const activeAfter = ruleBody(
     css,
-    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] .nav-file-title.is-active::after",
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] .nav-file-title:is(.is-active, .is-selected)::after",
+  );
+  const hover = ruleBody(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] :is(.nav-file-title, .nav-folder-title):not(.is-active):not(.is-selected):hover",
   );
 
   assert.equal(declaration(tools, "min-block-size"), "44px");
@@ -209,8 +213,16 @@ test("H5 Archive Grid maps the native file browser to the H5 S1 navigation cabin
   );
   assert.equal(declaration(list, "padding"), "7px 8px 24px");
   assert.equal(declaration(row, "border-radius"), "var(--pixel-radius)");
-  assert.equal(declaration(active, "background-color"), "var(--pixel-nav-label)");
-  assert.equal(declaration(active, "box-shadow"), "none");
+  assert.doesNotMatch(row, /background-image\s*:/);
+  assert.match(declaration(row, "transition"), /var\(--pixel-ease-out\)/);
+  assert.doesNotMatch(
+    declaration(row, "transition"),
+    /background-color|border-color|(?<!-)color/,
+    "controller paint must not interpolate from the ordinary row state",
+  );
+  assert.equal(declaration(active, "transform"), "translatex(2px)");
+  assert.equal(declaration(active, "background-color"), "var(--pixel-nav-controller)");
+  assert.match(declaration(active, "box-shadow"), /^inset 0 -2px 0/);
   // The instrument strip keeps only the native toolbar; the prototype
   // part-number label that sat in its bottom-right corner is removed.
   assert.ok(
@@ -218,13 +230,15 @@ test("H5 Archive Grid maps the native file browser to the H5 S1 navigation cabin
     "compiled theme.css must not render the A-01 part-number label",
   );
   assert.equal(declaration(toolButton, "border-radius"), "var(--pixel-radius)");
-  assert.equal(declaration(rowSignal, "inline-size"), "4px");
-  assert.equal(declaration(rowSignal, "background-color"), "var(--pixel-cyan)");
+  assert.equal(declaration(rowSignal, "inline-size"), "11px");
   assert.equal(declaration(rowSignal, "opacity"), "0");
-  assert.equal(declaration(rowSignal, "transform"), "translatex(-4px)");
-  assert.equal(declaration(activeBefore, "opacity"), "1");
-  assert.equal(declaration(activeBefore, "transform"), "translatex(0)");
-  assert.equal(declaration(activeAfter, "content"), "none");
+  assert.equal(declaration(rowSignal, "transform"), "translatey(-50%)");
+  assert.equal(declaration(activeBefore, "opacity"), "0.68");
+  assert.match(declaration(activeBefore, "background"), /linear-gradient/);
+  assert.equal(declaration(activeAfter, "inline-size"), "24px");
+  assert.match(declaration(activeAfter, "background"), /^radial-gradient/);
+  assert.equal(declaration(hover, "transform"), "translatex(2px)");
+  assert.doesNotMatch(hover, /box-shadow\s*:/);
 });
 
 test("H5 Archive Grid leaves global status-bar geometry to the workspace shell", async () => {
@@ -249,8 +263,12 @@ test("H5 Archive Grid exposes the prototype's subtle and structural line roles",
   assert.equal(declaration(light, "--pixel-line"), "#d2dde2");
   assert.equal(declaration(light, "--pixel-line-strong"), "#afc0ca");
   assert.equal(declaration(light, "--pixel-nav-label"), "#dcebed");
+  assert.equal(declaration(light, "--pixel-nav-controller"), "#e3eef0");
+  assert.equal(declaration(light, "--pixel-nav-controller-edge"), "#a9c3c8");
   assert.equal(declaration(dark, "--pixel-line"), "#2b3d47");
   assert.equal(declaration(dark, "--pixel-line-strong"), "#344854");
+  assert.equal(declaration(dark, "--pixel-nav-controller"), "#20343c");
+  assert.equal(declaration(dark, "--pixel-nav-controller-edge"), "#44656c");
 });
 
 test("H5 Archive Grid keeps native controls and metadata light instead of cartridge-like", async () => {
