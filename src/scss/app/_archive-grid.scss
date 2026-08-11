@@ -79,9 +79,9 @@ body:not(.is-mobile) .workspace.workspace .workspace-tab-header {
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header {
-  inline-size: 180px;
-  min-inline-size: 180px;
-  max-inline-size: 180px;
+  inline-size: 224px;
+  min-inline-size: 224px;
+  max-inline-size: 224px;
   border: var(--pixel-border-decoration) solid transparent;
   border-block-end: 0;
   border-radius: var(--pixel-radius-large) var(--pixel-radius-large) 0 0;
@@ -112,8 +112,10 @@ body:not(.is-mobile) .workspace.workspace .workspace-tab-header.is-active {
 // Obsidian draws tab shoulders with both pseudo-elements. Clear those masks
 // and reuse the trailing element as one quiet cyan activity rail.
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header-inner-title {
-  font-family: var(--pixel-font-identity);
-  font-size: 11px;
+  font-family: var(--pixel-font-text);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header.is-active {
@@ -177,23 +179,26 @@ body:not(.is-mobile) .workspace.workspace .workspace-leaf.mod-active::after {
   background-color: var(--pixel-cyan);
 }
 
-// Keep Obsidian's native history and action controls, but let the file chain
-// occupy the same left-anchored, compact typographic lane as the H5 top bar.
+// Keep Obsidian's native history and action controls, but split the file chain
+// into an identity-font index path and a text-font document title. Long mixed-
+// language names stay readable without losing the H5 archive label hierarchy.
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header-title-container {
+  gap: 8px;
   justify-content: flex-start;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header-title-parent {
   gap: 7px;
   font-family: var(--pixel-font-identity);
-  font-size: 11px;
+  font-size: 12px;
+  line-height: 16px;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header-breadcrumb {
   padding: 0;
   color: var(--pixel-text-muted);
   font-family: var(--pixel-font-identity);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 450;
 }
 
@@ -207,9 +212,10 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header-title {
   padding: 0;
   color: var(--pixel-text);
-  font-family: var(--pixel-font-identity);
-  font-size: 11px;
+  font-family: var(--pixel-font-text);
+  font-size: 14px;
   font-weight: 600;
+  line-height: 20px;
 }
 
 // The ribbon, navigation cabin, and reader share one paper plane in the H5

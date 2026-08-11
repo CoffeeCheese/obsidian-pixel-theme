@@ -94,9 +94,9 @@ test("H5 Archive Grid gives root tabs the H5 S1 cartridge geometry", async () =>
   );
 
   assert.equal(declaration(rail, "gap"), "2px");
-  assert.equal(declaration(tab, "inline-size"), "180px");
-  assert.equal(declaration(tab, "min-inline-size"), "180px");
-  assert.equal(declaration(tab, "max-inline-size"), "180px");
+  assert.equal(declaration(tab, "inline-size"), "224px");
+  assert.equal(declaration(tab, "min-inline-size"), "224px");
+  assert.equal(declaration(tab, "max-inline-size"), "224px");
   assert.equal(
     declaration(tab, "border"),
     "var(--pixel-border-decoration) solid transparent",
@@ -114,6 +114,44 @@ test("H5 Archive Grid gives root tabs the H5 S1 cartridge geometry", async () =>
   assert.equal(declaration(newTab, "inline-size"), "44px");
   assert.equal(declaration(newTab, "min-inline-size"), "44px");
   assert.equal(declaration(newTab, "border-radius"), "var(--pixel-radius)");
+});
+
+test("H5 Archive Grid gives mixed-language document identity a readable hierarchy", async () => {
+  const css = await readTheme();
+  const tabTitle = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header-inner-title",
+  );
+  const titleContainer = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header-title-container",
+  );
+  const path = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header-title-parent",
+  );
+  const breadcrumb = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header-breadcrumb",
+  );
+  const title = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .view-header-title",
+  );
+
+  assert.equal(declaration(tabTitle, "font-family"), "var(--pixel-font-text)");
+  assert.equal(declaration(tabTitle, "font-size"), "14px");
+  assert.equal(declaration(tabTitle, "font-weight"), "600");
+  assert.equal(declaration(tabTitle, "line-height"), "20px");
+  assert.equal(declaration(titleContainer, "gap"), "8px");
+  assert.equal(declaration(path, "font-family"), "var(--pixel-font-identity)");
+  assert.equal(declaration(path, "font-size"), "12px");
+  assert.equal(declaration(path, "line-height"), "16px");
+  assert.equal(declaration(breadcrumb, "font-size"), "12px");
+  assert.equal(declaration(title, "font-family"), "var(--pixel-font-text)");
+  assert.equal(declaration(title, "font-size"), "14px");
+  assert.equal(declaration(title, "font-weight"), "600");
+  assert.equal(declaration(title, "line-height"), "20px");
 });
 
 test("H5 Archive Grid maps the native file browser to the H5 S1 navigation cabin", async () => {
