@@ -392,16 +392,88 @@ body:not(.is-mobile) .workspace-split.mod-right-split .search-result-file-matche
 
 body:not(.is-mobile) .workspace-split.mod-right-split .backlink-pane > .tree-item-self,
 body:not(.is-mobile) .workspace-split.mod-right-split .outgoing-link-pane > .tree-item-self {
-  border-block-end: var(--pixel-border-control) solid var(--pixel-border-meaningful);
-  color: var(--pixel-text);
-}
-
-body:not(.is-mobile) .workspace-split.mod-right-split .backlink-pane .tree-item-flair,
-body:not(.is-mobile) .workspace-split.mod-right-split .outgoing-link-pane .tree-item-flair {
-  border-color: var(--pixel-border-meaningful);
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--pixel-space-2);
+  min-block-size: 36px;
+  padding: 7px 10px;
+  border-block-end: var(--pixel-border-decoration) solid var(--pixel-cyan);
+  border-inline-start: 0;
   background-color: var(--pixel-paper);
   color: var(--pixel-text);
-  font-family: var(--pixel-font-monospace);
+  box-shadow: none;
+  font-family: var(--pixel-font-interface);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.35;
+  transition:
+    background-color var(--pixel-motion-state) linear,
+    border-color var(--pixel-motion-state) linear,
+    color var(--pixel-motion-state) linear;
+}
+
+// The heading row remains the native disclosure target. Remove both the
+// reserved leading spacer and its icon so the label starts on the content grid.
+body:not(.is-mobile) .workspace-split.mod-right-split .backlink-pane > .tree-item-self::before,
+body:not(.is-mobile) .workspace-split.mod-right-split .outgoing-link-pane > .tree-item-self::before {
+  content: none;
+}
+
+body:not(.is-mobile) .workspace-split.mod-right-split .backlink-pane > .tree-item-self.is-collapsed,
+body:not(.is-mobile) .workspace-split.mod-right-split .outgoing-link-pane > .tree-item-self.is-collapsed {
+  border-block-end-color: var(--pixel-line-strong);
+  color: var(--pixel-text-muted);
+}
+
+body:not(.is-mobile) .workspace-split.mod-right-split .backlink-pane > .tree-item-self .tree-item-inner,
+body:not(.is-mobile) .workspace-split.mod-right-split .outgoing-link-pane > .tree-item-self .tree-item-inner {
+  min-inline-size: 0;
+}
+
+body:not(.is-mobile) .workspace-split.mod-right-split .backlink-pane > .tree-item-self:focus-visible,
+body:not(.is-mobile) .workspace-split.mod-right-split .outgoing-link-pane > .tree-item-self:focus-visible {
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: -2px;
+}
+
+body:not(.is-mobile) .workspace-split.mod-right-split .backlink-pane > .tree-item-self .tree-item-flair-outer,
+body:not(.is-mobile) .workspace-split.mod-right-split .outgoing-link-pane > .tree-item-self .tree-item-flair-outer {
+  display: flex;
+  min-inline-size: 24px;
+  margin-inline-start: auto;
+  padding-inline-start: var(--pixel-space-2);
+  justify-content: flex-end;
+}
+
+body:not(.is-mobile) .workspace-split.mod-right-split .backlink-pane > .tree-item-self .tree-item-flair,
+body:not(.is-mobile) .workspace-split.mod-right-split .outgoing-link-pane > .tree-item-self .tree-item-flair {
+  display: inline-grid;
+  min-inline-size: 18px;
+  block-size: 18px;
+  padding: 0 2px 2px;
+  place-items: center end;
+  border: 0;
+  border-block-end: var(--pixel-border-control) solid var(--pixel-cyan);
+  border-radius: 0;
+  background-color: transparent;
+  color: var(--pixel-text);
+  box-shadow: none;
+  font-family: var(--pixel-font-interface);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1;
+  text-align: end;
+}
+
+body:not(.is-mobile) .workspace-split.mod-right-split .backlink-pane > .tree-item-self.is-collapsed .tree-item-flair,
+body:not(.is-mobile) .workspace-split.mod-right-split .outgoing-link-pane > .tree-item-self.is-collapsed .tree-item-flair {
+  border-block-end-color: var(--pixel-line-strong);
+  color: var(--pixel-text-muted);
 }
 
 body:not(.is-mobile) .workspace-split.mod-right-split .search-result-file-matches {
@@ -456,5 +528,31 @@ body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf-content[da
 
   body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf-content[data-type="all-properties"] .tree-item-self.is-clickable:hover .tree-item-inner-text {
     color: var(--pixel-text);
+  }
+
+  body:not(.is-mobile) .workspace-split.mod-right-split .backlink-pane > .tree-item-self:hover,
+  body:not(.is-mobile) .workspace-split.mod-right-split .outgoing-link-pane > .tree-item-self:hover {
+    background-color: var(--pixel-context-control-hover);
+    color: var(--pixel-text);
+  }
+}
+
+// These preferences live beside the component so their equal-specificity
+// declarations follow every visual state above in the compiled cascade.
+@media (prefers-reduced-motion: reduce) {
+  body:not(.is-mobile) .workspace-split.mod-right-split :is(.backlink-pane, .outgoing-link-pane) > .tree-item-self,
+  body:not(.is-mobile) .workspace-split.mod-right-split :is(.backlink-pane, .outgoing-link-pane) > .tree-item-self .tree-item-flair {
+    transition-duration: 0ms;
+    animation: none;
+  }
+}
+
+@media (forced-colors: active) {
+  body:not(.is-mobile) .workspace-split.mod-right-split :is(.backlink-pane, .outgoing-link-pane) > .tree-item-self,
+  body:not(.is-mobile) .workspace-split.mod-right-split :is(.backlink-pane, .outgoing-link-pane) > .tree-item-self .tree-item-flair {
+    border-color: CanvasText;
+    background-color: Canvas;
+    color: CanvasText;
+    box-shadow: none;
   }
 }

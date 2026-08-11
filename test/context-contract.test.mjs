@@ -272,7 +272,7 @@ test("outline, backlinks, and outgoing links share amber multi-cue context selec
   );
   assert.equal(
     declaration(group, "border-block-end"),
-    "var(--pixel-border-control) solid var(--pixel-border-meaningful)",
+    "var(--pixel-border-decoration) solid var(--pixel-cyan)",
   );
 
   const unresolved = ruleBody(
@@ -289,6 +289,77 @@ test("outline, backlinks, and outgoing links share amber multi-cue context selec
   );
   assert.equal(declaration(unresolved, "color"), "var(--pixel-text)");
   assert.equal(declaration(unresolved, "font-weight"), "600");
+});
+
+test("backlink and outgoing-link headings use a restrained numeric disclosure cue", async () => {
+  const css = await readTheme();
+  const headingSelector =
+    "body:not(.is-mobile) .workspace-split.mod-right-split .backlink-pane > .tree-item-self";
+  const collapsedSelector = `${headingSelector}.is-collapsed`;
+  const flairOuterSelector = `${headingSelector} .tree-item-flair-outer`;
+  const flairSelector = `${headingSelector} .tree-item-flair`;
+  const collapsedFlairSelector = `${collapsedSelector} .tree-item-flair`;
+
+  const heading = ruleBodyForSelector(css, headingSelector);
+  assert.equal(declaration(heading, "display"), "grid");
+  assert.equal(
+    declaration(heading, "grid-template-columns"),
+    "minmax(0, 1fr) auto",
+  );
+  assert.equal(declaration(heading, "min-block-size"), "36px");
+  assert.equal(declaration(heading, "font-family"), "var(--pixel-font-interface)");
+  assert.equal(declaration(heading, "background-color"), "var(--pixel-paper)");
+  assert.equal(declaration(heading, "box-shadow"), "none");
+
+  const nativeSpacer = ruleBodyForSelector(css, `${headingSelector}::before`);
+  assert.equal(declaration(nativeSpacer, "content"), "none");
+
+  const collapsed = ruleBodyForSelector(css, collapsedSelector);
+  assert.equal(declaration(collapsed, "color"), "var(--pixel-text-muted)");
+
+  const flairOuter = ruleBodyForSelector(css, flairOuterSelector);
+  assert.equal(declaration(flairOuter, "min-inline-size"), "24px");
+  assert.equal(declaration(flairOuter, "justify-content"), "flex-end");
+
+  const flair = ruleBodyForSelector(css, flairSelector);
+  assert.equal(declaration(flair, "border"), "0");
+  assert.equal(
+    declaration(flair, "border-block-end"),
+    "var(--pixel-border-control) solid var(--pixel-cyan)",
+  );
+  assert.equal(declaration(flair, "background-color"), "transparent");
+  assert.equal(declaration(flair, "font-family"), "var(--pixel-font-interface)");
+  assert.equal(declaration(flair, "font-variant-numeric"), "tabular-nums");
+  assert.equal(declaration(flair, "font-size"), "11px");
+  assert.equal(declaration(flair, "box-shadow"), "none");
+
+  const collapsedFlair = ruleBodyForSelector(css, collapsedFlairSelector);
+  assert.equal(
+    declaration(collapsedFlair, "border-block-end-color"),
+    "var(--pixel-line-strong)",
+  );
+  assert.equal(declaration(collapsedFlair, "color"), "var(--pixel-text-muted)");
+
+  const focus = ruleBodyForSelector(css, `${headingSelector}:focus-visible`);
+  assert.equal(
+    declaration(focus, "outline"),
+    "var(--pixel-border-control) solid var(--pixel-cyan)",
+  );
+
+  const reducedDisclosure = ruleBody(
+    css,
+    "body:not(.is-mobile) .workspace-split.mod-right-split :is(.backlink-pane, .outgoing-link-pane) > .tree-item-self .tree-item-flair",
+  );
+  assert.equal(declaration(reducedDisclosure, "transition-duration"), "0ms");
+  assert.equal(declaration(reducedDisclosure, "animation"), "none");
+
+  const forcedDisclosure = combinedRuleBody(
+    css,
+    "body:not(.is-mobile) .workspace-split.mod-right-split :is(.backlink-pane, .outgoing-link-pane) > .tree-item-self .tree-item-flair",
+  );
+  assert.equal(declaration(forcedDisclosure, "border-color"), "canvastext");
+  assert.equal(declaration(forcedDisclosure, "background-color"), "canvas");
+  assert.equal(declaration(forcedDisclosure, "box-shadow"), "none");
 });
 
 test("context panes retain native independent scrolling, depth, and interaction surfaces", async () => {
