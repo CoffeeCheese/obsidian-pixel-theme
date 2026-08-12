@@ -199,6 +199,7 @@ test("check rejects SemVer components with leading zeroes", async (t) => {
 
 test("check rejects a release tag that differs from the manifest version", async (t) => {
   const fixtureRoot = await createPackageFixture(t);
+  const manifest = await readJson(path.join(fixtureRoot, "manifest.json"));
 
   const result = runBuild(fixtureRoot, ["--check"], {
     GITHUB_REF_NAME: "0.2.0",
@@ -206,41 +207,46 @@ test("check rejects a release tag that differs from the manifest version", async
   });
 
   assert.notEqual(result.status, 0);
-  assert.match(
-    result.output,
-    /release tag 0\.2\.0 does not match manifest version 0\.9\.0/,
+  assert.ok(
+    result.output.includes(
+      `release tag 0.2.0 does not match manifest version ${manifest.version}`,
+    ),
   );
 });
 
 test("check rejects a compatibility map missing the current theme version", async (t) => {
   const fixtureRoot = await createPackageFixture(t);
+  const manifest = await readJson(path.join(fixtureRoot, "manifest.json"));
   const versionsPath = path.join(fixtureRoot, "versions.json");
   const versions = await readJson(versionsPath);
-  delete versions["0.9.0"];
+  delete versions[manifest.version];
   await writeJson(versionsPath, versions);
 
   const result = runBuild(fixtureRoot, ["--check"]);
 
   assert.notEqual(result.status, 0);
-  assert.match(
-    result.output,
-    /versions\.json must map current theme version 0\.9\.0 to minAppVersion 1\.12\.0/,
+  assert.ok(
+    result.output.includes(
+      `versions.json must map current theme version ${manifest.version} to minAppVersion ${manifest.minAppVersion}`,
+    ),
   );
 });
 
 test("check rejects a compatibility map that disagrees with minAppVersion", async (t) => {
   const fixtureRoot = await createPackageFixture(t);
+  const manifest = await readJson(path.join(fixtureRoot, "manifest.json"));
   const versionsPath = path.join(fixtureRoot, "versions.json");
   const versions = await readJson(versionsPath);
-  versions["0.9.0"] = "1.11.0";
+  versions[manifest.version] = "0.0.0";
   await writeJson(versionsPath, versions);
 
   const result = runBuild(fixtureRoot, ["--check"]);
 
   assert.notEqual(result.status, 0);
-  assert.match(
-    result.output,
-    /versions\.json must map current theme version 0\.9\.0 to minAppVersion 1\.12\.0/,
+  assert.ok(
+    result.output.includes(
+      `versions.json must map current theme version ${manifest.version} to minAppVersion ${manifest.minAppVersion}`,
+    ),
   );
 });
 

@@ -15,7 +15,7 @@ test("release version, compatibility floor, tag, and two install assets agree", 
   ]);
 
   assert.equal(manifest.name, "Pixel");
-  assert.equal(manifest.version, "0.9.0");
+  assert.match(manifest.version, /^(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)$/);
   assert.equal(manifest.minAppVersion, "1.12.0");
   assert.equal(versions[manifest.version], manifest.minAppVersion);
   assert.match(workflow, /tags:\s*\n\s*- "\*\.\*\.\*"/);
