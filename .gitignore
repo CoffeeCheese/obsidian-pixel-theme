@@ -9,10 +9,11 @@ node_modules/
 
 # Local scratch work, Wayfinder notes, and disposable design material
 /.scratch/
+/h5/
+/test/h5-*.test.mjs
 CONTEXT.md
 prototypes/
 doc/
-docs/
 
 # Generated diagnostics
 coverage/

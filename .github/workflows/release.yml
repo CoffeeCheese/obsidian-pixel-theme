@@ -1,35 +1,134 @@
-name: Release
+name: Release Pixel theme
 
 on:
   push:
     tags:
       - "*.*.*"
 
-permissions:
-  contents: write
+concurrency:
+  group: release-${{ github.ref_name }}
+  cancel-in-progress: false
 
 jobs:
   release:
+    name: Verify and publish
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - name: Check out release tag
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 24
           cache: npm
-      - run: npm ci
-      - run: npm run build
-      - run: git diff --exit-code -- theme.css
-      - run: npm test
-      - run: npm run check
-      - run: npm run visual:h5 -- --verify-approval --require-approval
-      - name: Create draft release
+
+      - name: Verify tag belongs to current main release
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin main:refs/remotes/origin/main
+          git merge-base --is-ancestor "$GITHUB_SHA" refs/remotes/origin/main
+          node --input-type=module -e '
+            import { execFileSync } from "node:child_process";
+            import { readFileSync } from "node:fs";
+            const tag = process.env.RELEASE_TAG;
+            const tagged = JSON.parse(readFileSync("manifest.json", "utf8"));
+            const current = JSON.parse(execFileSync("git", ["show", "refs/remotes/origin/main:manifest.json"], { encoding: "utf8" }));
+            if (tag !== tagged.version) throw new Error(`Tag ${tag} does not match tagged manifest ${tagged.version}.`);
+            if (tag !== current.version) throw new Error(`main manifest ${current.version} does not match release tag ${tag}.`);
+          '
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Build release asset
+        run: npm run build
+
+      - name: Verify committed theme.css
+        run: git diff --exit-code -- theme.css
+
+      - name: Run automated tests
+        run: npm test
+
+      - name: Check generated package
+        run: npm run check
+
+      - name: Verify release metadata and manual checklist
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: npm run release:verify -- "$RELEASE_TAG"
+
+      - name: Attest installable assets
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-path: |
+            theme.css
+            manifest.json
+
+      - name: Create or refresh verified draft
         env:
           GH_TOKEN: ${{ github.token }}
-        run: >-
-          gh release create "$GITHUB_REF_NAME"
-          theme.css manifest.json
-          --draft
-          --verify-tag
-          --title "$GITHUB_REF_NAME"
-          --generate-notes
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          notes_file="docs/releases/${RELEASE_TAG}.en.md"
+          if gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            is_draft="$(gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft)"
+            if [[ "$is_draft" != "true" ]]; then
+              printf 'Release %s is already public and must not be modified.\n' "$RELEASE_TAG" >&2
+              exit 1
+            fi
+            gh release edit "$RELEASE_TAG" \
+              --repo "$GITHUB_REPOSITORY" \
+              --draft \
+              --latest=false \
+              --prerelease=false \
+              --title "Pixel ${RELEASE_TAG}" \
+              --notes-file "$notes_file"
+          else
+            gh release create "$RELEASE_TAG" \
+              --repo "$GITHUB_REPOSITORY" \
+              --verify-tag \
+              --draft \
+              --latest=false \
+              --prerelease=false \
+              --title "Pixel ${RELEASE_TAG}" \
+              --notes-file "$notes_file"
+          fi
+          gh release upload "$RELEASE_TAG" theme.css manifest.json \
+            --repo "$GITHUB_REPOSITORY" \
+            --clobber
+
+      - name: Verify release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          gh release view "$RELEASE_TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --json assets \
+            --jq '[.assets[].name] | sort | .[]' > release-assets.txt
+          diff -u <(printf '%s\n' manifest.json theme.css) release-assets.txt
+
+      - name: Publish immutable release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          gh release edit "$RELEASE_TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --draft=false \
+            --prerelease=false \
+            --latest \
+            --title "Pixel ${RELEASE_TAG}" \
+            --notes-file "docs/releases/${RELEASE_TAG}.en.md"

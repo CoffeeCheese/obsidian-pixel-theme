@@ -1,13 +1,13 @@
-# Pixel physical-device release gate
+# Pixel iOS physical-device release validation
 
-Pixel's M1 implementation is selected by Obsidian's mobile platform structure, not viewport width. Desktop resizing and responsive emulation are useful structural smoke tests, but they do not approve a release candidate. Device results are intentionally left pending for the tester.
+Pixel's M1 implementation is selected by Obsidian's mobile platform structure, not viewport width. Desktop resizing and responsive emulation are useful structural smoke tests, but they do not replace iOS physical-device validation. Android is currently `Unverified`, is not a release gate, and is not part of the project's support claim.
 
 ## Candidate setup
 
 1. Build from a clean lockfile install with Node.js 24: `npm ci`, `npm run build`, `npm test`, and `npm run check`.
 2. Put only the candidate `manifest.json` and `theme.css` in the test Vault's `.obsidian/themes/Pixel/` directory.
 3. In Obsidian Appearance, activate Pixel and record the theme version, Obsidian version, OS version, device class, orientation, and color mode. Do not record a serial number, account, or personal Vault content.
-4. Store screenshots, screen recordings, diagnostic logs, and completed notes under `evidence/ticket-13/devices/`. That path is intentionally ignored by Git.
+4. Store screenshots, screen recordings, diagnostic logs, and completed notes locally under `evidence/devices/`. That path is intentionally ignored by Git. Record only the summary status in the matching bilingual release notes.
 
 ## Tester-operated viewing
 
@@ -15,16 +15,14 @@ You may operate the paired iPhone directly or through macOS iPhone Mirroring. A 
 
 ## Required matrix
 
-Every cell must have a dated `Pass` or `Fail` record. A tablet remains M1 even at its widest landscape viewport.
+Every iOS cell must have a dated `Pass` or `Fail` record when the release policy requires a complete iOS pass. A tablet remains M1 even at its widest landscape viewport.
 
 | Platform | Hardware | Portrait Light | Portrait Dark | Landscape Light | Landscape Dark |
 | --- | --- | --- | --- | --- | --- |
 | iOS | Phone | Pending | Pending | Pending | Pending |
 | iOS | Tablet | Pending | Pending | Pending | Pending |
-| Android | Phone | Pending | Pending | Pending | Pending |
-| Android | Tablet | Pending | Pending | Pending | Pending |
 
-If only iOS is currently in scope, complete the eight iOS cells and leave Android explicitly `Pending`. That approves the iOS slice only; it does not satisfy Ticket 13's original cross-platform release gate.
+Android remains explicitly `Unverified`; do not infer Android support from responsive emulation or the iOS result.
 
 ## Checks in every cell
 
@@ -40,7 +38,7 @@ If only iOS is currently in scope, complete the eight iOS cells and leave Androi
 
 ## Focused interaction passes
 
-Perform these once per platform/hardware class in both Light and Dark:
+Perform these once per iOS hardware class in both Light and Dark:
 
 1. Open a long Markdown fixture, scroll into a callout/table/code section, switch Reading → Live Preview → Source → Reading, and verify document identity and approximate position remain intact.
 2. Open the left drawer, select another fixture, use native history to return, and verify the drawer closes and tree state remains usable.
@@ -52,11 +50,11 @@ Perform these once per platform/hardware class in both Light and Dark:
 ## Evidence note template
 
 ```md
-# Pixel 0.1.0 device check
+# Pixel <version> iOS device check
 
 - Date:
 - Tester:
-- Platform / OS:
+- iOS / iPadOS version:
 - Device class: phone | tablet
 - Obsidian version:
 - Orientation: portrait | landscape
@@ -69,4 +67,8 @@ Perform these once per platform/hardware class in both Light and Dark:
 - Defect / reproduction (required on Fail):
 ```
 
-Any failure involving M1 structure, accessibility, content readability, or native behavior blocks the relevant approval. Fix the theme, rebuild the exact candidate, then repeat every matrix cell whose evidence was tied to the previous stylesheet hash.
+Any failure involving M1 structure, accessibility, content readability, or native behavior blocks the relevant iOS release check. Fix the theme, rebuild the exact candidate, then repeat every matrix cell whose evidence was tied to the previous stylesheet hash.
+
+## Android status
+
+Android is an unverified platform. It has no required matrix in the current release process, must remain `Unverified` in release notes, and must not be described as supported until an explicit physical-device validation policy is adopted.

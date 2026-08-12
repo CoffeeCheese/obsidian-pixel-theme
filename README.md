@@ -1,5 +1,7 @@
 <h1 align="center">P I X E L</h1>
 
+<p align="right">中文 · <a href="README.en.md">English</a></p>
+
 <p align="center">
   <strong>纸上像素 · 专注写作</strong><br>
   一款为长文写作与知识管理设计的 Obsidian 主题
@@ -10,10 +12,10 @@
 </p>
 
 <p align="center">
-  <kbd>0.1.0</kbd>
+  <kbd><!-- pixel-version:start -->0.9.0<!-- pixel-version:end --></kbd>
   <kbd>OBSIDIAN 1.12+</kbd>
   <kbd>LIGHT / DARK</kbd>
-  <kbd>DESKTOP / MOBILE</kbd>
+  <kbd>DESKTOP / iOS</kbd>
 </p>
 
 <p align="center">
@@ -32,7 +34,7 @@
 
 Pixel 以冷静的纸张界面承载内容，把像素字体留给标题和少量身份元素。它不是给 Obsidian 套上一层复古滤镜，而是在保留原生交互的前提下，让文件导航、笔记阅读、属性编辑和数据视图拥有清晰、稳定且容易辨认的层级。
 
-主题覆盖桌面端与移动端，提供完整的浅色、深色方案，并针对中英文混排、长篇 Markdown、Bases、Canvas、Graph 和 PDF 等常用工作流进行了统一设计。
+主题覆盖桌面端与 iOS，提供完整的浅色、深色方案，并针对中英文混排、长篇 Markdown、Bases、Canvas、Graph 和 PDF 等常用工作流进行了统一设计。Android 目前属于未验证平台，不作支持承诺。
 
 ## 成果预览
 
@@ -56,7 +58,7 @@ Pixel 以冷静的纸张界面承载内容，把像素字体留给标题和少�
 
 </details>
 
-### 移动端 · Note & Properties
+### iOS · Note & Properties
 
 移动端重新安排标题、属性卡和底部导航的比例。属性保持可扫读的键值层级，长文本自然换行，触摸控件保留足够热区。
 
@@ -108,15 +110,23 @@ Pixel 使用一套固定的视觉语法，让状态不仅依赖颜色表达：
 - Bases 的表格、列表、卡片、筛选、排序和属性编辑。
 - PDF 工具栏、侧栏、缩略图、搜索与选区；文档页面本身保持原始显示。
 
-### 桌面与移动端
+### 桌面与 iOS
 
-桌面端强调连续工作区和长时间阅读；移动端则保留 Obsidian 原生双抽屉、系统返回、软键盘调整和安全区域行为，并为触摸操作提供至少 `44px` 的目标尺寸。
+桌面端强调连续工作区和长时间阅读；iOS 则保留 Obsidian 原生双抽屉、系统返回、软键盘调整和安全区域行为，并为触摸操作提供至少 `44px` 的目标尺寸。Android 尚未完成实体设备验证。
 
 Pixel 的移动布局由 Obsidian 原生 `body.is-mobile` 状态触发，不使用窗口宽度猜测设备类型。
 
 ## 安装
 
-Pixel `0.1.0` 当前仍是候选版本，尚未发布到 Obsidian 社区主题目录。现阶段请使用手动安装。
+Pixel 从 `0.9.0` 开始进入公开公测。在官方目录审核通过后，可在 Obsidian 的「设置 → 外观 → 主题」中搜索 **Pixel** 安装；审核完成前可以使用手动安装。
+
+### 社区主题目录
+
+1. 打开 Obsidian「设置 → 外观」。
+2. 在主题区域选择「管理」。
+3. 搜索 **Pixel**，选择安装并使用。
+
+后续公开版本会通过 Obsidian 内置主题更新机制从 GitHub Release 自动获取。
 
 ### 手动安装
 
@@ -136,7 +146,7 @@ Pixel `0.1.0` 当前仍是候选版本，尚未发布到 Obsidian 社区主题�
 
 4. 重新打开 Obsidian，进入「设置 → 外观 → 主题」，选择 **Pixel**。
 
-在 iOS 或 Android 上使用同步 Vault 时，请等待 `.obsidian/themes/Pixel/` 完成同步；如果主题没有立即出现，可完全退出并重新打开 Obsidian。
+在 iOS 上使用同步 Vault 时，请等待 `.obsidian/themes/Pixel/` 完成同步；如果主题没有立即出现，可完全退出并重新打开 Obsidian。Android 当前为未验证平台。
 
 ## 个性化
 
@@ -170,15 +180,17 @@ Pixel 不注入社区插件专用选择器。遵循 Obsidian 官方 CSS 变量�
 
 | 项目 | 当前基线 |
 | --- | --- |
-| Pixel 版本 | `0.1.0` |
+| Pixel 版本 | `<!-- pixel-version:start -->0.9.0<!-- pixel-version:end -->` |
 | 最低 Obsidian 版本 | `1.12.0` |
 | 已审计桌面环境 | Obsidian `1.12.7` / macOS |
+| 实体移动端发布范围 | iOS |
+| 未验证平台 | Android |
 | 主题模式 | Light / Dark |
 | 安装文件 | `manifest.json`、`theme.css` |
 | 主题许可 | MIT |
 | 内置字体许可 | SIL Open Font License 1.1 |
 
-桌面人工验收和实体 iOS / Android 设备验证仍属于候选版本发布门禁，当前状态可查看 [候选版本说明](RELEASE_CANDIDATE.md) 与 [设备测试计划](DEVICE_TEST_PLAN.md)。
+当前版本的发布验收状态见[中文版本说明](docs/releases/0.9.0.md)；设备检查方法见[设备测试计划](DEVICE_TEST_PLAN.md)。早期 `0.1.0` 候选证据已[归档](docs/archive/0.1.0-release-candidate.md)。
 
 <details>
 <summary>开发者注记：内部布局基线</summary>
@@ -222,15 +234,9 @@ OBSIDIAN_THEME_DIR=/absolute/path/to/dev-test/.obsidian/themes/Pixel npm run bui
 
 构建脚本只会原子替换目标目录中的 `theme.css` 和 `manifest.json`，并拒绝相对路径、符号链接、错误 Vault 和越界目标。
 
-### 视觉验收
+### 人工验收
 
-在专用 H5 测试环境中运行：
-
-```sh
-npm run visual:h5
-```
-
-该流程会先验证构建、固定测试内容、Obsidian 版本和主题包，再生成桌面 Light / Dark 对比视图。详细说明见 [H5 视觉测试文档](h5/README.md)。
+每个版本在 tag 前按照[发布手册](docs/RELEASING.md)完成桌面人工检查；初始版本、MINOR / MAJOR 版本以及涉及布局、移动端或兼容性的版本，还需完成[实体 iOS 检查](DEVICE_TEST_PLAN.md)。人工结果记录在对应的中英文版本说明中。
 
 ## 项目结构
 
@@ -239,7 +245,8 @@ src/scss/             Sass 主题源码
 src/assets/fonts/     内置字体、来源与许可证
 src/assets/screenshots/ README 成果截图与像素视觉资源
 test/                 主题与发布契约测试
-h5/                   桌面视觉验收工具和固定测试内容
+docs/releases/        中英文版本说明
+docs/RELEASING.md     长期发布与社区升级手册
 manifest.json         Obsidian 主题清单
 versions.json         版本兼容映射
 theme.css             生成的可安装样式表
@@ -251,7 +258,11 @@ theme.css             生成的可安装样式表
 - `theme.css` 是唯一生成的安装样式表。
 - 发布标签必须与 `manifest.json` 中的版本完全一致。
 - 主题运行时不加载远程字体或图片资源。
-- GitHub Release 工作流只创建草稿版本，不会自动发布到 Obsidian 社区目录。
+- 只有不带 `v` 前缀的 `x.y.z` tag 才触发 GitHub Release 工作流。
+- 全部门禁通过后，工作流会公开正式 Release，并生成安装资产的构建来源证明。
+- 已公开的 tag、Release 和安装资产不可覆盖；问题通过新 PATCH 版本前向修复。
+
+完整操作步骤见[发布手册](docs/RELEASING.md)。
 
 ## 参与贡献
 
@@ -271,4 +282,4 @@ Pixel 主题源码使用 [MIT License](LICENSE)。内置的 Fusion Pixel 与 Jet
 
 ---
 
-Pixel is an independent Obsidian theme for focused writing and knowledge management. This README is primarily maintained in Chinese.
+[Read the complete English documentation](README.en.md).

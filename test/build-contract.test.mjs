@@ -208,7 +208,7 @@ test("check rejects a release tag that differs from the manifest version", async
   assert.notEqual(result.status, 0);
   assert.match(
     result.output,
-    /release tag 0\.2\.0 does not match manifest version 0\.1\.0/,
+    /release tag 0\.2\.0 does not match manifest version 0\.9\.0/,
   );
 });
 
@@ -216,7 +216,7 @@ test("check rejects a compatibility map missing the current theme version", asyn
   const fixtureRoot = await createPackageFixture(t);
   const versionsPath = path.join(fixtureRoot, "versions.json");
   const versions = await readJson(versionsPath);
-  delete versions["0.1.0"];
+  delete versions["0.9.0"];
   await writeJson(versionsPath, versions);
 
   const result = runBuild(fixtureRoot, ["--check"]);
@@ -224,7 +224,7 @@ test("check rejects a compatibility map missing the current theme version", asyn
   assert.notEqual(result.status, 0);
   assert.match(
     result.output,
-    /versions\.json must map current theme version 0\.1\.0 to minAppVersion 1\.12\.0/,
+    /versions\.json must map current theme version 0\.9\.0 to minAppVersion 1\.12\.0/,
   );
 });
 
@@ -232,7 +232,7 @@ test("check rejects a compatibility map that disagrees with minAppVersion", asyn
   const fixtureRoot = await createPackageFixture(t);
   const versionsPath = path.join(fixtureRoot, "versions.json");
   const versions = await readJson(versionsPath);
-  versions["0.1.0"] = "1.11.0";
+  versions["0.9.0"] = "1.11.0";
   await writeJson(versionsPath, versions);
 
   const result = runBuild(fixtureRoot, ["--check"]);
@@ -240,7 +240,7 @@ test("check rejects a compatibility map that disagrees with minAppVersion", asyn
   assert.notEqual(result.status, 0);
   assert.match(
     result.output,
-    /versions\.json must map current theme version 0\.1\.0 to minAppVersion 1\.12\.0/,
+    /versions\.json must map current theme version 0\.9\.0 to minAppVersion 1\.12\.0/,
   );
 });
 

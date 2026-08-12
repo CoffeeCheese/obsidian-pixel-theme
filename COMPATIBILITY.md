@@ -2,11 +2,11 @@
 
 This is the authoritative release-baseline matrix for Pixel. It records the installed-theme audit against Obsidian 1.12.7 on macOS, using the dedicated `dev-test` Vault. The runtime pass was performed in an isolated Obsidian profile at 1024×800; the package tests cover the same contracts without relying on that profile.
 
-## Ticket 13 candidate-preparation record
+## Historical Ticket 13 candidate-preparation record
 
 **Ticket status:** Awaiting tester validation
 
-The Pixel `0.1.0` package is reproducibly built, checked, and deployed to the dedicated Vault. Its installable files and exact hashes are recorded in [RELEASE_CANDIDATE.md](RELEASE_CANDIDATE.md). Automated release preparation is complete; manual desktop acceptance and the physical iOS/Android matrix remain explicitly pending and are not inferred from the structural mobile evidence below.
+The unpublished Pixel `0.1.0` package was reproducibly built, checked, and deployed to the dedicated Vault. Its installable files and exact hashes are preserved in the [historical candidate record](docs/archive/0.1.0-release-candidate.md). This evidence predates the current `0.9.0` release process and must not be interpreted as a public-version or Android-support claim.
 
 ## Ticket 12 completion record
 
@@ -75,7 +75,7 @@ PDF page pixels and its transparent accessibility text layer reproduce the sourc
 - Reduced motion: CDP media emulation returned `0s` transition duration for shared buttons and PDF chrome. The corrective pass also matches the more-specific desktop resize-handle rule, so its transition resolves to `0s`; non-essential animation is removed.
 - Forced colors: CDP media emulation resolved Paper/Text/Accent to `Canvas` / `CanvasText` / `Highlight`, and enabled controls measured 21:1 in the emulated palette.
 - Increased contrast: CDP media emulation resolves both meaningful boundaries and muted text to primary text without changing the D1 or M1 body structure. The same media query strengthens M1 boundaries without changing layout.
-- Mobile: M1 is keyed to Obsidian's native `body.is-mobile` platform state, not viewport width. Obsidian 1.12.7 structural simulation at 390×844 measured 343.195px native drawers with 3px cyan/amber tracks, a persistent 390px note, a 390×844 interactive scrim, a 56px top bar, and a 56px bottom navbar plus 34px safe-area inset. Theme-owned targets measured at least 44×56px with 8px separation; backdrop click, Enter, Escape, system-back simulation, focus return, navigation/history, reading/editing, and native viewport resizing remained operable. This is structural mobile evidence only; physical iOS/Android approval belongs to the release-candidate gate rather than Ticket 12.
+- Mobile structure: M1 is keyed to Obsidian's native `body.is-mobile` platform state, not viewport width. Obsidian 1.12.7 structural simulation at 390×844 measured 343.195px native drawers with 3px cyan/amber tracks, a persistent 390px note, a 390×844 interactive scrim, a 56px top bar, and a 56px bottom navbar plus 34px safe-area inset. Theme-owned targets measured at least 44×56px with 8px separation; backdrop click, Enter, Escape, system-back simulation, focus return, navigation/history, reading/editing, and native viewport resizing remained operable. This is structural evidence only. Physical release validation currently covers iOS; Android is unverified.
 
 ## Compatibility and performance controls
 
@@ -95,4 +95,4 @@ npm test
 npm run check
 ```
 
-Runtime evidence is intentionally reproducible from the repository fixtures and the dedicated `dev-test` Vault; it does not depend on or modify a personal Vault.
+The original runtime evidence was captured in a dedicated `dev-test` Vault and never depended on or modified a personal Vault. The public repository keeps package-level regression contracts; current manual desktop and iOS results are recorded per version under `docs/releases/`.

@@ -7,7 +7,7 @@ const root = new URL("../", import.meta.url);
 const read = (relativePath) => readFile(new URL(relativePath, root), "utf8");
 const readBytes = (relativePath) => readFile(new URL(relativePath, root));
 
-test("release version, compatibility floor, and two-file draft agree", async () => {
+test("release version, compatibility floor, tag, and two install assets agree", async () => {
   const [manifest, versions, workflow] = await Promise.all([
     read("manifest.json").then(JSON.parse),
     read("versions.json").then(JSON.parse),
@@ -15,15 +15,18 @@ test("release version, compatibility floor, and two-file draft agree", async () 
   ]);
 
   assert.equal(manifest.name, "Pixel");
+  assert.equal(manifest.version, "0.9.0");
   assert.equal(manifest.minAppVersion, "1.12.0");
   assert.equal(versions[manifest.version], manifest.minAppVersion);
-  assert.match(workflow, /gh release create "\$GITHUB_REF_NAME"\s+theme\.css manifest\.json/);
-  assert.match(workflow, /--draft/);
-  assert.match(workflow, /--verify-tag/);
-  assert.doesNotMatch(workflow, /community|publish|obsidianmd\/obsidian-releases/i);
+  assert.match(workflow, /tags:\s*\n\s*- "\*\.\*\.\*"/);
+  assert.match(workflow, /gh release upload "\$RELEASE_TAG" theme\.css manifest\.json/);
+  assert.match(workflow, /--draft=false/);
+  assert.match(workflow, /--prerelease=false/);
+  assert.match(workflow, /--latest/);
+  assert.doesNotMatch(workflow, /community|obsidianmd\/obsidian-releases/i);
 });
 
-test("release candidate is self-contained and carries redistribution notices", async () => {
+test("release package is self-contained and carries redistribution notices", async () => {
   const css = await read("theme.css");
   const fontPayloads = [...css.matchAll(/@font-face\s*\{([\s\S]*?)\}/gi)].flatMap(
     (fontFace) =>
@@ -79,84 +82,67 @@ test("bundled font attribution matches the redistributed files", async () => {
   }
 });
 
-test("CI and draft release run the complete locked verification path", async () => {
-  const workflows = {
-    ".github/workflows/check.yml":
-      "npm run visual:h5 -- --verify-approval",
-    ".github/workflows/release.yml":
-      "npm run visual:h5 -- --verify-approval --require-approval",
-  };
-  for (const [file, approvalCommand] of Object.entries(workflows)) {
-    const workflow = await read(file);
-    assert.match(workflow, /node-version:\s*24/);
-    assert.match(workflow, /- run: npm ci/);
-    assert.match(workflow, /- run: npm run build/);
-    assert.match(workflow, /- run: git diff --exit-code -- theme\.css/);
-    assert.match(workflow, /- run: npm test/);
-    assert.match(workflow, /- run: npm run check/);
-    assert.ok(workflow.includes(`- run: ${approvalCommand}`));
-    assert.ok(workflow.indexOf("npm ci") < workflow.indexOf("npm run build"));
+test("tag-only CI runs the complete verification path before public release", async () => {
+  const workflow = await read(".github/workflows/release.yml");
+  const commands = [
+    "npm ci",
+    "npm run build",
+    "git diff --exit-code -- theme.css",
+    "npm test",
+    "npm run check",
+    "npm run release:verify",
+    "actions/attest-build-provenance@",
+    "gh release create",
+    "gh release upload",
+    "--draft=false",
+  ];
+  for (let index = 1; index < commands.length; index += 1) {
     assert.ok(
-      workflow.indexOf("npm run build") <
-        workflow.indexOf("git diff --exit-code -- theme.css"),
-    );
-    assert.ok(
-      workflow.indexOf("git diff --exit-code -- theme.css") <
-        workflow.indexOf("npm test"),
-    );
-    assert.ok(workflow.indexOf("npm test") < workflow.indexOf("npm run check"));
-    assert.ok(
-      workflow.indexOf("npm run check") < workflow.indexOf(approvalCommand),
+      workflow.indexOf(commands[index - 1]) < workflow.indexOf(commands[index]),
+      `${commands[index - 1]} must run before ${commands[index]}`,
     );
   }
+  assert.match(workflow, /git merge-base --is-ancestor "\$GITHUB_SHA" refs\/remotes\/origin\/main/);
+  assert.match(workflow, /main manifest .* does not match release tag/);
+  assert.doesNotMatch(workflow, /workflow_dispatch|pull_request|schedule:/);
+
+  const actionUses = [...workflow.matchAll(/uses:\s*([^\s#]+)/g)].map((match) => match[1]);
+  assert.equal(actionUses.length, 3);
+  for (const action of actionUses) assert.match(action, /^[^@]+@[a-f0-9]{40}$/);
+
+  await assert.rejects(read(".github/workflows/check.yml"), /ENOENT/);
 });
 
-test("routine development does not automatically trigger GitHub Actions", async () => {
-  const [check, release] = await Promise.all([
-    read(".github/workflows/check.yml"),
-    read(".github/workflows/release.yml"),
-  ]);
+test("documentation separates historical evidence, release operations, and bilingual notes", async () => {
+  const [readme, readmeEnglish, releasing, archived, chinese, english, devicePlan, issueTemplate, screenshot] =
+    await Promise.all([
+      read("README.md"),
+      read("README.en.md"),
+      read("docs/RELEASING.md"),
+      read("docs/archive/0.1.0-release-candidate.md"),
+      read("docs/releases/0.9.0.md"),
+      read("docs/releases/0.9.0.en.md"),
+      read("DEVICE_TEST_PLAN.md"),
+      read(".github/ISSUE_TEMPLATE/theme-bug.yml"),
+      readBytes("screenshot.png"),
+    ]);
 
-  assert.match(check, /^on:\s*\n  workflow_dispatch:\s*$/m);
-  assert.doesNotMatch(check, /^  (?:push|pull_request):/m);
-  assert.match(release, /^on:\s*\n  push:\s*\n    tags:\s*\n      - "\*\.\*\.\*"/m);
-});
-
-test("tagged draft verifies a required exact-artifact approval before creation", async () => {
-  const workflow = await read(".github/workflows/release.yml");
-  const approval = "npm run visual:h5 -- --verify-approval --require-approval";
-
-  assert.ok(workflow.indexOf("npm run build") < workflow.indexOf(approval));
-  assert.ok(workflow.indexOf(approval) < workflow.indexOf("gh release create"));
-});
-
-test("handoff documents separate prepared artifacts from pending manual validation", async () => {
-  const [manifest, readme, candidate, devices, ignore] = await Promise.all([
-    read("manifest.json").then(JSON.parse),
-    read("README.md"),
-    read("RELEASE_CANDIDATE.md"),
-    read("DEVICE_TEST_PLAN.md"),
-    read(".gitignore"),
-  ]);
-
-  assert.ok(
-    candidate.startsWith(`# Pixel ${manifest.version} release-candidate handoff\n`),
-  );
-  assert.match(readme, /H5 material system, D1 balanced desktop layout, and M1/);
-  assert.match(readme, /Node\.js 24/);
-  assert.match(readme, /1\.2 MiB/);
-  assert.match(readme, /1\.5 MiB/);
-  assert.match(readme, /no plugin-specific selectors/i);
-  assert.match(readme, /Prototype markup, JavaScript state, simulated controls/);
-  assert.match(candidate, /Automated package gate:\s*Pass/);
-  assert.match(candidate, /Manual desktop acceptance:\s*Pending/);
-  assert.match(candidate, /Physical iOS and Android:\s*Pending/);
-  assert.match(candidate, /Public publication has \*\*not\*\* been performed/);
-  assert.match(devices, /iOS \| Phone/);
-  assert.match(devices, /Android \| Tablet/);
-  assert.match(devices, /iPhone Mirroring/);
-  assert.match(devices, /evidence\/ticket-13\/devices\//);
-  assert.match(ignore, /^\/?\.scratch\/$/m);
-  assert.match(ignore, /^evidence\/$/m);
-  assert.match(ignore, /^prototypes\/$/m);
+  assert.match(readme, /README\.en\.md/);
+  assert.match(readmeEnglish, /README\.md/);
+  assert.match(releasing, /git push --atomic origin main 0\.9\.1/);
+  assert.match(releasing, /community\.obsidian\.md/);
+  assert.match(archived, /historical/i);
+  assert.match(chinese, /0\.9\.0\.en\.md/);
+  assert.match(english, /0\.9\.0\.md/);
+  assert.match(chinese, /Android：Unverified/);
+  assert.match(english, /Android: Unverified/);
+  assert.match(devicePlan, /Android.*Unverified/is);
+  assert.match(issueTemplate, /Pixel version/);
+  assert.match(issueTemplate, /Obsidian version/);
+  assert.match(issueTemplate, /Android \(unverified\)/);
+  assert.equal(screenshot.subarray(1, 4).toString("ascii"), "PNG");
+  assert.equal(screenshot.readUInt32BE(16), 512);
+  assert.equal(screenshot.readUInt32BE(20), 288);
+  assert.doesNotMatch(readme, /DESKTOP \/ MOBILE/);
+  assert.doesNotMatch(readmeEnglish, /DESKTOP \/ MOBILE/);
 });

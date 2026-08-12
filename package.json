@@ -6,13 +6,9 @@
     "build": "node build.mjs",
     "dev": "node build.mjs --watch",
     "check": "node build.mjs --check",
-    "test": "node --test --test-concurrency=1",
-    "test:context-heading-layout": "node h5/context-heading-layout-check.mjs",
-    "test:controller-transition": "node h5/controller-transition-check.mjs",
-    "test:due-date-layout": "node h5/due-date-layout-check.mjs",
-    "test:left-tab-rail-layout": "node h5/left-tab-rail-layout-check.mjs",
-    "test:toggle-edge-layout": "node h5/toggle-edge-layout-check.mjs",
-    "visual:h5": "node h5/visual-h5.mjs"
+    "release:prepare": "node scripts/release.mjs prepare",
+    "release:verify": "node scripts/release.mjs verify",
+    "test": "node scripts/test.mjs"
   },
   "devDependencies": {
     "chokidar": "^4.0.3",

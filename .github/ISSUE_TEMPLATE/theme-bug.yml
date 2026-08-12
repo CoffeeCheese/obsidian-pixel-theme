@@ -1,0 +1,110 @@
+name: Theme display or compatibility issue
+description: Report a reproducible Pixel visual, interaction, or compatibility problem.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve Pixel. Please remove private note content from screenshots and test with CSS snippets disabled when possible.
+
+  - type: input
+    id: pixel-version
+    attributes:
+      label: Pixel version
+      description: Find this in `.obsidian/themes/Pixel/manifest.json` or the downloaded Release.
+      placeholder: 0.9.0
+    validations:
+      required: true
+
+  - type: input
+    id: obsidian-version
+    attributes:
+      label: Obsidian version
+      placeholder: 1.12.7
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      description: Android is currently an unverified platform; reports are welcome but do not imply support.
+      options:
+        - macOS
+        - Windows
+        - Linux
+        - iOS / iPadOS
+        - Android (unverified)
+    validations:
+      required: true
+
+  - type: input
+    id: os-version
+    attributes:
+      label: Operating-system version and device
+      placeholder: macOS 15.6 / MacBook Pro, or iOS 19.0 / iPhone
+    validations:
+      required: true
+
+  - type: dropdown
+    id: color-mode
+    attributes:
+      label: Color mode
+      options:
+        - Light
+        - Dark
+        - Both
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      description: Include the view or core feature, exact actions, and the smallest note content that reproduces the issue.
+      placeholder: |
+        1. Open...
+        2. Switch to...
+        3. Observe...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Screenshots or recordings
+      description: Drag files here after removing personal Vault content.
+
+  - type: textarea
+    id: extensions
+    attributes:
+      label: CSS snippets and community plugins
+      description: List anything enabled when the issue occurs, or write "None".
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I reproduced this with the current public Pixel version.
+          required: true
+        - label: I removed personal note content and account information from the report.
+          required: true
