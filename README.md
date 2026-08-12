@@ -169,7 +169,7 @@ Pixel 不注入社区插件专用选择器。遵循 Obsidian 官方 CSS 变量�
 | --- | --- |
 | 当前版本 | <code><!-- pixel-version:start -->0.9.0<!-- pixel-version:end --></code> |
 | Obsidian 要求 | `1.12.0` 或更高版本 |
-| 已验证桌面环境 | Obsidian `1.12.7` / macOS |
+| 已验证桌面环境 | Obsidian `1.13.4` / macOS |
 | 移动端支持 | iOS |
 | 暂未验证 | Android |
 | 外观模式 | Light / Dark |
@@ -238,7 +238,7 @@ theme.css             生成的可安装样式表
 
 ## 参与贡献
 
-欢迎通过 [Issues](https://github.com/dszblackmagic/obsidian-pixel-theme/issues) 报告显示问题、兼容性问题或提出改进建议，也欢迎提交 Pull Request。
+欢迎通过 [Issues](https://github.com/CoffeeCheese/obsidian-pixel-theme/issues) 报告显示问题、兼容性问题或提出改进建议，也欢迎提交 Pull Request。
 
 报告视觉问题时，建议同时提供：
 

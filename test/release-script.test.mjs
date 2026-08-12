@@ -24,7 +24,7 @@ async function createFixture(t, version = "0.9.0") {
       name: "Pixel",
       version,
       minAppVersion: "1.12.0",
-      author: "dszblackmagic",
+      author: "CoffeeCheese",
     }),
     writeJson(path.join(root, "versions.json"), { [version]: "1.12.0" }),
     writeFile(

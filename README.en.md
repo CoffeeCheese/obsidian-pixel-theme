@@ -150,7 +150,7 @@ Pixel ships no community-plugin-specific selectors. Plugins that use official Ob
 | --- | --- |
 | Current version | <code><!-- pixel-version:start -->0.9.0<!-- pixel-version:end --></code> |
 | Obsidian requirement | `1.12.0` or newer |
-| Verified desktop environment | Obsidian `1.12.7` / macOS |
+| Verified desktop environment | Obsidian `1.13.4` / macOS |
 | Mobile support | iOS |
 | Not yet verified | Android |
 | Appearance modes | Light / Dark |
@@ -190,7 +190,7 @@ See the complete [release and Obsidian community update guide](docs/RELEASING.md
 
 ## Feedback
 
-Use [GitHub Issues](https://github.com/dszblackmagic/obsidian-pixel-theme/issues) for public feedback. Include Pixel and Obsidian versions, operating system, Light or Dark mode, reproduction steps, screenshots, and any enabled CSS snippets or community plugins.
+Use [GitHub Issues](https://github.com/CoffeeCheese/obsidian-pixel-theme/issues) for public feedback. Include Pixel and Obsidian versions, operating system, Light or Dark mode, reproduction steps, screenshots, and any enabled CSS snippets or community plugins.
 
 ## License
 

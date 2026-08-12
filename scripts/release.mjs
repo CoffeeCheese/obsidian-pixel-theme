@@ -11,7 +11,7 @@ const repositoryRoot = path.resolve(
   "..",
 );
 const semverPattern = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
-const repositoryUrl = "https://github.com/dszblackmagic/obsidian-pixel-theme";
+const repositoryUrl = "https://github.com/CoffeeCheese/obsidian-pixel-theme";
 
 function fail(message) {
   throw new Error(message);

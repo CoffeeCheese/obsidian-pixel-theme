@@ -93,7 +93,7 @@ The first public version requires one manual registration:
 
 1. Make the GitHub repository public.
 2. Publish `0.9.0` and confirm its Release contains `manifest.json` and `theme.css`.
-3. Confirm the default branch contains the matching `manifest.json`, `README.md`, `LICENSE`, and the `512×288` `src/assets/screenshots/screenshot.png`.
+3. Confirm the default branch contains the matching `manifest.json`, `README.md`, `LICENSE`, and the root-level `512×288` `screenshot.png` required by the community directory.
 4. Sign in at [community.obsidian.md](https://community.obsidian.md), link the owning GitHub account, and add the theme.
 5. Resolve automated review feedback with a new incremented version and Release rather than altering the public `0.9.0` assets.
 
