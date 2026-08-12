@@ -26,7 +26,7 @@
 </p>
 
 <p align="center">
-  <img src="src/assets/screenshots/screenshot.png" alt="Pixel 主题商店预览，展示桌面浅色、桌面深色与 iOS 界面" width="100%">
+  <img src="src/assets/screenshots/pixel-store-preview.png" alt="Pixel 主题高清预览，展示桌面浅色、桌面深色与 iOS 界面" width="100%">
 </p>
 
 <p align="center"><sub>桌面 Light / Dark 与 iOS · 使用真实 Obsidian 界面合成</sub></p>
@@ -56,16 +56,6 @@ Pixel 以冷静的纸张界面承载内容，把像素字体留给标题和少�
 </table>
 
 </details>
-
-### iOS · Note & Properties
-
-移动端重新安排标题、属性卡和底部导航的比例。属性保持可扫读的键值层级，长文本自然换行，触摸控件保留足够热区。
-
-<p align="center">
-  <img src="src/assets/screenshots/pixel-mobile-light.png" width="390" alt="Pixel 主题移动端笔记属性界面">
-</p>
-
-<p align="center"><sub>真实 Obsidian 390 × 844 移动视口 · Light</sub></p>
 
 ## 主题特点
 

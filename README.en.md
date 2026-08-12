@@ -26,7 +26,7 @@
 </p>
 
 <p align="center">
-  <img src="src/assets/screenshots/screenshot.png" alt="Pixel theme store preview with desktop Light, desktop Dark, and iOS surfaces" width="100%">
+  <img src="src/assets/screenshots/pixel-store-preview.png" alt="High-resolution Pixel theme preview with desktop Light, desktop Dark, and iOS surfaces" width="100%">
 </p>
 
 <p align="center"><sub>Desktop Light / Dark and iOS · Composed from real Obsidian captures</sub></p>
@@ -56,14 +56,6 @@ The desktop layout uses a continuous Paper workspace: navigation lives on the le
 </table>
 
 </details>
-
-### iOS · Note & Properties
-
-The iOS layout rebalances titles, property cards, drawers, and bottom navigation. Long property values wrap naturally and touch controls retain generous target sizes.
-
-<p align="center">
-  <img src="src/assets/screenshots/pixel-mobile-light.png" width="390" alt="Pixel iOS note properties in Light mode">
-</p>
 
 ## Features
 
