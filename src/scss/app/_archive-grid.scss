@@ -388,23 +388,18 @@ body:not(.is-mobile) .workspace.workspace .metadata-property:last-child {
 }
 
 // The H5 reference treats in-document properties as a quiet definition list,
-// not as the bordered inspector used by the context dock. Obsidian nests this
-// block inside its readable-line wrapper, so container units let the sheet use
-// the central cockpit's width while remaining centered and responsive.
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] .markdown-source-view,
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] .markdown-reading-view {
-  container-type: inline-size;
-}
-
+// not as the bordered inspector used by the context dock. Keep the sheet on
+// the same readable-line axis as the title and note body. Obsidian offsets its
+// native property block by -4px, so reset that transform as part of the axis.
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] .metadata-container {
-  --pixel-property-sheet-width: min(calc(100cqi - 56px), 820px);
-
-  inline-size: var(--pixel-property-sheet-width);
-  max-inline-size: none;
+  inline-size: 100%;
+  max-inline-size: 100%;
   margin-block-start: 44px;
   margin-block-end: var(--pixel-space-8);
-  margin-inline-start: calc((100% - var(--pixel-property-sheet-width)) / 2);
+  margin-inline-start: 0;
+  margin-inline-end: 0;
   padding: 0;
+  transform: none;
 }
 
 // Typora-Vue leaves note properties on Obsidian's native metrics. Reproduce
@@ -567,6 +562,14 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-l
   font-weight: 650;
   line-height: 1;
   text-align: center;
+}
+
+// Obsidian inserts a zero-width ::before spacer in property icons. In a grid
+// container that spacer creates a first row and pushes the real SVG into a
+// clipped second row, so remove it before centering the native type glyph.
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] .metadata-property-icon::before {
+  content: none;
+  display: none;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] .metadata-property-icon svg {

@@ -344,7 +344,6 @@ test("H5 Archive Grid reproduces the prototype property sheet in the central rea
   const css = await readTheme();
   const scope =
     "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown]";
-  const view = ruleBodyForSelector(css, `${scope} .markdown-source-view`);
   const sheet = ruleBodyForSelector(css, `${scope} .metadata-container`);
   const heading = ruleBodyForSelector(css, `${scope} .metadata-properties-heading`);
   const marker = ruleBodyForSelector(
@@ -382,6 +381,10 @@ test("H5 Archive Grid reproduces the prototype property sheet in the central rea
   const propertyIconSvg = ruleBodyForSelector(
     css,
     `${scope} .metadata-property-icon svg`,
+  );
+  const propertyIconSpacer = ruleBodyForSelector(
+    css,
+    `${scope} .metadata-property-icon::before`,
   );
   const focusedRow = ruleBodyForSelector(
     css,
@@ -433,12 +436,10 @@ test("H5 Archive Grid reproduces the prototype property sheet in the central rea
     `${propertyKeyMenuScope} .suggestion-item.is-selected`,
   );
 
-  assert.equal(declaration(view, "container-type"), "inline-size");
-  assert.equal(
-    declaration(sheet, "--pixel-property-sheet-width"),
-    "min(calc(100cqi - 56px), 820px)",
-  );
-  assert.equal(declaration(sheet, "inline-size"), "var(--pixel-property-sheet-width)");
+  assert.equal(declaration(sheet, "inline-size"), "100%");
+  assert.equal(declaration(sheet, "max-inline-size"), "100%");
+  assert.equal(declaration(sheet, "margin-inline-start"), "0");
+  assert.equal(declaration(sheet, "transform"), "none");
   assert.equal(declaration(sheet, "margin-block-start"), "44px");
   assert.equal(declaration(heading, "gap"), "10px");
   assert.equal(declaration(heading, "font-family"), "var(--pixel-font-identity)");
@@ -481,6 +482,8 @@ test("H5 Archive Grid reproduces the prototype property sheet in the central rea
   assert.equal(declaration(propertyIconSvg, "inline-size"), "16px");
   assert.equal(declaration(propertyIconSvg, "block-size"), "16px");
   assert.equal(declaration(propertyIconSvg, "opacity"), "1");
+  assert.equal(declaration(propertyIconSpacer, "content"), "none");
+  assert.equal(declaration(propertyIconSpacer, "display"), "none");
   assert.equal(
     declaration(hoveredRow, "box-shadow"),
     "0 0 0 var(--pixel-border-decoration) var(--pixel-line)",
