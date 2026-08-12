@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <kbd><!-- pixel-version:start -->0.9.0<!-- pixel-version:end --></kbd>
+  <kbd><!-- pixel-version:start -->0.9.1<!-- pixel-version:end --></kbd>
   <kbd>OBSIDIAN 1.12+</kbd>
   <kbd>LIGHT / DARK</kbd>
   <kbd>DESKTOP / iOS</kbd>
@@ -169,7 +169,7 @@ Pixel 不注入社区插件专用选择器。遵循 Obsidian 官方 CSS 变量�
 
 | 项目 | 当前信息 |
 | --- | --- |
-| 当前版本 | <code><!-- pixel-version:start -->0.9.0<!-- pixel-version:end --></code> |
+| 当前版本 | <code><!-- pixel-version:start -->0.9.1<!-- pixel-version:end --></code> |
 | Obsidian 要求 | `1.12.0` 或更高版本 |
 | 已验证桌面环境 | Obsidian `1.13.4` / macOS |
 | 移动端支持 | iOS |
