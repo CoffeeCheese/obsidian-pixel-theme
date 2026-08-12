@@ -44,13 +44,9 @@ test("M1 keeps the note as the Paper base and styles native drawers by ownership
   );
   assert.equal(declaration(note, "background-color"), "var(--pixel-paper)");
 
-  const stationaryBase = ruleBodyForSelector(
+  assert.doesNotMatch(
     css,
-    "body.is-mobile .workspace.is-left-sidedock-open > .workspace-split.mod-root",
-  );
-  assert.equal(
-    declaration(stationaryBase, "translate"),
-    "calc(-1 * var(--mobile-sidebar-width)) 0",
+    /body\.is-mobile\s+\.workspace\.is-(?:left|right)-sidedock-open[^{}]*\.workspace-split\.mod-root\s*\{/,
   );
 
   const drawer = ruleBody(css, "body.is-mobile .workspace-drawer");
@@ -423,12 +419,20 @@ test("mobile left drawer uses a compact file-index type scale", async () => {
 
 test("M1 adds no custom gestures, hover dependencies, or fake controls", async () => {
   const css = await readTheme();
-  const mobileSource = css.slice(css.indexOf("body.is-mobile {"));
+  const mobileRules = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)]
+    .filter((match) =>
+      match[1]
+        .split(",")
+        .some((selector) => selector.trim().startsWith("body.is-mobile")),
+    );
+  const mobileSelectors = mobileRules.map((match) => match[1]).join("\n");
+  const mobileDeclarations = mobileRules.map((match) => match[2]).join("\n");
+  const mobileSource = `${mobileSelectors}\n${mobileDeclarations}`;
 
   assert.doesNotMatch(mobileSource, /edge-swipe|touch-action|overscroll-behavior/);
-  assert.doesNotMatch(mobileSource, /body\.is-mobile[^{}]*:hover/);
-  assert.doesNotMatch(mobileSource, /body\.is-mobile[^{}]*::(?:before|after)/);
-  assert.doesNotMatch(mobileSource, /(?:^|[;{])\s*display:\s*none/m);
+  assert.doesNotMatch(mobileSelectors, /body\.is-mobile[^{}]*:hover/);
+  assert.doesNotMatch(mobileSelectors, /body\.is-mobile[^{}]*::(?:before|after)/);
+  assert.doesNotMatch(mobileDeclarations, /(?:^|;)\s*display:\s*none/m);
 });
 
 test("M1 drawer motion follows preferences and forced colors", async () => {

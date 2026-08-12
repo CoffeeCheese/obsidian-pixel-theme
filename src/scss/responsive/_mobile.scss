@@ -797,17 +797,6 @@ body.is-mobile {
   }
 }
 
-// Obsidian translates the note as an unpinned drawer opens. The independent
-// translate axis cancels that native offset without overriding inline styles,
-// so M1 keeps the note stationary beneath the native scrim.
-body.is-mobile .workspace.is-left-sidedock-open > .workspace-split.mod-root {
-  translate: calc(-1 * var(--mobile-sidebar-width)) 0;
-}
-
-body.is-mobile .workspace.is-right-sidedock-open > .workspace-split.mod-root {
-  translate: var(--mobile-sidebar-width) 0;
-}
-
 @media (prefers-reduced-motion: reduce) {
   body.is-mobile .workspace-drawer,
   body.is-mobile .workspace-drawer-backdrop {

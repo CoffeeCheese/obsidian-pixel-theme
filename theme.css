@@ -3698,14 +3698,6 @@ body.is-mobile .suggestion-container.mod-property-key .suggestion-item.is-select
   color: var(--pixel-cyan);
 }
 
-body.is-mobile .workspace.is-left-sidedock-open > .workspace-split.mod-root {
-  translate: calc(-1 * var(--mobile-sidebar-width)) 0;
-}
-
-body.is-mobile .workspace.is-right-sidedock-open > .workspace-split.mod-root {
-  translate: var(--mobile-sidebar-width) 0;
-}
-
 @media (prefers-reduced-motion: reduce) {
   body.is-mobile .workspace-drawer,
   body.is-mobile .workspace-drawer-backdrop {
