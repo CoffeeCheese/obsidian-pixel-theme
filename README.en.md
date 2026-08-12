@@ -25,12 +25,11 @@
   <a href="#development">Development</a>
 </p>
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="src/assets/screenshots/pixel-desktop-dark.png">
-  <img src="src/assets/screenshots/pixel-desktop-light.png" alt="Pixel desktop theme with file navigation, note properties, and mixed-language content" width="100%">
-</picture>
+<p align="center">
+  <img src="src/assets/screenshots/screenshot.png" alt="Pixel theme store preview with desktop Light, desktop Dark, and iOS surfaces" width="100%">
+</p>
 
-<p align="center"><sub>The desktop preview follows GitHub's light or dark appearance.</sub></p>
+<p align="center"><sub>Desktop Light / Dark and iOS · Composed from real Obsidian captures</sub></p>
 
 Pixel places content on a calm paper-like workspace and reserves its pixel typeface for headings and a few identity elements. It is not a retro filter: it preserves Obsidian's native interactions while giving navigation, reading, properties, and data views a clear and recognizable hierarchy.
 

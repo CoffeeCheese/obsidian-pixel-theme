@@ -124,7 +124,7 @@ test("documentation separates historical evidence, release operations, and bilin
       read("docs/releases/0.9.0.en.md"),
       read("DEVICE_TEST_PLAN.md"),
       read(".github/ISSUE_TEMPLATE/theme-bug.yml"),
-      readBytes("screenshot.png"),
+      readBytes("src/assets/screenshots/screenshot.png"),
     ]);
 
   assert.match(readme, /README\.en\.md/);

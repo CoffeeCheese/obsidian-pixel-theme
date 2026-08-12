@@ -25,12 +25,11 @@
   <a href="#开发">开发</a>
 </p>
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="src/assets/screenshots/pixel-desktop-dark.png">
-  <img src="src/assets/screenshots/pixel-desktop-light.png" alt="Pixel 主题桌面端界面，展示文件导航、笔记属性与中英文混排" width="100%">
-</picture>
+<p align="center">
+  <img src="src/assets/screenshots/screenshot.png" alt="Pixel 主题商店预览，展示桌面浅色、桌面深色与 iOS 界面" width="100%">
+</p>
 
-<p align="center"><sub>桌面成果图会跟随 GitHub 的浅色 / 深色外观自动切换</sub></p>
+<p align="center"><sub>桌面 Light / Dark 与 iOS · 使用真实 Obsidian 界面合成</sub></p>
 
 Pixel 以冷静的纸张界面承载内容，把像素字体留给标题和少量身份元素。它不是给 Obsidian 套上一层复古滤镜，而是在保留原生交互的前提下，让文件导航、笔记阅读、属性编辑和数据视图拥有清晰、稳定且容易辨认的层级。
 
