@@ -144,23 +144,19 @@ Pixel ships no community-plugin-specific selectors. Plugins that use official Ob
 - User fonts, font sizes, accent, selection, and caret settings remain authoritative.
 - Long text, code, and tables reflow or scroll locally instead of hiding content and controls.
 
-See the [compatibility and accessibility matrix](COMPATIBILITY.md) for the detailed audit record.
-
 ## Compatibility
 
-| Item | Current baseline |
+| Item | Current information |
 | --- | --- |
-| Pixel version | `<!-- pixel-version:start -->0.9.0<!-- pixel-version:end -->` |
-| Minimum Obsidian version | `1.12.0` |
-| Audited desktop environment | Obsidian `1.12.7` / macOS |
-| Physical mobile release scope | iOS |
-| Unverified platform | Android |
-| Theme modes | Light / Dark |
+| Current version | <code><!-- pixel-version:start -->0.9.0<!-- pixel-version:end --></code> |
+| Obsidian requirement | `1.12.0` or newer |
+| Verified desktop environment | Obsidian `1.12.7` / macOS |
+| Mobile support | iOS |
+| Not yet verified | Android |
+| Appearance modes | Light / Dark |
 | Installable files | `manifest.json`, `theme.css` |
 | Theme license | MIT |
 | Embedded font licenses | SIL Open Font License 1.1 |
-
-See the [English release notes](docs/releases/0.9.0.en.md) for the current manual release checklist and the [device test plan](DEVICE_TEST_PLAN.md) for physical validation guidance. The earlier `0.1.0` candidate evidence is [archived](docs/archive/0.1.0-release-candidate.md).
 
 ## Development
 
@@ -180,7 +176,7 @@ npm run check
 
 `src/scss/index.scss` is the only Sass entry point. Edit sources under `src/`; do not edit generated `theme.css` directly.
 
-For guarded deployment, see [the Chinese development details](README.md#开发). Before tagging, complete the manual desktop and iOS policy described in the [release guide](docs/RELEASING.md).
+For guarded deployment, see [the Chinese development details](README.md#开发).
 
 ## Releasing
 

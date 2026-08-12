@@ -163,32 +163,19 @@ Pixel 不注入社区插件专用选择器。遵循 Obsidian 官方 CSS 变量�
 - 支持 Obsidian 用户设置的字体、字号、强调色、选区与光标颜色。
 - 长文本、代码和表格优先重排或局部滚动，避免隐藏内容与操作。
 
-完整验证记录见 [兼容性与可访问性矩阵](COMPATIBILITY.md)。
-
 ## 兼容性
 
-| 项目 | 当前基线 |
+| 项目 | 当前信息 |
 | --- | --- |
-| Pixel 版本 | `<!-- pixel-version:start -->0.9.0<!-- pixel-version:end -->` |
-| 最低 Obsidian 版本 | `1.12.0` |
-| 已审计桌面环境 | Obsidian `1.12.7` / macOS |
-| 实体移动端发布范围 | iOS |
-| 未验证平台 | Android |
-| 主题模式 | Light / Dark |
+| 当前版本 | <code><!-- pixel-version:start -->0.9.0<!-- pixel-version:end --></code> |
+| Obsidian 要求 | `1.12.0` 或更高版本 |
+| 已验证桌面环境 | Obsidian `1.12.7` / macOS |
+| 移动端支持 | iOS |
+| 暂未验证 | Android |
+| 外观模式 | Light / Dark |
 | 安装文件 | `manifest.json`、`theme.css` |
 | 主题许可 | MIT |
 | 内置字体许可 | SIL Open Font License 1.1 |
-
-当前版本的发布验收状态见[中文版本说明](docs/releases/0.9.0.md)；设备检查方法见[设备测试计划](DEVICE_TEST_PLAN.md)。早期 `0.1.0` 候选证据已[归档](docs/archive/0.1.0-release-candidate.md)。
-
-<details>
-<summary>开发者注记：内部布局基线</summary>
-
-仓库契约中的完整基线名称为 **H5 material system, D1 balanced desktop layout, and M1 native dual-drawer mobile workspace**。这些名称用于自动化测试和视觉验收，不要求普通用户理解。
-
-安装包将内嵌字体限制在 **1.2 MiB** 以内，并将生成的 CSS 限制在 **1.5 MiB** 以内。主题源码包含 **no plugin-specific selectors**；**Prototype markup, JavaScript state, simulated controls** 仅用于设计与测试，不属于发布资产。
-
-</details>
 
 ## 开发
 
@@ -222,10 +209,6 @@ OBSIDIAN_THEME_DIR=/absolute/path/to/dev-test/.obsidian/themes/Pixel npm run bui
 ```
 
 构建脚本只会原子替换目标目录中的 `theme.css` 和 `manifest.json`，并拒绝相对路径、符号链接、错误 Vault 和越界目标。
-
-### 人工验收
-
-每个版本在 tag 前按照[发布手册](docs/RELEASING.md)完成桌面人工检查；初始版本、MINOR / MAJOR 版本以及涉及布局、移动端或兼容性的版本，还需完成[实体 iOS 检查](DEVICE_TEST_PLAN.md)。人工结果记录在对应的中英文版本说明中。
 
 ## 项目结构
 
