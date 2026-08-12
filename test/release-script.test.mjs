@@ -33,7 +33,7 @@ async function createFixture(t, version = "0.9.0") {
       "utf8",
     ),
     writeFile(
-      path.join(root, "README.en.md"),
+      path.join(root, "README.zh-CN.md"),
       `Pixel <!-- pixel-version:start -->${version}<!-- pixel-version:end -->\n`,
       "utf8",
     ),
@@ -79,7 +79,7 @@ test("prepare updates both version sources, READMEs, and bilingual notes", async
       readFile(path.join(root, "manifest.json"), "utf8").then(JSON.parse),
       readFile(path.join(root, "versions.json"), "utf8").then(JSON.parse),
       readFile(path.join(root, "README.md"), "utf8"),
-      readFile(path.join(root, "README.en.md"), "utf8"),
+      readFile(path.join(root, "README.zh-CN.md"), "utf8"),
       readFile(path.join(root, "docs/releases/0.9.1.md"), "utf8"),
       readFile(path.join(root, "docs/releases/0.9.1.en.md"), "utf8"),
     ]);

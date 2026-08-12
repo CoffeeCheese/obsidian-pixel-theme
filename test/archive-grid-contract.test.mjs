@@ -379,34 +379,6 @@ test("H5 Archive Grid reproduces the prototype property sheet in the central rea
   const key = ruleBodyForSelector(css, `${scope} .metadata-property-key`);
   const value = ruleBodyForSelector(css, `${scope} .metadata-property-value`);
   const propertyIcon = ruleBodyForSelector(css, `${scope} .metadata-property-icon`);
-  const propertyIconGlyph = ruleBodyForSelector(
-    css,
-    `${scope} .metadata-property-icon::before`,
-  );
-  const propertyIconBadge = ruleBodyForSelector(
-    css,
-    `${scope} .metadata-property-icon::after`,
-  );
-  const textIconGlyph = ruleBodyForSelector(
-    css,
-    `${scope} .metadata-property:has(.metadata-property-value[data-property-type=text]) .metadata-property-icon::before`,
-  );
-  const numberIconGlyph = ruleBodyForSelector(
-    css,
-    `${scope} .metadata-property:has(.metadata-property-value[data-property-type=number]) .metadata-property-icon::before`,
-  );
-  const checkboxIconGlyph = ruleBodyForSelector(
-    css,
-    `${scope} .metadata-property:has(.metadata-property-value[data-property-type=checkbox]) .metadata-property-icon::before`,
-  );
-  const dateIconGlyph = ruleBodyForSelector(
-    css,
-    `${scope} .metadata-property:has(.metadata-property-value[data-property-type=date]) .metadata-property-icon::before`,
-  );
-  const tagsIconGlyph = ruleBodyForSelector(
-    css,
-    `${scope} .metadata-property:has(.metadata-property-value[data-property-type=tags]) .metadata-property-icon::before`,
-  );
   const propertyIconSvg = ruleBodyForSelector(
     css,
     `${scope} .metadata-property-icon svg`,
@@ -418,10 +390,6 @@ test("H5 Archive Grid reproduces the prototype property sheet in the central rea
   const hoveredRow = ruleBodyForSelector(
     css,
     `${scope} .metadata-property:hover`,
-  );
-  const keyEditingRow = ruleBodyForSelector(
-    css,
-    `${scope} .metadata-property:has(.metadata-property-key:focus-within)`,
   );
   const focusedKey = ruleBodyForSelector(
     css,
@@ -454,7 +422,7 @@ test("H5 Archive Grid reproduces the prototype property sheet in the central rea
     `${scope} .metadata-add-button:hover`,
   );
   const propertyKeyMenuScope =
-    "body:not(.is-mobile):has(.workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-key:focus-within) .suggestion-container.mod-property-key";
+    "body:not(.is-mobile) .suggestion-container.mod-property-key";
   const propertyKeyMenu = ruleBodyForSelector(css, propertyKeyMenuScope);
   const propertyKeyMenuItem = ruleBodyForSelector(
     css,
@@ -489,7 +457,7 @@ test("H5 Archive Grid reproduces the prototype property sheet in the central rea
   assert.match(declaration(marker, "background"), /var\(--pixel-cyan\) 0 4px/);
   assert.match(declaration(markerFace, "box-shadow"), /6px 0 0 currentcolor/);
   assert.equal(horizontalPixelPaintCenter(markerFace), 12);
-  assert.equal(declaration(markerFold, "clip-path"), "polygon(0 0, 100% 100%, 0 100%)");
+  assert.match(declaration(markerFold, "background-image"), /linear-gradient\(45deg/);
   assert.equal(declaration(collapsedMarker, "box-shadow"), "1px 1px 0 color-mix(in srgb, var(--pixel-cyan) 22%, var(--pixel-line))");
   assert.equal(declaration(collapsedMarkerFace, "inline-size"), "4px");
   assert.equal(declaration(collapsedMarkerFace, "box-shadow"), "6px 0 0 currentcolor");
@@ -509,20 +477,10 @@ test("H5 Archive Grid reproduces the prototype property sheet in the central rea
   assert.equal(declaration(value, "font-family"), "var(--pixel-font-text)");
   assert.equal(declaration(value, "font-size"), "16px");
   assert.equal(declaration(propertyIcon, "font-family"), "var(--pixel-font-monospace)");
-  assert.equal(declaration(propertyIconGlyph, "content"), '"•"');
-  assert.equal(declaration(propertyIconGlyph, "inline-size"), "auto");
-  assert.equal(declaration(propertyIconBadge, "inline-size"), "18px");
-  assert.equal(declaration(propertyIconBadge, "block-size"), "18px");
-  assert.match(declaration(propertyIconBadge, "box-shadow"), /2px 2px 0/);
-  assert.equal(declaration(textIconGlyph, "content"), '"t"');
-  assert.equal(declaration(numberIconGlyph, "content"), '"01"');
-  assert.equal(declaration(numberIconGlyph, "letter-spacing"), "0");
-  assert.equal(declaration(dateIconGlyph, "content"), '"▦"');
-  assert.equal(declaration(checkboxIconGlyph, "content"), '"✓"');
-  assert.equal(declaration(tagsIconGlyph, "content"), '"#"');
-  assert.equal(declaration(propertyIconSvg, "inline-size"), "0");
-  assert.equal(declaration(propertyIconSvg, "block-size"), "0");
-  assert.equal(declaration(propertyIconSvg, "opacity"), "0");
+  assert.doesNotMatch(css, /metadata-property:has\s*\(/);
+  assert.equal(declaration(propertyIconSvg, "inline-size"), "16px");
+  assert.equal(declaration(propertyIconSvg, "block-size"), "16px");
+  assert.equal(declaration(propertyIconSvg, "opacity"), "1");
   assert.equal(
     declaration(hoveredRow, "box-shadow"),
     "0 0 0 var(--pixel-border-decoration) var(--pixel-line)",
@@ -542,7 +500,6 @@ test("H5 Archive Grid reproduces the prototype property sheet in the central rea
   );
   assert.equal(declaration(propertyInput, "min-block-size"), "28px");
   assert.equal(declaration(propertyInput, "padding"), "4px 8px");
-  assert.equal(declaration(keyEditingRow, "padding-block-end"), "0");
   assert.equal(declaration(focusedKey, "min-block-size"), "28px");
   assert.equal(declaration(focusedKey, "padding-inline"), "0");
   assert.equal(declaration(focusedKey, "background-color"), "transparent");

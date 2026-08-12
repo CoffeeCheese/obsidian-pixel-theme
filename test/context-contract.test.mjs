@@ -171,25 +171,12 @@ test("the All Properties catalogue mirrors the document property sheet", async (
     "var(--pixel-font-monospace)",
   );
 
-  const textGlyph = ruleBodyForSelector(
-    css,
-    `${scope} .tree-item-icon:has(.lucide-text)::before`,
-  );
-  const numberGlyph = ruleBodyForSelector(
-    css,
-    `${scope} .tree-item-icon:has(.lucide-binary)::before`,
-  );
-  const dateGlyph = ruleBodyForSelector(
-    css,
-    `${scope} .tree-item-icon:has(.lucide-calendar)::before`,
-  );
-  assert.equal(declaration(textGlyph, "content"), '"t"');
-  assert.equal(declaration(numberGlyph, "content"), '"01"');
-  assert.equal(declaration(dateGlyph, "content"), '"▦"');
+  assert.doesNotMatch(css, /tree-item-icon:has\s*\(/);
 
   const nativeIcon = ruleBodyForSelector(css, `${scope} .tree-item-icon svg`);
-  assert.equal(declaration(nativeIcon, "inline-size"), "0");
-  assert.equal(declaration(nativeIcon, "opacity"), "0");
+  assert.equal(declaration(nativeIcon, "inline-size"), "16px");
+  assert.equal(declaration(nativeIcon, "block-size"), "16px");
+  assert.equal(declaration(nativeIcon, "opacity"), "1");
 
   const name = ruleBodyForSelector(css, `${scope} .tree-item-inner-text`);
   assert.equal(

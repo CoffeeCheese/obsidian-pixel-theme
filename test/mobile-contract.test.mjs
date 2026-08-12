@@ -46,7 +46,7 @@ test("M1 keeps the note as the Paper base and styles native drawers by ownership
 
   const stationaryBase = ruleBodyForSelector(
     css,
-    "body.is-mobile .workspace.is-left-sidedock-open:has(> .workspace-drawer.mod-left:not(.is-pinned)) .workspace-split.mod-root",
+    "body.is-mobile .workspace.is-left-sidedock-open > .workspace-split.mod-root",
   );
   assert.equal(
     declaration(stationaryBase, "translate"),
@@ -302,7 +302,7 @@ test("mobile note chrome uses a soft index-card editing rhythm", async () => {
 
   const propertyMenu = ruleBody(
     css,
-    'body.is-mobile:has(.workspace-leaf-content[data-type=markdown] .metadata-property-key:focus-within) .suggestion-container.mod-property-key',
+    'body.is-mobile .suggestion-container.mod-property-key',
   );
   assert.equal(
     declaration(propertyMenu, "inline-size"),
@@ -321,7 +321,7 @@ test("mobile note chrome uses a soft index-card editing rhythm", async () => {
 
   const selectedSuggestion = ruleBody(
     css,
-    'body.is-mobile:has(.workspace-leaf-content[data-type=markdown] .metadata-property-key:focus-within) .suggestion-container.mod-property-key .suggestion-item.is-selected',
+    'body.is-mobile .suggestion-container.mod-property-key .suggestion-item.is-selected',
   );
   assert.equal(declaration(selectedSuggestion, "outline"), "0");
   assert.equal(declaration(selectedSuggestion, "color"), "var(--pixel-cyan)");

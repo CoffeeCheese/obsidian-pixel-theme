@@ -1,6 +1,6 @@
 # Bundled font sources
 
-Pixel redistributes the following unmodified upstream WOFF2 files. The build embeds them into `theme.css`; the binary sources and their SIL Open Font License 1.1 texts remain here for audit and redistribution.
+Pixel keeps the following unmodified upstream WOFF2 files and their SIL Open Font License 1.1 texts for audit. The release build embeds only Fusion Pixel into `theme.css`; code surfaces use Obsidian's configured monospace font and system fallbacks so the installable stylesheet remains within the community-directory size recommendation.
 
 | Local file | Upstream release | SHA-256 |
 | --- | --- | --- |

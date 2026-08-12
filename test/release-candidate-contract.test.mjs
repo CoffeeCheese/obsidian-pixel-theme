@@ -37,9 +37,9 @@ test("release package is self-contained and carries redistribution notices", asy
     0,
   );
 
-  assert.equal(fontPayloads.length, 3);
-  assert.ok(encodedFontBytes <= Math.floor(1.2 * 1024 * 1024));
-  assert.ok(Buffer.byteLength(css) <= Math.floor(1.5 * 1024 * 1024));
+  assert.equal(fontPayloads.length, 1);
+  assert.ok(encodedFontBytes <= Math.floor(0.9 * 1024 * 1024));
+  assert.ok(Buffer.byteLength(css) <= 1024 * 1024);
   assert.doesNotMatch(css, /@import\b/i);
   for (const match of css.matchAll(/url\(([^)]*)\)/gi)) {
     const value = match[1].trim().replace(/^(["'])(.*)\1$/, "$2");
@@ -49,8 +49,8 @@ test("release package is self-contained and carries redistribution notices", asy
   assert.match(css, /Pixel theme — MIT License/);
   assert.match(css, /Permission is hereby granted, free of charge/);
   assert.match(css, /Fusion Pixel — SIL Open Font License 1\.1/);
-  assert.match(css, /JetBrains Mono — SIL Open Font License 1\.1/);
-  assert.equal((css.match(/SIL OPEN FONT LICENSE Version 1\.1/gi) || []).length, 2);
+  assert.doesNotMatch(css, /JetBrains Mono — SIL Open Font License 1\.1/);
+  assert.equal((css.match(/SIL OPEN FONT LICENSE Version 1\.1/gi) || []).length, 1);
 });
 
 test("bundled font attribution matches the redistributed files", async () => {
@@ -117,7 +117,7 @@ test("documentation separates historical evidence, release operations, and bilin
   const [readme, readmeEnglish, releasing, archived, chinese, english, devicePlan, issueTemplate, screenshot] =
     await Promise.all([
       read("README.md"),
-      read("README.en.md"),
+      read("README.zh-CN.md"),
       read("docs/RELEASING.md"),
       read("docs/archive/0.1.0-release-candidate.md"),
       read("docs/releases/0.9.0.md"),
@@ -127,7 +127,7 @@ test("documentation separates historical evidence, release operations, and bilin
       readBytes("screenshot.png"),
     ]);
 
-  assert.match(readme, /README\.en\.md/);
+  assert.match(readme, /README\.zh-CN\.md/);
   assert.match(readmeEnglish, /README\.md/);
   assert.match(releasing, /git push --atomic origin main 0\.9\.1/);
   assert.match(releasing, /community\.obsidian\.md/);

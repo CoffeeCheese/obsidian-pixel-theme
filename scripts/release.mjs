@@ -133,7 +133,7 @@ async function assertMissing(filePath) {
 
 async function updatedReadmes(root, currentVersion, nextVersion) {
   const updates = [];
-  for (const fileName of ["README.md", "README.en.md"]) {
+  for (const fileName of ["README.md", "README.zh-CN.md"]) {
     const filePath = path.join(root, fileName);
     const contents = await readFile(filePath, "utf8");
     const marker = `<!-- pixel-version:start -->${currentVersion}<!-- pixel-version:end -->`;

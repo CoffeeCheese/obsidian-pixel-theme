@@ -218,72 +218,10 @@ body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf-content[da
   line-height: 1;
 }
 
-body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf-content[data-type="all-properties"] .tree-item-icon::before {
-  content: "•";
-  position: relative;
-  z-index: 1;
-  grid-area: 1 / 1;
-  inline-size: auto;
-  pointer-events: none;
-}
-
-body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf-content[data-type="all-properties"] .tree-item-icon::after {
-  content: "";
-  grid-area: 1 / 1;
-  inline-size: 18px;
-  block-size: 18px;
-  border: var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-text-muted) 58%, var(--pixel-line));
-  border-radius: 3px 3px 4px 3px;
-  background-color: color-mix(in srgb, var(--pixel-cyan) 6%, var(--pixel-paper));
-  box-shadow: 2px 2px 0 color-mix(in srgb, var(--pixel-cyan) 24%, var(--pixel-line));
-  pointer-events: none;
-}
-
-body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf-content[data-type="all-properties"] .tree-item-icon:has(.lucide-text)::before {
-  content: "T";
-  font-size: 10px;
-  font-weight: 780;
-}
-
-body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf-content[data-type="all-properties"] .tree-item-icon:has(.lucide-list)::before {
-  content: "≡";
-  font-size: 12px;
-}
-
-body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf-content[data-type="all-properties"] .tree-item-icon:has(.lucide-binary)::before {
-  content: "01";
-}
-
-body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf-content[data-type="all-properties"] .tree-item-icon:has(.lucide-calendar)::before {
-  content: "▦";
-  font-size: 12px;
-}
-
-body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf-content[data-type="all-properties"] .tree-item-icon:has(.lucide-check-square)::before {
-  content: "✓";
-  font-family: var(--pixel-font-identity);
-  font-size: 12px;
-  font-weight: 720;
-}
-
-body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf-content[data-type="all-properties"] .tree-item-icon:has(.lucide-tags)::before {
-  content: "#";
-  font-size: 11px;
-  font-weight: 780;
-}
-
-body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf-content[data-type="all-properties"] .tree-item-icon:has(.lucide-forward)::before {
-  content: "↗";
-  font-family: var(--pixel-font-identity);
-  font-size: 11px;
-  font-weight: 720;
-}
-
 body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf-content[data-type="all-properties"] .tree-item-icon svg {
-  grid-area: 1 / 1;
-  inline-size: 0;
-  block-size: 0;
-  opacity: 0;
+  inline-size: 16px;
+  block-size: 16px;
+  opacity: 1;
 }
 
 body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf-content[data-type="all-properties"] .tree-item-inner {

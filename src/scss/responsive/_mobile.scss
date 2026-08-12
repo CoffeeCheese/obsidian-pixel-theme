@@ -753,7 +753,7 @@ body.is-mobile {
   // Property-key suggestions are rendered in a body-level portal. Give that
   // transient editor enough width for mixed Chinese/Latin names while keeping
   // its visual weight below the note itself.
-  &:has(.workspace-leaf-content[data-type="markdown"] .metadata-property-key:focus-within) .suggestion-container.mod-property-key {
+  & .suggestion-container.mod-property-key {
     inline-size: min(200px, calc(100vw - (var(--pixel-space-4) * 2)));
     max-inline-size: calc(100vw - (var(--pixel-space-4) * 2));
     max-block-size: min(240px, 36vh);
@@ -765,11 +765,11 @@ body.is-mobile {
     box-shadow: 0 10px 24px color-mix(in srgb, var(--pixel-shadow-color) 12%, transparent);
   }
 
-  &:has(.workspace-leaf-content[data-type="markdown"] .metadata-property-key:focus-within) .suggestion-container.mod-property-key .suggestion {
+  & .suggestion-container.mod-property-key .suggestion {
     padding: var(--pixel-space-2);
   }
 
-  &:has(.workspace-leaf-content[data-type="markdown"] .metadata-property-key:focus-within) .suggestion-container.mod-property-key .suggestion-item {
+  & .suggestion-container.mod-property-key .suggestion-item {
     box-sizing: border-box;
     min-block-size: 42px;
     padding: var(--pixel-space-2) var(--pixel-space-3);
@@ -780,7 +780,7 @@ body.is-mobile {
     font-weight: 500;
   }
 
-  &:has(.workspace-leaf-content[data-type="markdown"] .metadata-property-key:focus-within) .suggestion-container.mod-property-key .suggestion-item.is-selected {
+  & .suggestion-container.mod-property-key .suggestion-item.is-selected {
     outline: 0;
     background-color: color-mix(in srgb, var(--pixel-cyan) 8%, var(--pixel-paper));
     color: var(--pixel-cyan);
@@ -788,25 +788,23 @@ body.is-mobile {
     font-weight: 650;
   }
 
-  &:has(.workspace-leaf-content[data-type="markdown"] .metadata-property-key:focus-within) .suggestion-container.mod-property-key .suggestion-flair {
+  & .suggestion-container.mod-property-key .suggestion-flair {
     color: color-mix(in srgb, var(--pixel-text-muted) 78%, transparent);
   }
 
-  &:has(.workspace-leaf-content[data-type="markdown"] .metadata-property-key:focus-within) .suggestion-container.mod-property-key .suggestion-item.is-selected .suggestion-flair {
+  & .suggestion-container.mod-property-key .suggestion-item.is-selected .suggestion-flair {
     color: var(--pixel-cyan);
   }
 }
 
-// Obsidian translates the note and floating navbar as an unpinned drawer opens.
-// The independent translate axis cancels that native offset without overriding
-// inline styles, so M1 keeps the note stationary beneath the native scrim.
-body.is-mobile .workspace.is-left-sidedock-open:has(> .workspace-drawer.mod-left:not(.is-pinned)) .workspace-split.mod-root,
-body.is-mobile:has(.workspace.is-left-sidedock-open > .workspace-drawer.mod-left:not(.is-pinned)) .mobile-navbar {
+// Obsidian translates the note as an unpinned drawer opens. The independent
+// translate axis cancels that native offset without overriding inline styles,
+// so M1 keeps the note stationary beneath the native scrim.
+body.is-mobile .workspace.is-left-sidedock-open > .workspace-split.mod-root {
   translate: calc(-1 * var(--mobile-sidebar-width)) 0;
 }
 
-body.is-mobile .workspace.is-right-sidedock-open:has(> .workspace-drawer.mod-right:not(.is-pinned)) .workspace-split.mod-root,
-body.is-mobile:has(.workspace.is-right-sidedock-open > .workspace-drawer.mod-right:not(.is-pinned)) .mobile-navbar {
+body.is-mobile .workspace.is-right-sidedock-open > .workspace-split.mod-root {
   translate: var(--mobile-sidebar-width) 0;
 }
 

@@ -130,8 +130,7 @@ test("search results use shared surfaces without changing native replace-button 
 
 test("quick switcher uses a light index-card shell and a pixel cursor rail", async () => {
   const css = await readTheme();
-  const quickSwitcher =
-    ".prompt:has(.prompt-instructions > .prompt-instruction:nth-child(4))";
+  const quickSwitcher = ".prompt";
 
   const shell = ruleBody(css, quickSwitcher);
   assert.equal(
@@ -379,15 +378,11 @@ test("tag pane reads as a compact pixel index with keycaps and hierarchy", async
     "var(--pixel-nav-label)",
   );
 
-  const openHeader = ruleBody(
-    css,
-    `${tagPane} .nav-header:has(> .search-input-container:not([style*="display: none"]))`,
-  );
-  assert.equal(declaration(openHeader, "padding"), "0");
+  assert.equal(declaration(header, "padding"), "0");
 
   const openToolbar = ruleBody(
     css,
-    `${tagPane} .nav-header:has(> .search-input-container:not([style*="display: none"])) .nav-buttons-container`,
+    `${tagPane} .nav-buttons-container`,
   );
   assert.equal(declaration(openToolbar, "min-block-size"), "44px");
   assert.equal(

@@ -244,11 +244,11 @@ test("check rejects a compatibility map that disagrees with minAppVersion", asyn
   );
 });
 
-test("build rejects encoded font payload above 1.2 MiB", async (t) => {
+test("build rejects encoded font payload above 0.9 MiB", async (t) => {
   const fixtureRoot = await createPackageFixture(t);
   const entryPath = path.join(fixtureRoot, "src/scss/index.scss");
   const source = await readFile(entryPath, "utf8");
-  const encodedFont = "A".repeat(Math.floor(1.2 * 1024 * 1024) + 1);
+  const encodedFont = "A".repeat(Math.floor(0.9 * 1024 * 1024) + 1);
   await writeFile(
     entryPath,
     `${source}\n@font-face { font-family: Fixture; src: url("data:font/woff2;base64,${encodedFont}"); }\n`,
@@ -258,14 +258,14 @@ test("build rejects encoded font payload above 1.2 MiB", async (t) => {
   const result = runBuild(fixtureRoot);
 
   assert.notEqual(result.status, 0);
-  assert.match(result.output, /encoded font payload exceeds 1\.2 MiB budget/i);
+  assert.match(result.output, /encoded font payload exceeds 0\.9 MiB budget/i);
 });
 
 test("build counts legacy data-URI MIME types toward the encoded font budget", async (t) => {
   const fixtureRoot = await createPackageFixture(t);
   const entryPath = path.join(fixtureRoot, "src/scss/index.scss");
   const source = await readFile(entryPath, "utf8");
-  const encodedFont = "A".repeat(Math.floor(1.2 * 1024 * 1024) + 1);
+  const encodedFont = "A".repeat(Math.floor(0.9 * 1024 * 1024) + 1);
   await writeFile(
     entryPath,
     `${source}\n@font-face { font-family: Fixture; src: url("data:application/font-woff;base64,${encodedFont}"); }\n`,
@@ -275,13 +275,13 @@ test("build counts legacy data-URI MIME types toward the encoded font budget", a
   const result = runBuild(fixtureRoot);
 
   assert.notEqual(result.status, 0);
-  assert.match(result.output, /encoded font payload exceeds 1\.2 MiB budget/i);
+  assert.match(result.output, /encoded font payload exceeds 0\.9 MiB budget/i);
 });
 
-test("build rejects generated CSS above 1.5 MiB", async (t) => {
+test("build rejects generated CSS above 1 MiB", async (t) => {
   const fixtureRoot = await createPackageFixture(t);
   const entryPath = path.join(fixtureRoot, "src/scss/index.scss");
-  const oversizedValue = "x".repeat(Math.floor(1.5 * 1024 * 1024));
+  const oversizedValue = "x".repeat(1024 * 1024);
   await writeFile(
     entryPath,
     `:root { --oversized-fixture: "${oversizedValue}"; }\n`,
@@ -291,7 +291,7 @@ test("build rejects generated CSS above 1.5 MiB", async (t) => {
   const result = runBuild(fixtureRoot);
 
   assert.notEqual(result.status, 0);
-  assert.match(result.output, /generated theme\.css exceeds 1\.5 MiB budget/i);
+  assert.match(result.output, /generated theme\.css exceeds 1 MiB budget/i);
 });
 
 test("check rejects runtime HTTP URLs in the compiled stylesheet", async (t) => {

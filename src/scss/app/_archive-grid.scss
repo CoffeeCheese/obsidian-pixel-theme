@@ -148,7 +148,6 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-t
   height: 3px;
   border-radius: var(--pixel-radius-small) var(--pixel-radius-small) 0 0;
   background: var(--pixel-cyan);
-  clip-path: none;
   opacity: 0;
   transform: scaleX(0.45);
   transform-origin: left center;
@@ -475,7 +474,11 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-l
   border-block-end: var(--pixel-border-decoration) solid var(--pixel-line-strong);
   border-inline-start: var(--pixel-border-decoration) solid var(--pixel-line-strong);
   background-color: var(--pixel-paper);
-  clip-path: polygon(0 0, 100% 100%, 0 100%);
+  background-image: linear-gradient(
+    45deg,
+    transparent 0 49%,
+    var(--pixel-paper) 50% 100%
+  );
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] .metadata-properties-heading.is-collapsed .collapse-indicator {
@@ -566,79 +569,10 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-l
   text-align: center;
 }
 
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] .metadata-property-icon::before {
-  content: "•";
-  position: relative;
-  z-index: 1;
-  grid-area: 1 / 1;
-  // Obsidian reserves a 4px pseudo-element slot for its native marker. Our
-  // wider type glyphs must size to their content so Grid centers their ink.
-  inline-size: auto;
-  pointer-events: none;
-}
-
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] .metadata-property-icon::after {
-  content: "";
-  grid-area: 1 / 1;
-  inline-size: 18px;
-  block-size: 18px;
-  border: var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-text-muted) 58%, var(--pixel-line));
-  border-radius: 3px 3px 4px 3px;
-  background-color: color-mix(in srgb, var(--pixel-cyan) 6%, var(--pixel-paper));
-  box-shadow: 2px 2px 0 color-mix(in srgb, var(--pixel-cyan) 24%, var(--pixel-line));
-  pointer-events: none;
-}
-
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] .metadata-property:has(.metadata-property-value[data-property-type="text"]) .metadata-property-icon::before {
-  content: "T";
-  font-size: 10px;
-  font-weight: 780;
-}
-
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] .metadata-property:has(.metadata-property-value[data-property-type="multitext"]) .metadata-property-icon::before {
-  content: "≡";
-  font-size: 12px;
-}
-
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] .metadata-property:has(.metadata-property-value[data-property-type="number"]) .metadata-property-icon::before {
-  content: "01";
-  font-size: 11px;
-  // Negative tracking also shrinks the trailing advance, which makes the
-  // two-glyph ink area sit to the right of the centered grid item.
-  letter-spacing: 0;
-}
-
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] .metadata-property:has(.metadata-property-value[data-property-type="date"]) .metadata-property-icon::before,
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] .metadata-property:has(.metadata-property-value[data-property-type="datetime"]) .metadata-property-icon::before {
-  content: "▦";
-  font-size: 12px;
-}
-
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] .metadata-property:has(.metadata-property-value[data-property-type="checkbox"]) .metadata-property-icon::before {
-  content: "✓";
-  font-family: var(--pixel-font-identity);
-  font-size: 12px;
-  font-weight: 720;
-}
-
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] .metadata-property:has(.metadata-property-value[data-property-type="tags"]) .metadata-property-icon::before {
-  content: "#";
-  font-size: 11px;
-  font-weight: 780;
-}
-
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] .metadata-property:has(.metadata-property-value[data-property-type="aliases"]) .metadata-property-icon::before {
-  content: "↗";
-  font-family: var(--pixel-font-identity);
-  font-size: 11px;
-  font-weight: 720;
-}
-
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] .metadata-property-icon svg {
-  grid-area: 1 / 1;
-  inline-size: 0;
-  block-size: 0;
-  opacity: 0;
+  inline-size: 16px;
+  block-size: 16px;
+  opacity: 1;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] .metadata-property :is(
@@ -715,12 +649,6 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-l
     0 0 0 var(--pixel-border-decoration) var(--pixel-line-strong);
 }
 
-// Obsidian portals the property-key menu to the document body. Keep it as a
-// floating layer so editing a key never changes the definition-list rhythm.
-body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] .metadata-property:has(.metadata-property-key:focus-within) {
-  padding-block-end: 0;
-}
-
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] .metadata-property-key:focus-within {
   min-block-size: 28px;
   padding-inline: 0;
@@ -777,14 +705,14 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-l
   }
 }
 
-body:not(.is-mobile):has(.workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] .metadata-property-key:focus-within) .suggestion-container.mod-property-key {
+body:not(.is-mobile) .suggestion-container.mod-property-key {
   border: var(--pixel-border-decoration) solid var(--pixel-line-strong);
   border-radius: var(--pixel-radius-large);
   background-color: var(--pixel-paper);
   box-shadow: 0 10px 24px rgb(from var(--pixel-shadow-color) r g b / 20%);
 }
 
-body:not(.is-mobile):has(.workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] .metadata-property-key:focus-within) .suggestion-container.mod-property-key .suggestion-item {
+body:not(.is-mobile) .suggestion-container.mod-property-key .suggestion-item {
   box-sizing: border-box;
   min-block-size: 36px;
   padding: 6px 10px;
@@ -794,7 +722,7 @@ body:not(.is-mobile):has(.workspace.workspace .workspace-split.mod-root .workspa
   font-size: 14px;
 }
 
-body:not(.is-mobile):has(.workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] .metadata-property-key:focus-within) .suggestion-container.mod-property-key .suggestion-item.is-selected {
+body:not(.is-mobile) .suggestion-container.mod-property-key .suggestion-item.is-selected {
   outline: 0;
   background-color: color-mix(in srgb, var(--pixel-cyan) 10%, var(--pixel-paper));
   color: var(--pixel-cyan);
@@ -802,7 +730,7 @@ body:not(.is-mobile):has(.workspace.workspace .workspace-split.mod-root .workspa
   font-weight: 600;
 }
 
-body:not(.is-mobile):has(.workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] .metadata-property-key:focus-within) .suggestion-container.mod-property-key .suggestion-flair {
+body:not(.is-mobile) .suggestion-container.mod-property-key .suggestion-flair {
   color: var(--pixel-cyan);
 }
 

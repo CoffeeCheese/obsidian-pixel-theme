@@ -207,13 +207,13 @@ test("compiled package keeps text and meaningful boundaries above the accessibil
   }
 });
 
-test("compiled package embeds the approved identity and code fonts", async () => {
+test("compiled package embeds the identity font and inherits the configured code font", async () => {
   const css = await readTheme();
   const fontFaces = [...css.matchAll(/@font-face\s*\{([\s\S]*?)\}/g)].map(
     (match) => match[1],
   );
 
-  assert.equal(fontFaces.length, 3);
+  assert.equal(fontFaces.length, 1);
   assert.ok(
     fontFaces.some(
       (face) =>
@@ -221,20 +221,7 @@ test("compiled package embeds the approved identity and code fonts", async () =>
         /font-weight:\s*400/.test(face),
     ),
   );
-  assert.ok(
-    fontFaces.some(
-      (face) =>
-        /font-family:\s*"JetBrains Mono"/.test(face) &&
-        /font-weight:\s*400/.test(face),
-    ),
-  );
-  assert.ok(
-    fontFaces.some(
-      (face) =>
-        /font-family:\s*"JetBrains Mono"/.test(face) &&
-        /font-weight:\s*700/.test(face),
-    ),
-  );
+  assert.doesNotMatch(css, /font-family:\s*"JetBrains Mono"/);
 
   for (const face of fontFaces) {
     assert.match(face, /url\("data:font\/woff2;base64,[a-z\d+/=]+"\)/i);

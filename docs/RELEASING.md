@@ -59,7 +59,7 @@ npm run release:verify -- 0.9.1
 Commit the reviewed version files and generated `theme.css`. The release commit and annotated tag must be on `main`.
 
 ```sh
-git add manifest.json versions.json theme.css README.md README.en.md docs/releases/0.9.1.md docs/releases/0.9.1.en.md
+git add manifest.json versions.json theme.css README.md README.zh-CN.md docs/releases/0.9.1.md docs/releases/0.9.1.en.md
 git commit -m "chore(release): prepare 0.9.1"
 git tag -a 0.9.1 -m "Pixel 0.9.1"
 git push --atomic origin main 0.9.1

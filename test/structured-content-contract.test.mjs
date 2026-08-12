@@ -135,19 +135,7 @@ test("callouts preserve type, title, icon, folding, and nested content with stru
   const icon = ruleBody(css, ".callout-icon");
   assert.equal(declaration(icon, "color"), "rgb(var(--callout-color))");
 
-  const iconFallback = ruleBody(
-    css,
-    ".callout-icon:has(> svg:empty)::before",
-  );
-  assert.equal(
-    declaration(iconFallback, "content"),
-    "var(--pixel-callout-fallback-glyph)",
-  );
-  assert.equal(
-    declaration(iconFallback, "border"),
-    "var(--pixel-border-control) solid currentcolor",
-  );
-  assert.equal(declaration(iconFallback, "font-family"), "var(--font-monospace)");
+  assert.doesNotMatch(css, /\.callout-icon:has\s*\(/);
 
   const foldFocus = ruleBody(css, ".callout.is-collapsible .callout-title:focus-visible");
   assert.equal(
@@ -288,10 +276,11 @@ test("footnotes, math, comments, rules, highlights, tags, and nested tasks keep 
   assert.equal(declaration(footnoteLink, "color"), "var(--link-color)");
   assert.equal(declaration(footnoteLink, "text-decoration"), "underline");
 
-  const math = ruleBodyForSelector(css, "mjx-container");
+  const math = ruleBodyForSelector(css, ".markdown-rendered .math-block");
   assert.equal(declaration(math, "max-inline-size"), "100%");
   assert.equal(declaration(math, "overflow-x"), "auto");
   assert.equal(declaration(math, "color"), "var(--pixel-text)");
+  assert.doesNotMatch(css, /(?:^|,)\s*mjx-container\s*(?:,|\{)/m);
 
   const comment = ruleBodyForSelector(css, ".cm-comment");
   assert.equal(declaration(comment, "color"), "var(--pixel-text-muted)");

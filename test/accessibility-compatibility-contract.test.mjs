@@ -184,12 +184,8 @@ test("selector and rendering exceptions stay bounded to documented native defect
   const source = sources.join("\n");
   assert.doesNotMatch(source, /!important|@keyframes/);
 
-  const relationalSelectors = source
-    .split("\n")
-    .filter((line) => line.includes(":has("))
-    .join("\n");
-  assert.match(relationalSelectors, /\.callout-icon:has\(> svg:empty\)/);
-  assert.match(relationalSelectors, /workspace\.is-(?:left|right)-sidedock-open:has\(/);
+  assert.doesNotMatch(source, /:has\s*\(/);
+  assert.doesNotMatch(source, /clip-path\s*:/);
   assert.doesNotMatch(
     source,
     /\.dataview|\.kanban|\.tasks-|\.calendar-container|\.admonition|\.plugin-/i,

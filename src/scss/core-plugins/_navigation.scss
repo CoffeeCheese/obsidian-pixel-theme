@@ -81,12 +81,10 @@
   box-shadow: var(--pixel-shadow-control);
 }
 
-// Obsidian does not expose a dedicated quick-switcher modifier. Its native
-// instruction set has more actions than the command palette, so the fourth
-// instruction is the narrowest stable hook that survives empty search results.
-// Treat the switcher as a quiet file index: one hairline shell, readable rows,
-// and a single pixel-cursor rail to carry the theme identity.
-$pixel-quick-switcher: ".prompt:has(.prompt-instructions > .prompt-instruction:nth-child(4))";
+// Obsidian prompts share the same navigation mechanics. Styling the public
+// prompt surface keeps the quick switcher and command palette consistent
+// without relying on expensive relational selectors or private DOM heuristics.
+$pixel-quick-switcher: ".prompt";
 
 #{$pixel-quick-switcher} {
   border: var(--pixel-border-decoration) solid var(--pixel-line-strong);
@@ -533,28 +531,13 @@ $pixel-tag-pane: 'body .workspace.workspace .workspace-leaf-content[data-type="t
 
 #{$pixel-tag-pane} .nav-header {
   margin: 0;
-  padding: var(--pixel-space-2) var(--pixel-space-3);
+  padding: 0;
   border-block-end: var(--pixel-border-decoration) solid var(--pixel-line);
   background-color: var(--pixel-paper);
 }
 
 #{$pixel-tag-pane} .nav-buttons-container {
   gap: var(--pixel-space-1);
-}
-
-// Opening tag filtering changes the header from a single toolbar into a small
-// two-deck instrument: actions stay in the 44px upper rail while the query gets
-// its own quiet scan line below. This prevents the native input focus ring,
-// form border, and pane divider from reading as one crowded stack of frames.
-#{$pixel-tag-pane} .nav-header:has(
-  > .search-input-container:not([style*="display: none"])
-) {
-  padding: 0;
-}
-
-#{$pixel-tag-pane} .nav-header:has(
-  > .search-input-container:not([style*="display: none"])
-) .nav-buttons-container {
   min-block-size: 44px;
   padding: 6px var(--pixel-space-3);
   border-block-end: var(--pixel-border-decoration) solid var(--pixel-line);
@@ -565,9 +548,7 @@ $pixel-tag-pane: 'body .workspace.workspace .workspace-leaf-content[data-type="t
   );
 }
 
-#{$pixel-tag-pane} .nav-header:has(
-  > .search-input-container:not([style*="display: none"])
-) .nav-action-button:not(:last-child) {
+#{$pixel-tag-pane} .nav-header .nav-action-button:not(:last-child) {
   border-color: transparent;
   background-color: transparent;
   color: color-mix(in srgb, var(--pixel-text-muted) 76%, var(--pixel-paper));

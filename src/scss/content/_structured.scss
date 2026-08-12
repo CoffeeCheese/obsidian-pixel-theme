@@ -41,28 +41,6 @@
   color: rgb(var(--callout-color));
 }
 
-.callout-icon:has(> svg:empty) {
-  position: relative;
-}
-
-.callout-icon:has(> svg:empty)::before {
-  content: var(--pixel-callout-fallback-glyph);
-  display: grid;
-  place-items: center;
-  inline-size: 1rem;
-  block-size: 1rem;
-  border: var(--pixel-border-control) solid currentColor;
-  font-family: var(--font-monospace);
-  font-size: 0.75rem;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.callout-icon:has(> svg:empty) > svg {
-  position: absolute;
-  inset: 0;
-}
-
 .callout-content {
   min-inline-size: 0;
   overflow-x: auto;
@@ -184,7 +162,6 @@ video:focus-visible {
   text-decoration: underline;
 }
 
-mjx-container,
 .markdown-source-view.mod-cm6 .math-block,
 .markdown-rendered .math-block {
   max-inline-size: 100%;

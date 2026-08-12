@@ -31,14 +31,10 @@ const redistributableLicensePaths = [
     "Fusion Pixel — SIL Open Font License 1.1",
     path.join(fontAssetsPath, "licenses/Fusion-Pixel-OFL-1.1.txt"),
   ],
-  [
-    "JetBrains Mono — SIL Open Font License 1.1",
-    path.join(fontAssetsPath, "licenses/JetBrains-Mono-OFL-1.1.txt"),
-  ],
 ];
 const mebibyte = 1024 * 1024;
-const maxEncodedFontBytes = Math.floor(1.2 * mebibyte);
-const maxGeneratedCssBytes = Math.floor(1.5 * mebibyte);
+const maxEncodedFontBytes = Math.floor(0.9 * mebibyte);
+const maxGeneratedCssBytes = mebibyte;
 const isWatch = process.argv.includes("--watch");
 const isCheck = process.argv.includes("--check");
 
@@ -217,7 +213,7 @@ function assertEncodedFontBudget(css) {
 
   if (encodedFontBytes > maxEncodedFontBytes) {
     throw new Error(
-      `Encoded font payload exceeds 1.2 MiB budget (${encodedFontBytes} bytes); reduce or subset embedded fonts`,
+      `Encoded font payload exceeds 0.9 MiB budget (${encodedFontBytes} bytes); reduce or subset embedded fonts`,
     );
   }
 }
@@ -227,7 +223,7 @@ function assertGeneratedCssBudget(css) {
 
   if (generatedCssBytes > maxGeneratedCssBytes) {
     throw new Error(
-      `Generated theme.css exceeds 1.5 MiB budget (${generatedCssBytes} bytes); remove or reduce generated CSS`,
+      `Generated theme.css exceeds 1 MiB budget (${generatedCssBytes} bytes); remove or reduce generated CSS`,
     );
   }
 }
