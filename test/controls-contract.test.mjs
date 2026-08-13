@@ -83,7 +83,7 @@ test("settings toggles glide between edges with a cushioned press", async () => 
 test("settings search uses a quiet hairline edge with an explicit focus signal", async () => {
   const css = await readTheme();
   const selector =
-    ".modal.mod-settings .vertical-tab-header .setting-search-container .search-input-container input[type=search]";
+    ".mod-settings .setting-search-container input[type=search]";
   const field = ruleBody(css, selector);
 
   assert.equal(
@@ -113,14 +113,39 @@ test("settings search uses a quiet hairline edge with an explicit focus signal",
 
   const focusedIcon = ruleBody(
     css,
-    ".modal.mod-settings .vertical-tab-header .setting-search-container .search-input-container:focus-within::before",
+    ".mod-settings .setting-search-container .search-input-container:focus-within::before",
   );
   assert.equal(declaration(focusedIcon, "background-color"), "var(--pixel-cyan)");
 });
 
+test("settings sidebar navigation uses a stable soft hover slot", async () => {
+  const css = await readTheme();
+  const selector = ".mod-settings .vertical-tab-nav-item";
+  const item = ruleBody(css, selector);
+
+  assert.match(
+    declaration(item, "transition"),
+    /background-color var\(--pixel-motion-state\) linear/,
+  );
+
+  const feedback = ruleBody(
+    css,
+    `${selector}:not(.is-active):is(:hover, :focus-visible)`,
+  );
+  assert.equal(
+    declaration(feedback, "background-color"),
+    "color-mix(in srgb, var(--pixel-cyan) 5%, var(--pixel-paper))",
+  );
+  assert.doesNotMatch(feedback, /(?:transform|box-shadow)\s*:/i);
+
+  const reducedMotion = atRuleBody(css, "@media (prefers-reduced-motion: reduce)");
+  const motionless = ruleBodyForSelector(reducedMotion, selector);
+  assert.equal(declaration(motionless, "transition-duration"), "0ms");
+});
+
 test("core plugins use a quiet list with Pixel keycaps and search signal", async () => {
   const css = await readTheme();
-  const list = ".modal.mod-settings .setting-group.mod-list";
+  const list = ".mod-settings .mod-list";
 
   const scanSelector =
     ".setting-group-search .search-input-container::after";

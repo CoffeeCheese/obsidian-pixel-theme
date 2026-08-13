@@ -258,12 +258,23 @@ button.mod-loading::after {
   align-items: flex-start;
 }
 
+.mod-settings .vertical-tab-nav-item {
+  transition: background-color var(--pixel-motion-state) linear;
+}
+
+.mod-settings
+  .vertical-tab-nav-item:not(.is-active):is(:hover, :focus-visible) {
+  background-color: color-mix(
+    in srgb,
+    var(--pixel-cyan) 5%,
+    var(--pixel-paper)
+  );
+}
+
 // Settings already has a framed sidebar and bordered option cards, so its
 // search field uses a quieter edge than the theme's standalone form controls.
-.modal.mod-settings
-  .vertical-tab-header
+.mod-settings
   .setting-search-container
-  .search-input-container
   input[type="search"] {
   border: var(--pixel-border-decoration) solid
     color-mix(
@@ -284,17 +295,14 @@ button.mod-loading::after {
     box-shadow var(--pixel-motion-state) var(--pixel-ease-out);
 }
 
-.modal.mod-settings
-  .vertical-tab-header
+.mod-settings
   .setting-search-container
   .search-input-container:focus-within::before {
   background-color: var(--pixel-cyan);
 }
 
-.modal.mod-settings
-  .vertical-tab-header
+.mod-settings
   .setting-search-container
-  .search-input-container
   input[type="search"]:focus {
   outline: 0;
   border-color: var(--pixel-line-strong);
@@ -303,10 +311,8 @@ button.mod-loading::after {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .modal.mod-settings
-    .vertical-tab-header
+  .mod-settings
     .setting-search-container
-    .search-input-container
     input[type="search"]:hover:not(:focus) {
     border-color: color-mix(
       in srgb,
@@ -449,7 +455,7 @@ input[type="radio"]:checked {
     opacity 0ms 300ms;
 }
 
-.modal.mod-settings .setting-group.mod-list
+.mod-settings .mod-list
   .setting-group-search
   input[type="search"] {
   min-block-size: 36px;
@@ -475,19 +481,19 @@ input[type="radio"]:checked {
   box-shadow: inset 0 -3px 0 var(--pixel-cyan);
 }
 
-.modal.mod-settings .setting-group.mod-list
+.mod-settings .mod-list
   .setting-item {
   box-shadow: inset 0 -1px 0 var(--pixel-line);
 }
 
-.modal.mod-settings .setting-group.mod-list
+.mod-settings .mod-list
   .setting-item-control {
   min-block-size: var(--pixel-control-min);
   flex: 0 0 auto;
   gap: var(--pixel-space-2);
 }
 
-.modal.mod-settings .setting-group.mod-list
+.mod-settings .mod-list
   .extra-setting-button {
   padding: 6px;
   border: var(--pixel-border-decoration) solid
@@ -504,14 +510,14 @@ input[type="radio"]:checked {
   transform: translateY(0);
 }
 
-.modal.mod-settings .setting-group.mod-list
+.mod-settings .mod-list
   .extra-setting-button:not([aria-disabled="true"]):active {
   box-shadow: inset 0 -1px 0
     color-mix(in srgb, var(--pixel-cyan) 36%, var(--pixel-paper));
   transform: translateY(1px);
 }
 
-.modal.mod-settings .setting-group.mod-list
+.mod-settings .mod-list
   .checkbox-container {
   --toggle-s-width: var(--pixel-toggle-inline-size);
   --toggle-s-thumb-width: var(--pixel-toggle-thumb-size);
@@ -521,7 +527,7 @@ input[type="radio"]:checked {
   block-size: var(--pixel-toggle-block-size);
 }
 
-.modal.mod-settings .setting-group.mod-list
+.mod-settings .mod-list
   .checkbox-container::after {
   top: 0;
   inset-inline-start: var(--pixel-toggle-position);
@@ -531,19 +537,19 @@ input[type="radio"]:checked {
   transform: scaleY(1);
 }
 
-.modal.mod-settings .setting-group.mod-list
+.mod-settings .mod-list
   .checkbox-container.is-enabled::after {
   transform: scaleY(1);
 }
 
-.modal.mod-settings .setting-group.mod-list
+.mod-settings .mod-list
   .checkbox-container:not(.is-disabled):active::after {
   transform: scaleY(0.9);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .modal.mod-settings
-    .setting-group.mod-list
+  .mod-settings
+    .mod-list
     .extra-setting-button:hover {
     border-color: color-mix(
       in srgb,

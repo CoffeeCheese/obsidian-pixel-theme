@@ -1232,18 +1232,26 @@ button.mod-loading::after {
   align-items: flex-start;
 }
 
-.modal.mod-settings .vertical-tab-header .setting-search-container .search-input-container input[type=search] {
+.mod-settings .vertical-tab-nav-item {
+  transition: background-color var(--pixel-motion-state) linear;
+}
+
+.mod-settings .vertical-tab-nav-item:not(.is-active):is(:hover, :focus-visible) {
+  background-color: color-mix(in srgb, var(--pixel-cyan) 5%, var(--pixel-paper));
+}
+
+.mod-settings .setting-search-container input[type=search] {
   border: var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-border-meaningful) 62%, var(--pixel-paper));
   background-color: color-mix(in srgb, var(--pixel-paper) 92%, var(--pixel-canvas));
   box-shadow: 0 1px 0 color-mix(in srgb, var(--pixel-border-meaningful) 22%, transparent);
   transition: background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, box-shadow var(--pixel-motion-state) var(--pixel-ease-out);
 }
 
-.modal.mod-settings .vertical-tab-header .setting-search-container .search-input-container:focus-within::before {
+.mod-settings .setting-search-container .search-input-container:focus-within::before {
   background-color: var(--pixel-cyan);
 }
 
-.modal.mod-settings .vertical-tab-header .setting-search-container .search-input-container input[type=search]:focus {
+.mod-settings .setting-search-container input[type=search]:focus {
   outline: 0;
   border-color: var(--pixel-line-strong);
   background-color: var(--pixel-paper);
@@ -1251,7 +1259,7 @@ button.mod-loading::after {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .modal.mod-settings .vertical-tab-header .setting-search-container .search-input-container input[type=search]:hover:not(:focus) {
+  .mod-settings .setting-search-container input[type=search]:hover:not(:focus) {
     border-color: color-mix(in srgb, var(--pixel-cyan) 72%, var(--pixel-border-meaningful));
     background-color: var(--pixel-paper);
     box-shadow: 0 1px 0 color-mix(in srgb, var(--pixel-cyan) 24%, transparent);
@@ -1360,7 +1368,7 @@ input[type=radio]:checked {
   transition: transform 300ms steps(8), opacity 0ms 300ms;
 }
 
-.modal.mod-settings .setting-group.mod-list .setting-group-search input[type=search] {
+.mod-settings .mod-list .setting-group-search input[type=search] {
   min-block-size: 36px;
   border: var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-border-meaningful) 58%, var(--pixel-paper));
   border-radius: var(--pixel-radius);
@@ -1375,17 +1383,17 @@ input[type=radio]:checked {
   box-shadow: inset 0 -3px 0 var(--pixel-cyan);
 }
 
-.modal.mod-settings .setting-group.mod-list .setting-item {
+.mod-settings .mod-list .setting-item {
   box-shadow: inset 0 -1px 0 var(--pixel-line);
 }
 
-.modal.mod-settings .setting-group.mod-list .setting-item-control {
+.mod-settings .mod-list .setting-item-control {
   min-block-size: var(--pixel-control-min);
   flex: 0 0 auto;
   gap: var(--pixel-space-2);
 }
 
-.modal.mod-settings .setting-group.mod-list .extra-setting-button {
+.mod-settings .mod-list .extra-setting-button {
   padding: 6px;
   border: var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-border-meaningful) 54%, var(--pixel-paper));
   border-radius: var(--pixel-radius-small);
@@ -1395,12 +1403,12 @@ input[type=radio]:checked {
   transform: translateY(0);
 }
 
-.modal.mod-settings .setting-group.mod-list .extra-setting-button:not([aria-disabled=true]):active {
+.mod-settings .mod-list .extra-setting-button:not([aria-disabled=true]):active {
   box-shadow: inset 0 -1px 0 color-mix(in srgb, var(--pixel-cyan) 36%, var(--pixel-paper));
   transform: translateY(1px);
 }
 
-.modal.mod-settings .setting-group.mod-list .checkbox-container {
+.mod-settings .mod-list .checkbox-container {
   --toggle-s-width: var(--pixel-toggle-inline-size);
   --toggle-s-thumb-width: var(--pixel-toggle-thumb-size);
   --toggle-s-thumb-height: var(--pixel-toggle-thumb-size);
@@ -1408,7 +1416,7 @@ input[type=radio]:checked {
   block-size: var(--pixel-toggle-block-size);
 }
 
-.modal.mod-settings .setting-group.mod-list .checkbox-container::after {
+.mod-settings .mod-list .checkbox-container::after {
   top: 0;
   inset-inline-start: var(--pixel-toggle-position);
   inline-size: var(--pixel-toggle-thumb-size);
@@ -1417,16 +1425,16 @@ input[type=radio]:checked {
   transform: scaleY(1);
 }
 
-.modal.mod-settings .setting-group.mod-list .checkbox-container.is-enabled::after {
+.mod-settings .mod-list .checkbox-container.is-enabled::after {
   transform: scaleY(1);
 }
 
-.modal.mod-settings .setting-group.mod-list .checkbox-container:not(.is-disabled):active::after {
+.mod-settings .mod-list .checkbox-container:not(.is-disabled):active::after {
   transform: scaleY(0.9);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .modal.mod-settings .setting-group.mod-list .extra-setting-button:hover {
+  .mod-settings .mod-list .extra-setting-button:hover {
     border-color: color-mix(in srgb, var(--pixel-cyan) 64%, var(--pixel-border-meaningful));
     background-color: color-mix(in srgb, var(--pixel-cyan) 9%, var(--pixel-paper));
     box-shadow: inset 0 -2px 0 var(--pixel-cyan);
@@ -1497,6 +1505,7 @@ button .svg-icon {
   .is-loading::before,
   .workspace-leaf-resize-handle,
   body:not(.is-mobile) .workspace-leaf-resize-handle,
+  .mod-settings .vertical-tab-nav-item,
   .nav-file-title,
   .nav-folder-title,
   .nav-file-title::before,
