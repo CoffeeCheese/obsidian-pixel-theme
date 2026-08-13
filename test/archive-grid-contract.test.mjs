@@ -167,6 +167,10 @@ test("H5 Archive Grid keeps top-corner controls flush with the top bar", async (
     "var(--pixel-paper)",
   );
   assert.equal(
+    declaration(macosRibbonCorner, "border-block-end"),
+    "var(--pixel-border-decoration) solid var(--pixel-line)",
+  );
+  assert.equal(
     declaration(activeTab, "background-color"),
     "var(--pixel-paper)",
   );

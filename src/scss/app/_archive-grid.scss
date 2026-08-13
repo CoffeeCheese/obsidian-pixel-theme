@@ -133,6 +133,7 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-t
 // Preserve Obsidian's macOS window drag region while removing its darker
 // titlebar fill, then keep both top-corner controls on the top bar's Paper plane.
 body:not(.is-mobile).mod-macos.is-frameless .workspace.workspace .workspace-ribbon.mod-left::before {
+  border-block-end: var(--pixel-border-decoration) solid var(--pixel-line);
   background-color: var(--pixel-paper);
 }
 
