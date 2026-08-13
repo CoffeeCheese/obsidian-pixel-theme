@@ -3847,6 +3847,10 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-t
   background-image: none;
 }
 
+body:not(.is-mobile).mod-macos.is-frameless .workspace.workspace .workspace-ribbon.mod-left::before {
+  background-color: var(--pixel-paper);
+}
+
 body:not(.is-mobile).mod-macos.is-hidden-frameless:not(.is-popout-window) .workspace.workspace .sidebar-toggle-button.mod-right {
   background-color: var(--pixel-paper);
 }
