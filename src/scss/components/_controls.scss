@@ -428,7 +428,26 @@ input[type="radio"]:checked {
 }
 
 // Core plugins keeps the reference theme's quiet rows, then translates its
-// controls back onto Pixel's 4px grid with a shallow keycap edge.
+// controls back onto Pixel's 4px grid with a shallow keycap edge. Its search
+// channel scans once on focus, then settles into a stable bottom rail.
+.setting-group-search .search-input-container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-right: 3px solid var(--pixel-cyan);
+  opacity: 1;
+  transform: translateX(calc(-100% - 3px));
+  pointer-events: none;
+}
+
+.setting-group-search :focus-within::after {
+  opacity: 0;
+  transform: none;
+  transition:
+    transform 300ms steps(8),
+    opacity 0ms 300ms;
+}
+
 .modal.mod-settings .setting-group.mod-list
   .setting-group-search
   input[type="search"] {
@@ -445,12 +464,14 @@ input[type="radio"]:checked {
     color-mix(in srgb, var(--pixel-line-strong) 44%, transparent);
 }
 
-.modal.mod-settings .setting-group.mod-list
+.setting-group.mod-list.mod-list
   .setting-group-search
-  input[type="search"]:focus-visible {
+  :focus-within
+  > input[type="search"] {
+  outline: 0;
   border-color: var(--pixel-cyan);
   background-color: var(--pixel-paper);
-  box-shadow: inset 0 -2px 0 var(--pixel-cyan);
+  box-shadow: inset 0 -3px 0 var(--pixel-cyan);
 }
 
 .modal.mod-settings .setting-group.mod-list

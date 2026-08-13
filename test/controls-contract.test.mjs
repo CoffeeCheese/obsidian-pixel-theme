@@ -113,6 +113,27 @@ test("core plugins use a quiet list with Pixel keycaps and search signal", async
   const css = await readTheme();
   const list = ".modal.mod-settings .setting-group.mod-list";
 
+  const scanSelector =
+    ".setting-group-search .search-input-container::after";
+  const scan = ruleBody(css, scanSelector);
+  assert.equal(declaration(scan, "opacity"), "1");
+  assert.equal(
+    declaration(scan, "transform"),
+    "translatex(calc(-100% - 3px))",
+  );
+  assert.equal(declaration(scan, "pointer-events"), "none");
+
+  const activeScan = ruleBody(
+    css,
+    ".setting-group-search :focus-within::after",
+  );
+  assert.equal(declaration(activeScan, "opacity"), "0");
+  assert.equal(declaration(activeScan, "transform"), "none");
+  assert.match(
+    declaration(activeScan, "transition"),
+    /transform 300ms steps\(8\)/,
+  );
+
   const searchSelector = `${list} .setting-group-search input[type=search]`;
   const search = ruleBody(css, searchSelector);
   assert.equal(declaration(search, "min-block-size"), "36px");
@@ -120,11 +141,15 @@ test("core plugins use a quiet list with Pixel keycaps and search signal", async
   assert.match(declaration(search, "border"), /var\(--pixel-border-decoration\)/);
   assert.match(declaration(search, "box-shadow"), /inset 0 -2px 0/);
 
-  const focusedSearch = ruleBody(css, `${searchSelector}:focus-visible`);
+  const focusedSearch = ruleBody(
+    css,
+    ".setting-group.mod-list.mod-list .setting-group-search :focus-within > input[type=search]",
+  );
+  assert.equal(declaration(focusedSearch, "outline"), "0");
   assert.equal(declaration(focusedSearch, "border-color"), "var(--pixel-cyan)");
   assert.equal(
     declaration(focusedSearch, "box-shadow"),
-    "inset 0 -2px 0 var(--pixel-cyan)",
+    "inset 0 -3px 0 var(--pixel-cyan)",
   );
 
   const row = ruleBody(css, `${list} .setting-item`);
@@ -373,6 +398,15 @@ test("accessibility preferences remove motion and preserve system-authoritative 
   const motionlessDrawers = ruleBodyForSelector(reducedMotion, ".workspace-drawer");
   assert.equal(declaration(motionlessDrawers, "transition-duration"), "0ms");
   assert.equal(declaration(motionlessDrawers, "animation"), "none");
+  const motionlessCorePluginScan = ruleBodyForSelector(
+    reducedMotion,
+    ".setting-group-search .search-input-container::after",
+  );
+  assert.equal(
+    declaration(motionlessCorePluginScan, "transition-duration"),
+    "0ms",
+  );
+  assert.equal(declaration(motionlessCorePluginScan, "animation"), "none");
 
   const forcedColors = atRuleBody(css, "@media (forced-colors: active)");
   const systemRoles = ruleBodyForSelector(forcedColors, ".theme-light");
