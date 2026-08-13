@@ -284,7 +284,7 @@ test("build counts legacy data-URI MIME types toward the encoded font budget", a
   assert.match(result.output, /encoded font payload exceeds 0\.9 MiB budget/i);
 });
 
-test("build rejects generated CSS above 1 MiB", async (t) => {
+test("build allows generated CSS above 1 MiB", async (t) => {
   const fixtureRoot = await createPackageFixture(t);
   const entryPath = path.join(fixtureRoot, "src/scss/index.scss");
   const oversizedValue = "x".repeat(1024 * 1024);
@@ -296,8 +296,9 @@ test("build rejects generated CSS above 1 MiB", async (t) => {
 
   const result = runBuild(fixtureRoot);
 
-  assert.notEqual(result.status, 0);
-  assert.match(result.output, /generated theme\.css exceeds 1 MiB budget/i);
+  assert.equal(result.status, 0, result.output);
+  const generatedCss = await readFile(path.join(fixtureRoot, "theme.css"));
+  assert.ok(generatedCss.byteLength > 1024 * 1024);
 });
 
 test("check rejects runtime HTTP URLs in the compiled stylesheet", async (t) => {

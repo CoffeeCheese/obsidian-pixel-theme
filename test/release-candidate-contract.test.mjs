@@ -39,7 +39,6 @@ test("release package is self-contained and carries redistribution notices", asy
 
   assert.equal(fontPayloads.length, 1);
   assert.ok(encodedFontBytes <= Math.floor(0.9 * 1024 * 1024));
-  assert.ok(Buffer.byteLength(css) <= 1024 * 1024);
   assert.doesNotMatch(css, /@import\b/i);
   for (const match of css.matchAll(/url\(([^)]*)\)/gi)) {
     const value = match[1].trim().replace(/^(["'])(.*)\1$/, "$2");

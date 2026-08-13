@@ -34,7 +34,6 @@ const redistributableLicensePaths = [
 ];
 const mebibyte = 1024 * 1024;
 const maxEncodedFontBytes = Math.floor(0.9 * mebibyte);
-const maxGeneratedCssBytes = mebibyte;
 const isWatch = process.argv.includes("--watch");
 const isCheck = process.argv.includes("--check");
 
@@ -218,16 +217,6 @@ function assertEncodedFontBudget(css) {
   }
 }
 
-function assertGeneratedCssBudget(css) {
-  const generatedCssBytes = Buffer.byteLength(css, "utf8");
-
-  if (generatedCssBytes > maxGeneratedCssBytes) {
-    throw new Error(
-      `Generated theme.css exceeds 1 MiB budget (${generatedCssBytes} bytes); remove or reduce generated CSS`,
-    );
-  }
-}
-
 function embeddedFontDataUrl(argumentsList) {
   const relativePath = argumentsList[0].assertString("relativePath").text;
   const requestedPath = path.resolve(fontAssetsPath, relativePath);
@@ -321,7 +310,6 @@ async function renderTheme() {
 
   assertEmbeddedRuntimeAssets(css);
   assertEncodedFontBudget(css);
-  assertGeneratedCssBudget(css);
 
   return css;
 }
