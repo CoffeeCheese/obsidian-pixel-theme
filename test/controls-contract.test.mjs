@@ -80,6 +80,35 @@ test("settings toggles glide between edges with a cushioned press", async () => 
   assert.equal(declaration(pressed, "opacity"), "1");
 });
 
+test("settings search uses a quiet hairline edge with an explicit focus signal", async () => {
+  const css = await readTheme();
+  const selector =
+    ".modal.mod-settings .vertical-tab-header .setting-search-container .search-input-container input[type=search]";
+  const field = ruleBody(css, selector);
+
+  assert.equal(
+    declaration(field, "border"),
+    "var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-border-meaningful) 62%, var(--pixel-paper))",
+  );
+  assert.equal(
+    declaration(field, "box-shadow"),
+    "0 1px 0 color-mix(in srgb, var(--pixel-border-meaningful) 22%, transparent)",
+  );
+
+  const focus = ruleBody(css, `${selector}:focus-visible`);
+  assert.equal(declaration(focus, "border-color"), "var(--pixel-cyan)");
+  assert.equal(declaration(focus, "background-color"), "var(--pixel-paper)");
+
+  const hover = ruleBody(css, `${selector}:hover:not(:focus-visible)`);
+  assert.match(declaration(hover, "border-color"), /var\(--pixel-cyan\) 72%/);
+
+  const focusedIcon = ruleBody(
+    css,
+    ".modal.mod-settings .vertical-tab-header .setting-search-container .search-input-container:focus-within::before",
+  );
+  assert.equal(declaration(focusedIcon, "background-color"), "var(--pixel-cyan)");
+});
+
 test("controls expose pointer, keyboard, and pressed feedback without layout shifts", async () => {
   const css = await readTheme();
   const raisedControl = ruleBodyForSelector(css, "button:not(.clickable-icon)");

@@ -258,6 +258,68 @@ button.mod-loading::after {
   align-items: flex-start;
 }
 
+// Settings already has a framed sidebar and bordered option cards, so its
+// search field uses a quieter edge than the theme's standalone form controls.
+.modal.mod-settings
+  .vertical-tab-header
+  .setting-search-container
+  .search-input-container
+  input[type="search"] {
+  border: var(--pixel-border-decoration) solid
+    color-mix(
+      in srgb,
+      var(--pixel-border-meaningful) 62%,
+      var(--pixel-paper)
+    );
+  background-color: color-mix(
+    in srgb,
+    var(--pixel-paper) 92%,
+    var(--pixel-canvas)
+  );
+  box-shadow: 0 1px 0
+    color-mix(in srgb, var(--pixel-border-meaningful) 22%, transparent);
+  transition:
+    background-color var(--pixel-motion-state) linear,
+    border-color var(--pixel-motion-state) linear,
+    box-shadow var(--pixel-motion-state) linear,
+    outline-color var(--pixel-motion-state) linear;
+}
+
+.modal.mod-settings
+  .vertical-tab-header
+  .setting-search-container
+  .search-input-container:focus-within::before {
+  background-color: var(--pixel-cyan);
+}
+
+.modal.mod-settings
+  .vertical-tab-header
+  .setting-search-container
+  .search-input-container
+  input[type="search"]:focus-visible {
+  border-color: var(--pixel-cyan);
+  background-color: var(--pixel-paper);
+  box-shadow: 0 1px 0
+    color-mix(in srgb, var(--pixel-cyan) 32%, transparent);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .modal.mod-settings
+    .vertical-tab-header
+    .setting-search-container
+    .search-input-container
+    input[type="search"]:hover:not(:focus-visible) {
+    border-color: color-mix(
+      in srgb,
+      var(--pixel-cyan) 72%,
+      var(--pixel-border-meaningful)
+    );
+    background-color: var(--pixel-paper);
+    box-shadow: 0 1px 0
+      color-mix(in srgb, var(--pixel-cyan) 24%, transparent);
+  }
+}
+
 input[type="checkbox"],
 input[type="radio"] {
   border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
