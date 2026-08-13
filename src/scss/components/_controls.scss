@@ -517,7 +517,7 @@ input[type="radio"]:checked {
   transform: translateY(1px);
 }
 
-.mod-settings .mod-list
+body:not(.is-mobile) .mod-settings .mod-list
   .checkbox-container {
   --toggle-s-width: var(--pixel-toggle-inline-size);
   --toggle-s-thumb-width: var(--pixel-toggle-thumb-size);
@@ -527,7 +527,7 @@ input[type="radio"]:checked {
   block-size: var(--pixel-toggle-block-size);
 }
 
-.mod-settings .mod-list
+body:not(.is-mobile) .mod-settings .mod-list
   .checkbox-container::after {
   top: 0;
   inset-inline-start: var(--pixel-toggle-position);
@@ -537,12 +537,12 @@ input[type="radio"]:checked {
   transform: scaleY(1);
 }
 
-.mod-settings .mod-list
+body:not(.is-mobile) .mod-settings .mod-list
   .checkbox-container.is-enabled::after {
   transform: scaleY(1);
 }
 
-.mod-settings .mod-list
+body:not(.is-mobile) .mod-settings .mod-list
   .checkbox-container:not(.is-disabled):active::after {
   transform: scaleY(0.9);
 }

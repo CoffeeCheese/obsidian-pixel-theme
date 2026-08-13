@@ -146,6 +146,7 @@ test("settings sidebar navigation uses a stable soft hover slot", async () => {
 test("core plugins use a quiet list with Pixel keycaps and search signal", async () => {
   const css = await readTheme();
   const list = ".mod-settings .mod-list";
+  const toggleList = `body:not(.is-mobile) ${list}`;
 
   const scanSelector =
     ".setting-group-search .search-input-container::after";
@@ -211,7 +212,7 @@ test("core plugins use a quiet list with Pixel keycaps and search signal", async
   );
   assert.equal(declaration(pressedAction, "transform"), "translatey(1px)");
 
-  const toggle = ruleBody(css, `${list} .checkbox-container`);
+  const toggle = ruleBody(css, `${toggleList} .checkbox-container`);
   assert.equal(
     declaration(toggle, "--toggle-s-width"),
     "var(--pixel-toggle-inline-size)",
@@ -233,7 +234,7 @@ test("core plugins use a quiet list with Pixel keycaps and search signal", async
     "var(--pixel-toggle-block-size)",
   );
 
-  const thumb = ruleBody(css, `${list} .checkbox-container::after`);
+  const thumb = ruleBody(css, `${toggleList} .checkbox-container::after`);
   assert.equal(
     declaration(thumb, "inline-size"),
     "var(--pixel-toggle-thumb-size)",
@@ -252,13 +253,13 @@ test("core plugins use a quiet list with Pixel keycaps and search signal", async
 
   const enabledThumb = ruleBody(
     css,
-    `${list} .checkbox-container.is-enabled::after`,
+    `${toggleList} .checkbox-container.is-enabled::after`,
   );
   assert.equal(declaration(enabledThumb, "transform"), "scaley(1)");
 
   const pressedThumb = ruleBody(
     css,
-    `${list} .checkbox-container:not(.is-disabled):active::after`,
+    `${toggleList} .checkbox-container:not(.is-disabled):active::after`,
   );
   assert.equal(declaration(pressedThumb, "transform"), "scaley(0.9)");
 });
