@@ -1256,64 +1256,6 @@ button.mod-loading::after {
     box-shadow: 0 1px 0 color-mix(in srgb, var(--pixel-cyan) 24%, transparent);
   }
 }
-.modal.mod-settings .setting-group.mod-list .setting-item-control {
-  min-block-size: var(--pixel-control-min);
-  align-items: center;
-  align-self: center;
-  gap: 6px;
-}
-
-.modal.mod-settings .setting-group.mod-list .extra-setting-button {
-  inline-size: var(--pixel-control-min);
-  block-size: var(--pixel-control-min);
-  padding: 6px;
-  border: var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-border-meaningful) 58%, var(--pixel-paper));
-  border-radius: 50%;
-  background-color: color-mix(in srgb, var(--pixel-paper) 92%, var(--pixel-canvas));
-  color: var(--pixel-text-muted);
-  box-shadow: inset 0 1px 0 color-mix(in srgb, #fff 44%, transparent), 0 1px 2px color-mix(in srgb, var(--pixel-shadow-color) 24%, transparent);
-  transform: scale(1);
-}
-
-.modal.mod-settings .setting-group.mod-list :is(.extra-setting-button, .checkbox-container):focus-visible {
-  border-color: var(--pixel-cyan);
-  outline: 3px solid color-mix(in srgb, var(--pixel-cyan) 26%, transparent);
-  outline-offset: 1px;
-}
-
-.modal.mod-settings .setting-group.mod-list .extra-setting-button:not([aria-disabled=true]):active {
-  box-shadow: inset 0 1px 2px color-mix(in srgb, var(--pixel-shadow-color) 30%, transparent);
-  transform: scale(0.92);
-}
-
-.modal.mod-settings .setting-group.mod-list .checkbox-container {
-  --toggle-s-width: 40px;
-  --toggle-s-thumb-width: 18px;
-  --toggle-s-thumb-height: 18px;
-  --toggle-s-border-width: 1px;
-  border: var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-border-meaningful) 54%, var(--pixel-paper));
-  border-radius: 999px;
-  background-color: color-mix(in srgb, var(--pixel-border-meaningful) 16%, var(--pixel-paper));
-  box-shadow: inset 0 1px 2px color-mix(in srgb, var(--pixel-shadow-color) 16%, transparent);
-}
-
-.modal.mod-settings .setting-group.mod-list .checkbox-container::after {
-  inset-inline-start: 0;
-  border: 0;
-  border-radius: 50%;
-  box-shadow: 0 1px 2px color-mix(in srgb, var(--pixel-shadow-color) 32%, transparent), 0 0 0 1px color-mix(in srgb, var(--pixel-shadow-color) 8%, transparent);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .modal.mod-settings .setting-group.mod-list .extra-setting-button:hover {
-    border-color: color-mix(in srgb, var(--pixel-cyan) 58%, var(--pixel-border-meaningful));
-    background: color-mix(in srgb, var(--pixel-cyan) 8%, var(--pixel-paper));
-    box-shadow: 0 2px 5px color-mix(in srgb, var(--pixel-shadow-color) 22%, transparent);
-  }
-  .modal.mod-settings .setting-group.mod-list .checkbox-container:not(.is-enabled, .is-disabled):hover {
-    border-color: color-mix(in srgb, var(--pixel-cyan) 52%, var(--pixel-border-meaningful));
-  }
-}
 input[type=checkbox],
 input[type=radio] {
   border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
@@ -1399,6 +1341,78 @@ input[type=radio]:checked {
   opacity: 1;
 }
 
+.modal.mod-settings .setting-group.mod-list .setting-group-search input[type=search] {
+  min-block-size: 36px;
+  border: var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-border-meaningful) 58%, var(--pixel-paper));
+  border-radius: var(--pixel-radius);
+  background-color: color-mix(in srgb, var(--pixel-paper) 94%, var(--pixel-canvas));
+  box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--pixel-line-strong) 44%, transparent);
+}
+
+.modal.mod-settings .setting-group.mod-list .setting-group-search input[type=search]:focus-visible {
+  border-color: var(--pixel-cyan);
+  background-color: var(--pixel-paper);
+  box-shadow: inset 0 -2px 0 var(--pixel-cyan);
+}
+
+.modal.mod-settings .setting-group.mod-list .setting-item {
+  box-shadow: inset 0 -1px 0 var(--pixel-line);
+}
+
+.modal.mod-settings .setting-group.mod-list .setting-item-control {
+  min-block-size: var(--pixel-control-min);
+  flex: 0 0 auto;
+  gap: var(--pixel-space-2);
+}
+
+.modal.mod-settings .setting-group.mod-list .extra-setting-button {
+  padding: 6px;
+  border: var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-border-meaningful) 54%, var(--pixel-paper));
+  border-radius: var(--pixel-radius-small);
+  background-color: color-mix(in srgb, var(--pixel-paper) 94%, var(--pixel-canvas));
+  color: var(--pixel-text-muted);
+  box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--pixel-border-meaningful) 28%, var(--pixel-paper));
+  transform: translateY(0);
+}
+
+.modal.mod-settings .setting-group.mod-list .extra-setting-button:not([aria-disabled=true]):active {
+  box-shadow: inset 0 -1px 0 color-mix(in srgb, var(--pixel-cyan) 36%, var(--pixel-paper));
+  transform: translateY(1px);
+}
+
+.modal.mod-settings .setting-group.mod-list .checkbox-container {
+  --toggle-s-width: var(--pixel-toggle-inline-size);
+  --toggle-s-thumb-width: var(--pixel-toggle-thumb-size);
+  --toggle-s-thumb-height: var(--pixel-toggle-thumb-size);
+  inline-size: var(--pixel-toggle-inline-size);
+  block-size: var(--pixel-toggle-block-size);
+}
+
+.modal.mod-settings .setting-group.mod-list .checkbox-container::after {
+  top: 0;
+  inset-inline-start: var(--pixel-toggle-position);
+  inline-size: var(--pixel-toggle-thumb-size);
+  block-size: var(--pixel-toggle-thumb-size);
+  margin: 0;
+  transform: scaleY(1);
+}
+
+.modal.mod-settings .setting-group.mod-list .checkbox-container.is-enabled::after {
+  transform: scaleY(1);
+}
+
+.modal.mod-settings .setting-group.mod-list .checkbox-container:not(.is-disabled):active::after {
+  transform: scaleY(0.9);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .modal.mod-settings .setting-group.mod-list .extra-setting-button:hover {
+    border-color: color-mix(in srgb, var(--pixel-cyan) 64%, var(--pixel-border-meaningful));
+    background-color: color-mix(in srgb, var(--pixel-cyan) 9%, var(--pixel-paper));
+    box-shadow: inset 0 -2px 0 var(--pixel-cyan);
+    transform: translateY(-1px);
+  }
+}
 .checkbox-container.is-disabled::after,
 input[type=range]:disabled::-webkit-slider-thumb {
   box-shadow: none;
@@ -1444,19 +1458,6 @@ button .svg-icon {
 .setting-item-control,
 .modal-button-container {
   gap: var(--pixel-space-2);
-}
-
-.modal.mod-settings .setting-group.mod-list .checkbox-container {
-  --pixel-toggle-position: 0px;
-}
-
-.modal.mod-settings .setting-group.mod-list .checkbox-container::after {
-  background-color: color-mix(in srgb, var(--pixel-paper) 38%, #fff);
-}
-
-.modal.mod-settings .setting-group.mod-list .checkbox-container.is-enabled {
-  border-color: var(--pixel-cyan);
-  background-color: color-mix(in srgb, var(--pixel-cyan) 82%, var(--pixel-paper));
 }
 
 @media (prefers-reduced-motion: reduce) {

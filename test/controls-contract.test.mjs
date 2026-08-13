@@ -109,47 +109,97 @@ test("settings search uses a quiet hairline edge with an explicit focus signal",
   assert.equal(declaration(focusedIcon, "background-color"), "var(--pixel-cyan)");
 });
 
-test("core plugin actions share a centered Apple-soft control rail", async () => {
+test("core plugins use a quiet list with Pixel keycaps and search signal", async () => {
   const css = await readTheme();
   const list = ".modal.mod-settings .setting-group.mod-list";
+
+  const searchSelector = `${list} .setting-group-search input[type=search]`;
+  const search = ruleBody(css, searchSelector);
+  assert.equal(declaration(search, "min-block-size"), "36px");
+  assert.equal(declaration(search, "border-radius"), "var(--pixel-radius)");
+  assert.match(declaration(search, "border"), /var\(--pixel-border-decoration\)/);
+  assert.match(declaration(search, "box-shadow"), /inset 0 -2px 0/);
+
+  const focusedSearch = ruleBody(css, `${searchSelector}:focus-visible`);
+  assert.equal(declaration(focusedSearch, "border-color"), "var(--pixel-cyan)");
+  assert.equal(
+    declaration(focusedSearch, "box-shadow"),
+    "inset 0 -2px 0 var(--pixel-cyan)",
+  );
+
+  const row = ruleBody(css, `${list} .setting-item`);
+  assert.equal(
+    declaration(row, "box-shadow"),
+    "inset 0 -1px 0 var(--pixel-line)",
+  );
+
   const rail = ruleBody(css, `${list} .setting-item-control`);
 
   assert.equal(declaration(rail, "min-block-size"), "var(--pixel-control-min)");
-  assert.equal(declaration(rail, "align-items"), "center");
-  assert.equal(declaration(rail, "align-self"), "center");
-  assert.equal(declaration(rail, "gap"), "6px");
+  assert.equal(declaration(rail, "flex"), "0 0 auto");
+  assert.equal(declaration(rail, "gap"), "var(--pixel-space-2)");
 
   const action = ruleBody(css, `${list} .extra-setting-button`);
-  assert.equal(declaration(action, "inline-size"), "var(--pixel-control-min)");
-  assert.equal(declaration(action, "block-size"), "var(--pixel-control-min)");
-  assert.equal(declaration(action, "border-radius"), "50%");
-  assert.equal(declaration(action, "transform"), "scale(1)");
-  assert.match(declaration(action, "box-shadow"), /inset 0 1px 0/);
+  assert.equal(declaration(action, "border-radius"), "var(--pixel-radius-small)");
+  assert.equal(declaration(action, "transform"), "translatey(0)");
+  assert.match(declaration(action, "box-shadow"), /inset 0 -2px 0/);
 
   const pressedAction = ruleBody(
     css,
     `${list} .extra-setting-button:not([aria-disabled=true]):active`,
   );
-  assert.equal(declaration(pressedAction, "transform"), "scale(0.92)");
+  assert.equal(declaration(pressedAction, "transform"), "translatey(1px)");
 
   const toggle = ruleBody(css, `${list} .checkbox-container`);
-  assert.equal(declaration(toggle, "--toggle-s-width"), "40px");
-  assert.equal(declaration(toggle, "--toggle-s-thumb-width"), "18px");
-  assert.equal(declaration(toggle, "--toggle-s-thumb-height"), "18px");
-  assert.equal(declaration(toggle, "border-radius"), "999px");
+  assert.equal(
+    declaration(toggle, "--toggle-s-width"),
+    "var(--pixel-toggle-inline-size)",
+  );
+  assert.equal(
+    declaration(toggle, "--toggle-s-thumb-width"),
+    "var(--pixel-toggle-thumb-size)",
+  );
+  assert.equal(
+    declaration(toggle, "--toggle-s-thumb-height"),
+    "var(--pixel-toggle-thumb-size)",
+  );
+  assert.equal(
+    declaration(toggle, "inline-size"),
+    "var(--pixel-toggle-inline-size)",
+  );
+  assert.equal(
+    declaration(toggle, "block-size"),
+    "var(--pixel-toggle-block-size)",
+  );
 
   const thumb = ruleBody(css, `${list} .checkbox-container::after`);
-  assert.equal(declaration(thumb, "inset-inline-start"), "0");
-  assert.equal(declaration(thumb, "border-radius"), "50%");
-
-  const enabled = ruleBody(css, `${list} .checkbox-container.is-enabled`);
-  assert.match(declaration(enabled, "background-color"), /var\(--pixel-cyan\) 82%/);
-
-  const focus = ruleBody(
-    css,
-    `${list} :is(.extra-setting-button, .checkbox-container):focus-visible`,
+  assert.equal(
+    declaration(thumb, "inline-size"),
+    "var(--pixel-toggle-thumb-size)",
   );
-  assert.match(declaration(focus, "outline"), /var\(--pixel-cyan\) 26%/);
+  assert.equal(
+    declaration(thumb, "block-size"),
+    "var(--pixel-toggle-thumb-size)",
+  );
+  assert.equal(
+    declaration(thumb, "inset-inline-start"),
+    "var(--pixel-toggle-position)",
+  );
+  assert.equal(declaration(thumb, "top"), "0");
+  assert.equal(declaration(thumb, "margin"), "0");
+  assert.equal(declaration(thumb, "transform"), "scaley(1)");
+
+  const enabledThumb = ruleBody(
+    css,
+    `${list} .checkbox-container.is-enabled::after`,
+  );
+  assert.equal(declaration(enabledThumb, "transform"), "scaley(1)");
+
+  const pressedThumb = ruleBody(
+    css,
+    `${list} .checkbox-container:not(.is-disabled):active::after`,
+  );
+  assert.equal(declaration(pressedThumb, "transform"), "scaley(0.9)");
 });
 
 test("controls expose pointer, keyboard, and pressed feedback without layout shifts", async () => {
