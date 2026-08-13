@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <kbd><!-- pixel-version:start -->0.9.1<!-- pixel-version:end --></kbd>
+  <kbd><!-- pixel-version:start -->0.9.2<!-- pixel-version:end --></kbd>
   <kbd>OBSIDIAN 1.12+</kbd>
   <kbd>LIGHT / DARK</kbd>
   <kbd>DESKTOP / iOS</kbd>
@@ -150,7 +150,7 @@ Pixel ships no community-plugin-specific selectors. Plugins that use official Ob
 
 | Item | Current information |
 | --- | --- |
-| Current version | <code><!-- pixel-version:start -->0.9.1<!-- pixel-version:end --></code> |
+| Current version | <code><!-- pixel-version:start -->0.9.2<!-- pixel-version:end --></code> |
 | Obsidian requirement | `1.12.0` or newer |
 | Verified desktop environment | Obsidian `1.13.4` / macOS |
 | Mobile support | iOS |
