@@ -54,7 +54,7 @@ test("compiled controls share Pixel surfaces, meaningful boundaries, and motion"
 
 test("settings toggles glide between edges with a cushioned press", async () => {
   const css = await readTheme();
-  const track = ruleBody(css, ".checkbox-container");
+  const track = ruleBodyForSelector(css, ".checkbox-container");
   assert.match(
     declaration(track, "transition"),
     /background-color var\(--pixel-motion-toggle-color\) var\(--pixel-ease-toggle\)/,
@@ -107,6 +107,49 @@ test("settings search uses a quiet hairline edge with an explicit focus signal",
     ".modal.mod-settings .vertical-tab-header .setting-search-container .search-input-container:focus-within::before",
   );
   assert.equal(declaration(focusedIcon, "background-color"), "var(--pixel-cyan)");
+});
+
+test("core plugin actions share a centered Apple-soft control rail", async () => {
+  const css = await readTheme();
+  const list = ".modal.mod-settings .setting-group.mod-list";
+  const rail = ruleBody(css, `${list} .setting-item-control`);
+
+  assert.equal(declaration(rail, "min-block-size"), "var(--pixel-control-min)");
+  assert.equal(declaration(rail, "align-items"), "center");
+  assert.equal(declaration(rail, "align-self"), "center");
+  assert.equal(declaration(rail, "gap"), "6px");
+
+  const action = ruleBody(css, `${list} .extra-setting-button`);
+  assert.equal(declaration(action, "inline-size"), "var(--pixel-control-min)");
+  assert.equal(declaration(action, "block-size"), "var(--pixel-control-min)");
+  assert.equal(declaration(action, "border-radius"), "50%");
+  assert.equal(declaration(action, "transform"), "scale(1)");
+  assert.match(declaration(action, "box-shadow"), /inset 0 1px 0/);
+
+  const pressedAction = ruleBody(
+    css,
+    `${list} .extra-setting-button:not([aria-disabled=true]):active`,
+  );
+  assert.equal(declaration(pressedAction, "transform"), "scale(0.92)");
+
+  const toggle = ruleBody(css, `${list} .checkbox-container`);
+  assert.equal(declaration(toggle, "--toggle-s-width"), "40px");
+  assert.equal(declaration(toggle, "--toggle-s-thumb-width"), "18px");
+  assert.equal(declaration(toggle, "--toggle-s-thumb-height"), "18px");
+  assert.equal(declaration(toggle, "border-radius"), "999px");
+
+  const thumb = ruleBody(css, `${list} .checkbox-container::after`);
+  assert.equal(declaration(thumb, "inset-inline-start"), "0");
+  assert.equal(declaration(thumb, "border-radius"), "50%");
+
+  const enabled = ruleBody(css, `${list} .checkbox-container.is-enabled`);
+  assert.match(declaration(enabled, "background-color"), /var\(--pixel-cyan\) 82%/);
+
+  const focus = ruleBody(
+    css,
+    `${list} :is(.extra-setting-button, .checkbox-container):focus-visible`,
+  );
+  assert.match(declaration(focus, "outline"), /var\(--pixel-cyan\) 26%/);
 });
 
 test("controls expose pointer, keyboard, and pressed feedback without layout shifts", async () => {
