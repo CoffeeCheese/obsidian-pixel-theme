@@ -434,12 +434,14 @@ input[type="radio"]:checked {
   position: absolute;
   inset: 0;
   border-right: 3px solid var(--pixel-cyan);
+  visibility: hidden;
   opacity: 1;
   transform: translateX(-100%);
   pointer-events: none;
 }
 
 .setting-group-search :focus-within::after {
+  visibility: visible;
   opacity: 0;
   transform: none;
   transition:

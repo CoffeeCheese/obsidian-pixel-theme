@@ -125,6 +125,7 @@ test("core plugins use a quiet list with Pixel keycaps and search signal", async
   const scanSelector =
     ".setting-group-search .search-input-container::after";
   const scan = ruleBody(css, scanSelector);
+  assert.equal(declaration(scan, "visibility"), "hidden");
   assert.equal(declaration(scan, "opacity"), "1");
   assert.equal(
     declaration(scan, "transform"),
@@ -136,6 +137,7 @@ test("core plugins use a quiet list with Pixel keycaps and search signal", async
     css,
     ".setting-group-search :focus-within::after",
   );
+  assert.equal(declaration(activeScan, "visibility"), "visible");
   assert.equal(declaration(activeScan, "opacity"), "0");
   assert.equal(declaration(activeScan, "transform"), "none");
   assert.match(
