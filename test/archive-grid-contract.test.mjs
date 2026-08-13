@@ -147,6 +147,27 @@ test("H5 Archive Grid gives root tabs the H5 S1 cartridge geometry", async () =>
   assert.equal(declaration(newTab, "border-radius"), "var(--pixel-radius)");
 });
 
+test("H5 Archive Grid keeps top-corner controls flush with the top bar", async () => {
+  const css = await readTheme();
+  const activeTab = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header.is-active",
+  );
+  const rightToggle = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile).mod-macos.is-hidden-frameless:not(.is-popout-window) .workspace.workspace .sidebar-toggle-button.mod-right",
+  );
+
+  assert.equal(
+    declaration(activeTab, "background-color"),
+    "var(--pixel-paper)",
+  );
+  assert.equal(
+    declaration(rightToggle, "background-color"),
+    "var(--pixel-paper)",
+  );
+});
+
 test("H5 Archive Grid removes the native inner tab divider but keeps its activity rail", async () => {
   const css = await readTheme();
   const nativeDivider = ruleBodyForSelector(
