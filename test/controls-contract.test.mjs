@@ -94,12 +94,21 @@ test("settings search uses a quiet hairline edge with an explicit focus signal",
     declaration(field, "box-shadow"),
     "0 1px 0 color-mix(in srgb, var(--pixel-border-meaningful) 22%, transparent)",
   );
+  assert.match(
+    declaration(field, "transition"),
+    /box-shadow var\(--pixel-motion-state\) var\(--pixel-ease-out\)/,
+  );
 
-  const focus = ruleBody(css, `${selector}:focus-visible`);
-  assert.equal(declaration(focus, "border-color"), "var(--pixel-cyan)");
+  const focus = ruleBody(css, `${selector}:focus`);
+  assert.equal(declaration(focus, "outline"), "0");
+  assert.equal(declaration(focus, "border-color"), "var(--pixel-line-strong)");
   assert.equal(declaration(focus, "background-color"), "var(--pixel-paper)");
+  assert.equal(
+    declaration(focus, "box-shadow"),
+    "inset 0 0 0 2px var(--pixel-line-strong)",
+  );
 
-  const hover = ruleBody(css, `${selector}:hover:not(:focus-visible)`);
+  const hover = ruleBody(css, `${selector}:hover:not(:focus)`);
   assert.match(declaration(hover, "border-color"), /var\(--pixel-cyan\) 72%/);
 
   const focusedIcon = ruleBody(
@@ -119,7 +128,7 @@ test("core plugins use a quiet list with Pixel keycaps and search signal", async
   assert.equal(declaration(scan, "opacity"), "1");
   assert.equal(
     declaration(scan, "transform"),
-    "translatex(calc(-100% - 3px))",
+    "translatex(-100%)",
   );
   assert.equal(declaration(scan, "pointer-events"), "none");
 
