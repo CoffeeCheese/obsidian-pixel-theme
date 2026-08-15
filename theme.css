@@ -238,6 +238,12 @@ body {
   --pixel-tree-active-surface: var(--pixel-nav-label);
   --pixel-selection: rgba(25, 125, 140, 0.28);
   --pixel-active-line: rgba(25, 125, 140, 0.06);
+  --pixel-handheld-shell: #d9ded9;
+  --pixel-handheld-bezel: #687378;
+  --pixel-handheld-screen: #b7c39a;
+  --pixel-handheld-screen-ink: #26382e;
+  --pixel-handheld-control: #303a3d;
+  --pixel-handheld-label: #56656c;
 }
 
 .theme-dark {
@@ -273,6 +279,12 @@ body {
   --pixel-tree-active-surface: var(--pixel-nav-label);
   --pixel-selection: rgba(88, 199, 207, 0.35);
   --pixel-active-line: rgba(88, 199, 207, 0.1);
+  --pixel-handheld-shell: #293840;
+  --pixel-handheld-bezel: #101a20;
+  --pixel-handheld-screen: #91a574;
+  --pixel-handheld-screen-ink: #17251d;
+  --pixel-handheld-control: #0d171c;
+  --pixel-handheld-label: #8fa2ad;
 }
 
 body {
@@ -1742,6 +1754,267 @@ button:not(.mod-settings *) .svg-icon {
   gap: var(--pixel-space-2);
 }
 
+body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .view-content {
+  overflow: auto;
+  background-color: var(--pixel-surface-secondary);
+}
+body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state {
+  position: relative;
+  box-sizing: border-box;
+  min-inline-size: 0;
+  min-block-size: 100%;
+  padding: clamp(28px, 5vh, 64px) var(--pixel-space-4);
+}
+body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state::before {
+  content: "OBSIDIAN EDITION";
+  position: absolute;
+  z-index: 2;
+  inset-block-start: calc(50% + 52px);
+  inset-inline-start: calc(50% - 28px);
+  color: var(--pixel-handheld-label);
+  transform: skew(-5deg);
+  font-family: var(--pixel-font-monospace);
+  font-size: 6px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  pointer-events: none;
+}
+body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-container {
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  inline-size: min(354px, 100vw - 40px);
+  max-inline-size: 100%;
+  min-block-size: 421px;
+  margin: auto;
+  padding: 47px 43px 168px;
+  overflow: hidden;
+  border: 4px solid var(--pixel-handheld-bezel);
+  border-radius: 18px 18px 56px 18px;
+  background-color: var(--pixel-handheld-shell);
+  background-image: radial-gradient(circle at 37px 144px, var(--pixel-brick) 0 4px, transparent 5px), radial-gradient(circle at 37px 157px, color-mix(in srgb, var(--pixel-handheld-bezel) 38%, transparent) 0 2px, transparent 3px);
+  color: var(--pixel-handheld-screen-ink);
+  box-shadow: 7px 8px 0 var(--pixel-shadow-color);
+}
+body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-title {
+  position: absolute;
+  z-index: 2;
+  inset-block-start: 16px;
+  inset-inline: 43px;
+  block-size: 10px;
+  margin: 0;
+  color: var(--pixel-handheld-label);
+  font-family: var(--pixel-font-monospace);
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  pointer-events: none;
+}
+body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-title::before,
+body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-title::after {
+  position: absolute;
+  inset-block-start: 0;
+}
+body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-title::before {
+  content: "POCKET NOTE";
+  inset-inline-start: 0;
+}
+body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-title::after {
+  content: "DOT MATRIX";
+  inset-inline-end: 0;
+}
+body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-action-list {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-rows: repeat(3, minmax(36px, 1fr));
+  gap: 2px;
+  box-sizing: border-box;
+  inline-size: 100%;
+  min-block-size: 184px;
+  margin: 0;
+  padding: 43px 10px 10px;
+  border: 4px solid var(--pixel-handheld-screen-ink);
+  border-radius: 1px;
+  background-color: var(--pixel-handheld-screen);
+  background-image: linear-gradient(color-mix(in srgb, var(--pixel-handheld-screen-ink) 8%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--pixel-handheld-screen-ink) 6%, transparent) 1px, transparent 1px);
+  background-size: 4px 4px;
+  color: var(--pixel-handheld-screen-ink);
+  box-shadow: 0 0 0 13px var(--pixel-handheld-bezel), 0 0 0 16px var(--pixel-handheld-control), inset 5px 5px 0 color-mix(in srgb, var(--pixel-handheld-screen-ink) 18%, transparent);
+}
+body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-action-list::before {
+  content: "SELECT MODE";
+  position: absolute;
+  inset-block-start: 13px;
+  inset-inline: 10px;
+  box-sizing: border-box;
+  block-size: 23px;
+  padding-block-end: 8px;
+  border-block-end: 3px double var(--pixel-handheld-screen-ink);
+  background: repeating-linear-gradient(90deg, var(--pixel-handheld-screen-ink) 0 4px, transparent 4px 7px) right 2px top 1px/19px 8px no-repeat;
+  color: var(--pixel-handheld-screen-ink);
+  font-family: var(--pixel-font-monospace);
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-action-list::after {
+  content: "PIXEL BOY";
+  position: absolute;
+  inset-block-start: calc(100% + 27px);
+  inset-inline-start: -13px;
+  inline-size: 120px;
+  color: var(--pixel-handheld-label);
+  transform: skew(-7deg);
+  font-family: var(--pixel-font-identity);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  pointer-events: none;
+}
+body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-action {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  min-inline-size: 0;
+  min-block-size: 36px;
+  margin: 0;
+  padding: 0 7px 0 20px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--pixel-handheld-screen-ink);
+  font-family: var(--pixel-font-identity);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.25;
+  text-align: start;
+  text-shadow: none;
+  white-space: nowrap;
+  box-shadow: none;
+}
+body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-action::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 7px;
+  color: currentColor;
+  font-family: var(--pixel-font-monospace);
+  font-size: 8px;
+}
+body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-action::after {
+  position: absolute;
+  z-index: 3;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-action:nth-child(-n+2)::after {
+  display: grid;
+  inline-size: 44px;
+  block-size: 44px;
+  place-items: center;
+  border: 4px solid color-mix(in srgb, var(--pixel-brick) 56%, var(--pixel-handheld-control));
+  border-radius: 50%;
+  background-color: var(--pixel-brick);
+  color: var(--pixel-handheld-screen-ink);
+  font-family: var(--pixel-font-monospace);
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: 3px 4px 0 color-mix(in srgb, var(--pixel-handheld-bezel) 32%, transparent);
+}
+body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-action:nth-child(1)::after {
+  content: "B";
+  inset-block-start: 206px;
+  inset-inline-start: 168px;
+}
+body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-action:nth-child(2)::after {
+  content: "A";
+  inset-block-start: 148px;
+  inset-inline-start: 216px;
+}
+body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-action:nth-child(3)::after {
+  content: "SELECT          START";
+  inset-block-start: 207px;
+  inset-inline-start: 84px;
+  color: var(--pixel-handheld-label);
+  font-family: var(--pixel-font-monospace);
+  font-size: 5px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  white-space: pre;
+}
+body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-action:is(:hover, :focus-visible) {
+  outline: 0;
+  background-color: var(--pixel-handheld-screen-ink);
+  color: var(--pixel-handheld-screen);
+  box-shadow: inset 0 0 0 2px var(--pixel-handheld-screen-ink);
+}
+body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-action:is(:hover, :focus-visible)::before {
+  content: "▶";
+}
+body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-container::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset-inline-start: 36px;
+  inset-block-end: 59px;
+  inline-size: 70px;
+  block-size: 70px;
+  background: radial-gradient(circle at center, color-mix(in srgb, var(--pixel-handheld-control) 80%, black) 0 8px, transparent 9px), linear-gradient(var(--pixel-handheld-control) 0 0) center/25px 100% no-repeat, linear-gradient(90deg, var(--pixel-handheld-control) 0 0) center/100% 25px no-repeat;
+  filter: drop-shadow(3px 4px 0 color-mix(in srgb, var(--pixel-handheld-bezel) 42%, transparent));
+  pointer-events: none;
+}
+body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-container::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset-inline-end: 17px;
+  inset-block-end: 14px;
+  box-sizing: border-box;
+  inline-size: 230px;
+  block-size: 116px;
+  background: repeating-linear-gradient(90deg, var(--pixel-handheld-bezel) 0 5px, transparent 5px 12px) right 2px bottom 3px/64px 18px no-repeat, radial-gradient(ellipse 20px 6px at 47px 91px, var(--pixel-handheld-bezel) 0 78%, var(--pixel-handheld-control) 80% 100%, transparent 101%), radial-gradient(ellipse 20px 6px at 92px 88px, var(--pixel-handheld-bezel) 0 78%, var(--pixel-handheld-control) 80% 100%, transparent 101%);
+  filter: drop-shadow(3px 4px 0 color-mix(in srgb, var(--pixel-handheld-bezel) 32%, transparent));
+  pointer-events: none;
+}
+
+@media (max-width: 520px) {
+  body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state {
+    padding: var(--pixel-space-6) var(--pixel-space-3);
+  }
+  body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state::before {
+    inset-block-start: calc(50% + 57px);
+    inset-inline-start: calc(50% - 26px);
+  }
+  body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-container {
+    inline-size: min(350px, 100vw - 28px);
+    min-block-size: 411px;
+    padding-inline: 39px;
+    padding-block-end: 157px;
+    border-radius: 16px 16px 50px 16px;
+  }
+  body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-title {
+    inset-inline: 39px;
+  }
+  body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-action {
+    padding-inline: 18px 5px;
+    font-size: 14px;
+  }
+  body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-action-list::after {
+    inset-inline-start: -9px;
+    font-size: 15px;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   button,
   .clickable-icon,
@@ -1819,6 +2092,12 @@ button:not(.mod-settings *) .svg-icon {
     --pixel-context-label: Canvas;
     --pixel-context-control-hover: ButtonFace;
     --pixel-context-control-active: Canvas;
+    --pixel-handheld-shell: Canvas;
+    --pixel-handheld-bezel: CanvasText;
+    --pixel-handheld-screen: Canvas;
+    --pixel-handheld-screen-ink: CanvasText;
+    --pixel-handheld-control: CanvasText;
+    --pixel-handheld-label: CanvasText;
     --pixel-shadow-control: none;
     --pixel-shadow-button: none;
     --pixel-shadow-button-hover: none;
