@@ -188,7 +188,11 @@ test("selector and rendering exceptions stay bounded to documented native defect
   assert.doesNotMatch(source, /clip-path\s*:/);
   assert.doesNotMatch(
     source,
-    /\.dataview|\.kanban|\.tasks-|\.calendar-container|\.admonition|\.plugin-/i,
+    /\.dataview|\.kanban|\.tasks-|\.calendar-container|\.admonition|\.plugin-(?!properties\b)/i,
+  );
+  assert.match(
+    source,
+    /\.status-bar-item\.plugin-properties\s*\{[^}]*display:\s*none/is,
   );
 });
 

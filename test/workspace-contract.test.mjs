@@ -360,6 +360,10 @@ test("the global status rail docks compactly without changing workspace flow", a
   const buffer = ruleBody(css, "body:not(.is-mobile) .status-bar");
   const item = ruleBody(css, "body:not(.is-mobile) .status-bar-item");
   const mascot = ruleBody(css, "body:not(.is-mobile) .status-bar::before");
+  const properties = ruleBody(
+    css,
+    "body:not(.is-mobile) .status-bar-item.plugin-properties",
+  );
   const iconItem = ruleBody(
     css,
     "body:not(.is-mobile) .status-bar-item[aria-label]",
@@ -389,6 +393,7 @@ test("the global status rail docks compactly without changing workspace flow", a
   assert.equal(declaration(buffer, "max-block-size"), "36px");
   assert.equal(declaration(buffer, "padding"), "3px 6px");
   assert.equal(declaration(buffer, "gap"), "0");
+  assert.equal(declaration(buffer, "justify-content"), "space-between");
   assert.equal(declaration(buffer, "overflow-x"), "auto");
   assert.equal(
     declaration(buffer, "border"),
@@ -406,6 +411,7 @@ test("the global status rail docks compactly without changing workspace flow", a
   assert.equal(declaration(mascot, "pointer-events"), "none");
   assert.match(declaration(mascot, "background"), /radial-gradient\(/);
   assert.match(declaration(mascot, "background"), /linear-gradient\(/);
+  assert.equal(declaration(properties, "display"), "none");
   assert.equal(declaration(item, "min-block-size"), "24px");
   assert.equal(declaration(item, "padding-inline"), "2px");
   assert.equal(

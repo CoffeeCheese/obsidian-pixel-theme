@@ -688,6 +688,7 @@ body:not(.is-mobile) .status-bar {
   padding: 3px 6px;
   gap: 0;
   align-items: center;
+  justify-content: space-between;
   overflow-x: auto;
   overflow-y: hidden;
   border: var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-cyan) 36%, var(--pixel-line));
@@ -722,6 +723,9 @@ body:not(.is-mobile) .status-bar-item {
   font-size: calc(var(--font-ui-smaller) - 1px);
   line-height: 1;
   transition: border-color var(--pixel-motion-state) var(--pixel-ease-out), background-color var(--pixel-motion-state) var(--pixel-ease-out), color var(--pixel-motion-state) var(--pixel-ease-out);
+}
+body:not(.is-mobile) .status-bar-item.plugin-properties {
+  display: none;
 }
 body:not(.is-mobile) .status-bar-item[aria-label] {
   flex: 0 0 auto;

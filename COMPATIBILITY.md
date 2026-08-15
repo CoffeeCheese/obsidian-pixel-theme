@@ -81,7 +81,7 @@ PDF page pixels and its transparent accessibility text layer reproduce the sourc
 
 The smoke plugin used only documented Obsidian variables (`--background-primary`, `--text-normal`, `--background-modifier-border`, `--border-width`) plus native button/input elements. In Light it inherited 15.06:1 text and 4.82:1 boundaries; no Pixel selector referenced its marker. The theme makes no community-plugin support claim.
 
-The selector audit contains no `!important`, no `@keyframes`, no plugin-specific selector, and no Live Preview margin override. Relational selectors are limited to two justified native defects:
+The selector audit contains no `!important`, no `@keyframes`, no community-plugin selector, and no Live Preview margin override. One deliberately bounded first-party selector, `.status-bar-item.plugin-properties`, suppresses Obsidian's text-only property counter in the compact status pod; it is used because the native item exposes neither a semantic attribute nor a locale-independent label. Relational selectors are limited to two justified native defects:
 
 - an empty callout SVG fallback, needed because the native icon may render as an empty SVG;
 - mobile drawer offset cancellation, needed because Obsidian applies inline transforms while an unpinned native drawer is open.

@@ -144,6 +144,10 @@ body:not(.is-mobile) {
     padding: 3px 6px;
     gap: 0;
     align-items: center;
+    // Native status items align to the end. Distribute any released width
+    // between visible telemetry groups so optional counters do not leave a
+    // single dead pocket beside the capture orb.
+    justify-content: space-between;
     overflow-x: auto;
     overflow-y: hidden;
     border: var(--pixel-border-decoration) solid
@@ -211,6 +215,12 @@ body:not(.is-mobile) {
       border-color var(--pixel-motion-state) var(--pixel-ease-out),
       background-color var(--pixel-motion-state) var(--pixel-ease-out),
       color var(--pixel-motion-state) var(--pixel-ease-out);
+  }
+
+  // Obsidian exposes no semantic attribute for this first-party counter. Its
+  // dedicated core class is more stable than item order or localized text.
+  .status-bar-item.plugin-properties {
+    display: none;
   }
 
   .status-bar-item[aria-label] {
