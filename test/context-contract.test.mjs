@@ -215,9 +215,20 @@ test("the All Properties catalogue mirrors the document property sheet", async (
   );
   assert.equal(
     declaration(search, "border"),
-    "var(--pixel-border-decoration) solid var(--pixel-line-strong)",
+    "var(--pixel-border-decoration) solid var(--pixel-search-edge)",
   );
   assert.equal(declaration(search, "font-size"), "14px");
+
+  const focusedSearch = ruleBodyForSelector(
+    css,
+    `${scope} .search-input-container input[type=search]:focus-visible`,
+  );
+  assert.equal(declaration(focusedSearch, "border-color"), "var(--pixel-cyan)");
+  assert.equal(declaration(focusedSearch, "outline"), "0");
+  assert.equal(
+    declaration(focusedSearch, "box-shadow"),
+    "var(--pixel-search-focus-shadow)",
+  );
 });
 
 test("outline, backlinks, and outgoing links share amber multi-cue context selection", async () => {

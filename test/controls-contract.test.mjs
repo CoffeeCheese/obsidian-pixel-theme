@@ -82,40 +82,76 @@ test("settings toggles glide between edges with a cushioned press", async () => 
 
 test("settings search uses a quiet hairline edge with an explicit focus signal", async () => {
   const css = await readTheme();
+  const base = ruleBody(css, "input[type=search]");
+  assert.equal(
+    declaration(base, "border"),
+    "var(--pixel-border-decoration) solid var(--pixel-search-edge)",
+  );
+  assert.equal(declaration(base, "outline"), "0");
+  assert.equal(declaration(base, "box-shadow"), "none");
+
+  const baseFocus = ruleBody(
+    css,
+    "input[type=search]:is(:focus, :focus-visible)",
+  );
+  assert.equal(declaration(baseFocus, "border-color"), "var(--pixel-cyan)");
+  assert.equal(declaration(baseFocus, "outline"), "0");
+  assert.equal(
+    declaration(baseFocus, "box-shadow"),
+    "var(--pixel-search-focus-shadow)",
+  );
+
   const selector =
     ".mod-settings .setting-search-container input[type=search]";
   const field = ruleBody(css, selector);
 
   assert.equal(
     declaration(field, "border"),
-    "var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-border-meaningful) 62%, var(--pixel-paper))",
+    "var(--pixel-border-decoration) solid var(--pixel-search-edge)",
   );
-  assert.equal(
-    declaration(field, "box-shadow"),
-    "0 1px 0 color-mix(in srgb, var(--pixel-border-meaningful) 22%, transparent)",
-  );
-  assert.match(
-    declaration(field, "transition"),
-    /box-shadow var\(--pixel-motion-state\) var\(--pixel-ease-out\)/,
-  );
+  assert.equal(declaration(field, "box-shadow"), "none");
+  assert.match(declaration(field, "transition"), /box-shadow/);
 
   const focus = ruleBody(css, `${selector}:focus`);
   assert.equal(declaration(focus, "outline"), "0");
-  assert.equal(declaration(focus, "border-color"), "var(--pixel-line-strong)");
-  assert.equal(declaration(focus, "background-color"), "var(--pixel-paper)");
+  assert.equal(declaration(focus, "border-color"), "var(--pixel-cyan)");
   assert.equal(
     declaration(focus, "box-shadow"),
-    "inset 0 0 0 2px var(--pixel-line-strong)",
+    "var(--pixel-search-focus-shadow)",
   );
 
   const hover = ruleBody(css, `${selector}:hover:not(:focus)`);
-  assert.match(declaration(hover, "border-color"), /var\(--pixel-cyan\) 72%/);
+  assert.match(
+    declaration(hover, "border-color"),
+    /var\(--pixel-search-edge-hover\) 86%/,
+  );
 
   const focusedIcon = ruleBody(
     css,
     ".mod-settings .setting-search-container .search-input-container:focus-within::before",
   );
   assert.equal(declaration(focusedIcon, "background-color"), "var(--pixel-cyan)");
+
+  const typedSearchRules = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)]
+    .filter((match) => match[1].includes("input[type=search]"));
+  assert.ok(typedSearchRules.length >= 8, "expected all native search contexts");
+  for (const [, ruleSelector, ruleDeclarations] of typedSearchRules) {
+    assert.doesNotMatch(
+      ruleDeclarations,
+      /border(?:-(?:width|block|inline)(?:-[a-z]+)?)?\s*:[^;]*(?:--pixel-border-control|--pixel-border-shell)/i,
+      `thick search border in ${ruleSelector.trim()}`,
+    );
+    for (const edge of ruleDeclarations.matchAll(
+      /(?:outline|box-shadow)\s*:\s*([^;]+)/gi,
+    )) {
+      assert.ok(
+        ["0", "0px", "none", "var(--pixel-search-focus-shadow)"].includes(
+          edge[1].trim().toLowerCase(),
+        ),
+        `stacked search edge in ${ruleSelector.trim()}`,
+      );
+    }
+  }
 });
 
 test("settings sidebar navigation uses a stable soft hover slot", async () => {
@@ -158,6 +194,10 @@ test("core plugins use a quiet list with Pixel keycaps and search signal", async
     "translatex(-100%)",
   );
   assert.equal(declaration(scan, "pointer-events"), "none");
+  assert.equal(
+    declaration(scan, "border-right"),
+    "var(--pixel-border-decoration) solid var(--pixel-cyan)",
+  );
 
   const activeScan = ruleBody(
     css,
@@ -175,8 +215,11 @@ test("core plugins use a quiet list with Pixel keycaps and search signal", async
   const search = ruleBody(css, searchSelector);
   assert.equal(declaration(search, "min-block-size"), "36px");
   assert.equal(declaration(search, "border-radius"), "var(--pixel-radius)");
-  assert.match(declaration(search, "border"), /var\(--pixel-border-decoration\)/);
-  assert.match(declaration(search, "box-shadow"), /inset 0 -2px 0/);
+  assert.equal(
+    declaration(search, "border"),
+    "var(--pixel-border-decoration) solid var(--pixel-search-edge)",
+  );
+  assert.equal(declaration(search, "box-shadow"), "none");
 
   const focusedSearch = ruleBody(
     css,
@@ -186,7 +229,7 @@ test("core plugins use a quiet list with Pixel keycaps and search signal", async
   assert.equal(declaration(focusedSearch, "border-color"), "var(--pixel-cyan)");
   assert.equal(
     declaration(focusedSearch, "box-shadow"),
-    "inset 0 -3px 0 var(--pixel-cyan)",
+    "var(--pixel-search-focus-shadow)",
   );
 
   const row = ruleBody(css, `${list} .setting-item`);

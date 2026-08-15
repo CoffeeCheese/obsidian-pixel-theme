@@ -387,6 +387,19 @@ body.is-mobile {
     box-shadow: none;
   }
 
+  input[type="search"] {
+    border-color: var(--pixel-search-edge);
+    outline: 0;
+    box-shadow: none;
+  }
+
+  input[type="search"]:is(:focus, :focus-visible) {
+    border-color: var(--pixel-cyan);
+    outline: 0;
+    background-color: color-mix(in srgb, var(--pixel-cyan) 6%, var(--pixel-paper));
+    box-shadow: var(--pixel-search-focus-shadow);
+  }
+
   :is(.menu, .suggestion-container, .prompt, .modal, .notice, .tooltip) {
     border-width: var(--pixel-border-decoration);
     border-color: var(--pixel-mobile-control-border);

@@ -113,6 +113,12 @@ test("compiled package exposes the approved Pixel palette and geometry", async (
     "--pixel-border-decoration": "1px",
     "--pixel-border-control": "2px",
     "--pixel-border-shell": "3px",
+    "--pixel-search-edge":
+      "color-mix(in srgb, var(--pixel-cyan) 32%, var(--pixel-border-meaningful))",
+    "--pixel-search-edge-hover":
+      "color-mix(in srgb, var(--pixel-cyan) 70%, var(--pixel-border-meaningful))",
+    "--pixel-search-focus-shadow":
+      "inset 0 0 0 1px color-mix(in srgb, var(--pixel-cyan) 24%, transparent)",
     "--pixel-radius-small": "4px",
     "--pixel-radius": "6px",
     "--pixel-radius-large": "10px",

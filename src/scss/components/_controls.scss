@@ -5,7 +5,6 @@
   input[type="date"]#{$state},
   input[type="datetime-local"]#{$state},
   input[type="text"]#{$state},
-  input[type="search"]#{$state},
   input[type="email"]#{$state},
   input[type="password"]#{$state},
   input[type="number"]#{$state},
@@ -60,6 +59,35 @@ button:not(.clickable-icon) {
     color var(--pixel-motion-state) linear;
 }
 
+// A search field is visually read by its perimeter. Keep the physical border
+// at one pixel in every state: cyan-grey at rest, clearer on hover, and cyan
+// with a quiet inner signal while focused. The inner signal makes keyboard
+// focus unmistakable without changing the field's dimensions.
+input[type="search"] {
+  border: var(--pixel-border-decoration) solid var(--pixel-search-edge);
+  border-radius: var(--pixel-radius);
+  outline: 0;
+  background-color: var(--pixel-paper);
+  color: var(--pixel-text);
+  box-shadow: none;
+  transition:
+    background-color var(--pixel-motion-state) linear,
+    border-color var(--pixel-motion-state) linear,
+    box-shadow var(--pixel-motion-state) linear,
+    color var(--pixel-motion-state) linear;
+}
+
+input[type="search"]:is(:focus, :focus-visible) {
+  border-color: var(--pixel-cyan);
+  outline: 0;
+  background-color: color-mix(
+    in srgb,
+    var(--pixel-cyan) 6%,
+    var(--pixel-paper)
+  );
+  box-shadow: var(--pixel-search-focus-shadow);
+}
+
 button:not(.clickable-icon):not(:disabled):not([aria-disabled="true"]):active {
   transform: translateY(1px) scale(0.98);
   box-shadow: var(--pixel-shadow-button-active);
@@ -93,6 +121,16 @@ input[type="range"]:focus-visible,
 }
 
 @media (hover: hover) and (pointer: fine) {
+  input[type="search"]:hover:not(:focus):not(:focus-visible) {
+    border-color: var(--pixel-search-edge-hover);
+    background-color: color-mix(
+      in srgb,
+      var(--pixel-cyan) 3%,
+      var(--pixel-paper)
+    );
+    box-shadow: none;
+  }
+
   button:not(.clickable-icon):hover,
   .clickable-icon:hover {
     background-color: var(--pixel-surface-secondary);
@@ -276,23 +314,18 @@ button.mod-loading::after {
 .mod-settings
   .setting-search-container
   input[type="search"] {
-  border: var(--pixel-border-decoration) solid
-    color-mix(
-      in srgb,
-      var(--pixel-border-meaningful) 62%,
-      var(--pixel-paper)
-    );
+  border: var(--pixel-border-decoration) solid var(--pixel-search-edge);
   background-color: color-mix(
     in srgb,
     var(--pixel-paper) 92%,
     var(--pixel-canvas)
   );
-  box-shadow: 0 1px 0
-    color-mix(in srgb, var(--pixel-border-meaningful) 22%, transparent);
+  box-shadow: none;
   transition:
     background-color var(--pixel-motion-state) linear,
     border-color var(--pixel-motion-state) linear,
-    box-shadow var(--pixel-motion-state) var(--pixel-ease-out);
+    box-shadow var(--pixel-motion-state) linear,
+    color var(--pixel-motion-state) linear;
 }
 
 .mod-settings
@@ -305,9 +338,13 @@ button.mod-loading::after {
   .setting-search-container
   input[type="search"]:focus {
   outline: 0;
-  border-color: var(--pixel-line-strong);
-  background-color: var(--pixel-paper);
-  box-shadow: inset 0 0 0 2px var(--pixel-line-strong);
+  border-color: var(--pixel-cyan);
+  background-color: color-mix(
+    in srgb,
+    var(--pixel-cyan) 6%,
+    var(--pixel-paper)
+  );
+  box-shadow: var(--pixel-search-focus-shadow);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -316,12 +353,15 @@ button.mod-loading::after {
     input[type="search"]:hover:not(:focus) {
     border-color: color-mix(
       in srgb,
-      var(--pixel-cyan) 72%,
-      var(--pixel-border-meaningful)
+      var(--pixel-search-edge-hover) 86%,
+      var(--pixel-search-edge)
     );
-    background-color: var(--pixel-paper);
-    box-shadow: 0 1px 0
-      color-mix(in srgb, var(--pixel-cyan) 24%, transparent);
+    background-color: color-mix(
+      in srgb,
+      var(--pixel-cyan) 2%,
+      var(--pixel-paper)
+    );
+    box-shadow: none;
   }
 }
 
@@ -433,13 +473,13 @@ input[type="radio"]:checked {
 }
 
 // Core plugins keeps the reference theme's quiet rows, then translates its
-// controls back onto Pixel's 4px grid with a shallow keycap edge. Its search
-// channel scans once on focus, then settles into a stable bottom rail.
+// controls back onto Pixel's 4px grid. Its search channel marks focus with a
+// one-pixel scan before settling on the shared cyan hairline.
 .setting-group-search .search-input-container::after {
   content: "";
   position: absolute;
   inset: 0;
-  border-right: 3px solid var(--pixel-cyan);
+  border-right: var(--pixel-border-decoration) solid var(--pixel-cyan);
   visibility: hidden;
   opacity: 1;
   transform: translateX(-100%);
@@ -459,16 +499,14 @@ input[type="radio"]:checked {
   .setting-group-search
   input[type="search"] {
   min-block-size: 36px;
-  border: var(--pixel-border-decoration) solid
-    color-mix(in srgb, var(--pixel-border-meaningful) 58%, var(--pixel-paper));
+  border: var(--pixel-border-decoration) solid var(--pixel-search-edge);
   border-radius: var(--pixel-radius);
   background-color: color-mix(
     in srgb,
     var(--pixel-paper) 94%,
     var(--pixel-canvas)
   );
-  box-shadow: inset 0 -2px 0
-    color-mix(in srgb, var(--pixel-line-strong) 44%, transparent);
+  box-shadow: none;
 }
 
 .setting-group.mod-list.mod-list
@@ -477,8 +515,12 @@ input[type="radio"]:checked {
   > input[type="search"] {
   outline: 0;
   border-color: var(--pixel-cyan);
-  background-color: var(--pixel-paper);
-  box-shadow: inset 0 -3px 0 var(--pixel-cyan);
+  background-color: color-mix(
+    in srgb,
+    var(--pixel-cyan) 6%,
+    var(--pixel-paper)
+  );
+  box-shadow: var(--pixel-search-focus-shadow);
 }
 
 .mod-settings .mod-list

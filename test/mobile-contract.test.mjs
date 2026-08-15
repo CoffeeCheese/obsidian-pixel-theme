@@ -104,6 +104,25 @@ test("native mobile chrome is touch-safe and preserves non-color-only state", as
   assert.equal(declaration(active, "font-weight"), "600");
 });
 
+test("mobile search preserves the shared visible and focused edge hierarchy", async () => {
+  const css = await readTheme();
+  const search = ruleBody(css, "body.is-mobile input[type=search]");
+  assert.equal(declaration(search, "border-color"), "var(--pixel-search-edge)");
+  assert.equal(declaration(search, "outline"), "0");
+  assert.equal(declaration(search, "box-shadow"), "none");
+
+  const focused = ruleBody(
+    css,
+    "body.is-mobile input[type=search]:is(:focus, :focus-visible)",
+  );
+  assert.equal(declaration(focused, "border-color"), "var(--pixel-cyan)");
+  assert.equal(declaration(focused, "outline"), "0");
+  assert.equal(
+    declaration(focused, "box-shadow"),
+    "var(--pixel-search-focus-shadow)",
+  );
+});
+
 test("mobile bars and native backdrop preserve safe-area and dismissal behavior", async () => {
   const css = await readTheme();
   const mobile = combinedRuleBody(css, "body.is-mobile");

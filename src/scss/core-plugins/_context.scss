@@ -153,7 +153,7 @@ body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf-content[da
 
 body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf-content[data-type="all-properties"] .search-input-container input[type="search"] {
   min-block-size: 36px;
-  border: var(--pixel-border-decoration) solid var(--pixel-line-strong);
+  border: var(--pixel-border-decoration) solid var(--pixel-search-edge);
   border-radius: var(--pixel-radius);
   background-color: color-mix(in srgb, var(--pixel-cyan) 3%, var(--pixel-paper));
   color: var(--pixel-text);
@@ -164,8 +164,9 @@ body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf-content[da
 
 body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf-content[data-type="all-properties"] .search-input-container input[type="search"]:focus-visible {
   border-color: var(--pixel-cyan);
-  outline: var(--pixel-border-control) solid var(--pixel-cyan);
-  outline-offset: 2px;
+  outline: 0;
+  background-color: color-mix(in srgb, var(--pixel-cyan) 6%, var(--pixel-paper));
+  box-shadow: var(--pixel-search-focus-shadow);
 }
 
 body:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf-content[data-type="all-properties"] .view-content {

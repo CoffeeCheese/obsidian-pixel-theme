@@ -377,8 +377,8 @@ body:not(.is-mobile) .workspace.workspace :is(
   .metadata-input-text,
   .metadata-property-key-input,
   .multi-select-container,
-  .search-input-container input,
-  input:not([type="checkbox"]):not([type="radio"]),
+  .search-input-container input:not([type="search"]),
+  input:not([type="checkbox"]):not([type="radio"]):not([type="search"]),
   textarea,
   select
 ) {
@@ -386,6 +386,38 @@ body:not(.is-mobile) .workspace.workspace :is(
   border-radius: var(--pixel-radius-small);
   background-color: var(--pixel-paper);
   box-shadow: none;
+}
+
+// The broad workspace form normalization deliberately excludes search. Give
+// every native or plugin-provided workspace search the same single cyan edge.
+body:not(.is-mobile) .workspace.workspace :is(
+  .search-input-container input[type="search"],
+  input[type="search"]
+) {
+  border: var(--pixel-border-decoration) solid var(--pixel-search-edge);
+  outline: 0;
+  box-shadow: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body:not(.is-mobile) .workspace.workspace :is(
+    .search-input-container input[type="search"],
+    input[type="search"]
+  ):hover:not(:focus) {
+    border-color: var(--pixel-search-edge-hover);
+    outline: 0;
+    box-shadow: none;
+  }
+}
+
+body:not(.is-mobile) .workspace.workspace :is(
+  .search-input-container input[type="search"],
+  input[type="search"]
+):is(:focus, :focus-visible) {
+  border-color: var(--pixel-cyan);
+  outline: 0;
+  background-color: color-mix(in srgb, var(--pixel-cyan) 6%, var(--pixel-paper));
+  box-shadow: var(--pixel-search-focus-shadow);
 }
 
 body:not(.is-mobile) .workspace.workspace .metadata-property {

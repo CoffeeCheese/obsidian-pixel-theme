@@ -135,13 +135,10 @@ test("quick switcher uses a light index-card shell and a pixel cursor rail", asy
   const shell = ruleBody(css, quickSwitcher);
   assert.equal(
     declaration(shell, "border"),
-    "var(--pixel-border-decoration) solid var(--pixel-line-strong)",
+    "var(--pixel-border-decoration) solid var(--pixel-search-edge)",
   );
   assert.equal(declaration(shell, "border-radius"), "var(--pixel-radius)");
-  assert.equal(
-    declaration(shell, "box-shadow"),
-    "2px 2px 0 color-mix(in srgb, var(--pixel-shadow-color) 38%, transparent)",
-  );
+  assert.equal(declaration(shell, "box-shadow"), "none");
 
   const input = ruleBody(
     css,
@@ -210,11 +207,22 @@ test("global search stays inside the navigation pane with flat query and toggle 
   assert.equal(declaration(field, "block-size"), "36px");
   assert.equal(
     declaration(field, "border"),
-    "var(--pixel-border-decoration) solid var(--pixel-line-strong)",
+    "var(--pixel-border-decoration) solid var(--pixel-search-edge)",
   );
   assert.equal(
     declaration(field, "border-radius"),
     "var(--pixel-radius-large)",
+  );
+
+  const focusedField = ruleBody(
+    css,
+    "body .workspace.workspace .workspace-leaf-content[data-type=search] .search-input-container.global-search-input-container input:focus-visible",
+  );
+  assert.equal(declaration(focusedField, "border-color"), "var(--pixel-cyan)");
+  assert.equal(declaration(focusedField, "outline"), "0");
+  assert.equal(
+    declaration(focusedField, "box-shadow"),
+    "var(--pixel-search-focus-shadow)",
   );
 
   const settings = ruleBody(
@@ -416,7 +424,7 @@ test("tag pane reads as a compact pixel index with keycaps and hierarchy", async
   assert.equal(declaration(openSearchInput, "border"), "0");
   assert.equal(
     declaration(openSearchInput, "border-block-end"),
-    "var(--pixel-border-control) solid var(--pixel-line-strong)",
+    "var(--pixel-border-decoration) solid var(--pixel-search-edge)",
   );
   assert.equal(declaration(openSearchInput, "border-radius"), "0");
   assert.equal(declaration(openSearchInput, "box-shadow"), "none");
@@ -439,7 +447,7 @@ test("tag pane reads as a compact pixel index with keycaps and hierarchy", async
   );
   assert.equal(
     declaration(focusedSearchInput, "box-shadow"),
-    "none",
+    "inset 0 -1px 0 color-mix(in srgb, var(--pixel-cyan) 28%, transparent)",
   );
 
   const row = ruleBody(css, `${tagPane} .tag-pane-tag`);

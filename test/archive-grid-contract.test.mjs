@@ -373,6 +373,25 @@ test("H5 Archive Grid keeps native controls and metadata light instead of cartri
   );
 });
 
+test("H5 Archive Grid preserves the shared search edge states", async () => {
+  const css = await readTheme();
+  const scope =
+    "body:not(.is-mobile) .workspace.workspace :is(.search-input-container input[type=search],\ninput[type=search])";
+  const search = ruleBody(css, scope);
+  assert.equal(
+    declaration(search, "border"),
+    "var(--pixel-border-decoration) solid var(--pixel-search-edge)",
+  );
+  assert.equal(declaration(search, "box-shadow"), "none");
+
+  const focused = ruleBody(css, `${scope}:is(:focus, :focus-visible)`);
+  assert.equal(declaration(focused, "border-color"), "var(--pixel-cyan)");
+  assert.equal(
+    declaration(focused, "box-shadow"),
+    "var(--pixel-search-focus-shadow)",
+  );
+});
+
 test("H5 Archive Grid reproduces the prototype property sheet in the central reader", async () => {
   const css = await readTheme();
   const scope =
