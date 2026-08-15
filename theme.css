@@ -3421,7 +3421,7 @@ body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .clau
 }
 body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-input-wrapper {
   min-block-size: 140px;
-  overflow: clip;
+  overflow: visible;
   border: var(--pixel-border-decoration) solid var(--pixel-claudian-edge);
   border-radius: var(--pixel-radius-large);
   background-color: var(--pixel-claudian-surface);

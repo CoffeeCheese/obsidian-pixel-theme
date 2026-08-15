@@ -77,6 +77,16 @@ test("Claudian composer has one calm edge and an explicit focus state", async ()
   assert.equal(declaration(chip, "block-size"), "28px");
 });
 
+test("Claudian composer does not clip menus that open beyond its edge", async () => {
+  const css = await readTheme();
+  const wrapper = ruleBody(css, `${view} .claudian-input-wrapper`);
+
+  // Claudian renders its model and thinking menus inside the composer and
+  // positions them above the toolbar. Clipping the wrapper cuts off those
+  // native interactive surfaces before z-index can take effect.
+  assert.equal(declaration(wrapper, "overflow"), "visible");
+});
+
 test("active root Claudian tabs keep a clear state without plugin-owned status clearance", async () => {
   const css = await readTheme();
   const activeTab = ruleBody(
