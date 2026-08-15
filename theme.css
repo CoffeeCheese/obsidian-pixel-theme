@@ -156,6 +156,12 @@ body {
   --pixel-search-edge: color-mix(in srgb, var(--pixel-cyan) 32%, var(--pixel-border-meaningful));
   --pixel-search-edge-hover: color-mix(in srgb, var(--pixel-cyan) 70%, var(--pixel-border-meaningful));
   --pixel-search-focus-shadow: inset 0 0 0 1px color-mix(in srgb, var(--pixel-cyan) 24%, transparent);
+  --pixel-tag-ink: color-mix(in srgb, var(--pixel-cyan) 88%, var(--pixel-text));
+  --pixel-tag-fill: color-mix(in srgb, var(--pixel-cyan) 8%, var(--pixel-paper));
+  --pixel-tag-fill-hover: color-mix(in srgb, var(--pixel-cyan) 12%, var(--pixel-paper));
+  --pixel-tag-edge: color-mix(in srgb, var(--pixel-cyan) 32%, var(--pixel-line));
+  --pixel-tag-edge-hover: color-mix(in srgb, var(--pixel-cyan) 62%, var(--pixel-line));
+  --pixel-tag-highlight: inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 72%, transparent);
   --pixel-radius-small: 4px;
   --pixel-radius: 6px;
   --pixel-radius-large: 10px;
@@ -503,15 +509,18 @@ body {
   --blockquote-color: var(--pixel-amber-text);
   --blockquote-background-color: var(--pixel-context-label);
   --text-highlight-bg: var(--pixel-context-label);
-  --tag-color: var(--text-accent);
-  --tag-color-hover: var(--text-accent-hover);
-  --tag-background: var(--pixel-paper);
-  --tag-background-hover: var(--pixel-paper);
-  --tag-border-color: var(--text-accent);
-  --tag-border-color-hover: var(--text-accent-hover);
+  --tag-color: var(--pixel-tag-ink);
+  --tag-color-hover: var(--pixel-tag-ink);
+  --tag-background: var(--pixel-tag-fill);
+  --tag-background-hover: var(--pixel-tag-fill-hover);
+  --tag-border-color: var(--pixel-tag-edge);
+  --tag-border-color-hover: var(--pixel-tag-edge-hover);
   --tag-border-width: var(--pixel-border-decoration);
-  --tag-radius: var(--pixel-radius);
-  --tag-corner-shape: square;
+  --tag-padding-x: 0.55em;
+  --tag-padding-y: 0.1em;
+  --tag-radius: 999px;
+  --tag-corner-shape: round;
+  --tag-weight: 500;
   --list-spacing: 0.125em;
   --list-marker-color: var(--pixel-text-muted);
   --list-marker-color-hover: var(--pixel-text);
@@ -962,10 +971,61 @@ video:focus-visible {
 }
 
 a.tag {
+  display: inline-flex;
+  align-items: center;
+  max-inline-size: 100%;
+  margin-inline: 0.08em;
+  padding: var(--tag-padding-y) var(--tag-padding-x);
   border: var(--tag-border-width) solid var(--tag-border-color);
+  border-radius: var(--tag-radius);
   background-color: var(--tag-background);
   color: var(--tag-color);
-  box-shadow: none;
+  box-shadow: var(--pixel-tag-highlight);
+  font-weight: var(--tag-weight);
+  line-height: 1.4;
+  text-decoration: none;
+  vertical-align: baseline;
+  overflow-wrap: anywhere;
+  transition: border-color var(--pixel-motion-state) var(--pixel-ease-out), background-color var(--pixel-motion-state) var(--pixel-ease-out), color var(--pixel-motion-state) var(--pixel-ease-out), transform var(--pixel-motion-press) var(--pixel-ease-out);
+}
+
+.markdown-source-view.mod-cm6 .cm-hashtag {
+  padding-block: var(--tag-padding-y);
+  border-block: var(--tag-border-width) solid var(--tag-border-color);
+  background-color: var(--tag-background);
+  color: var(--tag-color);
+  box-shadow: var(--pixel-tag-highlight);
+  font-weight: var(--tag-weight);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.markdown-source-view.mod-cm6 .cm-hashtag-begin {
+  margin-inline-start: 0.08em;
+  padding-inline-start: var(--tag-padding-x);
+  border-inline-start: var(--tag-border-width) solid var(--tag-border-color);
+  border-start-start-radius: var(--tag-radius);
+  border-end-start-radius: var(--tag-radius);
+}
+
+.markdown-source-view.mod-cm6 .cm-hashtag-end {
+  margin-inline-end: 0.08em;
+  padding-inline-end: var(--tag-padding-x);
+  border-inline-end: var(--tag-border-width) solid var(--tag-border-color);
+  border-start-end-radius: var(--tag-radius);
+  border-end-end-radius: var(--tag-radius);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  a.tag:hover {
+    border-color: var(--tag-border-color-hover);
+    background-color: var(--tag-background-hover);
+    color: var(--tag-color-hover);
+    text-decoration: none;
+  }
+}
+a.tag:active {
+  transform: translateY(1px);
 }
 
 .task-list-item-checkbox {
@@ -1548,6 +1608,7 @@ button .svg-icon {
   .pdfViewer .page,
   .pdf-thumbnail-view .thumbnail,
   .setting-group-search .search-input-container::after,
+  a.tag,
   .modal-bg,
   .suggestion-bg {
     transition-duration: 0ms;
@@ -1571,6 +1632,12 @@ button .svg-icon {
     --pixel-search-edge: CanvasText;
     --pixel-search-edge-hover: Highlight;
     --pixel-search-focus-shadow: none;
+    --pixel-tag-ink: CanvasText;
+    --pixel-tag-fill: Canvas;
+    --pixel-tag-fill-hover: ButtonFace;
+    --pixel-tag-edge: CanvasText;
+    --pixel-tag-edge-hover: Highlight;
+    --pixel-tag-highlight: none;
     --pixel-nav-label: Canvas;
     --pixel-nav-controller: Canvas;
     --pixel-nav-controller-edge: Highlight;
@@ -1702,6 +1769,11 @@ button .svg-icon {
     --pixel-text-muted: var(--pixel-text);
     --pixel-border-meaningful: var(--pixel-text);
     --pixel-line: var(--pixel-text-muted);
+    --pixel-tag-ink: var(--pixel-text);
+    --pixel-tag-fill: var(--pixel-paper);
+    --pixel-tag-fill-hover: var(--pixel-surface-secondary);
+    --pixel-tag-edge: var(--pixel-text);
+    --pixel-tag-edge-hover: var(--pixel-cyan);
     --bases-table-row-border-width: var(--pixel-border-control);
     --bases-table-column-border-width: var(--pixel-border-control);
     --bases-cards-border-width: var(--pixel-border-control);
@@ -4582,12 +4654,6 @@ body:not(.is-mobile) .workspace.workspace .callout {
   border-inline-start: 4px solid rgb(var(--callout-color));
   background-color: rgb(from var(--pixel-paper) r g b/78%);
   box-shadow: none;
-}
-
-body:not(.is-mobile) .workspace.workspace a.tag {
-  border-color: rgb(from var(--pixel-cyan) r g b/45%);
-  background-color: var(--pixel-nav-label);
-  box-shadow: inset 0 -2px 0 rgb(from var(--pixel-cyan) r g b/16%);
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .view-content {

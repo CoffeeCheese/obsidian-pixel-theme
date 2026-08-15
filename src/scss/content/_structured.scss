@@ -191,10 +191,69 @@ video:focus-visible {
 }
 
 a.tag {
+  display: inline-flex;
+  align-items: center;
+  max-inline-size: 100%;
+  margin-inline: 0.08em;
+  padding: var(--tag-padding-y) var(--tag-padding-x);
   border: var(--tag-border-width) solid var(--tag-border-color);
+  border-radius: var(--tag-radius);
   background-color: var(--tag-background);
   color: var(--tag-color);
-  box-shadow: none;
+  box-shadow: var(--pixel-tag-highlight);
+  font-weight: var(--tag-weight);
+  line-height: 1.4;
+  text-decoration: none;
+  vertical-align: baseline;
+  overflow-wrap: anywhere;
+  transition:
+    border-color var(--pixel-motion-state) var(--pixel-ease-out),
+    background-color var(--pixel-motion-state) var(--pixel-ease-out),
+    color var(--pixel-motion-state) var(--pixel-ease-out),
+    transform var(--pixel-motion-press) var(--pixel-ease-out);
+}
+
+// CodeMirror splits one tag into a # segment, zero or more middle segments,
+// and an end segment. Treat those pieces as one continuous capsule in both
+// Live Preview and Source mode instead of drawing a box around every token.
+.markdown-source-view.mod-cm6 .cm-hashtag {
+  padding-block: var(--tag-padding-y);
+  border-block: var(--tag-border-width) solid var(--tag-border-color);
+  background-color: var(--tag-background);
+  color: var(--tag-color);
+  box-shadow: var(--pixel-tag-highlight);
+  font-weight: var(--tag-weight);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.markdown-source-view.mod-cm6 .cm-hashtag-begin {
+  margin-inline-start: 0.08em;
+  padding-inline-start: var(--tag-padding-x);
+  border-inline-start: var(--tag-border-width) solid var(--tag-border-color);
+  border-start-start-radius: var(--tag-radius);
+  border-end-start-radius: var(--tag-radius);
+}
+
+.markdown-source-view.mod-cm6 .cm-hashtag-end {
+  margin-inline-end: 0.08em;
+  padding-inline-end: var(--tag-padding-x);
+  border-inline-end: var(--tag-border-width) solid var(--tag-border-color);
+  border-start-end-radius: var(--tag-radius);
+  border-end-end-radius: var(--tag-radius);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  a.tag:hover {
+    border-color: var(--tag-border-color-hover);
+    background-color: var(--tag-background-hover);
+    color: var(--tag-color-hover);
+    text-decoration: none;
+  }
+}
+
+a.tag:active {
+  transform: translateY(1px);
 }
 
 .task-list-item-checkbox {

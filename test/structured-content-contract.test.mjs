@@ -300,9 +300,58 @@ test("footnotes, math, comments, rules, highlights, tags, and nested tasks keep 
   assert.equal(declaration(highlight, "color"), "var(--pixel-text)");
 
   const tag = ruleBody(css, "a.tag");
+  assert.equal(declaration(tag, "display"), "inline-flex");
+  assert.equal(declaration(tag, "max-inline-size"), "100%");
   assert.equal(
     declaration(tag, "border"),
     "var(--tag-border-width) solid var(--tag-border-color)",
+  );
+  assert.equal(declaration(tag, "border-radius"), "var(--tag-radius)");
+  assert.equal(
+    declaration(tag, "padding"),
+    "var(--tag-padding-y) var(--tag-padding-x)",
+  );
+  assert.equal(declaration(tag, "background-color"), "var(--tag-background)");
+  assert.equal(declaration(tag, "color"), "var(--tag-color)");
+  assert.equal(declaration(tag, "font-weight"), "var(--tag-weight)");
+  assert.equal(declaration(tag, "line-height"), "1.4");
+  assert.equal(declaration(tag, "text-decoration"), "none");
+
+  const editorTag = ruleBody(css, ".markdown-source-view.mod-cm6 .cm-hashtag");
+  assert.equal(
+    declaration(editorTag, "border-block"),
+    "var(--tag-border-width) solid var(--tag-border-color)",
+  );
+  assert.equal(
+    declaration(editorTag, "background-color"),
+    "var(--tag-background)",
+  );
+  assert.equal(declaration(editorTag, "white-space"), "nowrap");
+
+  const editorTagBegin = ruleBody(
+    css,
+    ".markdown-source-view.mod-cm6 .cm-hashtag-begin",
+  );
+  assert.equal(
+    declaration(editorTagBegin, "border-inline-start"),
+    "var(--tag-border-width) solid var(--tag-border-color)",
+  );
+  assert.equal(
+    declaration(editorTagBegin, "border-start-start-radius"),
+    "var(--tag-radius)",
+  );
+
+  const editorTagEnd = ruleBody(
+    css,
+    ".markdown-source-view.mod-cm6 .cm-hashtag-end",
+  );
+  assert.equal(
+    declaration(editorTagEnd, "border-inline-end"),
+    "var(--tag-border-width) solid var(--tag-border-color)",
+  );
+  assert.equal(
+    declaration(editorTagEnd, "border-end-end-radius"),
+    "var(--tag-radius)",
   );
 
   const taskFocus = ruleBodyForSelector(css, "input[type=checkbox]:focus-visible");

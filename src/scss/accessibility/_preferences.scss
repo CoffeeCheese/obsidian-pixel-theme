@@ -37,6 +37,7 @@
   .pdfViewer .page,
   .pdf-thumbnail-view .thumbnail,
   .setting-group-search .search-input-container::after,
+  a.tag,
   .modal-bg,
   .suggestion-bg {
     transition-duration: 0ms;
@@ -61,6 +62,12 @@
     --pixel-search-edge: CanvasText;
     --pixel-search-edge-hover: Highlight;
     --pixel-search-focus-shadow: none;
+    --pixel-tag-ink: CanvasText;
+    --pixel-tag-fill: Canvas;
+    --pixel-tag-fill-hover: ButtonFace;
+    --pixel-tag-edge: CanvasText;
+    --pixel-tag-edge-hover: Highlight;
+    --pixel-tag-highlight: none;
     --pixel-nav-label: Canvas;
     --pixel-nav-controller: Canvas;
     --pixel-nav-controller-edge: Highlight;
@@ -205,6 +212,11 @@
     --pixel-text-muted: var(--pixel-text);
     --pixel-border-meaningful: var(--pixel-text);
     --pixel-line: var(--pixel-text-muted);
+    --pixel-tag-ink: var(--pixel-text);
+    --pixel-tag-fill: var(--pixel-paper);
+    --pixel-tag-fill-hover: var(--pixel-surface-secondary);
+    --pixel-tag-edge: var(--pixel-text);
+    --pixel-tag-edge-hover: var(--pixel-cyan);
     --bases-table-row-border-width: var(--pixel-border-control);
     --bases-table-column-border-width: var(--pixel-border-control);
     --bases-cards-border-width: var(--pixel-border-control);

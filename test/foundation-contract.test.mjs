@@ -119,6 +119,16 @@ test("compiled package exposes the approved Pixel palette and geometry", async (
       "color-mix(in srgb, var(--pixel-cyan) 70%, var(--pixel-border-meaningful))",
     "--pixel-search-focus-shadow":
       "inset 0 0 0 1px color-mix(in srgb, var(--pixel-cyan) 24%, transparent)",
+    "--pixel-tag-ink":
+      "color-mix(in srgb, var(--pixel-cyan) 88%, var(--pixel-text))",
+    "--pixel-tag-fill":
+      "color-mix(in srgb, var(--pixel-cyan) 8%, var(--pixel-paper))",
+    "--pixel-tag-fill-hover":
+      "color-mix(in srgb, var(--pixel-cyan) 12%, var(--pixel-paper))",
+    "--pixel-tag-edge":
+      "color-mix(in srgb, var(--pixel-cyan) 32%, var(--pixel-line))",
+    "--pixel-tag-edge-hover":
+      "color-mix(in srgb, var(--pixel-cyan) 62%, var(--pixel-line))",
     "--pixel-radius-small": "4px",
     "--pixel-radius": "6px",
     "--pixel-radius-large": "10px",
