@@ -87,6 +87,57 @@ test("Claudian composer does not clip menus that open beyond its edge", async ()
   assert.equal(declaration(wrapper, "overflow"), "visible");
 });
 
+test("Claudian preferences use independent Mac-style tab regions", async () => {
+  const css = await readTheme();
+  const tabs = ruleBody(css, ".mod-settings .claudian-settings-tabs");
+  const tab = ruleBody(css, ".mod-settings button.claudian-settings-tab");
+  const active = ruleBody(
+    css,
+    ".mod-settings button.claudian-settings-tab--active",
+  );
+
+  assert.equal(declaration(tabs, "inline-size"), "100%");
+  assert.equal(declaration(tabs, "max-inline-size"), "100%");
+  assert.equal(
+    declaration(tabs, "border-block-end"),
+    "var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-cyan) 14%, var(--pixel-line))",
+  );
+  assert.equal(declaration(tabs, "gap"), "var(--pixel-space-1)");
+  assert.equal(declaration(tab, "margin-block-end"), "-1px");
+  assert.equal(
+    declaration(tab, "border"),
+    "var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-cyan) 16%, var(--pixel-line))",
+  );
+  assert.match(declaration(tab, "background-color"), /var\(--pixel-canvas\)/);
+  assert.match(declaration(active, "background-color"), /var\(--pixel-paper\)/);
+  assert.match(declaration(active, "box-shadow"), /inset 0 -2px 0 var\(--pixel-cyan\)/);
+});
+
+test("Claudian preferences inherit the global setting cards", async () => {
+  const css = await readTheme();
+  const card = ruleBody(
+    css,
+    ".mod-settings .vertical-tab-content .setting-item:not(.setting-item-heading)",
+  );
+
+  assert.equal(declaration(card, "position"), "relative");
+  assert.equal(declaration(card, "margin-block"), "0 var(--pixel-space-2)");
+  assert.equal(declaration(card, "padding"), "var(--pixel-space-4)");
+  assert.equal(
+    declaration(card, "border"),
+    "var(--pixel-border-decoration) solid var(--pixel-settings-card-edge)",
+  );
+  assert.equal(declaration(card, "border-radius"), "var(--pixel-radius-large)");
+  assert.equal(
+    declaration(card, "background-color"),
+    "var(--pixel-settings-card-surface)",
+  );
+  assert.doesNotMatch(
+    css,
+    /\.claudian-settings-tab-content\s*>\s*\.setting-item:not\(\.setting-item-heading\)\s*\{/,
+  );
+});
+
 test("active root Claudian tabs keep a clear state without plugin-owned status clearance", async () => {
   const css = await readTheme();
   const activeTab = ruleBody(

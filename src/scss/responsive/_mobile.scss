@@ -349,7 +349,7 @@ body.is-mobile {
     transition-duration: var(--pixel-motion-press);
   }
 
-  button:not(.clickable-icon) {
+  button:not(.clickable-icon):not(.mod-settings *) {
     min-block-size: var(--pixel-control-min);
     border-width: var(--pixel-border-decoration);
     border-color: var(--pixel-mobile-control-border);
@@ -358,7 +358,7 @@ body.is-mobile {
     box-shadow: var(--pixel-mobile-pixel-step);
   }
 
-  button:not(.clickable-icon):not(:disabled):not([aria-disabled="true"]):active {
+  button:not(.clickable-icon):not(.mod-settings *):not(:disabled):not([aria-disabled="true"]):active {
     transform: translateY(1px) scale(0.98);
     background-color: var(--pixel-mobile-control-active);
     box-shadow: inset 0 -1px 0 var(--pixel-mobile-control-border);
@@ -411,6 +411,14 @@ body.is-mobile {
     border-width: var(--pixel-border-decoration);
     border-color: var(--pixel-mobile-control-border);
     border-radius: var(--pixel-mobile-control-radius);
+  }
+
+  .mod-settings
+    .vertical-tab-content
+    .setting-item:not(.setting-item-heading) {
+    margin-block-end: var(--pixel-space-2);
+    padding: var(--pixel-space-3);
+    border-radius: var(--pixel-radius);
   }
 
   .workspace-drawer :is(

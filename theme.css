@@ -376,7 +376,7 @@ body {
   --titlebar-border-width: var(--pixel-border-decoration);
   --setting-items-background: var(--pixel-paper);
   --setting-items-border-color: var(--pixel-border-meaningful);
-  --setting-items-border-width: var(--pixel-border-control);
+  --setting-items-border-width: 0px;
   --code-background: var(--pixel-surface-secondary);
   --code-normal: var(--pixel-text);
   --callout-border-width: var(--pixel-border-control);
@@ -1095,8 +1095,8 @@ a.tag:active {
   box-shadow: none;
 }
 
-button:not(.clickable-icon),
-.clickable-icon {
+button:not(.clickable-icon):not(.mod-settings *),
+.clickable-icon:not(.mod-settings *) {
   min-block-size: var(--pixel-control-min);
   border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
   border-radius: var(--pixel-radius);
@@ -1106,25 +1106,25 @@ button:not(.clickable-icon),
   transition: transform var(--pixel-motion-press) ease-out, box-shadow var(--pixel-motion-press) ease-out, background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, color var(--pixel-motion-state) linear;
 }
 
-button:not(.clickable-icon) {
+button:not(.clickable-icon):not(.mod-settings *) {
   border-radius: var(--pixel-radius-button);
   box-shadow: var(--pixel-shadow-button);
   transform: translateY(0) scale(1);
   transition: transform var(--pixel-motion-button) var(--pixel-ease-button), box-shadow var(--pixel-motion-button) var(--pixel-ease-button), background-color var(--pixel-motion-state) var(--pixel-ease-out), border-color var(--pixel-motion-state) var(--pixel-ease-out), color var(--pixel-motion-state) var(--pixel-ease-out);
 }
 
-textarea,
-.multi-select-container,
-input.metadata-input-text,
-input[type=date],
-input[type=datetime-local],
-input[type=text],
-input[type=email],
-input[type=password],
-input[type=number],
-select,
-.combobox-button,
-.dropdown {
+textarea:not(.mod-settings *),
+.multi-select-container:not(.mod-settings *),
+input.metadata-input-text:not(.mod-settings *),
+input[type=date]:not(.mod-settings *),
+input[type=datetime-local]:not(.mod-settings *),
+input[type=text]:not(.mod-settings *),
+input[type=email]:not(.mod-settings *),
+input[type=password]:not(.mod-settings *),
+input[type=number]:not(.mod-settings *),
+select:not(.mod-settings *),
+.combobox-button:not(.mod-settings *),
+.dropdown:not(.mod-settings *) {
   border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
   border-radius: var(--pixel-radius);
   background-color: var(--pixel-paper);
@@ -1149,13 +1149,13 @@ input[type=search]:is(:focus, :focus-visible) {
   box-shadow: var(--pixel-search-focus-shadow);
 }
 
-button:not(.clickable-icon):not(:disabled):not([aria-disabled=true]):active {
+button:not(.clickable-icon):not(.mod-settings *):not(:disabled):not([aria-disabled=true]):active {
   transform: translateY(1px) scale(0.98);
   box-shadow: var(--pixel-shadow-button-active);
   transition-duration: var(--pixel-motion-press);
 }
 
-.clickable-icon:not([aria-disabled=true]):active {
+.clickable-icon:not(.mod-settings *):not([aria-disabled=true]):active {
   transform: translate(2px, 2px);
   box-shadow: none;
   transition-duration: var(--pixel-motion-press);
@@ -1178,18 +1178,18 @@ input[type=range]:focus-visible,
   outline-offset: 2px;
 }
 
-textarea:focus-visible,
-.multi-select-container:focus-visible,
-input.metadata-input-text:focus-visible,
-input[type=date]:focus-visible,
-input[type=datetime-local]:focus-visible,
-input[type=text]:focus-visible,
-input[type=email]:focus-visible,
-input[type=password]:focus-visible,
-input[type=number]:focus-visible,
-select:focus-visible,
-.combobox-button:focus-visible,
-.dropdown:focus-visible {
+textarea:not(.mod-settings *):focus-visible,
+.multi-select-container:not(.mod-settings *):focus-visible,
+input.metadata-input-text:not(.mod-settings *):focus-visible,
+input[type=date]:not(.mod-settings *):focus-visible,
+input[type=datetime-local]:not(.mod-settings *):focus-visible,
+input[type=text]:not(.mod-settings *):focus-visible,
+input[type=email]:not(.mod-settings *):focus-visible,
+input[type=password]:not(.mod-settings *):focus-visible,
+input[type=number]:not(.mod-settings *):focus-visible,
+select:not(.mod-settings *):focus-visible,
+.combobox-button:not(.mod-settings *):focus-visible,
+.dropdown:not(.mod-settings *):focus-visible {
   outline: var(--pixel-border-control) solid var(--pixel-cyan);
   outline-offset: 2px;
 }
@@ -1200,62 +1200,62 @@ select:focus-visible,
     background-color: color-mix(in srgb, var(--pixel-cyan) 3%, var(--pixel-paper));
     box-shadow: none;
   }
-  button:not(.clickable-icon):hover,
-  .clickable-icon:hover {
+  button:not(.clickable-icon):not(.mod-settings *):hover,
+  .clickable-icon:not(.mod-settings *):hover {
     background-color: var(--pixel-surface-secondary);
     border-color: var(--pixel-cyan);
     color: var(--pixel-text);
   }
-  button:not(.clickable-icon):not(:disabled):not([aria-disabled=true]):not(:active):hover {
+  button:not(.clickable-icon):not(.mod-settings *):not(:disabled):not([aria-disabled=true]):not(:active):hover {
     box-shadow: var(--pixel-shadow-button-hover);
     transform: translateY(-1px) scale(1);
   }
-  textarea:hover,
-  .multi-select-container:hover,
-  input.metadata-input-text:hover,
-  input[type=date]:hover,
-  input[type=datetime-local]:hover,
-  input[type=text]:hover,
-  input[type=email]:hover,
-  input[type=password]:hover,
-  input[type=number]:hover,
-  select:hover,
-  .combobox-button:hover,
-  .dropdown:hover {
+  textarea:not(.mod-settings *):hover,
+  .multi-select-container:not(.mod-settings *):hover,
+  input.metadata-input-text:not(.mod-settings *):hover,
+  input[type=date]:not(.mod-settings *):hover,
+  input[type=datetime-local]:not(.mod-settings *):hover,
+  input[type=text]:not(.mod-settings *):hover,
+  input[type=email]:not(.mod-settings *):hover,
+  input[type=password]:not(.mod-settings *):hover,
+  input[type=number]:not(.mod-settings *):hover,
+  select:not(.mod-settings *):hover,
+  .combobox-button:not(.mod-settings *):hover,
+  .dropdown:not(.mod-settings *):hover {
     background-color: var(--pixel-surface-secondary);
     border-color: var(--pixel-cyan);
   }
 }
 @media (hover: none) {
-  textarea:hover,
-  .multi-select-container:hover,
-  input.metadata-input-text:hover,
-  input[type=date]:hover,
-  input[type=datetime-local]:hover,
-  input[type=text]:hover,
-  input[type=email]:hover,
-  input[type=password]:hover,
-  input[type=number]:hover,
-  select:hover,
-  .combobox-button:hover,
-  .dropdown:hover {
+  textarea:not(.mod-settings *):hover,
+  .multi-select-container:not(.mod-settings *):hover,
+  input.metadata-input-text:not(.mod-settings *):hover,
+  input[type=date]:not(.mod-settings *):hover,
+  input[type=datetime-local]:not(.mod-settings *):hover,
+  input[type=text]:not(.mod-settings *):hover,
+  input[type=email]:not(.mod-settings *):hover,
+  input[type=password]:not(.mod-settings *):hover,
+  input[type=number]:not(.mod-settings *):hover,
+  select:not(.mod-settings *):hover,
+  .combobox-button:not(.mod-settings *):hover,
+  .dropdown:not(.mod-settings *):hover {
     border-color: var(--pixel-border-meaningful);
     background-color: var(--pixel-paper);
     color: var(--pixel-text);
   }
-  .clickable-icon:hover {
+  .clickable-icon:not(.mod-settings *):hover {
     border-color: var(--pixel-border-meaningful);
     background-color: var(--pixel-paper);
     color: var(--pixel-text);
     box-shadow: var(--pixel-shadow-control);
   }
 }
-button:disabled,
-button[aria-disabled=true],
-.clickable-icon[aria-disabled=true],
-input:disabled,
-textarea:disabled,
-select:disabled,
+button:disabled:not(.mod-settings *),
+button[aria-disabled=true]:not(.mod-settings *),
+.clickable-icon[aria-disabled=true]:not(.mod-settings *),
+input:disabled:not(.mod-settings *),
+textarea:disabled:not(.mod-settings *),
+select:disabled:not(.mod-settings *),
 .checkbox-container.is-disabled,
 .menu-item.is-disabled,
 .suggestion-item.is-disabled {
@@ -1293,8 +1293,8 @@ select:disabled,
   color: var(--pixel-amber-text);
 }
 
-button.mod-warning,
-button.mod-destructive,
+button.mod-warning:not(.mod-settings *),
+button.mod-destructive:not(.mod-settings *),
 .notice.mod-error,
 .tooltip.mod-error,
 [aria-invalid=true],
@@ -1306,8 +1306,8 @@ button.mod-destructive,
 }
 
 @media (hover: hover) and (pointer: fine) {
-  button.mod-warning:hover,
-  button.mod-destructive:hover,
+  button.mod-warning:not(.mod-settings *):hover,
+  button.mod-destructive:not(.mod-settings *):hover,
   [aria-invalid=true]:hover,
   .is-invalid:hover {
     border-color: var(--pixel-brick);
@@ -1327,13 +1327,13 @@ button.mod-destructive,
   animation: none;
 }
 
-button.mod-loading {
+button.mod-loading:not(.mod-settings *) {
   color: var(--pixel-text);
   cursor: progress;
   box-shadow: inset 4px 0 0 var(--pixel-cyan);
 }
 
-button.mod-loading::after {
+button.mod-loading:not(.mod-settings *)::after {
   display: none;
 }
 
@@ -1368,12 +1368,120 @@ button.mod-loading::after {
   transition: opacity var(--pixel-motion-surface) linear;
 }
 
-.setting-item {
-  border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
-  border-radius: var(--pixel-radius);
-  background-color: var(--pixel-paper);
+.mod-settings {
+  --pixel-settings-edge: color-mix(
+    in srgb,
+    var(--pixel-cyan) 28%,
+    var(--pixel-border-meaningful)
+  );
+  --pixel-settings-edge-hover: color-mix(
+    in srgb,
+    var(--pixel-cyan) 62%,
+    var(--pixel-border-meaningful)
+  );
+  --pixel-settings-surface: color-mix(
+    in srgb,
+    var(--pixel-paper) 92%,
+    var(--pixel-canvas)
+  );
+  --pixel-settings-card-edge: color-mix(
+    in srgb,
+    var(--pixel-cyan) 14%,
+    var(--pixel-line)
+  );
+  --pixel-settings-card-edge-hover: color-mix(
+    in srgb,
+    var(--pixel-cyan) 38%,
+    var(--pixel-line)
+  );
+  --pixel-settings-card-surface: color-mix(
+    in srgb,
+    var(--pixel-paper) 76%,
+    var(--pixel-canvas)
+  );
+  --pixel-settings-card-surface-hover: color-mix(
+    in srgb,
+    var(--pixel-cyan) 4%,
+    var(--pixel-settings-card-surface)
+  );
+  --pixel-settings-focus-ring: 0 0 0 3px
+    color-mix(in srgb, var(--pixel-cyan) 16%, transparent);
+  --input-border-width: var(--pixel-border-decoration);
+  --input-border-width-focus: var(--pixel-border-decoration);
+  --input-shadow: none;
+  --input-shadow-hover: none;
+  --setting-items-border-width: 0px;
+}
+
+.mod-settings .vertical-tab-content .setting-item:not(.setting-item-heading) {
+  position: relative;
+  margin-block: 0 var(--pixel-space-2);
+  padding: var(--pixel-space-4);
+  border: var(--pixel-border-decoration) solid var(--pixel-settings-card-edge);
+  border-radius: var(--pixel-radius-large);
+  background-color: var(--pixel-settings-card-surface);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 72%, transparent);
+  transition: background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, box-shadow var(--pixel-motion-state) linear;
+}
+
+.modal.mod-settings .vertical-tab-content .setting-group .setting-items > .setting-item:not(.setting-item-heading) {
+  border-radius: var(--pixel-radius-large);
+}
+
+.mod-settings .vertical-tab-content .setting-item.setting-item-heading {
+  border-inline: 0;
+  border-radius: 0;
+  background-color: transparent;
   box-shadow: none;
-  align-items: flex-start;
+}
+
+.mod-settings .vertical-tab-content .setting-item:not(.setting-item-heading):focus-within {
+  border-color: var(--pixel-settings-card-edge-hover);
+  box-shadow: inset 3px 0 0 var(--pixel-cyan), inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 72%, transparent);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mod-settings .vertical-tab-content .setting-item:not(.setting-item-heading):hover {
+    border-color: var(--pixel-settings-card-edge-hover);
+    background-color: var(--pixel-settings-card-surface-hover);
+    box-shadow: inset 3px 0 0 var(--pixel-cyan), inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 72%, transparent);
+  }
+}
+.mod-settings .setting-item-control > :is(button:not(.clickable-icon),
+input:not([type=checkbox]):not([type=radio]),
+textarea,
+select.dropdown,
+.combobox-button) {
+  border: var(--pixel-border-decoration) solid var(--pixel-settings-edge);
+  border-radius: var(--pixel-radius);
+  background-color: var(--pixel-settings-surface);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--pixel-paper) 76%, transparent);
+  transition: background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, box-shadow var(--pixel-motion-state) linear;
+}
+
+.mod-settings .setting-item-control > :is(button:not(.clickable-icon),
+input:not([type=checkbox]):not([type=radio]),
+textarea,
+select.dropdown,
+.combobox-button):focus-visible {
+  outline: 0;
+  border-color: var(--pixel-cyan);
+  box-shadow: var(--pixel-settings-focus-ring);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mod-settings .setting-item-control > :is(button:not(.clickable-icon),
+  input:not([type=checkbox]):not([type=radio]),
+  textarea,
+  select.dropdown,
+  .combobox-button):hover {
+    border-color: var(--pixel-settings-edge-hover);
+    background-color: color-mix(in srgb, var(--pixel-cyan) 4%, var(--pixel-paper));
+  }
+}
+.mod-settings .setting-item-control > button:not(.clickable-icon):active {
+  background-color: color-mix(in srgb, var(--pixel-cyan) 8%, var(--pixel-paper));
+  box-shadow: inset 0 1px 2px color-mix(in srgb, var(--pixel-shadow-color) 14%, transparent);
 }
 
 .mod-settings .vertical-tab-nav-item {
@@ -1527,10 +1635,6 @@ input[type=radio]:checked {
   box-shadow: var(--pixel-search-focus-shadow);
 }
 
-.mod-settings .mod-list .setting-item {
-  box-shadow: inset 0 -1px 0 var(--pixel-line);
-}
-
 .mod-settings .mod-list .setting-item-control {
   min-block-size: var(--pixel-control-min);
   flex: 0 0 auto;
@@ -1617,13 +1721,13 @@ input[type=range]:active::-webkit-slider-thumb {
   filter: none;
 }
 
-.clickable-icon .svg-icon,
-button .svg-icon {
+.clickable-icon:not(.mod-settings *) .svg-icon,
+button:not(.mod-settings *) .svg-icon {
   inline-size: var(--pixel-icon-size);
   block-size: var(--pixel-icon-size);
 }
 
-.clickable-icon {
+.clickable-icon:not(.mod-settings *) {
   min-inline-size: var(--pixel-control-min);
 }
 
@@ -1651,6 +1755,7 @@ button .svg-icon {
   body:not(.is-mobile) .workspace-leaf-resize-handle,
   body:not(.is-mobile) .status-bar::before,
   .mod-settings .vertical-tab-nav-item,
+  .mod-settings .vertical-tab-content .setting-item,
   .nav-file-title,
   .nav-folder-title,
   .nav-file-title::before,
@@ -3552,7 +3657,67 @@ body.is-mobile .workspace-leaf-content[data-type=claudian-view] :is(.claudian-in
   block-size: 44px;
 }
 
+.mod-settings .claudian-settings-tabs {
+  display: flex;
+  align-items: flex-end;
+  inline-size: 100%;
+  max-inline-size: 100%;
+  gap: var(--pixel-space-1);
+  margin-block-end: var(--pixel-space-4);
+  padding: 0;
+  overflow-x: auto;
+  border: 0;
+  border-block-end: var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-cyan) 14%, var(--pixel-line));
+  border-radius: 0;
+  background-color: transparent;
+  scrollbar-color: color-mix(in srgb, var(--pixel-cyan) 28%, transparent) transparent;
+  scrollbar-width: none;
+}
+
+.mod-settings .claudian-settings-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.mod-settings button.claudian-settings-tab {
+  min-block-size: 36px;
+  margin-block-end: -1px;
+  padding: 7px 16px;
+  white-space: nowrap;
+  border: var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-cyan) 16%, var(--pixel-line));
+  border-radius: calc(var(--pixel-radius) + 2px) calc(var(--pixel-radius) + 2px) 2px 2px;
+  background-color: color-mix(in srgb, var(--pixel-cyan) 5%, var(--pixel-canvas));
+  color: var(--pixel-text-muted);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 64%, transparent);
+  transform: none;
+  transition: background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, box-shadow var(--pixel-motion-state) linear, color var(--pixel-motion-state) linear;
+}
+
+.mod-settings button.claudian-settings-tab--active {
+  border-color: var(--pixel-settings-edge);
+  background-color: color-mix(in srgb, var(--pixel-cyan) 7%, var(--pixel-paper));
+  color: var(--pixel-text);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 72%, transparent), inset 0 -2px 0 var(--pixel-cyan);
+}
+
+.mod-settings button.claudian-settings-tab:focus-visible {
+  outline: 0;
+  border-color: var(--pixel-cyan);
+  box-shadow: var(--pixel-settings-focus-ring);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mod-settings button.claudian-settings-tab:not(.claudian-settings-tab--active):hover {
+    border-color: color-mix(in srgb, var(--pixel-cyan) 38%, var(--pixel-line));
+    background-color: color-mix(in srgb, var(--pixel-cyan) 8%, var(--pixel-canvas));
+    color: var(--pixel-text);
+  }
+}
+.mod-settings .claudian-settings .setting-item-heading {
+  border-block-start-color: color-mix(in srgb, var(--pixel-cyan) 16%, var(--pixel-line));
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .mod-settings button.claudian-settings-tab,
   body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] :is(.claudian-input-wrapper,
   .claudian-input-nav-btn,
   .claudian-nav-btn,
@@ -3890,7 +4055,7 @@ body.is-mobile :is(.view-header .view-action,
   box-shadow: inset 0 -1px 0 var(--pixel-mobile-control-border);
   transition-duration: var(--pixel-motion-press);
 }
-body.is-mobile button:not(.clickable-icon) {
+body.is-mobile button:not(.clickable-icon):not(.mod-settings *) {
   min-block-size: var(--pixel-control-min);
   border-width: var(--pixel-border-decoration);
   border-color: var(--pixel-mobile-control-border);
@@ -3898,7 +4063,7 @@ body.is-mobile button:not(.clickable-icon) {
   background-color: var(--pixel-mobile-control-surface);
   box-shadow: var(--pixel-mobile-pixel-step);
 }
-body.is-mobile button:not(.clickable-icon):not(:disabled):not([aria-disabled=true]):active {
+body.is-mobile button:not(.clickable-icon):not(.mod-settings *):not(:disabled):not([aria-disabled=true]):active {
   transform: translateY(1px) scale(0.98);
   background-color: var(--pixel-mobile-control-active);
   box-shadow: inset 0 -1px 0 var(--pixel-mobile-control-border);
@@ -3944,6 +4109,11 @@ body.is-mobile .setting-item {
   border-width: var(--pixel-border-decoration);
   border-color: var(--pixel-mobile-control-border);
   border-radius: var(--pixel-mobile-control-radius);
+}
+body.is-mobile .mod-settings .vertical-tab-content .setting-item:not(.setting-item-heading) {
+  margin-block-end: var(--pixel-space-2);
+  padding: var(--pixel-space-3);
+  border-radius: var(--pixel-radius);
 }
 body.is-mobile .workspace-drawer :is(.workspace-drawer-header-icon,
 .workspace-drawer-tab-select,

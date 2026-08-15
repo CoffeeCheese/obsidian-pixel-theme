@@ -1,16 +1,16 @@
 @mixin form-controls($state: null) {
-  textarea#{$state},
-  .multi-select-container#{$state},
-  input.metadata-input-text#{$state},
-  input[type="date"]#{$state},
-  input[type="datetime-local"]#{$state},
-  input[type="text"]#{$state},
-  input[type="email"]#{$state},
-  input[type="password"]#{$state},
-  input[type="number"]#{$state},
-  select#{$state},
-  .combobox-button#{$state},
-  .dropdown#{$state} {
+  textarea:not(.mod-settings *)#{$state},
+  .multi-select-container:not(.mod-settings *)#{$state},
+  input.metadata-input-text:not(.mod-settings *)#{$state},
+  input[type="date"]:not(.mod-settings *)#{$state},
+  input[type="datetime-local"]:not(.mod-settings *)#{$state},
+  input[type="text"]:not(.mod-settings *)#{$state},
+  input[type="email"]:not(.mod-settings *)#{$state},
+  input[type="password"]:not(.mod-settings *)#{$state},
+  input[type="number"]:not(.mod-settings *)#{$state},
+  select:not(.mod-settings *)#{$state},
+  .combobox-button:not(.mod-settings *)#{$state},
+  .dropdown:not(.mod-settings *)#{$state} {
     @content;
   }
 }
@@ -20,8 +20,8 @@
   outline-offset: 2px;
 }
 
-button:not(.clickable-icon),
-.clickable-icon {
+button:not(.clickable-icon):not(.mod-settings *),
+.clickable-icon:not(.mod-settings *) {
   min-block-size: var(--pixel-control-min);
   border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
   border-radius: var(--pixel-radius);
@@ -36,7 +36,7 @@ button:not(.clickable-icon),
     color var(--pixel-motion-state) linear;
 }
 
-button:not(.clickable-icon) {
+button:not(.clickable-icon):not(.mod-settings *) {
   border-radius: var(--pixel-radius-button);
   box-shadow: var(--pixel-shadow-button);
   transform: translateY(0) scale(1);
@@ -88,13 +88,13 @@ input[type="search"]:is(:focus, :focus-visible) {
   box-shadow: var(--pixel-search-focus-shadow);
 }
 
-button:not(.clickable-icon):not(:disabled):not([aria-disabled="true"]):active {
+button:not(.clickable-icon):not(.mod-settings *):not(:disabled):not([aria-disabled="true"]):active {
   transform: translateY(1px) scale(0.98);
   box-shadow: var(--pixel-shadow-button-active);
   transition-duration: var(--pixel-motion-press);
 }
 
-.clickable-icon:not([aria-disabled="true"]):active {
+.clickable-icon:not(.mod-settings *):not([aria-disabled="true"]):active {
   transform: translate(2px, 2px);
   box-shadow: none;
   transition-duration: var(--pixel-motion-press);
@@ -131,14 +131,14 @@ input[type="range"]:focus-visible,
     box-shadow: none;
   }
 
-  button:not(.clickable-icon):hover,
-  .clickable-icon:hover {
+  button:not(.clickable-icon):not(.mod-settings *):hover,
+  .clickable-icon:not(.mod-settings *):hover {
     background-color: var(--pixel-surface-secondary);
     border-color: var(--pixel-cyan);
     color: var(--pixel-text);
   }
 
-  button:not(.clickable-icon):not(:disabled):not([aria-disabled="true"]):not(:active):hover {
+  button:not(.clickable-icon):not(.mod-settings *):not(:disabled):not([aria-disabled="true"]):not(:active):hover {
     box-shadow: var(--pixel-shadow-button-hover);
     transform: translateY(-1px) scale(1);
   }
@@ -156,7 +156,7 @@ input[type="range"]:focus-visible,
     color: var(--pixel-text);
   }
 
-  .clickable-icon:hover {
+  .clickable-icon:not(.mod-settings *):hover {
     border-color: var(--pixel-border-meaningful);
     background-color: var(--pixel-paper);
     color: var(--pixel-text);
@@ -164,12 +164,12 @@ input[type="range"]:focus-visible,
   }
 }
 
-button:disabled,
-button[aria-disabled="true"],
-.clickable-icon[aria-disabled="true"],
-input:disabled,
-textarea:disabled,
-select:disabled,
+button:disabled:not(.mod-settings *),
+button[aria-disabled="true"]:not(.mod-settings *),
+.clickable-icon[aria-disabled="true"]:not(.mod-settings *),
+input:disabled:not(.mod-settings *),
+textarea:disabled:not(.mod-settings *),
+select:disabled:not(.mod-settings *),
 .checkbox-container.is-disabled,
 .menu-item.is-disabled,
 .suggestion-item.is-disabled {
@@ -209,8 +209,8 @@ select:disabled,
   color: var(--pixel-amber-text);
 }
 
-button.mod-warning,
-button.mod-destructive,
+button.mod-warning:not(.mod-settings *),
+button.mod-destructive:not(.mod-settings *),
 .notice.mod-error,
 .tooltip.mod-error,
 [aria-invalid="true"],
@@ -222,8 +222,8 @@ button.mod-destructive,
 }
 
 @media (hover: hover) and (pointer: fine) {
-  button.mod-warning:hover,
-  button.mod-destructive:hover,
+  button.mod-warning:not(.mod-settings *):hover,
+  button.mod-destructive:not(.mod-settings *):hover,
   [aria-invalid="true"]:hover,
   .is-invalid:hover {
     border-color: var(--pixel-brick);
@@ -244,13 +244,13 @@ button.mod-destructive,
   animation: none;
 }
 
-button.mod-loading {
+button.mod-loading:not(.mod-settings *) {
   color: var(--pixel-text);
   cursor: progress;
   box-shadow: inset 4px 0 0 var(--pixel-cyan);
 }
 
-button.mod-loading::after {
+button.mod-loading:not(.mod-settings *)::after {
   display: none;
 }
 
@@ -288,12 +288,185 @@ button.mod-loading::after {
   transition: opacity var(--pixel-motion-surface) linear;
 }
 
-.setting-item {
-  border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
-  border-radius: var(--pixel-radius);
-  background-color: var(--pixel-paper);
+.mod-settings {
+  // Preferences is an extension surface. Theme the stable Setting API shared
+  // by core and community plugins, while leaving plugin-owned compound widgets
+  // responsible for their internal geometry.
+  --pixel-settings-edge: color-mix(
+    in srgb,
+    var(--pixel-cyan) 28%,
+    var(--pixel-border-meaningful)
+  );
+  --pixel-settings-edge-hover: color-mix(
+    in srgb,
+    var(--pixel-cyan) 62%,
+    var(--pixel-border-meaningful)
+  );
+  --pixel-settings-surface: color-mix(
+    in srgb,
+    var(--pixel-paper) 92%,
+    var(--pixel-canvas)
+  );
+  --pixel-settings-card-edge: color-mix(
+    in srgb,
+    var(--pixel-cyan) 14%,
+    var(--pixel-line)
+  );
+  --pixel-settings-card-edge-hover: color-mix(
+    in srgb,
+    var(--pixel-cyan) 38%,
+    var(--pixel-line)
+  );
+  --pixel-settings-card-surface: color-mix(
+    in srgb,
+    var(--pixel-paper) 76%,
+    var(--pixel-canvas)
+  );
+  --pixel-settings-card-surface-hover: color-mix(
+    in srgb,
+    var(--pixel-cyan) 4%,
+    var(--pixel-settings-card-surface)
+  );
+  --pixel-settings-focus-ring: 0 0 0 3px
+    color-mix(in srgb, var(--pixel-cyan) 16%, transparent);
+  --input-border-width: var(--pixel-border-decoration);
+  --input-border-width-focus: var(--pixel-border-decoration);
+  --input-shadow: none;
+  --input-shadow-hover: none;
+  --setting-items-border-width: 0px;
+}
+
+// Every native Setting row is one preference decision, regardless of whether
+// it comes from Obsidian or a community plugin. A quiet card makes that decision
+// boundary visible without imposing geometry on custom content inside the row.
+.mod-settings
+  .vertical-tab-content
+  .setting-item:not(.setting-item-heading) {
+  position: relative;
+  margin-block: 0 var(--pixel-space-2);
+  padding: var(--pixel-space-4);
+  border: var(--pixel-border-decoration) solid var(--pixel-settings-card-edge);
+  border-radius: var(--pixel-radius-large);
+  background-color: var(--pixel-settings-card-surface);
+  box-shadow: inset 0 1px 0
+    color-mix(in srgb, var(--pixel-paper) 72%, transparent);
+  transition:
+    background-color var(--pixel-motion-state) linear,
+    border-color var(--pixel-motion-state) linear,
+    box-shadow var(--pixel-motion-state) linear;
+}
+
+// Obsidian joins rows underneath setting-group search fields by zeroing the
+// first row's top corners with a more specific selector. Restore the complete
+// card silhouette so filtered lists still read as independent preferences.
+.modal.mod-settings
+  .vertical-tab-content
+  .setting-group
+  .setting-items
+  > .setting-item:not(.setting-item-heading) {
+  border-radius: var(--pixel-radius-large);
+}
+
+// Headings describe groups rather than preferences, so they stay on the
+// canvas and retain Obsidian/plugin-owned block separators.
+.mod-settings
+  .vertical-tab-content
+  .setting-item.setting-item-heading {
+  border-inline: 0;
+  border-radius: 0;
+  background-color: transparent;
   box-shadow: none;
-  align-items: flex-start;
+}
+
+// The cyan inset rail is Pixel's compact state signal. It changes paint only,
+// never dimensions, so pointer and keyboard feedback cannot shift the layout.
+.mod-settings
+  .vertical-tab-content
+  .setting-item:not(.setting-item-heading):focus-within {
+  border-color: var(--pixel-settings-card-edge-hover);
+  box-shadow:
+    inset 3px 0 0 var(--pixel-cyan),
+    inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 72%, transparent);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mod-settings
+    .vertical-tab-content
+    .setting-item:not(.setting-item-heading):hover {
+    border-color: var(--pixel-settings-card-edge-hover);
+    background-color: var(--pixel-settings-card-surface-hover);
+    box-shadow:
+      inset 3px 0 0 var(--pixel-cyan),
+      inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 72%, transparent);
+  }
+}
+
+// Native Setting controls form the compatibility seam shared by core and
+// community plugins. Style only direct control-rail children so custom plugin
+// navigation and compound controls keep ownership of their geometry.
+.mod-settings
+  .setting-item-control
+  > :is(
+    button:not(.clickable-icon),
+    input:not([type="checkbox"]):not([type="radio"]),
+    textarea,
+    select.dropdown,
+    .combobox-button
+  ) {
+  border: var(--pixel-border-decoration) solid var(--pixel-settings-edge);
+  border-radius: var(--pixel-radius);
+  background-color: var(--pixel-settings-surface);
+  box-shadow: 0 1px 0
+    color-mix(in srgb, var(--pixel-paper) 76%, transparent);
+  transition:
+    background-color var(--pixel-motion-state) linear,
+    border-color var(--pixel-motion-state) linear,
+    box-shadow var(--pixel-motion-state) linear;
+}
+
+.mod-settings
+  .setting-item-control
+  > :is(
+    button:not(.clickable-icon),
+    input:not([type="checkbox"]):not([type="radio"]),
+    textarea,
+    select.dropdown,
+    .combobox-button
+  ):focus-visible {
+  outline: 0;
+  border-color: var(--pixel-cyan);
+  box-shadow: var(--pixel-settings-focus-ring);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mod-settings
+    .setting-item-control
+    > :is(
+      button:not(.clickable-icon),
+      input:not([type="checkbox"]):not([type="radio"]),
+      textarea,
+      select.dropdown,
+      .combobox-button
+    ):hover {
+    border-color: var(--pixel-settings-edge-hover);
+    background-color: color-mix(
+      in srgb,
+      var(--pixel-cyan) 4%,
+      var(--pixel-paper)
+    );
+  }
+}
+
+.mod-settings
+  .setting-item-control
+  > button:not(.clickable-icon):active {
+  background-color: color-mix(
+    in srgb,
+    var(--pixel-cyan) 8%,
+    var(--pixel-paper)
+  );
+  box-shadow: inset 0 1px 2px
+    color-mix(in srgb, var(--pixel-shadow-color) 14%, transparent);
 }
 
 .mod-settings .vertical-tab-nav-item {
@@ -309,7 +482,7 @@ button.mod-loading::after {
   );
 }
 
-// Settings already has a framed sidebar and bordered option cards, so its
+// Settings already has a framed sidebar and structured option rows, so its
 // search field uses a quieter edge than the theme's standalone form controls.
 .mod-settings
   .setting-search-container
@@ -472,9 +645,9 @@ input[type="radio"]:checked {
   opacity: 1;
 }
 
-// Core plugins keeps the reference theme's quiet rows, then translates its
-// controls back onto Pixel's 4px grid. Its search channel marks focus with a
-// one-pixel scan before settling on the shared cyan hairline.
+// Core plugins inherit the global preference cards, then translate their
+// compact controls onto Pixel's 4px grid. The search channel marks focus with
+// a one-pixel scan before settling on the shared cyan hairline.
 .setting-group-search .search-input-container::after {
   content: "";
   position: absolute;
@@ -521,11 +694,6 @@ input[type="radio"]:checked {
     var(--pixel-paper)
   );
   box-shadow: var(--pixel-search-focus-shadow);
-}
-
-.mod-settings .mod-list
-  .setting-item {
-  box-shadow: inset 0 -1px 0 var(--pixel-line);
 }
 
 .mod-settings .mod-list
@@ -638,13 +806,13 @@ input[type="range"]:active::-webkit-slider-thumb {
   filter: none;
 }
 
-.clickable-icon .svg-icon,
-button .svg-icon {
+.clickable-icon:not(.mod-settings *) .svg-icon,
+button:not(.mod-settings *) .svg-icon {
   inline-size: var(--pixel-icon-size);
   block-size: var(--pixel-icon-size);
 }
 
-.clickable-icon {
+.clickable-icon:not(.mod-settings *) {
   min-inline-size: var(--pixel-control-min);
 }
 

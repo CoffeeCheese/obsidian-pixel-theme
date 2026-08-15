@@ -99,7 +99,10 @@ body {
   --titlebar-border-width: var(--pixel-border-decoration);
   --setting-items-background: var(--pixel-paper);
   --setting-items-border-color: var(--pixel-border-meaningful);
-  --setting-items-border-width: var(--pixel-border-control);
+  // The controls layer draws independent Preferences cards at the shared
+  // .setting-item seam. Disable Obsidian's joined-group border so the two
+  // systems never stack edges.
+  --setting-items-border-width: 0px;
   --code-background: var(--pixel-surface-secondary);
   --code-normal: var(--pixel-text);
   --callout-border-width: var(--pixel-border-control);

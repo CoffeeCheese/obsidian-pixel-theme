@@ -372,7 +372,116 @@ body.is-mobile .workspace-leaf-content[data-type="claudian-view"]
   block-size: 44px;
 }
 
+// Preferences: Claudian's providers are sibling destinations, so each one
+// receives its own Mac-like tab surface. A shared hairline keeps the row
+// coherent while the gaps preserve every provider as an independent region.
+.mod-settings .claudian-settings-tabs {
+  display: flex;
+  align-items: flex-end;
+  inline-size: 100%;
+  max-inline-size: 100%;
+  gap: var(--pixel-space-1);
+  margin-block-end: var(--pixel-space-4);
+  padding: 0;
+  overflow-x: auto;
+  border: 0;
+  border-block-end: var(--pixel-border-decoration) solid
+    color-mix(
+      in srgb,
+      var(--pixel-cyan) 14%,
+      var(--pixel-line)
+    );
+  border-radius: 0;
+  background-color: transparent;
+  scrollbar-color: color-mix(
+    in srgb,
+    var(--pixel-cyan) 28%,
+    transparent
+  ) transparent;
+  scrollbar-width: none;
+}
+
+.mod-settings .claudian-settings-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.mod-settings button.claudian-settings-tab {
+  min-block-size: 36px;
+  margin-block-end: -1px;
+  padding: 7px 16px;
+  white-space: nowrap;
+  border: var(--pixel-border-decoration) solid
+    color-mix(
+      in srgb,
+      var(--pixel-cyan) 16%,
+      var(--pixel-line)
+    );
+  border-radius: calc(var(--pixel-radius) + 2px)
+    calc(var(--pixel-radius) + 2px) 2px 2px;
+  background-color: color-mix(
+    in srgb,
+    var(--pixel-cyan) 5%,
+    var(--pixel-canvas)
+  );
+  color: var(--pixel-text-muted);
+  box-shadow: inset 0 1px 0
+    color-mix(in srgb, var(--pixel-paper) 64%, transparent);
+  transform: none;
+  transition:
+    background-color var(--pixel-motion-state) linear,
+    border-color var(--pixel-motion-state) linear,
+    box-shadow var(--pixel-motion-state) linear,
+    color var(--pixel-motion-state) linear;
+}
+
+.mod-settings button.claudian-settings-tab--active {
+  border-color: var(--pixel-settings-edge);
+  background-color: color-mix(
+    in srgb,
+    var(--pixel-cyan) 7%,
+    var(--pixel-paper)
+  );
+  color: var(--pixel-text);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 72%, transparent),
+    inset 0 -2px 0 var(--pixel-cyan);
+}
+
+.mod-settings button.claudian-settings-tab:focus-visible {
+  outline: 0;
+  border-color: var(--pixel-cyan);
+  box-shadow: var(--pixel-settings-focus-ring);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mod-settings
+    button.claudian-settings-tab:not(.claudian-settings-tab--active):hover {
+    border-color: color-mix(
+      in srgb,
+      var(--pixel-cyan) 38%,
+      var(--pixel-line)
+    );
+    background-color: color-mix(
+      in srgb,
+      var(--pixel-cyan) 8%,
+      var(--pixel-canvas)
+    );
+    color: var(--pixel-text);
+  }
+}
+
+// Claudian's headings remain structural; its native Setting rows inherit the
+// same cards as every other Preferences page.
+.mod-settings .claudian-settings .setting-item-heading {
+  border-block-start-color: color-mix(
+    in srgb,
+    var(--pixel-cyan) 16%,
+    var(--pixel-line)
+  );
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .mod-settings button.claudian-settings-tab,
   body .workspace.workspace
     .workspace-leaf-content[data-type="claudian-view"]
     :is(

@@ -59,7 +59,7 @@ test("compiled controls share Pixel surfaces, meaningful boundaries, and motion"
     "--suggestion-background": "var(--pixel-paper)",
     "--setting-items-background": "var(--pixel-paper)",
     "--setting-items-border-color": "var(--pixel-border-meaningful)",
-    "--setting-items-border-width": "var(--pixel-border-control)",
+    "--setting-items-border-width": "0px",
   };
   for (const [property, value] of Object.entries(expectedMappings)) {
     assert.equal(declaration(themeMapping, property), value);
@@ -193,6 +193,93 @@ test("settings sidebar navigation uses a stable soft hover slot", async () => {
   assert.equal(declaration(motionless, "transition-duration"), "0ms");
 });
 
+test("preferences give every native setting a quiet Pixel card without styling headings", async () => {
+  const css = await readTheme();
+  const themeMapping = ruleBody(css, ".theme-light,\n.theme-dark");
+  const preferences = ruleBody(css, ".mod-settings");
+
+  assert.equal(declaration(themeMapping, "--setting-items-border-width"), "0px");
+  assert.equal(
+    declaration(preferences, "--input-border-width"),
+    "var(--pixel-border-decoration)",
+  );
+  assert.equal(
+    declaration(preferences, "--input-border-width-focus"),
+    "var(--pixel-border-decoration)",
+  );
+  assert.equal(declaration(preferences, "--input-shadow"), "none");
+  assert.equal(declaration(preferences, "--input-shadow-hover"), "none");
+
+  const nativeControl = ruleBody(
+    css,
+    ".mod-settings .setting-item-control > :is(button:not(.clickable-icon),\ninput:not([type=checkbox]):not([type=radio]),\ntextarea,\nselect.dropdown,\n.combobox-button)",
+  );
+  assert.equal(
+    declaration(nativeControl, "border"),
+    "var(--pixel-border-decoration) solid var(--pixel-settings-edge)",
+  );
+  assert.equal(declaration(nativeControl, "border-radius"), "var(--pixel-radius)");
+  assert.equal(
+    declaration(nativeControl, "background-color"),
+    "var(--pixel-settings-surface)",
+  );
+
+  const raisedButton = ruleBody(
+    css,
+    "button:not(.clickable-icon):not(.mod-settings *)",
+  );
+  assert.equal(
+    declaration(raisedButton, "box-shadow"),
+    "var(--pixel-shadow-button)",
+  );
+
+  const card = ruleBody(
+    css,
+    ".mod-settings .vertical-tab-content .setting-item:not(.setting-item-heading)",
+  );
+  assert.equal(declaration(card, "position"), "relative");
+  assert.equal(declaration(card, "margin-block"), "0 var(--pixel-space-2)");
+  assert.equal(declaration(card, "padding"), "var(--pixel-space-4)");
+  assert.equal(
+    declaration(card, "border"),
+    "var(--pixel-border-decoration) solid var(--pixel-settings-card-edge)",
+  );
+  assert.equal(declaration(card, "border-radius"), "var(--pixel-radius-large)");
+  assert.equal(
+    declaration(card, "background-color"),
+    "var(--pixel-settings-card-surface)",
+  );
+
+  const groupedCard = ruleBody(
+    css,
+    ".modal.mod-settings .vertical-tab-content .setting-group .setting-items > .setting-item:not(.setting-item-heading)",
+  );
+  assert.equal(
+    declaration(groupedCard, "border-radius"),
+    "var(--pixel-radius-large)",
+  );
+
+  const focusedCard = ruleBody(
+    css,
+    ".mod-settings .vertical-tab-content .setting-item:not(.setting-item-heading):focus-within",
+  );
+  assert.match(declaration(focusedCard, "box-shadow"), /inset 3px 0 0 var\(--pixel-cyan\)/);
+
+  const reducedMotion = atRuleBody(css, "@media (prefers-reduced-motion: reduce)");
+  const motionlessCard = ruleBodyForSelector(
+    reducedMotion,
+    ".mod-settings .vertical-tab-content .setting-item",
+  );
+  assert.equal(declaration(motionlessCard, "transition-duration"), "0ms");
+
+  const heading = ruleBody(
+    css,
+    ".mod-settings .vertical-tab-content .setting-item.setting-item-heading",
+  );
+  assert.equal(declaration(heading, "background-color"), "transparent");
+  assert.equal(declaration(heading, "border-inline"), "0");
+});
+
 test("core plugins use a quiet list with Pixel keycaps and search signal", async () => {
   const css = await readTheme();
   const list = ".mod-settings .mod-list";
@@ -244,12 +331,6 @@ test("core plugins use a quiet list with Pixel keycaps and search signal", async
   assert.equal(
     declaration(focusedSearch, "box-shadow"),
     "var(--pixel-search-focus-shadow)",
-  );
-
-  const row = ruleBody(css, `${list} .setting-item`);
-  assert.equal(
-    declaration(row, "box-shadow"),
-    "inset 0 -1px 0 var(--pixel-line)",
   );
 
   const rail = ruleBody(css, `${list} .setting-item-control`);
@@ -323,7 +404,10 @@ test("core plugins use a quiet list with Pixel keycaps and search signal", async
 
 test("controls expose pointer, keyboard, and pressed feedback without layout shifts", async () => {
   const css = await readTheme();
-  const raisedControl = ruleBodyForSelector(css, "button:not(.clickable-icon)");
+  const raisedControl = ruleBodyForSelector(
+    css,
+    "button:not(.clickable-icon):not(.mod-settings *)",
+  );
   assert.equal(
     declaration(raisedControl, "border"),
     "var(--pixel-border-control) solid var(--pixel-border-meaningful)",
@@ -337,7 +421,10 @@ test("controls expose pointer, keyboard, and pressed feedback without layout shi
     /transform var\(--pixel-motion-press\) ease-out/,
   );
 
-  const roundedButton = ruleBody(css, "button:not(.clickable-icon)");
+  const roundedButton = ruleBody(
+    css,
+    "button:not(.clickable-icon):not(.mod-settings *)",
+  );
   assert.equal(
     declaration(roundedButton, "border-radius"),
     "var(--pixel-radius-button)",
@@ -354,7 +441,7 @@ test("controls expose pointer, keyboard, and pressed feedback without layout shi
 
   const pressedButton = ruleBodyForSelector(
     css,
-    'button:not(.clickable-icon):not(:disabled):not([aria-disabled=true]):active',
+    'button:not(.clickable-icon):not(.mod-settings *):not(:disabled):not([aria-disabled=true]):active',
   );
   assert.equal(declaration(pressedButton, "transform"), "translatey(1px) scale(0.98)");
   assert.equal(
@@ -362,7 +449,10 @@ test("controls expose pointer, keyboard, and pressed feedback without layout shi
     "var(--pixel-shadow-button-active)",
   );
 
-  const textField = ruleBodyForSelector(css, "input[type=text]");
+  const textField = ruleBodyForSelector(
+    css,
+    "input[type=text]:not(.mod-settings *)",
+  );
   assert.equal(
     declaration(textField, "border"),
     "var(--pixel-border-control) solid var(--pixel-border-meaningful)",
@@ -372,7 +462,7 @@ test("controls expose pointer, keyboard, and pressed feedback without layout shi
 
   const pressed = ruleBodyForSelector(
     css,
-    '.clickable-icon:not([aria-disabled=true]):active',
+    '.clickable-icon:not(.mod-settings *):not([aria-disabled=true]):active',
   );
   assert.equal(declaration(pressed, "transform"), "translate(2px, 2px)");
   assert.equal(declaration(pressed, "box-shadow"), "none");
@@ -383,7 +473,10 @@ test("controls expose pointer, keyboard, and pressed feedback without layout shi
     "var(--pixel-border-control) solid var(--pixel-cyan)",
   );
   assert.equal(declaration(focus, "outline-offset"), "2px");
-  const fieldFocus = ruleBodyForSelector(css, "input[type=text]:focus-visible");
+  const fieldFocus = ruleBodyForSelector(
+    css,
+    "input[type=text]:not(.mod-settings *):focus-visible",
+  );
   assert.equal(
     declaration(fieldFocus, "outline"),
     "var(--pixel-border-control) solid var(--pixel-cyan)",
@@ -399,14 +492,17 @@ test("controls expose pointer, keyboard, and pressed feedback without layout shi
     css,
     "@media (hover: hover) and (pointer: fine)",
   );
-  const hover = ruleBodyForSelector(pointerHover, ".clickable-icon:hover");
+  const hover = ruleBodyForSelector(
+    pointerHover,
+    ".clickable-icon:not(.mod-settings *):hover",
+  );
   assert.equal(
     declaration(hover, "background-color"),
     "var(--pixel-surface-secondary)",
   );
   const buttonHover = ruleBodyForSelector(
     pointerHover,
-    'button:not(.clickable-icon):not(:disabled):not([aria-disabled=true]):not(:active):hover',
+    'button:not(.clickable-icon):not(.mod-settings *):not(:disabled):not([aria-disabled=true]):not(:active):hover',
   );
   assert.equal(declaration(buttonHover, "transform"), "translatey(-1px) scale(1)");
   assert.equal(
@@ -448,7 +544,10 @@ test("disabled, selected, warning, danger, loading, and empty states use multipl
   assert.equal(declaration(warning, "border-inline-start-width"), "4px");
   assert.equal(declaration(warning, "color"), "var(--pixel-amber-text)");
 
-  const danger = ruleBodyForSelector(css, "button.mod-destructive");
+  const danger = ruleBodyForSelector(
+    css,
+    "button.mod-destructive:not(.mod-settings *)",
+  );
   assert.equal(
     declaration(danger, "border"),
     "var(--pixel-border-control) solid var(--pixel-brick)",
@@ -466,9 +565,12 @@ test("disabled, selected, warning, danger, loading, and empty states use multipl
   const loadingIndicator = ruleBody(css, ".is-loading::before");
   assert.equal(declaration(loadingIndicator, "animation"), "none");
 
-  const loadingButton = ruleBody(css, "button.mod-loading");
+  const loadingButton = ruleBody(css, "button.mod-loading:not(.mod-settings *)");
   assert.equal(declaration(loadingButton, "color"), "var(--pixel-text)");
-  const loadingButtonIndicator = ruleBody(css, "button.mod-loading::after");
+  const loadingButtonIndicator = ruleBody(
+    css,
+    "button.mod-loading:not(.mod-settings *)::after",
+  );
   assert.equal(declaration(loadingButtonIndicator, "display"), "none");
 
   const empty = ruleBodyForSelector(css, ".suggestion-empty");
