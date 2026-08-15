@@ -4,7 +4,7 @@
 
 <p align="center">
   <strong>Pixels on paper · Focused writing</strong><br>
-  An Obsidian theme for long-form writing and knowledge management
+  A distinctive Obsidian theme for long-form writing and knowledge work
 </p>
 
 <p align="center">
@@ -19,30 +19,111 @@
 </p>
 
 <p align="center">
-  <a href="#preview">Preview</a> ·
-  <a href="#features">Features</a> ·
+  <a href="#pixel-boy">Pixel Boy</a> ·
+  <a href="#feature-map">Feature map</a> ·
+  <a href="#gallery">Gallery</a> ·
   <a href="#installation">Installation</a> ·
   <a href="#development">Development</a>
 </p>
 
 <p align="center">
-  <img src="src/assets/screenshots/pixel-store-preview.png" alt="High-resolution Pixel theme preview with desktop Light, desktop Dark, and iOS surfaces" width="100%">
+  <img src="src/assets/screenshots/pixel-store-preview.png" alt="Pixel theme preview showing desktop Light, desktop Dark, and iOS surfaces" width="100%">
 </p>
 
 <p align="center"><sub>Desktop Light / Dark and iOS · Composed from real Obsidian captures</sub></p>
 
-Pixel places content on a calm paper-like workspace and reserves its pixel typeface for headings and a few identity elements. It is not a retro filter: it preserves Obsidian's native interactions while giving navigation, reading, properties, and data views a clear and recognizable hierarchy.
+Pixel gives Obsidian a calm paper workspace, a crisp pixel identity, and a
+clear signal system for navigation and focus. It is not a retro filter: body
+text stays comfortable for long sessions, native interactions remain intact,
+and personality is concentrated where it helps orientation.
 
-The theme provides dedicated light and dark designs for desktop and iOS, with support for long Markdown documents, multilingual text, Bases, Canvas, Graph, and PDF workflows. Android is currently unverified and is not a supported platform claim.
+Desktop and iOS are the priority platforms. Both receive purpose-built layouts
+for Markdown, properties, navigation, Bases, Canvas, Graph, PDF, and the small
+states that make a workspace feel coherent.
 
-## Preview
+## Pixel Boy
 
-### Desktop · Light / Dark
+### A new tab with somewhere to go
 
-The desktop layout uses a continuous Paper workspace: navigation lives on the left, the note remains spacious in the center, and cyan signals connect the active file, focus, and status.
+A blank tab becomes a pocket console. Obsidian's native **Create**, **Open**,
+and **Close** actions stay fully functional inside a dot-matrix display, while
+the shell, D-pad, face buttons, power light, and speaker complete the handheld.
+
+<table>
+  <tr>
+    <td align="center"><strong>LIGHT · PAPER SHELL</strong></td>
+    <td align="center"><strong>DARK · OBSIDIAN SHELL</strong></td>
+  </tr>
+  <tr>
+    <td><img src="src/assets/screenshots/pixel-new-tab-light.png" alt="Pixel Boy new tab in Light mode"></td>
+    <td><img src="src/assets/screenshots/pixel-new-tab-dark.png" alt="Pixel Boy new tab in Dark mode"></td>
+  </tr>
+</table>
+
+<p align="center">
+  <sub>Native actions · Responsive geometry · Light / Dark palettes · Accessible fallback modes</sub>
+</p>
+
+The console contracts for narrow panes without turning decoration into an
+interaction layer. Keyboard shortcuts, pointer targets, forced colors, and
+reduced-motion preferences continue to belong to Obsidian.
+
+## Feature map
+
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <strong>PAPER-FIRST WRITING</strong><br><br>
+      A quiet surface hierarchy, readable body stack, and <code>72ch</code>
+      default measure keep long Markdown documents spacious without making the
+      interface anonymous.
+    </td>
+    <td width="50%" valign="top">
+      <strong>SIGNAL-LED NAVIGATION</strong><br><br>
+      Cyan marks the current path and keyboard focus, amber carries context,
+      and brick identifies warning or danger. State is reinforced by geometry,
+      not color alone.
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <strong>KNOWLEDGE SURFACES</strong><br><br>
+      Properties, Bases, Canvas, Graph, PDF, embeds, tables, code, tags, and
+      tasks share one visual grammar while preserving their native behavior.
+    </td>
+    <td width="50%" valign="top">
+      <strong>POCKET INTERFACE</strong><br><br>
+      iOS navigation, drawers, properties, safe areas, and touch targets are
+      rebalanced for the device instead of being a shrunken desktop layout.
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <strong>CLAUDIAN INTEGRATION</strong><br><br>
+      The assistant conversation, composer, context chips, sessions, and
+      settings tabs receive a focused Pixel treatment with narrow-pane and
+      keyboard support.
+    </td>
+    <td width="50%" valign="top">
+      <strong>NATIVE CONTRACT</strong><br><br>
+      Pixel does not replace Obsidian's editing, folding, scrolling, gestures,
+      drawers, icons, or media controls. Familiar mechanics remain familiar.
+    </td>
+  </tr>
+</table>
+
+## Gallery
+
+### Desktop · one continuous work surface
+
+Navigation lives on the left, the note keeps the center, and context settles
+on the right. The compact status pod follows the live right-dock width so the
+workspace reads as one deliberate console rather than a stack of panels.
 
 <details>
-<summary>Show the complete Light and Dark comparison</summary>
+<summary><strong>Open the complete Light and Dark comparison</strong></summary>
+
+<br>
 
 <table>
   <tr>
@@ -57,61 +138,100 @@ The desktop layout uses a continuous Paper workspace: navigation lives on the le
 
 </details>
 
-## Features
+### iOS · knowledge work in your pocket
 
-| Feature | Description |
-| --- | --- |
-| Pixel identity | Fusion Pixel gives note titles and H1–H3 a distinctive voice without tiring long-form reading. |
-| Paper reading | A restrained surface hierarchy, readable body stack, and `72ch` default measure support focused writing. |
-| Semantic color | Cyan marks navigation and focus, amber marks context and emphasis, and brick marks warning or danger. |
-| Desktop workspace | Navigation, note, and context regions form one continuous and legible work surface. |
-| iOS adaptation | Titles, lists, properties, drawers, and navigation are rebalanced for touch instead of merely shrinking desktop UI. |
-| Native first | Pixel does not replace Obsidian's editing, folding, scrolling, gestures, drawers, icons, or media controls. |
+<table>
+  <tr>
+    <td width="34%" align="center" valign="top">
+      <img src="src/assets/screenshots/pixel-mobile-light.png" width="280" alt="Pixel theme property editing on iOS">
+    </td>
+    <td width="66%" valign="top">
+      <strong>Designed around touch</strong><br><br>
+      Pixel keeps Obsidian's native drawers, system navigation, virtual-keyboard
+      resizing, and safe areas. Theme-owned actions use comfortable touch
+      targets, while dense property data remains readable and editable.<br><br>
+      <strong>Not viewport guesswork</strong><br><br>
+      Mobile structure follows Obsidian's native <code>body.is-mobile</code>
+      state, so narrow desktop windows keep desktop behavior and iOS receives
+      the layout intended for it.
+    </td>
+  </tr>
+</table>
 
 ## Visual language
 
-- **Paper** for notes, menus, and primary reading surfaces.
-- **Canvas** for the cool workspace around content.
-- **Cyan** for the active file, links, caret, and keyboard focus.
-- **Amber** for properties, context, and attention.
-- **Brick** for errors, warnings, and destructive states.
-- A **4 / 6 / 10px radius system** that balances pixel structure with comfortable touch UI.
+<p align="center">
+  <img src="src/assets/screenshots/pixel-status-rail.svg" width="352" alt="Paper, Canvas, Cyan, Amber, and Brick semantic colors">
+</p>
 
-Light and Dark use independently tuned semantic colors rather than simple inversion. Normal text, secondary text, focus indicators, and meaningful control boundaries are designed against accessible contrast targets.
+| Role | What it communicates |
+| --- | --- |
+| **Paper** | Notes, menus, settings cards, and primary reading surfaces. |
+| **Canvas** | The cool workspace around content and secondary regions. |
+| **Cyan** | Active navigation, links, caret, controls, and keyboard focus. |
+| **Amber** | Properties, attached context, emphasis, and attention. |
+| **Brick** | Errors, warnings, destructive actions, and the Pixel Boy controls. |
+| **4 / 6 / 10px radii** | Pixel structure at small sizes and comfortable touch geometry at larger sizes. |
 
-## Covered Obsidian surfaces
+Light and Dark use independently tuned semantic colors rather than simple
+inversion. Normal text, secondary text, focus indicators, and meaningful
+control boundaries are designed against accessible contrast targets.
 
-### Markdown writing
+## Built across Obsidian
+
+<details>
+<summary><strong>Markdown writing</strong></summary>
 
 - Consistent heading rhythm across Source, Live Preview, and Reading modes.
-- Links, emphasis, lists, quotes, tasks, tags, highlights, and footnotes.
-- Local overflow for code, tables, embeds, and media without compressing the full note.
+- Links, emphasis, lists, quotes, tasks, continuous tag capsules, highlights,
+  footnotes, math, and comments.
+- Local overflow for code, tables, embeds, and media without compressing the
+  full note.
 - Clear selection, caret, active line, folding, and indentation states.
 
-### Knowledge management
+</details>
 
-- File navigation, tags, search, bookmarks, outline, backlinks, and outgoing links.
+<details>
+<summary><strong>Knowledge management</strong></summary>
+
+- File navigation, tags, search, bookmarks, outline, backlinks, and outgoing
+  links.
 - Note properties and property suggestions, including iOS editing states.
 - Global and Local Graph controls and semantic states.
 - Canvas cards, groups, media, edges, selection, and editing.
 - Bases tables, lists, cards, filters, sorting, and property editing.
-- PDF chrome, sidebar, thumbnails, search, and selection while preserving document pixels.
+- PDF chrome, sidebar, thumbnails, search, and selection while preserving
+  document pixels.
 
-### Desktop and iOS
+</details>
 
-Desktop favors a continuous workspace and long reading sessions. iOS preserves Obsidian's native drawers, system navigation, virtual-keyboard resizing, and safe areas, with theme-owned touch targets of at least `44px`. Android has not completed physical-device validation.
+<details>
+<summary><strong>Settings and accessibility</strong></summary>
 
-The mobile structure is selected through Obsidian's native `body.is-mobile` state, never inferred from viewport width.
+- Independent setting cards, stable hover and focus feedback, compact native
+  controls, and a circular accent-color well.
+- Normal text targets at least `4.5:1` contrast; meaningful icons and control
+  boundaries target at least `3:1`.
+- Keyboard focus uses outline, surface, and position cues instead of color
+  alone.
+- Reduced motion, forced colors, and increased contrast preferences are
+  supported.
+- User fonts, font sizes, accent, selection, and caret settings remain
+  authoritative.
+
+</details>
 
 ## Installation
 
-Pixel entered public beta with `0.9.0`. Once the official directory review is complete:
+Pixel entered public beta with `0.9.0`. Once the official directory review is
+complete:
 
 1. Open **Settings → Appearance** in Obsidian.
 2. Select **Manage** under Themes.
 3. Search for **Pixel**, install it, and select **Use**.
 
-Future public versions are delivered through Obsidian's built-in theme updater from matching GitHub Releases.
+Future public versions are delivered through Obsidian's built-in theme updater
+from matching GitHub Releases.
 
 ### Manual installation
 
@@ -120,31 +240,32 @@ Future public versions are delivered through Obsidian's built-in theme updater f
 3. Put both files in that directory.
 4. Restart Obsidian if necessary, then select **Pixel** under Appearance.
 
-For a synced Vault on iOS, wait for `.obsidian/themes/Pixel/` to finish syncing before restarting Obsidian. Android remains unverified.
+For a synced Vault on iOS, wait for `.obsidian/themes/Pixel/` to finish syncing
+before restarting Obsidian.
 
 ## Customization
 
-Pixel respects Obsidian's own appearance settings without requiring a companion plugin:
+Pixel respects Obsidian's own appearance settings without requiring a
+companion plugin:
 
 - Light or Dark mode
 - Text and interface fonts
 - Base font size
 - Accent color
 
-Pixel does not currently expose custom **Style Settings** controls. The Style Settings plugin is optional and is not required to install, use, or customize the theme.
+Pixel does not currently expose custom **Style Settings** controls. The Style
+Settings plugin is optional and is not required to install, use, or customize
+the theme.
 
-The theme embeds Fusion Pixel for identity headings. Code and technical status use Obsidian's configured monospace font with system fallbacks, while body text uses the user's text font and operating-system fallback for uncommon characters.
+Fusion Pixel is embedded for identity headings. Code and technical status use
+Obsidian's configured monospace font with system fallbacks, while body text
+uses the user's text font and operating-system fallback for uncommon
+characters.
 
-Pixel ships no community-plugin-specific selectors. Plugins that use official Obsidian variables generally inherit the theme naturally, but individual community plugins are not compatibility commitments.
-
-## Accessibility
-
-- Normal text targets at least `4.5:1` contrast.
-- Meaningful icons and control boundaries target at least `3:1` contrast.
-- Keyboard focus uses outline, surface, and position cues instead of color alone.
-- Reduced motion, forced colors, and increased contrast preferences are supported.
-- User fonts, font sizes, accent, selection, and caret settings remain authoritative.
-- Long text, code, and tables reflow or scroll locally instead of hiding content and controls.
+Pixel includes a focused visual integration for Claudian. Other plugins that
+use official Obsidian variables and Setting components generally inherit the
+theme naturally, but individual community plugins are not compatibility
+commitments.
 
 ## Compatibility
 
@@ -152,13 +273,12 @@ Pixel ships no community-plugin-specific selectors. Plugins that use official Ob
 | --- | --- |
 | Current version | <code><!-- pixel-version:start -->0.9.2<!-- pixel-version:end --></code> |
 | Obsidian requirement | `1.12.0` or newer |
+| Priority platforms | Desktop / iOS |
 | Verified desktop environment | Obsidian `1.13.4` / macOS |
-| Mobile support | iOS |
-| Not yet verified | Android |
 | Appearance modes | Light / Dark |
 | Installable files | `manifest.json`, `theme.css` |
 | Theme license | MIT |
-| Embedded font licenses | SIL Open Font License 1.1 |
+| Embedded font license | SIL Open Font License 1.1 |
 
 ## Development
 
@@ -171,29 +291,40 @@ npm test
 npm run check
 ```
 
-- `npm run build` compiles `theme.css` and optionally deploys to the dedicated development Vault.
+- `npm run build` compiles `theme.css` and optionally deploys to the dedicated
+  development Vault.
 - `npm run dev` watches Sass sources.
 - `npm test` runs structural, compatibility, and release-contract tests.
-- `npm run check` verifies that generated output matches the source without modifying it.
+- `npm run check` verifies that generated output matches the source without
+  modifying it.
 
-`src/scss/index.scss` is the only Sass entry point. Edit sources under `src/`; do not edit generated `theme.css` directly.
+`src/scss/index.scss` is the only Sass entry point. Edit sources under `src/`;
+do not edit generated `theme.css` directly.
 
 For guarded deployment, see [the Chinese development details](README.zh-CN.md#开发).
 
 ## Releasing
 
 - `manifest.json` is the authoritative current version.
-- `versions.json` permanently maps every published theme version to its minimum Obsidian version.
+- `versions.json` permanently maps every published theme version to its minimum
+  Obsidian version.
 - Only an unprefixed `x.y.z` annotated tag triggers release CI.
-- A verified release publishes only `theme.css` and `manifest.json`, with GitHub build provenance attestations.
-- Public tags, Releases, and assets are immutable; regressions are fixed forward with a new PATCH.
+- A verified release publishes only `theme.css` and `manifest.json`, with
+  GitHub build provenance attestations.
+- Public tags, Releases, and assets are immutable; regressions are fixed
+  forward with a new PATCH.
 
 See the complete [release and Obsidian community update guide](docs/RELEASING.md).
 
 ## Feedback
 
-Use [GitHub Issues](https://github.com/CoffeeCheese/obsidian-pixel-theme/issues) for public feedback. Include Pixel and Obsidian versions, operating system, Light or Dark mode, reproduction steps, screenshots, and any enabled CSS snippets or community plugins.
+Use [GitHub Issues](https://github.com/CoffeeCheese/obsidian-pixel-theme/issues)
+for public feedback. Include Pixel and Obsidian versions, operating system,
+Light or Dark mode, reproduction steps, screenshots, and any enabled CSS
+snippets or community plugins.
 
 ## License
 
-Pixel is released under the [MIT License](LICENSE). The embedded Fusion Pixel font retains its SIL Open Font License 1.1 terms; source, checksum, and license details are available under [`src/assets/fonts/`](src/assets/fonts/).
+Pixel is released under the [MIT License](LICENSE). The embedded Fusion Pixel
+font retains its SIL Open Font License 1.1 terms; source, checksum, and license
+details are available under [`src/assets/fonts/`](src/assets/fonts/).
