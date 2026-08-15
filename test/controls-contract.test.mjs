@@ -212,7 +212,7 @@ test("preferences give every native setting a quiet Pixel card without styling h
 
   const nativeControl = ruleBody(
     css,
-    ".mod-settings .setting-item-control > :is(button:not(.clickable-icon),\ninput:not([type=checkbox]):not([type=radio]),\ntextarea,\nselect.dropdown,\n.combobox-button)",
+    ".mod-settings .setting-item-control > :is(button:not(.clickable-icon),\ninput:not([type=checkbox]):not([type=radio]):not([type=color]),\ntextarea,\nselect.dropdown,\n.combobox-button)",
   );
   assert.equal(
     declaration(nativeControl, "border"),
@@ -286,6 +286,48 @@ test("preferences give every native setting a quiet Pixel card without styling h
   );
   assert.equal(declaration(heading, "background-color"), "transparent");
   assert.equal(declaration(heading, "border-inline"), "0");
+});
+
+test("the settings accent picker is a circular color well", async () => {
+  const css = await readTheme();
+  const picker = ruleBody(
+    css,
+    ".mod-settings .setting-item-control > input[type=color]",
+  );
+
+  assert.equal(declaration(picker, "box-sizing"), "border-box");
+  assert.equal(declaration(picker, "inline-size"), "24px");
+  assert.equal(declaration(picker, "block-size"), "24px");
+  assert.equal(declaration(picker, "min-inline-size"), "24px");
+  assert.equal(declaration(picker, "min-block-size"), "24px");
+  assert.equal(declaration(picker, "padding"), "0");
+  assert.equal(
+    declaration(picker, "border"),
+    "var(--pixel-border-decoration) solid var(--pixel-settings-edge)",
+  );
+  assert.equal(declaration(picker, "border-radius"), "50%");
+  assert.equal(
+    declaration(picker, "background-color"),
+    "transparent",
+  );
+  assert.equal(declaration(picker, "box-shadow"), "none");
+  assert.match(declaration(picker, "transition"), /border-color/);
+  assert.equal(declaration(picker, "overflow"), "hidden");
+  assert.equal(declaration(picker, "cursor"), "pointer");
+
+  const wrapper = ruleBody(
+    css,
+    ".mod-settings .setting-item-control > input[type=color]::-webkit-color-swatch-wrapper",
+  );
+  assert.equal(declaration(wrapper, "padding"), "0");
+  assert.equal(declaration(wrapper, "border-radius"), "50%");
+
+  const swatch = ruleBody(
+    css,
+    ".mod-settings .setting-item-control > input[type=color]::-webkit-color-swatch",
+  );
+  assert.equal(declaration(swatch, "border"), "0");
+  assert.equal(declaration(swatch, "border-radius"), "50%");
 });
 
 test("core plugins use a quiet list with Pixel keycaps and search signal", async () => {

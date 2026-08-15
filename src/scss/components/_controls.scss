@@ -420,7 +420,7 @@ button.mod-loading:not(.mod-settings *)::after {
   .setting-item-control
   > :is(
     button:not(.clickable-icon),
-    input:not([type="checkbox"]):not([type="radio"]),
+    input:not([type="checkbox"]):not([type="radio"]):not([type="color"]),
     textarea,
     select.dropdown,
     .combobox-button
@@ -467,6 +467,45 @@ button.mod-loading:not(.mod-settings *)::after {
       var(--pixel-paper)
     );
   }
+}
+
+// Accent color is a single visual choice, so present it as a compact circular
+// swatch instead of inheriting the rectangular geometry of text inputs. The
+// selected color reaches the perimeter and one hairline edge defines the hit
+// target, matching the concise color-well language used by native preferences.
+.mod-settings
+  .setting-item-control
+  > input[type="color"] {
+  box-sizing: border-box;
+  inline-size: 24px;
+  block-size: 24px;
+  min-inline-size: 24px;
+  min-block-size: 24px;
+  padding: 0;
+  border: var(--pixel-border-decoration) solid var(--pixel-settings-edge);
+  border-radius: 50%;
+  background-color: transparent;
+  box-shadow: none;
+  overflow: hidden;
+  cursor: pointer;
+  transition:
+    background-color var(--pixel-motion-state) linear,
+    border-color var(--pixel-motion-state) linear,
+    box-shadow var(--pixel-motion-state) linear;
+}
+
+.mod-settings
+  .setting-item-control
+  > input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+  border-radius: 50%;
+}
+
+.mod-settings
+  .setting-item-control
+  > input[type="color"]::-webkit-color-swatch {
+  border: 0;
+  border-radius: 50%;
 }
 
 .mod-settings
