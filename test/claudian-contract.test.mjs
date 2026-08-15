@@ -59,6 +59,18 @@ test("Claudian composer has one calm edge and an explicit focus state", async ()
     `${view} .view-content.claudian-container .claudian-input-wrapper textarea.claudian-input`,
   );
   const chip = ruleBody(css, `${view} .claudian-context-chip`);
+  const chipButton = ruleBody(
+    css,
+    `${view} .claudian-context-chip > button`,
+  );
+  const focusedChip = ruleBody(
+    css,
+    `${view} .claudian-context-chip:focus-within`,
+  );
+  const removeButton = ruleBody(
+    css,
+    `${view} .claudian-context-chip > button.claudian-context-chip-remove`,
+  );
 
   assert.equal(
     declaration(wrapper, "border"),
@@ -75,6 +87,17 @@ test("Claudian composer has one calm edge and an explicit focus state", async ()
   assert.equal(declaration(textarea, "box-shadow"), "none");
   assert.equal(declaration(chip, "border-radius"), "999px");
   assert.equal(declaration(chip, "block-size"), "28px");
+  assert.equal(declaration(chipButton, "border"), "0");
+  assert.equal(declaration(chipButton, "outline"), "0");
+  assert.equal(declaration(chipButton, "background"), "transparent");
+  assert.equal(declaration(chipButton, "box-shadow"), "none");
+  assert.equal(
+    declaration(focusedChip, "box-shadow"),
+    "var(--pixel-claudian-context-focus-ring)",
+  );
+  assert.equal(declaration(removeButton, "inline-size"), "18px");
+  assert.equal(declaration(removeButton, "block-size"), "18px");
+  assert.match(css, /\.claudian-context-chip:hover:not\(:focus-within\)/);
 });
 
 test("Claudian composer does not clip menus that open beyond its edge", async () => {

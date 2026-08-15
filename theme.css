@@ -3431,6 +3431,8 @@ body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] {
   );
   --pixel-claudian-focus-ring: 0 0 0 3px
     color-mix(in srgb, var(--pixel-cyan) 18%, transparent);
+  --pixel-claudian-context-focus-ring: 0 0 0 3px
+    color-mix(in srgb, var(--pixel-cyan) 16%, transparent);
   container: pixel-claudian-pane/inline-size;
   min-inline-size: 0;
   min-block-size: 0;
@@ -3567,6 +3569,7 @@ body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .clau
 }
 
 body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-context-chip {
+  position: relative;
   max-inline-size: min(260px, 100%);
   block-size: 28px;
   padding: 4px 6px 4px 9px;
@@ -3574,15 +3577,72 @@ body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .clau
   border-radius: 999px;
   background-color: var(--pixel-claudian-surface-muted);
   color: var(--pixel-text);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--pixel-shadow-color) 10%, transparent), inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 68%, transparent);
+  transform: translateY(0) scale(1);
+  user-select: none;
+  transition: background-color var(--pixel-motion-state) var(--pixel-ease-out), border-color var(--pixel-motion-state) var(--pixel-ease-out), box-shadow var(--pixel-motion-surface) var(--pixel-ease-out), color var(--pixel-motion-state) var(--pixel-ease-out), transform var(--pixel-motion-surface) var(--pixel-ease-out);
 }
 
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-context-chip button {
+body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-context-chip > button {
+  appearance: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  background-image: none;
+  color: inherit;
   min-block-size: 0;
   box-shadow: none;
+  transform: none;
+}
+
+body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-context-chip > button:is(:hover, :focus, :focus-visible, :active) {
+  border: 0;
+  outline: 0;
+  background: transparent;
+  background-image: none;
+  box-shadow: none;
+  transform: none;
+}
+
+body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-context-chip:focus-within {
+  border-color: var(--pixel-cyan);
+  background-color: color-mix(in srgb, var(--pixel-cyan) 9%, var(--pixel-paper));
+  box-shadow: var(--pixel-claudian-context-focus-ring);
+}
+
+body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-context-chip > button.claudian-context-chip-remove {
+  inline-size: 18px;
+  block-size: 18px;
+  flex-basis: 18px;
+  border-radius: 50%;
+  transition: background-color var(--pixel-motion-state) var(--pixel-ease-out), color var(--pixel-motion-state) var(--pixel-ease-out);
 }
 
 body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-context-chip-remove {
   color: var(--pixel-text-muted);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-context-chip:hover:not(:focus-within) {
+    border-color: var(--pixel-claudian-edge-hover);
+    background-color: color-mix(in srgb, var(--pixel-cyan) 10%, var(--pixel-paper));
+    box-shadow: 0 3px 8px color-mix(in srgb, var(--pixel-shadow-color) 14%, transparent), inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 76%, transparent);
+    transform: translateY(-1px) scale(1.01);
+  }
+  body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-context-chip:hover .claudian-context-chip-label {
+    color: var(--pixel-cyan);
+  }
+  body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-context-chip > button.claudian-context-chip-remove:hover {
+    background: color-mix(in srgb, var(--pixel-cyan) 14%, transparent);
+    color: var(--pixel-cyan);
+  }
+}
+body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-context-chip:active {
+  box-shadow: inset 0 1px 2px color-mix(in srgb, var(--pixel-shadow-color) 14%, transparent);
+  transform: translateY(0) scale(0.99);
+  transition-duration: var(--pixel-motion-press);
 }
 
 body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-input-toolbar {
@@ -3725,10 +3785,14 @@ body.is-mobile .workspace-leaf-content[data-type=claudian-view] :is(.claudian-in
 @media (prefers-reduced-motion: reduce) {
   .mod-settings button.claudian-settings-tab,
   body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] :is(.claudian-input-wrapper,
+  .claudian-context-chip,
   .claudian-input-nav-btn,
   .claudian-nav-btn,
   .claudian-model-btn,
   .claudian-thinking-current) {
+    transition: none;
+  }
+  body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-context-chip > button {
     transition: none;
   }
 }
@@ -3739,6 +3803,11 @@ body.is-mobile .workspace-leaf-content[data-type=claudian-view] :is(.claudian-in
   body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-input-wrapper:focus-within {
     outline: 2px solid Highlight;
     outline-offset: 2px;
+  }
+  body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-context-chip:focus-within {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+    box-shadow: none;
   }
 }
 @media (prefers-contrast: more) {
