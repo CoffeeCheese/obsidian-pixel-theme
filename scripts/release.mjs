@@ -74,7 +74,6 @@ function chineseTemplate(version) {
 
 - 最低 Obsidian 版本：\`1.12.0\`
 - 已验证平台：桌面端、iOS
-- 未验证平台：Android
 
 ## 已知问题
 
@@ -85,7 +84,6 @@ function chineseTemplate(version) {
 - 自动化测试：Pending
 - 桌面人工检查：Pending
 - iOS 人工检查：Pending
-- Android：Unverified
 `;
 }
 
@@ -106,7 +104,6 @@ function englishTemplate(version) {
 
 - Minimum Obsidian version: \`1.12.0\`
 - Verified platforms: desktop and iOS
-- Unverified platform: Android
 
 ## Known issues
 
@@ -117,7 +114,6 @@ function englishTemplate(version) {
 - Automated tests: Pending
 - Desktop manual check: Pending
 - iOS manual check: Pending
-- Android: Unverified
 `;
 }
 
@@ -240,13 +236,11 @@ function assertChecklist(markdown, version, language) {
         automated: "自动化测试",
         desktop: "桌面人工检查",
         ios: "iOS 人工检查",
-        android: "Android",
       }
     : {
         automated: "Automated tests",
         desktop: "Desktop manual check",
         ios: "iOS manual check",
-        android: "Android",
       };
   const allowedIos = requiresFullIos ? new Set(["Pass"]) : new Set(["Pass", "Not required"]);
 
@@ -259,9 +253,6 @@ function assertChecklist(markdown, version, language) {
   const ios = checklistValue(markdown, labels.ios);
   if (!allowedIos.has(ios)) {
     fail(`${labels.ios} must be ${[...allowedIos].join(" or ")}`);
-  }
-  if (checklistValue(markdown, labels.android) !== "Unverified") {
-    fail(`${labels.android} must remain Unverified until physical validation exists`);
   }
 }
 

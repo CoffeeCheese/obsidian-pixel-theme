@@ -46,7 +46,8 @@ The lightweight validation policy is:
 - Automated tests: `Pass` after the local locked build/test/check path succeeds.
 - Desktop manual check: `Pass` for every release.
 - iOS manual check: `Pass` for the initial `0.9.0`, every MINOR or MAJOR, and any layout/mobile/compatibility change. A narrowly scoped PATCH may use `Not required` when its affected surface has received an appropriate manual smoke test.
-- Android: `Unverified` until a physical-device validation policy is explicitly adopted.
+
+Public release notes describe Pixel's supported desktop and iOS targets. Keep unsupported-platform tracking in the internal device plan rather than surfacing it in each release announcement.
 
 Verify the completed metadata locally:
 

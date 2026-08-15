@@ -95,6 +95,8 @@ test("prepare updates both version sources, READMEs, and bilingual notes", async
   assert.match(readmeEnglish, /0\.9\.1/);
   assert.match(chinese, /0\.9\.1\.en\.md/);
   assert.match(english, /0\.9\.1\.md/);
+  assert.doesNotMatch(chinese, /Android/i);
+  assert.doesNotMatch(english, /Android/i);
 });
 
 test("prepare refuses version reuse, regression, and note overwrites", async (t) => {

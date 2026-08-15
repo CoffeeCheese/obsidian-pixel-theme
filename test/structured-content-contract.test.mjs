@@ -359,7 +359,10 @@ test("footnotes, math, comments, rules, highlights, tags, and nested tasks keep 
     declaration(taskFocus, "outline"),
     "var(--pixel-border-control) solid var(--pixel-cyan)",
   );
-  const disabledTask = ruleBodyForSelector(css, "input:disabled");
+  const disabledTask = ruleBodyForSelector(
+    css,
+    "input:disabled:not(.mod-settings *)",
+  );
   assert.equal(declaration(disabledTask, "cursor"), "not-allowed");
 });
 
