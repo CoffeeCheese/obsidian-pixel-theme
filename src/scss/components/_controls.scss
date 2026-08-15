@@ -356,6 +356,18 @@ button.mod-loading:not(.mod-settings *)::after {
     box-shadow var(--pixel-motion-state) linear;
 }
 
+// Native Preferences draws an inset divider on every setting after the first
+// with ::before. Once rows become standalone cards that divider sits above the
+// rounded edge as a stray cyan-grey rule, so the card perimeter is the only
+// boundary this seam should paint.
+.mod-settings
+  .vertical-tab-content
+  .setting-item:not(.setting-item-heading)::before {
+  content: none;
+  display: none;
+  border: 0;
+}
+
 // Obsidian joins rows underneath setting-group search fields by zeroing the
 // first row's top corners with a more specific selector. Restore the complete
 // card silhouette so filtered lists still read as independent preferences.

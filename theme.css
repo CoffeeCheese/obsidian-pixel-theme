@@ -1424,6 +1424,12 @@ button.mod-loading:not(.mod-settings *)::after {
   transition: background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, box-shadow var(--pixel-motion-state) linear;
 }
 
+.mod-settings .vertical-tab-content .setting-item:not(.setting-item-heading)::before {
+  content: none;
+  display: none;
+  border: 0;
+}
+
 .modal.mod-settings .vertical-tab-content .setting-group .setting-items > .setting-item:not(.setting-item-heading) {
   border-radius: var(--pixel-radius-large);
 }

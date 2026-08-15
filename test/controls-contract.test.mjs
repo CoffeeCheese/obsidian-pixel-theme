@@ -250,6 +250,14 @@ test("preferences give every native setting a quiet Pixel card without styling h
     "var(--pixel-settings-card-surface)",
   );
 
+  const nativeDivider = ruleBody(
+    css,
+    ".mod-settings .vertical-tab-content .setting-item:not(.setting-item-heading)::before",
+  );
+  assert.equal(declaration(nativeDivider, "content"), "none");
+  assert.equal(declaration(nativeDivider, "display"), "none");
+  assert.equal(declaration(nativeDivider, "border"), "0");
+
   const groupedCard = ruleBody(
     css,
     ".modal.mod-settings .vertical-tab-content .setting-group .setting-items > .setting-item:not(.setting-item-heading)",
