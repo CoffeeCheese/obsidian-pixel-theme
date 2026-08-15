@@ -138,26 +138,6 @@ workspace reads as one deliberate console rather than a stack of panels.
 
 </details>
 
-### iOS · knowledge work in your pocket
-
-<table>
-  <tr>
-    <td width="34%" align="center" valign="top">
-      <img src="src/assets/screenshots/pixel-mobile-light.png" width="280" alt="Pixel theme property editing on iOS">
-    </td>
-    <td width="66%" valign="top">
-      <strong>Designed around touch</strong><br><br>
-      Pixel keeps Obsidian's native drawers, system navigation, virtual-keyboard
-      resizing, and safe areas. Theme-owned actions use comfortable touch
-      targets, while dense property data remains readable and editable.<br><br>
-      <strong>Not viewport guesswork</strong><br><br>
-      Mobile structure follows Obsidian's native <code>body.is-mobile</code>
-      state, so narrow desktop windows keep desktop behavior and iOS receives
-      the layout intended for it.
-    </td>
-  </tr>
-</table>
-
 ## Visual language
 
 <p align="center">
