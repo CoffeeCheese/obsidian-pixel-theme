@@ -88,8 +88,9 @@ body {
   --tab-outline-width: var(--pixel-border-control);
   --status-bar-background: var(--pixel-paper);
   --status-bar-border-color: var(--pixel-border-meaningful);
-  --status-bar-border-width: var(--pixel-border-control) 0 0 var(--pixel-border-control);
-  --status-bar-radius: var(--pixel-radius-large);
+  --status-bar-border-width: var(--pixel-border-decoration);
+  --status-bar-position: fixed;
+  --status-bar-radius: var(--pixel-radius-large) 0 0 0;
   --scrollbar-bg: var(--pixel-canvas);
   --scrollbar-thumb-bg: var(--pixel-border-meaningful);
   --scrollbar-active-thumb-bg: var(--pixel-cyan);

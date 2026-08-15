@@ -38,6 +38,10 @@ test("Claudian keeps a bounded, content-first assistant layout", async () => {
   assert.equal(declaration(leaf, "container"), "pixel-claudian-pane/inline-size");
   assert.equal(declaration(leaf, "min-inline-size"), "0");
   assert.equal(declaration(container, "margin"), "0");
+  assert.equal(
+    declaration(container, "padding"),
+    "var(--pixel-space-3) var(--pixel-space-4) calc(var(--pixel-space-8) + var(--pixel-space-2))",
+  );
   assert.equal(declaration(container, "overflow"), "hidden");
   assert.equal(declaration(container, "border"), "0");
   assert.equal(declaration(container, "background-image"), "none");
@@ -73,18 +77,17 @@ test("Claudian composer has one calm edge and an explicit focus state", async ()
   assert.equal(declaration(chip, "block-size"), "28px");
 });
 
-test("active root Claudian tabs keep a clear state and safe composer inset", async () => {
+test("active root Claudian tabs keep a clear state without plugin-owned status clearance", async () => {
   const css = await readTheme();
-  const container = ruleBody(
-    css,
-    "body:not(.is-mobile) .workspace-split.mod-root .workspace-leaf-content[data-type=claudian-view] .view-content.claudian-container",
-  );
   const activeTab = ruleBody(
     css,
     "body:not(.is-mobile) .workspace-split.mod-root .workspace-tab-header[data-type=claudian-view].is-active",
   );
 
-  assert.equal(declaration(container, "padding-block-end"), "52px");
+  assert.doesNotMatch(
+    css,
+    /workspace-split\.mod-root[^{}]*claudian-view[^{}]*\{[^}]*padding-block-end/is,
+  );
   assert.equal(declaration(activeTab, "border"), "0");
   assert.equal(declaration(activeTab, "border-radius"), "var(--pixel-radius)");
   assert.equal(

@@ -3,6 +3,7 @@ import test from "node:test";
 import {
   atRuleBody,
   declaration,
+  matchingRuleBodies,
   readTheme,
   ruleBody,
   ruleBodyForSelector,
@@ -314,8 +315,9 @@ test("desktop chrome maps titlebar, ribbon, tabs, dividers, status, and scrollba
     "--tab-outline-width": "var(--pixel-border-control)",
     "--status-bar-background": "var(--pixel-paper)",
     "--status-bar-border-color": "var(--pixel-border-meaningful)",
-    "--status-bar-border-width": "var(--pixel-border-control) 0 0 var(--pixel-border-control)",
-    "--status-bar-radius": "var(--pixel-radius-large)",
+    "--status-bar-border-width": "var(--pixel-border-decoration)",
+    "--status-bar-position": "fixed",
+    "--status-bar-radius": "var(--pixel-radius-large) 0 0 0",
     "--scrollbar-bg": "var(--pixel-canvas)",
     "--scrollbar-thumb-bg": "var(--pixel-border-meaningful)",
     "--scrollbar-active-thumb-bg": "var(--pixel-cyan)",
@@ -349,32 +351,76 @@ test("desktop chrome maps titlebar, ribbon, tabs, dividers, status, and scrollba
   );
 });
 
-test("the native global status bar is the sole Buffer Cartridge", async () => {
+test("the global status rail docks compactly without changing workspace flow", async () => {
   const css = await readTheme();
+  const dock = matchingRuleBodies(
+    css,
+    "body:not(.is-mobile) .workspace-split.mod-right-split:not(.is-sidedock-collapsed)",
+  ).at(-1);
   const buffer = ruleBody(css, "body:not(.is-mobile) .status-bar");
+  const item = ruleBody(css, "body:not(.is-mobile) .status-bar-item");
+  const mascot = ruleBody(css, "body:not(.is-mobile) .status-bar::before");
+  const iconItem = ruleBody(
+    css,
+    "body:not(.is-mobile) .status-bar-item[aria-label]",
+  );
+  const textItem = ruleBody(
+    css,
+    "body:not(.is-mobile) .status-bar-item:not([aria-label])",
+  );
+  const hover = ruleBody(
+    css,
+    "body:not(.is-mobile) .status-bar-item.mod-clickable:hover",
+  );
 
-  assert.equal(declaration(buffer, "min-block-size"), "30px");
-  assert.equal(declaration(buffer, "inset-inline-end"), "18px");
-  assert.equal(declaration(buffer, "inset-block-end"), "14px");
-  assert.equal(declaration(buffer, "padding"), "0 10px");
-  assert.equal(declaration(buffer, "gap"), "8px");
+  assert.equal(declaration(dock, "anchor-name"), "--pixel-right-dock");
+  assert.equal(declaration(buffer, "position"), "fixed");
+  assert.equal(declaration(buffer, "inset-inline-end"), "0");
+  assert.equal(declaration(buffer, "inset-block-end"), "0");
+  assert.equal(
+    declaration(buffer, "inline-size"),
+    "calc(anchor-size(--pixel-right-dock width, min(432px, 100vw)) - var(--pixel-space-3))",
+  );
+  assert.equal(
+    declaration(buffer, "max-inline-size"),
+    "calc(100vw - var(--pixel-space-3))",
+  );
+  assert.equal(declaration(buffer, "min-block-size"), "32px");
+  assert.equal(declaration(buffer, "max-block-size"), "36px");
+  assert.equal(declaration(buffer, "padding"), "3px 6px");
+  assert.equal(declaration(buffer, "gap"), "0");
+  assert.equal(declaration(buffer, "overflow-x"), "auto");
   assert.equal(
     declaration(buffer, "border"),
-    "var(--pixel-border-control) solid var(--pixel-text)",
+    "var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-cyan) 36%, var(--pixel-line))",
   );
   assert.equal(
     declaration(buffer, "border-radius"),
-    "var(--pixel-radius-large)",
+    "var(--pixel-radius-large) 0 0 0",
   );
+  assert.match(declaration(buffer, "background-color"), /color-mix\(/);
+  assert.match(declaration(buffer, "box-shadow"), /inset 0 1px 0/);
+  assert.equal(declaration(mascot, "content"), '""');
+  assert.equal(declaration(mascot, "inline-size"), "14px");
+  assert.equal(declaration(mascot, "block-size"), "14px");
+  assert.equal(declaration(mascot, "pointer-events"), "none");
+  assert.match(declaration(mascot, "background"), /radial-gradient\(/);
+  assert.match(declaration(mascot, "background"), /linear-gradient\(/);
+  assert.equal(declaration(item, "min-block-size"), "24px");
+  assert.equal(declaration(item, "padding-inline"), "2px");
   assert.equal(
-    declaration(buffer, "background-color"),
-    "var(--pixel-surface-secondary)",
+    declaration(item, "font-size"),
+    "calc(var(--font-ui-smaller) - 1px)",
   );
-  assert.equal(
-    declaration(buffer, "box-shadow"),
-    "var(--pixel-shadow-buffer)",
-  );
-  assert.doesNotMatch(css, /\.status-bar::(?:before|after)\s*\{[^}]*content:/is);
+  assert.equal(declaration(item, "border-radius"), "var(--pixel-radius-small)");
+  assert.equal(declaration(iconItem, "flex"), "0 0 auto");
+  assert.equal(declaration(textItem, "min-inline-size"), "0");
+  assert.equal(declaration(textItem, "overflow"), "hidden");
+  assert.equal(declaration(textItem, "text-overflow"), "ellipsis");
+  assert.equal(declaration(textItem, "white-space"), "nowrap");
+  assert.match(declaration(hover, "background-color"), /color-mix\(/);
+  assert.doesNotMatch(buffer, /inline-size:\s*100%/);
+  assert.doesNotMatch(mascot, /content:\s*["'][^"']+["']/is);
   assert.doesNotMatch(css, /\.workspace-(?:leaf|tabs)[^{]*::(?:before|after)\s*\{[^}]*content:\s*["'](?:buffer|count|words?)/is);
 });
 

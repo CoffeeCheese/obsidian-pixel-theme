@@ -332,7 +332,7 @@ test("H5 Archive Grid leaves global status-bar geometry to the workspace shell",
   assert.equal(
     statusBarRules.length,
     1,
-    "a later status-bar rule can stretch the fixed bar across the side-dock footer",
+    "a later status-bar rule can stretch the compact rail across workspace content",
   );
 });
 

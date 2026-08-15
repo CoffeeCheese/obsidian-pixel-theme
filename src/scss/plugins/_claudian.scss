@@ -38,7 +38,10 @@ body .workspace.workspace
   min-inline-size: 0;
   min-block-size: 0;
   margin: 0;
-  padding: var(--pixel-space-3) var(--pixel-space-4) var(--pixel-space-8);
+  // The 32px status pod occupies the viewport floor. Add one 8px beat above
+  // it so Claudian's composer remains a separate interaction surface.
+  padding: var(--pixel-space-3) var(--pixel-space-4)
+    calc(var(--pixel-space-8) + var(--pixel-space-2));
   overflow: hidden;
   border: 0;
   border-radius: 0;
@@ -46,14 +49,6 @@ body .workspace.workspace
   background-image: none;
   box-shadow: none;
   color: var(--pixel-text);
-}
-
-body:not(.is-mobile) .workspace-split.mod-root
-  .workspace-leaf-content[data-type="claudian-view"]
-  .view-content.claudian-container {
-  // The floating desktop status strip occupies 44px including its offset and
-  // shadow. Preserve a full 52px safe area so the composer never sits below it.
-  padding-block-end: 52px;
 }
 
 body .workspace.workspace

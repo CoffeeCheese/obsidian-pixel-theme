@@ -365,8 +365,9 @@ body {
   --tab-outline-width: var(--pixel-border-control);
   --status-bar-background: var(--pixel-paper);
   --status-bar-border-color: var(--pixel-border-meaningful);
-  --status-bar-border-width: var(--pixel-border-control) 0 0 var(--pixel-border-control);
-  --status-bar-radius: var(--pixel-radius-large);
+  --status-bar-border-width: var(--pixel-border-decoration);
+  --status-bar-position: fixed;
+  --status-bar-radius: var(--pixel-radius-large) 0 0 0;
   --scrollbar-bg: var(--pixel-canvas);
   --scrollbar-thumb-bg: var(--pixel-border-meaningful);
   --scrollbar-active-thumb-bg: var(--pixel-cyan);
@@ -615,6 +616,9 @@ body:not(.is-mobile) .workspace-split.mod-right-split {
   --nav-item-background-selected: var(--pixel-tree-active-surface);
   --nav-collapse-icon-color-collapsed: var(--pixel-tree-signal);
 }
+body:not(.is-mobile) .workspace-split.mod-right-split:not(.is-sidedock-collapsed) {
+  anchor-name: --pixel-right-dock;
+}
 body:not(.is-mobile) .workspace-split.mod-root {
   background-color: transparent;
 }
@@ -673,15 +677,70 @@ body:not(.is-mobile) .workspace-leaf-resize-handle {
   transition: background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear;
 }
 body:not(.is-mobile) .status-bar {
-  inset-inline-end: 18px;
-  inset-block-end: 14px;
-  min-block-size: 30px;
-  padding: 0 10px;
-  gap: 8px;
-  border: var(--pixel-border-control) solid var(--pixel-text);
-  border-radius: var(--pixel-radius-large);
-  background-color: var(--pixel-surface-secondary);
-  box-shadow: var(--pixel-shadow-buffer);
+  position: fixed;
+  inset-inline-end: 0;
+  inset-block-end: 0;
+  box-sizing: border-box;
+  inline-size: calc(anchor-size(--pixel-right-dock width, min(432px, 100vw)) - var(--pixel-space-3));
+  max-inline-size: calc(100vw - var(--pixel-space-3));
+  min-block-size: 32px;
+  max-block-size: 36px;
+  padding: 3px 6px;
+  gap: 0;
+  align-items: center;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border: var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-cyan) 36%, var(--pixel-line));
+  border-block-end-color: color-mix(in srgb, var(--pixel-cyan) 22%, var(--pixel-line));
+  border-radius: var(--pixel-radius-large) 0 0 0;
+  background-color: color-mix(in srgb, var(--pixel-cyan) 4%, var(--pixel-surface-secondary));
+  box-shadow: 0 -2px 0 color-mix(in srgb, var(--pixel-cyan) 8%, transparent), inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 72%, transparent);
+}
+body:not(.is-mobile) .status-bar::before {
+  content: "";
+  flex: 0 0 14px;
+  inline-size: 14px;
+  block-size: 14px;
+  margin-inline: 2px 4px;
+  border: var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-cyan) 24%, var(--pixel-text));
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, var(--pixel-paper) 0 2px, var(--pixel-text) 2px 3px, transparent 3px), linear-gradient(to bottom, var(--pixel-cyan) 0 43%, var(--pixel-text) 43% 57%, var(--pixel-paper) 57% 100%);
+  box-shadow: 1px 1px 0 color-mix(in srgb, var(--pixel-cyan) 24%, transparent);
+  pointer-events: none;
+  transition: transform var(--pixel-motion-state) var(--pixel-ease-out);
+}
+body:not(.is-mobile) .status-bar:hover::before {
+  transform: translateY(-1px) rotate(-8deg);
+}
+body:not(.is-mobile) .status-bar-item {
+  min-block-size: 24px;
+  padding-inline: 2px;
+  border: var(--pixel-border-decoration) solid transparent;
+  border-radius: var(--pixel-radius-small);
+  color: var(--pixel-text-muted);
+  font-family: var(--pixel-font-interface);
+  font-size: calc(var(--font-ui-smaller) - 1px);
+  line-height: 1;
+  transition: border-color var(--pixel-motion-state) var(--pixel-ease-out), background-color var(--pixel-motion-state) var(--pixel-ease-out), color var(--pixel-motion-state) var(--pixel-ease-out);
+}
+body:not(.is-mobile) .status-bar-item[aria-label] {
+  flex: 0 0 auto;
+}
+body:not(.is-mobile) .status-bar-item:not([aria-label]) {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+body:not(.is-mobile) .status-bar-item.mod-clickable:hover {
+  border-color: color-mix(in srgb, var(--pixel-cyan) 24%, transparent);
+  background-color: color-mix(in srgb, var(--pixel-cyan) 8%, transparent);
+  color: var(--pixel-text);
+}
+body:not(.is-mobile) .status-bar-item.mod-clickable:focus-visible {
+  outline: var(--pixel-border-decoration) solid var(--pixel-cyan);
+  outline-offset: -1px;
+  border-color: transparent;
 }
 
 .workspace-ribbon,
@@ -1586,6 +1645,7 @@ button .svg-icon {
   .is-loading::before,
   .workspace-leaf-resize-handle,
   body:not(.is-mobile) .workspace-leaf-resize-handle,
+  body:not(.is-mobile) .status-bar::before,
   .mod-settings .vertical-tab-nav-item,
   .nav-file-title,
   .nav-folder-title,
@@ -3267,7 +3327,7 @@ body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .view
   min-inline-size: 0;
   min-block-size: 0;
   margin: 0;
-  padding: var(--pixel-space-3) var(--pixel-space-4) var(--pixel-space-8);
+  padding: var(--pixel-space-3) var(--pixel-space-4) calc(var(--pixel-space-8) + var(--pixel-space-2));
   overflow: hidden;
   border: 0;
   border-radius: 0;
@@ -3275,10 +3335,6 @@ body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .view
   background-image: none;
   box-shadow: none;
   color: var(--pixel-text);
-}
-
-body:not(.is-mobile) .workspace-split.mod-root .workspace-leaf-content[data-type=claudian-view] .view-content.claudian-container {
-  padding-block-end: 52px;
 }
 
 body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-chat-panel {

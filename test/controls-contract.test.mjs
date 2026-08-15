@@ -8,6 +8,20 @@ import {
   ruleBodyForSelector,
 } from "../test-support/theme-css.mjs";
 
+function combinedAtRuleBody(css, prelude) {
+  const bodies = [];
+  let offset = 0;
+  let start = css.indexOf(prelude, offset);
+
+  while (start !== -1) {
+    bodies.push(atRuleBody(css.slice(start), prelude));
+    offset = start + prelude.length;
+    start = css.indexOf(prelude, offset);
+  }
+
+  return bodies.join("\n");
+}
+
 test("compiled controls share Pixel surfaces, meaningful boundaries, and motion", async () => {
   const css = await readTheme();
   const body = ruleBody(css, "body");
@@ -381,7 +395,10 @@ test("controls expose pointer, keyboard, and pressed feedback without layout shi
   );
   assert.equal(declaration(sliderFocus, "outline-offset"), "2px");
 
-  const pointerHover = atRuleBody(css, "@media (hover: hover) and (pointer: fine)");
+  const pointerHover = combinedAtRuleBody(
+    css,
+    "@media (hover: hover) and (pointer: fine)",
+  );
   const hover = ruleBodyForSelector(pointerHover, ".clickable-icon:hover");
   assert.equal(
     declaration(hover, "background-color"),
