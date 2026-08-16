@@ -1,0 +1,434 @@
+// Project Manager's task editor is a compact working sheet: macOS-like
+// hierarchy keeps long project data calm, while one stepped edge preserves
+// Pixel's tactile identity. The selectors stay under the plugin's modal class
+// so native Obsidian dialogs and other community plugins are unaffected.
+
+body:not(.is-mobile) .modal.pm-modal--task {
+  --pixel-pm-edge: color-mix(
+    in srgb,
+    var(--pixel-cyan) 28%,
+    var(--pixel-line-strong)
+  );
+  --pixel-pm-edge-quiet: color-mix(
+    in srgb,
+    var(--pixel-cyan) 12%,
+    var(--pixel-line)
+  );
+  --pixel-pm-bar: color-mix(
+    in srgb,
+    var(--pixel-paper) 82%,
+    var(--pixel-canvas)
+  );
+  --pixel-pm-control: color-mix(
+    in srgb,
+    var(--pixel-paper) 90%,
+    var(--pixel-canvas)
+  );
+  inline-size: min(760px, calc(100vw - 48px));
+  max-inline-size: 760px;
+  max-block-size: min(86vh, 820px);
+  padding: 0;
+  border: var(--pixel-border-decoration) solid var(--pixel-pm-edge);
+  border-radius: 12px;
+  background: var(--pixel-paper);
+  box-shadow:
+    2px 2px 0 var(--pixel-shadow-color),
+    0 20px 52px color-mix(in srgb, var(--pixel-shadow-color) 32%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--pixel-paper) 72%, transparent);
+  font-family: var(--pixel-font-interface);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+// Project Manager already provides an in-sheet Close action. Recent Obsidian
+// releases renamed the native close node from .modal-close-button to
+// .modal-header-button; hiding the direct child prevents the two controls from
+// occupying the same top-right coordinates.
+body:not(.is-mobile) .modal.pm-modal--task > .modal-header,
+body:not(.is-mobile) .modal.pm-modal--task > .modal-header-button,
+body:not(.is-mobile) .modal.pm-modal--task > .modal-close-button {
+  display: none;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task > .modal-content.pm-task-modal {
+  max-block-size: none;
+  border-radius: inherit;
+  background: transparent;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-te-header {
+  min-block-size: 46px;
+  gap: var(--pixel-space-2);
+  padding: 8px 10px 8px 14px;
+  border-block-end: var(--pixel-border-decoration) solid var(--pixel-pm-edge-quiet);
+  background: var(--pixel-pm-bar);
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-te-header::before {
+  block-size: 2px;
+  opacity: 0.78;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-te-crumb {
+  min-inline-size: 0;
+  flex: 1 1 auto;
+  gap: 5px;
+  color: var(--pixel-text-muted);
+  font-size: 11.5px;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-te-crumb-name,
+body:not(.is-mobile) .modal.pm-modal--task .pm-te-crumb-id {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-te-crumb-name {
+  max-inline-size: 42ch;
+  color: var(--pixel-text-muted);
+  font-weight: 600;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-te-crumb-id {
+  max-inline-size: 20ch;
+  flex: 0 1 auto;
+  font-family: var(--pixel-font-monospace);
+  font-size: 10.5px;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-te-header-spacer {
+  display: none;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-te-header-btn.clickable-icon {
+  inline-size: 28px;
+  min-inline-size: 28px;
+  block-size: 28px;
+  min-block-size: 28px;
+  padding: 5px;
+  border: var(--pixel-border-decoration) solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--pixel-text-muted);
+  box-shadow: none;
+  transform: none;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-te-header-btn.clickable-icon:hover {
+  border-color: var(--pixel-pm-edge-quiet);
+  background: var(--pixel-pm-control);
+  color: var(--pixel-text);
+  box-shadow: none;
+  transform: none;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-te-header-btn.clickable-icon:active {
+  border-color: var(--pixel-pm-edge);
+  background: var(--pixel-surface-secondary);
+  box-shadow: inset 0 0 0 1px var(--pixel-pm-edge-quiet);
+  transform: translateY(1px);
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-te-header-btn.clickable-icon:focus-visible {
+  border-color: var(--pixel-cyan);
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: 2px;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-te-body {
+  padding: 16px 22px 6px;
+  scrollbar-gutter: stable;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-te-title-wrap {
+  margin-block-end: var(--pixel-space-3);
+}
+
+body:not(.is-mobile) .modal.pm-modal--task textarea.pm-te-title {
+  min-block-size: 31px;
+  padding: 2px 0;
+  border: 0;
+  border-radius: var(--pixel-radius-small);
+  outline: 0;
+  background: transparent;
+  color: var(--pixel-text);
+  box-shadow: none;
+  font-family: var(--pixel-font-text);
+  font-size: 19px;
+  font-weight: 650;
+  letter-spacing: 0;
+  line-height: 1.42;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task textarea.pm-te-title:is(:hover, :focus, :focus-visible) {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task textarea.pm-te-title:focus-visible {
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: 3px;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-te-props {
+  margin-block-end: var(--pixel-space-3);
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-prop-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--pixel-space-6);
+  row-gap: 3px;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-prop-grid .pm-prop-row {
+  grid-template-columns: 92px minmax(0, 1fr);
+  min-block-size: 29px;
+  gap: var(--pixel-space-2);
+  padding: 1px 0;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-prop-label,
+body:not(.is-mobile) .modal.pm-modal--task .pm-prop-grid .pm-prop-label {
+  padding-block-start: 5px;
+  color: var(--pixel-text-muted);
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-prop-label-icon {
+  --icon-size: 14px;
+  color: var(--pixel-text-muted);
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-prop-value {
+  min-inline-size: 0;
+  gap: 4px;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task button.pm-prop-inline,
+body:not(.is-mobile) .modal.pm-modal--task button.pm-prop-add,
+body:not(.is-mobile) .modal.pm-modal--task button.pm-prop-add-btn {
+  min-block-size: 27px;
+  max-inline-size: 100%;
+  margin: 0;
+  padding: 3px 6px;
+  border: var(--pixel-border-decoration) solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--pixel-text);
+  box-shadow: none;
+  font-family: var(--pixel-font-interface);
+  font-size: 12.5px;
+  line-height: 1.35;
+  transform: none;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task button.pm-prop-inline:is(:hover, [aria-expanded="true"]),
+body:not(.is-mobile) .modal.pm-modal--task button.pm-prop-add:hover,
+body:not(.is-mobile) .modal.pm-modal--task button.pm-prop-add-btn:hover {
+  border-color: var(--pixel-pm-edge-quiet);
+  background: var(--pixel-pm-control);
+  color: var(--pixel-text);
+  box-shadow: none;
+  transform: none;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task button.pm-prop-inline:active,
+body:not(.is-mobile) .modal.pm-modal--task button.pm-prop-add:active,
+body:not(.is-mobile) .modal.pm-modal--task button.pm-prop-add-btn:active {
+  border-color: var(--pixel-pm-edge);
+  background: var(--pixel-surface-secondary);
+  box-shadow: inset 0 0 0 1px var(--pixel-pm-edge-quiet);
+  transform: translateY(1px);
+}
+
+body:not(.is-mobile) .modal.pm-modal--task button.pm-prop-inline:focus-visible,
+body:not(.is-mobile) .modal.pm-modal--task button.pm-prop-add:focus-visible,
+body:not(.is-mobile) .modal.pm-modal--task button.pm-prop-add-btn:focus-visible {
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: 1px;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-prop-inline-label,
+body:not(.is-mobile) .modal.pm-modal--task .pm-assignees-label {
+  min-inline-size: 0;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-due {
+  flex: 0 0 auto;
+  font-size: 11px;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-avatar--sm {
+  inline-size: 20px;
+  block-size: 20px;
+  border-width: var(--pixel-border-decoration);
+  font-size: 8.5px;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task :is(.pm-prop-text, .pm-prop-select) {
+  min-block-size: 28px;
+  padding: 4px 7px;
+  border: var(--pixel-border-decoration) solid var(--pixel-pm-edge-quiet);
+  border-radius: 6px;
+  background: var(--pixel-pm-control);
+  color: var(--pixel-text);
+  box-shadow: none;
+  font-family: var(--pixel-font-interface);
+  font-size: 12.5px;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task :is(.pm-prop-text, .pm-prop-select):focus-visible {
+  border-color: var(--pixel-cyan);
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: 1px;
+  box-shadow: none;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task input.pm-prop-checkbox {
+  inline-size: 16px;
+  block-size: 16px;
+  border-width: var(--pixel-border-decoration);
+  border-radius: 4px;
+  box-shadow: none;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-modal-section {
+  padding: 12px 22px;
+  border-block-start: var(--pixel-border-decoration) solid var(--pixel-pm-edge-quiet);
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-modal-section.pm-modal-desc-section {
+  border-block-start: 0;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-modal-section-title {
+  margin-block-end: var(--pixel-space-2);
+  color: var(--pixel-text-muted);
+  font-family: var(--pixel-font-identity);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-modal-desc-preview,
+body:not(.is-mobile) .modal.pm-modal--task textarea.pm-modal-description {
+  padding: 5px 7px;
+  border-width: var(--pixel-border-decoration);
+  font-family: var(--pixel-font-text);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-modal-desc-preview h1 {
+  font-size: 18px;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-modal-desc-preview h2 {
+  font-size: 16px;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-modal-desc-preview h3 {
+  font-size: 14px;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-modal-desc-preview :is(h1, h2, h3) {
+  margin-block: 0.8em 0.45em;
+  line-height: 1.4;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-te-divider {
+  block-size: var(--pixel-border-decoration);
+  margin-block: var(--pixel-space-3);
+  background: var(--pixel-pm-edge-quiet);
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-te-footer {
+  min-block-size: 50px;
+  gap: var(--pixel-space-2);
+  padding: 9px 14px;
+  border-block-start: var(--pixel-border-decoration) solid var(--pixel-pm-edge-quiet);
+  background: var(--pixel-pm-bar);
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-te-footer-path {
+  font-family: var(--pixel-font-monospace);
+  font-size: 10.5px;
+  color: var(--pixel-text-muted);
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-te-footer button {
+  min-block-size: 30px;
+  padding: 4px 12px;
+  border: var(--pixel-border-decoration) solid var(--pixel-pm-edge);
+  border-radius: 7px;
+  background: var(--pixel-pm-control);
+  color: var(--pixel-text);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--pixel-shadow-color) 42%, transparent);
+  font-family: var(--pixel-font-interface);
+  font-size: 12.5px;
+  transform: none;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-te-footer button.mod-cta {
+  border-color: var(--pixel-cyan);
+  background: var(--pixel-cyan);
+  color: var(--text-on-accent);
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-te-footer button:hover {
+  border-color: var(--pixel-cyan);
+  background: var(--pixel-surface-secondary);
+  color: var(--pixel-text);
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--pixel-shadow-color) 38%, transparent);
+  transform: translateY(-1px);
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-te-footer button.mod-cta:hover {
+  border-color: var(--pixel-cyan);
+  background: var(--interactive-accent-hover);
+  color: var(--text-on-accent);
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-te-footer button:active {
+  box-shadow: none;
+  transform: translateY(1px);
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-te-footer button:focus-visible {
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: 2px;
+}
+
+@media (max-width: 720px) {
+  body:not(.is-mobile) .modal.pm-modal--task {
+    inline-size: calc(100vw - 24px);
+    max-block-size: calc(100vh - 24px);
+  }
+
+  body:not(.is-mobile) .modal.pm-modal--task .pm-te-crumb-id,
+  body:not(.is-mobile) .modal.pm-modal--task .pm-te-crumb-sep {
+    display: none;
+  }
+
+  body:not(.is-mobile) .modal.pm-modal--task .pm-te-body {
+    padding-inline: var(--pixel-space-4);
+  }
+
+  body:not(.is-mobile) .modal.pm-modal--task .pm-prop-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  body:not(.is-mobile) .modal.pm-modal--task .pm-modal-section {
+    padding-inline: var(--pixel-space-4);
+  }
+
+  body:not(.is-mobile) .modal.pm-modal--task .pm-te-footer-path {
+    display: none;
+  }
+}
