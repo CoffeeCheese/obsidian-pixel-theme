@@ -8,6 +8,64 @@ import {
 } from "../test-support/theme-css.mjs";
 
 const modal = "body:not(.is-mobile) .modal.pm-modal--task";
+const table = ".workspace-leaf-content.pm-view .pm-table-view";
+
+test("Project Manager table assignees show complete names as contact plates", async () => {
+  const css = await readTheme();
+  const cell = ruleBody(css, `${table} .pm-table-cell-assignees`);
+  assert.equal(declaration(cell, "min-inline-size"), "128px");
+
+  const stack = ruleBody(css, `${table} .pm-avatar-stack`);
+  assert.equal(declaration(stack, "max-inline-size"), "184px");
+  assert.equal(declaration(stack, "flex-wrap"), "wrap");
+  assert.equal(declaration(stack, "gap"), "4px");
+
+  const avatarSelector = `${table} .pm-avatar-stack > .pm-avatar:not(.pm-avatar--more)[aria-label]`;
+  const avatar = ruleBody(css, avatarSelector);
+  assert.equal(declaration(avatar, "inline-size"), "auto");
+  assert.equal(declaration(avatar, "block-size"), "26px");
+  assert.equal(declaration(avatar, "border-radius"), "8px");
+  assert.equal(declaration(avatar, "font-size"), "0");
+  assert.equal(declaration(avatar, "overflow"), "hidden");
+
+  const emoji = ruleBody(css, `${avatarSelector}::before`);
+  assert.equal(
+    declaration(emoji, "content"),
+    'var(--pixel-pm-avatar-emoji, "🐣")',
+  );
+  assert.equal(declaration(emoji, "inline-size"), "25px");
+  assert.match(declaration(emoji, "font-family"), /apple color emoji/);
+  assert.equal(declaration(emoji, "font-size"), "14px");
+
+  const name = ruleBody(css, `${avatarSelector}::after`);
+  assert.equal(declaration(name, "content"), "attr(aria-label)");
+  assert.equal(declaration(name, "white-space"), "nowrap");
+  assert.equal(declaration(name, "font-size"), "11.5px");
+
+  const followingAvatar = ruleBody(
+    css,
+    `${table} .pm-avatar-stack > .pm-avatar:not(:first-child)`,
+  );
+  assert.equal(declaration(followingAvatar, "margin-inline-start"), "0");
+
+  const firstEmojiRow = ruleBody(
+    css,
+    `${table} .pm-table-row:nth-child(8n+1)`,
+  );
+  assert.equal(
+    declaration(firstEmojiRow, "--pixel-pm-avatar-emoji"),
+    '"🐣"',
+  );
+
+  const secondAssignee = ruleBody(
+    css,
+    `${table} .pm-avatar-stack > .pm-avatar:nth-child(2)`,
+  );
+  assert.equal(
+    declaration(secondAssignee, "--pixel-pm-avatar-emoji"),
+    '"🦄"',
+  );
+});
 
 test("Project Manager task editor uses a compact macOS sheet with a Pixel edge", async () => {
   const css = await readTheme();

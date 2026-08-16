@@ -4120,6 +4120,124 @@ body.is-mobile .workspace-leaf-content[data-type=claudian-view] :is(.claudian-in
     border-color: var(--pixel-text);
   }
 }
+.workspace-leaf-content.pm-view .pm-table-view .pm-table-cell-assignees {
+  min-inline-size: 128px;
+}
+
+.workspace-leaf-content.pm-view .pm-table-view .pm-avatar-stack {
+  display: inline-flex;
+  max-inline-size: 184px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+
+.workspace-leaf-content.pm-view .pm-table-view .pm-avatar-stack > .pm-avatar:not(.pm-avatar--more)[aria-label] {
+  inline-size: auto;
+  min-inline-size: 26px;
+  block-size: 26px;
+  padding: 0;
+  border: var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-paper) 76%, transparent);
+  border-radius: 8px;
+  color: var(--text-on-accent);
+  box-shadow: 1px 1px 0 color-mix(in srgb, var(--pixel-shadow-color) 12%, transparent), inset 0 0 0 1px color-mix(in srgb, var(--pixel-paper) 12%, transparent);
+  font-size: 0;
+  line-height: 0;
+  overflow: hidden;
+  transition: box-shadow var(--pixel-motion-state) linear, transform var(--pixel-motion-state) var(--pixel-ease-out);
+}
+
+.workspace-leaf-content.pm-view .pm-table-view .pm-avatar-stack > .pm-avatar:not(.pm-avatar--more)[aria-label]::before {
+  content: var(--pixel-pm-avatar-emoji, "🐣");
+  align-self: stretch;
+  display: inline-flex;
+  inline-size: 25px;
+  flex: 0 0 25px;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--pixel-paper) 12%, transparent);
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.workspace-leaf-content.pm-view .pm-table-view .pm-avatar-stack > .pm-avatar:not(.pm-avatar--more)[aria-label]::after {
+  content: attr(aria-label);
+  align-self: stretch;
+  display: inline-flex;
+  align-items: center;
+  padding-inline: 7px 8px;
+  border-inline-start: var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-cyan) 18%, var(--pixel-line));
+  background: color-mix(in srgb, var(--pixel-paper) 94%, transparent);
+  color: var(--pixel-text);
+  font-family: var(--pixel-font-interface);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.workspace-leaf-content.pm-view .pm-table-view .pm-table-row:nth-child(8n+1) {
+  --pixel-pm-avatar-emoji: "🐣";
+}
+
+.workspace-leaf-content.pm-view .pm-table-view .pm-table-row:nth-child(8n+2) {
+  --pixel-pm-avatar-emoji: "🐰";
+}
+
+.workspace-leaf-content.pm-view .pm-table-view .pm-table-row:nth-child(8n+3) {
+  --pixel-pm-avatar-emoji: "🐼";
+}
+
+.workspace-leaf-content.pm-view .pm-table-view .pm-table-row:nth-child(8n+4) {
+  --pixel-pm-avatar-emoji: "🐻";
+}
+
+.workspace-leaf-content.pm-view .pm-table-view .pm-table-row:nth-child(8n+5) {
+  --pixel-pm-avatar-emoji: "🐱";
+}
+
+.workspace-leaf-content.pm-view .pm-table-view .pm-table-row:nth-child(8n+6) {
+  --pixel-pm-avatar-emoji: "🦊";
+}
+
+.workspace-leaf-content.pm-view .pm-table-view .pm-table-row:nth-child(8n+7) {
+  --pixel-pm-avatar-emoji: "🐸";
+}
+
+.workspace-leaf-content.pm-view .pm-table-view .pm-table-row:nth-child(8n+8) {
+  --pixel-pm-avatar-emoji: "🐧";
+}
+
+.workspace-leaf-content.pm-view .pm-table-view .pm-avatar-stack > .pm-avatar:nth-child(2) {
+  --pixel-pm-avatar-emoji: "🦄";
+}
+
+.workspace-leaf-content.pm-view .pm-table-view .pm-avatar-stack > .pm-avatar:nth-child(3) {
+  --pixel-pm-avatar-emoji: "🐹";
+}
+
+.workspace-leaf-content.pm-view .pm-table-view .pm-avatar-stack > .pm-avatar:nth-child(4) {
+  --pixel-pm-avatar-emoji: "🐙";
+}
+
+.workspace-leaf-content.pm-view .pm-table-view .pm-avatar-stack > .pm-avatar:not(:first-child) {
+  margin-inline-start: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .workspace-leaf-content.pm-view .pm-table-view .pm-avatar-stack > .pm-avatar:not(.pm-avatar--more)[aria-label]:hover {
+    box-shadow: 1px 2px 0 color-mix(in srgb, var(--pixel-shadow-color) 16%, transparent), inset 0 0 0 1px color-mix(in srgb, var(--pixel-paper) 18%, transparent);
+    transform: translateY(-1px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .workspace-leaf-content.pm-view .pm-table-view .pm-avatar-stack > .pm-avatar:not(.pm-avatar--more)[aria-label] {
+    transition: none;
+  }
+}
 body:not(.is-mobile) .modal.pm-modal--task {
   --pixel-pm-edge: color-mix(
     in srgb,
