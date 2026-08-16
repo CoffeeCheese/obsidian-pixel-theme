@@ -600,10 +600,31 @@ test("disabled, selected, warning, danger, loading, and empty states use multipl
   );
   assert.equal(
     declaration(danger, "border"),
-    "var(--pixel-border-control) solid var(--pixel-brick)",
+    "var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-brick) 72%, var(--pixel-line))",
   );
-  assert.equal(declaration(danger, "border-inline-start-width"), "4px");
-  assert.equal(declaration(danger, "color"), "var(--pixel-brick)");
+  assert.equal(
+    declaration(danger, "border-inline-start-width"),
+    "var(--pixel-border-decoration)",
+  );
+  assert.equal(
+    declaration(danger, "background-color"),
+    "color-mix(in srgb, var(--pixel-brick) 10%, var(--pixel-paper))",
+  );
+  assert.equal(declaration(danger, "font-weight"), "650");
+  assert.match(declaration(danger, "box-shadow"), /0 2px 0/);
+
+  const dangerActive = ruleBody(
+    css,
+    "button.mod-destructive:not(.mod-settings *):not(:disabled):not([aria-disabled=true]):active",
+  );
+  assert.equal(
+    declaration(dangerActive, "background-color"),
+    "color-mix(in srgb, var(--pixel-brick) 22%, var(--pixel-paper))",
+  );
+  assert.equal(
+    declaration(dangerActive, "transform"),
+    "translatey(1px) scale(0.98)",
+  );
 
   const loading = ruleBody(css, ".is-loading");
   assert.equal(

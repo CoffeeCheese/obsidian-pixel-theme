@@ -1306,7 +1306,6 @@ select:disabled:not(.mod-settings *),
 }
 
 button.mod-warning:not(.mod-settings *),
-button.mod-destructive:not(.mod-settings *),
 .notice.mod-error,
 .tooltip.mod-error,
 [aria-invalid=true],
@@ -1317,16 +1316,38 @@ button.mod-destructive:not(.mod-settings *),
   color: var(--pixel-brick);
 }
 
+button.mod-destructive:not(.mod-settings *) {
+  border: var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-brick) 72%, var(--pixel-line));
+  border-inline-start-width: var(--pixel-border-decoration);
+  background-color: color-mix(in srgb, var(--pixel-brick) 10%, var(--pixel-paper));
+  color: color-mix(in srgb, var(--pixel-brick) 88%, var(--pixel-text));
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--pixel-brick) 54%, var(--pixel-shadow-color)), inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 76%, transparent);
+  font-weight: 650;
+}
+
 @media (hover: hover) and (pointer: fine) {
   button.mod-warning:not(.mod-settings *):hover,
-  button.mod-destructive:not(.mod-settings *):hover,
   [aria-invalid=true]:hover,
   .is-invalid:hover {
     border-color: var(--pixel-brick);
     background-color: var(--pixel-surface-secondary);
     color: var(--pixel-brick);
   }
+  button.mod-destructive:not(.mod-settings *):not(:disabled):not([aria-disabled=true]):hover {
+    border-color: var(--pixel-brick);
+    background-color: color-mix(in srgb, var(--pixel-brick) 16%, var(--pixel-paper));
+    color: color-mix(in srgb, var(--pixel-brick) 94%, var(--pixel-text));
+    box-shadow: 0 2px 0 color-mix(in srgb, var(--pixel-brick) 68%, var(--pixel-shadow-color)), inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 68%, transparent);
+    transform: translateY(0) scale(1);
+  }
 }
+button.mod-destructive:not(.mod-settings *):not(:disabled):not([aria-disabled=true]):active {
+  border-color: var(--pixel-brick);
+  background-color: color-mix(in srgb, var(--pixel-brick) 22%, var(--pixel-paper));
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--pixel-brick) 72%, var(--pixel-shadow-color));
+  transform: translateY(1px) scale(0.98);
+}
+
 .is-loading {
   min-block-size: var(--pixel-state-min-block-size);
   color: var(--pixel-text);
