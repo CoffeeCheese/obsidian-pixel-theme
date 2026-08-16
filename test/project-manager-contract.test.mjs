@@ -74,6 +74,86 @@ test("Project Manager long titles and dense properties stay readable", async () 
   assert.equal(declaration(inlineControl, "font-size"), "12.5px");
 });
 
+test("Project Manager form fields share the search field interaction model", async () => {
+  const css = await readTheme();
+  const formFields = `${modal} :is(input.pm-prop-text,\nselect.pm-prop-select,\ninput.pm-subtask-add-input)`;
+  const fields = ruleBody(css, formFields);
+
+  assert.equal(
+    declaration(fields, "border"),
+    "var(--pixel-border-decoration) solid var(--pixel-search-edge)",
+  );
+  assert.equal(declaration(fields, "outline"), "0");
+  assert.equal(declaration(fields, "box-shadow"), "none");
+  assert.match(declaration(fields, "transition"), /border-color/);
+  assert.match(declaration(fields, "transition"), /box-shadow/);
+
+  const focused = ruleBody(
+    css,
+    `${formFields}:is(:focus, :focus-visible)`,
+  );
+  assert.equal(declaration(focused, "border-color"), "var(--pixel-cyan)");
+  assert.equal(declaration(focused, "outline"), "0");
+  assert.equal(
+    declaration(focused, "box-shadow"),
+    "var(--pixel-search-focus-shadow)",
+  );
+
+  const hoverMedia = css.slice(css.indexOf(formFields));
+  const hovered = ruleBody(
+    hoverMedia,
+    `${modal} :is(input.pm-prop-text,\n  select.pm-prop-select,\n  input.pm-subtask-add-input):hover:not(:focus):not(:focus-visible)`,
+  );
+  assert.equal(
+    declaration(hovered, "border-color"),
+    "var(--pixel-search-edge-hover)",
+  );
+});
+
+test("Project Manager checkboxes align with labels and keep light interaction states", async () => {
+  const css = await readTheme();
+  const checkboxSelector = `${modal} input.pm-prop-checkbox`;
+  const checkbox = ruleBody(css, checkboxSelector);
+  assert.equal(declaration(checkbox, "inline-size"), "16px");
+  assert.equal(declaration(checkbox, "block-size"), "16px");
+  assert.equal(declaration(checkbox, "margin"), "5.5px 0 0");
+  assert.equal(
+    declaration(checkbox, "border"),
+    "var(--pixel-border-decoration) solid var(--pixel-search-edge)",
+  );
+  assert.equal(declaration(checkbox, "box-shadow"), "none");
+  assert.equal(declaration(checkbox, "cursor"), "pointer");
+  assert.match(declaration(checkbox, "transition"), /transform/);
+
+  const marker = ruleBody(css, `${checkboxSelector}:checked::after`);
+  assert.equal(declaration(marker, "inline-size"), "10px");
+  assert.equal(declaration(marker, "block-size"), "8px");
+  assert.equal(declaration(marker, "inset"), "3px auto auto 3px");
+  assert.equal(declaration(marker, "mask-size"), "10px 8px");
+
+  const checked = ruleBody(css, `${checkboxSelector}:checked`);
+  assert.equal(declaration(checked, "border-color"), "var(--pixel-cyan)");
+  assert.equal(declaration(checked, "background-color"), "var(--pixel-cyan)");
+  assert.match(declaration(checked, "box-shadow"), /inset 0 -1px 0/);
+
+  const focused = ruleBody(css, `${checkboxSelector}:focus-visible`);
+  assert.equal(declaration(focused, "outline"), "0");
+  assert.match(declaration(focused, "box-shadow"), /0 0 0 2px/);
+
+  const pressed = ruleBody(css, `${checkboxSelector}:active`);
+  assert.equal(declaration(pressed, "transform"), "scale(0.88)");
+
+  const checkboxCss = css.slice(css.indexOf(checkboxSelector));
+  const hovered = ruleBody(
+    checkboxCss,
+    `${checkboxSelector}:hover:not(:checked)`,
+  );
+  assert.equal(
+    declaration(hovered, "border-color"),
+    "var(--pixel-search-edge-hover)",
+  );
+});
+
 test("Project Manager collapses its property grid in narrow desktop windows", async () => {
   const css = await readTheme();
   const media = css.slice(css.indexOf("@media (max-width: 720px)"));
