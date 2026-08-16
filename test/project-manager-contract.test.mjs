@@ -8,7 +8,32 @@ import {
 } from "../test-support/theme-css.mjs";
 
 const modal = "body:not(.is-mobile) .modal.pm-modal--task";
+const view = ".workspace-leaf-content.pm-view";
 const table = ".workspace-leaf-content.pm-view .pm-table-view";
+
+test("Project Manager project titles use the available space before truncating", async () => {
+  const css = await readTheme();
+
+  const toolbarLeft = ruleBody(css, `${view} .pm-toolbar-left`);
+  assert.equal(declaration(toolbarLeft, "min-inline-size"), "0");
+
+  const detailTitle = ruleBody(
+    css,
+    `${view} .pm-toolbar-left > .pm-toolbar-title`,
+  );
+  assert.equal(declaration(detailTitle, "max-inline-size"), "none");
+  assert.equal(declaration(detailTitle, "flex"), "1 1 auto");
+  assert.equal(declaration(detailTitle, "white-space"), "normal");
+  assert.equal(declaration(detailTitle, "overflow-wrap"), "anywhere");
+  assert.equal(declaration(detailTitle, "text-overflow"), "clip");
+
+  const cardTitle = ruleBody(css, `${view} .pm-project-card-title`);
+  assert.equal(declaration(cardTitle, "display"), "-webkit-box");
+  assert.equal(declaration(cardTitle, "-webkit-box-orient"), "vertical");
+  assert.equal(declaration(cardTitle, "-webkit-line-clamp"), "2");
+  assert.equal(declaration(cardTitle, "white-space"), "normal");
+  assert.equal(declaration(cardTitle, "overflow-wrap"), "anywhere");
+});
 
 test("Project Manager table assignees show complete names as contact plates", async () => {
   const css = await readTheme();

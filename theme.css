@@ -4120,6 +4120,35 @@ body.is-mobile .workspace-leaf-content[data-type=claudian-view] :is(.claudian-in
     border-color: var(--pixel-text);
   }
 }
+.workspace-leaf-content.pm-view .pm-toolbar-left {
+  min-inline-size: 0;
+}
+
+.workspace-leaf-content.pm-view .pm-toolbar-left > .pm-toolbar-title {
+  min-inline-size: 0;
+  max-inline-size: none;
+  flex: 1 1 auto;
+  overflow: visible;
+  overflow-wrap: anywhere;
+  text-overflow: clip;
+  text-wrap: pretty;
+  white-space: normal;
+}
+
+.workspace-leaf-content.pm-view .pm-project-card-title {
+  display: -webkit-box;
+  min-block-size: 2.9em;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  line-height: 1.45;
+  text-overflow: ellipsis;
+  text-wrap: pretty;
+  white-space: normal;
+}
+
 .workspace-leaf-content.pm-view .pm-table-view .pm-table-cell-assignees {
   min-inline-size: 128px;
 }
