@@ -191,6 +191,97 @@
   }
 }
 
+// Project Manager 1.4–1.8 renders project settings as one padded scrolling
+// content element inside Obsidian's already-padded modal. Its sticky footer can
+// therefore stop only at the inner padding edge, leaving a paper-coloured moat
+// below the actions. Make the modal the clipped window frame, keep reading
+// space on the scroller, and let only the action dock bleed to the frame edges.
+body:not(.is-mobile) .modal.pm-modal--project {
+  --pixel-pm-project-edge: color-mix(
+    in srgb,
+    var(--pixel-cyan) 28%,
+    var(--pixel-line-strong)
+  );
+  --pixel-pm-project-edge-quiet: color-mix(
+    in srgb,
+    var(--pixel-cyan) 12%,
+    var(--pixel-line)
+  );
+  --pixel-pm-project-dock: color-mix(
+    in srgb,
+    var(--pixel-paper) 82%,
+    var(--pixel-canvas)
+  );
+  box-sizing: border-box;
+  inline-size: min(560px, calc(100vw - 48px));
+  max-inline-size: 560px;
+  max-block-size: min(88vh, 820px);
+  padding: 0;
+  overflow: hidden;
+  border: var(--pixel-border-decoration) solid var(--pixel-pm-project-edge);
+  border-radius: 12px;
+  background: var(--pixel-paper);
+  box-shadow:
+    2px 2px 0 var(--pixel-shadow-color),
+    0 20px 52px color-mix(in srgb, var(--pixel-shadow-color) 32%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--pixel-paper) 72%, transparent);
+}
+
+body:not(.is-mobile) .modal.pm-modal--project > .modal-content.pm-project-modal {
+  box-sizing: border-box;
+  min-block-size: 0;
+  max-block-size: inherit;
+  padding: 20px 24px 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  scroll-padding-block: 20px 68px;
+  border-radius: inherit;
+  background: transparent;
+}
+
+body:not(.is-mobile) .modal.pm-modal--project .pm-project-modal-header {
+  padding-inline-end: 32px;
+}
+
+body:not(.is-mobile) .modal.pm-modal--project .pm-modal-footer {
+  position: sticky;
+  z-index: 2;
+  inset-block-end: 0;
+  box-sizing: border-box;
+  inline-size: calc(100% + 48px);
+  min-block-size: 52px;
+  flex: 0 0 auto;
+  gap: 10px;
+  margin-inline: -24px;
+  margin-block-end: 0;
+  padding: 10px 24px;
+  border-block-start: var(--pixel-border-decoration) solid
+    var(--pixel-pm-project-edge-quiet);
+  background: var(--pixel-pm-project-dock);
+  box-shadow: 0 -10px 24px
+    color-mix(in srgb, var(--pixel-shadow-color) 8%, transparent);
+  font-family: var(--pixel-font-interface);
+}
+
+@media (max-width: 640px) {
+  body:not(.is-mobile) .modal.pm-modal--project {
+    inline-size: calc(100vw - 24px);
+    max-block-size: calc(100vh - 24px);
+  }
+
+  body:not(.is-mobile) .modal.pm-modal--project > .modal-content.pm-project-modal {
+    padding: 18px 16px 0;
+    scroll-padding-block-end: 68px;
+  }
+
+  body:not(.is-mobile) .modal.pm-modal--project .pm-modal-footer {
+    inline-size: calc(100% + 32px);
+    margin-inline: -16px;
+    padding-inline: 16px;
+  }
+}
+
 // Project Manager's task editor is a compact working sheet: macOS-like
 // hierarchy keeps long project data calm, while one stepped edge preserves
 // Pixel's tactile identity. The selectors stay under the plugin's modal class

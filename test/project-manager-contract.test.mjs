@@ -8,6 +8,7 @@ import {
 } from "../test-support/theme-css.mjs";
 
 const modal = "body:not(.is-mobile) .modal.pm-modal--task";
+const projectModal = "body:not(.is-mobile) .modal.pm-modal--project";
 const view = ".workspace-leaf-content.pm-view";
 const table = ".workspace-leaf-content.pm-view .pm-table-view";
 
@@ -89,6 +90,40 @@ test("Project Manager table assignees show complete names as contact plates", as
   assert.equal(
     declaration(secondAssignee, "--pixel-pm-avatar-emoji"),
     '"🦄"',
+  );
+});
+
+test("Project Manager project settings dock actions against the modal edge", async () => {
+  const css = await readTheme();
+  const sheet = ruleBody(css, projectModal);
+
+  assert.equal(declaration(sheet, "inline-size"), "min(560px, 100vw - 48px)");
+  assert.equal(declaration(sheet, "padding"), "0");
+  assert.equal(declaration(sheet, "overflow"), "hidden");
+  assert.equal(
+    declaration(sheet, "border"),
+    "var(--pixel-border-decoration) solid var(--pixel-pm-project-edge)",
+  );
+
+  const content = ruleBody(
+    css,
+    `${projectModal} > .modal-content.pm-project-modal`,
+  );
+  assert.equal(declaration(content, "min-block-size"), "0");
+  assert.equal(declaration(content, "max-block-size"), "inherit");
+  assert.equal(declaration(content, "padding"), "20px 24px 0");
+  assert.equal(declaration(content, "overflow-y"), "auto");
+  assert.equal(declaration(content, "scroll-padding-block"), "20px 68px");
+
+  const footer = ruleBody(css, `${projectModal} .pm-modal-footer`);
+  assert.equal(declaration(footer, "inset-block-end"), "0");
+  assert.equal(declaration(footer, "inline-size"), "calc(100% + 48px)");
+  assert.equal(declaration(footer, "margin-inline"), "-24px");
+  assert.equal(declaration(footer, "margin-block-end"), "0");
+  assert.equal(declaration(footer, "padding"), "10px 24px");
+  assert.match(
+    declaration(footer, "border-block-start"),
+    /--pixel-pm-project-edge-quiet/,
   );
 });
 
