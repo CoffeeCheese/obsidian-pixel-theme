@@ -242,10 +242,10 @@ Obsidian's configured monospace font with system fallbacks, while body text
 uses the user's text font and operating-system fallback for uncommon
 characters.
 
-Pixel includes a focused visual integration for Claudian. Other plugins that
-use official Obsidian variables and Setting components generally inherit the
-theme naturally, but individual community plugins are not compatibility
-commitments.
+Pixel includes focused visual integrations for Claudian, Project Manager, and
+Project Manager Insights. Other plugins that use official Obsidian variables
+and Setting components generally inherit the theme naturally, but individual
+community plugins are not compatibility commitments unless named here.
 
 ## Compatibility
 

@@ -45,6 +45,7 @@ Ticket 12 was initially implemented by `25ee366`, then closed after a second spe
 | Bases | Pass | Pass | Toolbar, table, card, editor, and selection behavior retained | Dense 64-row fixture keeps native two-axis scrolling | `data-document-contract`, installed runtime |
 | PDF | Pass | Pass | Toolbar, page input, document accessibility layer, and thumbnail path checked | Multi-page document keeps native zoom and scroll | `data-document-contract`, installed runtime |
 | D1 desktop / M1 mobile | Pass | Pass | Native drawers, backdrop dismissal, focus, and multi-cue active tabs retained | M1 uses 44×44px targets, 8px gaps, safe-area offset, native keyboard resizing | `workspace-contract`, `mobile-contract` |
+| Community plugin integrations | Pass | Pass | Claudian, Project Manager, and Project Manager Insights keep native commands and keyboard behavior | Plugin-owned panes and modals retain local scrolling and responsive layouts | Plugin contract suites, installed runtime |
 | Official-variable plugin smoke | Pass | Pass | Native button and input remain focusable | Official surfaces inherit without plugin overrides | Isolated runtime DOM smoke |
 
 ## Contrast contract
@@ -79,9 +80,9 @@ PDF page pixels and its transparent accessibility text layer reproduce the sourc
 
 ## Compatibility and performance controls
 
-The smoke plugin used only documented Obsidian variables (`--background-primary`, `--text-normal`, `--background-modifier-border`, `--border-width`) plus native button/input elements. In Light it inherited 15.06:1 text and 4.82:1 boundaries; no Pixel selector referenced its marker. The theme makes no community-plugin support claim.
+The smoke plugin used only documented Obsidian variables (`--background-primary`, `--text-normal`, `--background-modifier-border`, `--border-width`) plus native button/input elements. In Light it inherited 15.06:1 text and 4.82:1 boundaries; no Pixel selector referenced its marker. Community-plugin support claims are limited to Claudian, Project Manager, and Project Manager Insights.
 
-The selector audit contains no `!important`, no `@keyframes`, no community-plugin selector, and no Live Preview margin override. One deliberately bounded first-party selector, `.status-bar-item.plugin-properties`, suppresses Obsidian's text-only property counter in the compact status pod; it is used because the native item exposes neither a semantic attribute nor a locale-independent label. Relational selectors are limited to two justified native defects:
+The selector audit contains no `!important`, no `@keyframes`, and no Live Preview margin override. Community-plugin selectors are isolated to the three named integrations and never target generic plugin containers. One deliberately bounded first-party selector, `.status-bar-item.plugin-properties`, suppresses Obsidian's text-only property counter in the compact status pod; it is used because the native item exposes neither a semantic attribute nor a locale-independent label. Relational selectors are limited to two justified native defects:
 
 - an empty callout SVG fallback, needed because the native icon may render as an empty SVG;
 - mobile drawer offset cancellation, needed because Obsidian applies inline transforms while an unpinned native drawer is open.

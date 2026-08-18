@@ -4928,6 +4928,91 @@ body:not(.is-mobile) .modal.pm-modal--task .pm-te-footer button:focus-visible {
     display: none;
   }
 }
+.workspace-leaf-content[data-type=project-manager-insights-view] {
+  --pmi-edge: color-mix(in srgb, var(--pixel-cyan) 12%, var(--pixel-line));
+  --pmi-edge-strong: color-mix(in srgb, var(--pixel-cyan) 28%, var(--pixel-line));
+  --pmi-surface: color-mix(in srgb, var(--pixel-cyan) 5%, var(--pixel-paper));
+  --pmi-surface-raised: color-mix(in srgb, var(--pixel-paper) 94%, var(--pixel-cyan));
+  --pmi-accent-soft: color-mix(in srgb, var(--pixel-cyan) 9%, var(--pixel-paper));
+  --pmi-remaining: color-mix(in srgb, var(--pixel-cyan) 62%, var(--pixel-line));
+  font-family: var(--pixel-font-interface);
+}
+
+.workspace-leaf-content[data-type=project-manager-insights-view] .pmi-root {
+  background: linear-gradient(color-mix(in srgb, var(--pixel-line) 24%, transparent) 1px, transparent 1px) 0 0/100% 32px, var(--pixel-paper);
+}
+
+.workspace-leaf-content[data-type=project-manager-insights-view] input.pmi-project-search,
+.workspace-leaf-content[data-type=project-manager-insights-view] input.pmi-pane-search,
+.workspace-leaf-content[data-type=project-manager-insights-view] .pmi-task-filters select {
+  border: var(--pixel-border-decoration) solid var(--pixel-search-edge);
+  outline: 0;
+  box-shadow: none;
+  background: var(--pixel-paper);
+  font-family: var(--pixel-font-interface);
+}
+
+.workspace-leaf-content[data-type=project-manager-insights-view] input.pmi-project-search:is(:focus, :focus-visible),
+.workspace-leaf-content[data-type=project-manager-insights-view] input.pmi-pane-search:is(:focus, :focus-visible),
+.workspace-leaf-content[data-type=project-manager-insights-view] .pmi-task-filters select:is(:focus, :focus-visible) {
+  border-color: var(--pixel-cyan);
+  outline: 0;
+  box-shadow: var(--pixel-search-focus-shadow);
+}
+
+.workspace-leaf-content[data-type=project-manager-insights-view] button.pmi-member {
+  block-size: auto;
+  min-block-size: 0;
+  border: var(--pixel-border-decoration) solid var(--pmi-edge);
+  border-radius: 8px;
+  box-shadow: none;
+  background: var(--pmi-surface-raised);
+}
+
+.workspace-leaf-content[data-type=project-manager-insights-view] button.pmi-member:is(:hover, .is-active) {
+  border-color: var(--pixel-cyan);
+  background: var(--pmi-accent-soft);
+}
+
+.workspace-leaf-content[data-type=project-manager-insights-view] button.pmi-member.is-active {
+  box-shadow: inset 3px 0 0 var(--pixel-cyan);
+}
+
+.workspace-leaf-content[data-type=project-manager-insights-view] button.pmi-task-row {
+  block-size: auto;
+  min-block-size: 0;
+  border: 0;
+  border-block-end: var(--pixel-border-decoration) solid var(--pmi-edge);
+  border-radius: 0;
+  box-shadow: none;
+  background: var(--pixel-paper);
+}
+
+.workspace-leaf-content[data-type=project-manager-insights-view] button.pmi-task-row:last-child {
+  border-block-end: 0;
+}
+
+.workspace-leaf-content[data-type=project-manager-insights-view] button.pmi-task-row:hover {
+  border-color: var(--pmi-edge);
+  background: color-mix(in srgb, var(--pixel-cyan) 4%, var(--pixel-paper));
+  box-shadow: none;
+  transform: none;
+}
+
+.workspace-leaf-content[data-type=project-manager-insights-view] .pmi-task-badges span,
+.workspace-leaf-content[data-type=project-manager-insights-view] .pmi-task-status {
+  border-radius: 6px;
+}
+
+.workspace-leaf-content[data-type=project-manager-insights-view] .pmi-member-avatar {
+  border-radius: 8px;
+  font-family: var(--pixel-font-identity);
+}
+
+.workspace-leaf-content[data-type=project-manager-insights-view] :is(.pmi-metric strong, .pmi-member-total, .pmi-work-legend, .pmi-task-hours) {
+  font-family: var(--pixel-font-monospace);
+}
+
 @media (any-pointer: coarse) {
   body {
     --pixel-control-min: 44px;

@@ -202,7 +202,7 @@ Pixel 当前不提供自定义 **Style Settings** 选项。Style Settings 插件
 
 主题内置 Fusion Pixel 作为身份标题字体。代码和技术状态使用 Obsidian 配置的等宽字体与系统回退；正文则使用用户的正文字体，并由操作系统补全罕见字符。
 
-Pixel 为 Claudian 提供专项视觉适配。其他使用 Obsidian 官方变量和 Setting 组件的插件通常可以自然继承主题，但不构成逐个社区插件的兼容承诺。
+Pixel 为 Claudian、Project Manager 与 Project Manager Insights 提供专项视觉适配。其他使用 Obsidian 官方变量和 Setting 组件的插件通常可以自然继承主题，但除非在此明确列出，否则不构成逐个社区插件的兼容承诺。
 
 ## 兼容性
 
