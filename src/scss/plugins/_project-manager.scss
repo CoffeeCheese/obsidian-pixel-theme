@@ -264,6 +264,135 @@ body:not(.is-mobile) .modal.pm-modal--project .pm-modal-footer {
   font-family: var(--pixel-font-interface);
 }
 
+// Pixel's global form perimeter intentionally uses a two-pixel control edge,
+// but Project Manager already groups its fields inside bordered sections. Use
+// the quieter search-field model throughout this modal so project identity,
+// description, members, and custom fields all keep a single visual perimeter.
+body:not(.is-mobile) .modal.pm-modal--project .pm-input {
+  border: var(--pixel-border-decoration) solid var(--pixel-search-edge);
+  outline: 0;
+  box-shadow: none;
+  transition:
+    background-color var(--pixel-motion-state) linear,
+    border-color var(--pixel-motion-state) linear,
+    box-shadow var(--pixel-motion-state) linear;
+}
+
+body:not(.is-mobile)
+  .modal.pm-modal--project
+  .pm-input:is(:focus, :focus-visible) {
+  border-color: var(--pixel-cyan);
+  outline: 0;
+  background-color: color-mix(
+    in srgb,
+    var(--pixel-cyan) 6%,
+    var(--pixel-paper)
+  );
+  box-shadow: var(--pixel-search-focus-shadow);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body:not(.is-mobile)
+    .modal.pm-modal--project
+    .pm-input:hover:not(:focus):not(:focus-visible) {
+    border-color: var(--pixel-search-edge-hover);
+    background-color: color-mix(
+      in srgb,
+      var(--pixel-cyan) 3%,
+      var(--pixel-paper)
+    );
+  }
+}
+
+// A custom field's name and type form one schema pair. Keep both primary
+// controls on the same 38px measure, then reserve a quiet right-hand type slot
+// around the native chevron. Options remain compact and use a hairline edge so
+// their secondary role is visible without adding another decorated container.
+body:not(.is-mobile) .modal.pm-modal--project input.pm-cf-name {
+  block-size: 38px;
+  min-block-size: 38px;
+  padding-block: 7px;
+  padding-inline: 11px;
+  background-color: color-mix(
+    in srgb,
+    var(--pixel-paper) 90%,
+    var(--pixel-canvas)
+  );
+  font-family: var(--pixel-font-interface);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+body:not(.is-mobile) .modal.pm-modal--project select.pm-cf-type {
+  appearance: menulist;
+  block-size: 38px;
+  min-block-size: 38px;
+  padding-block: 7px;
+  padding-inline: 11px 38px;
+  background-color: color-mix(
+    in srgb,
+    var(--pixel-paper) 90%,
+    var(--pixel-canvas)
+  );
+  background-image: linear-gradient(
+    to left,
+    color-mix(in srgb, var(--pixel-cyan) 7%, transparent) 0,
+    color-mix(in srgb, var(--pixel-cyan) 7%, transparent) 34px,
+    var(--pixel-pm-project-edge-quiet) 34px,
+    var(--pixel-pm-project-edge-quiet) 35px,
+    transparent 35px
+  );
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  color: var(--pixel-text);
+  font-family: var(--pixel-font-interface);
+  font-size: 13px;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+body:not(.is-mobile) .modal.pm-modal--project input.pm-cf-opt-input {
+  block-size: 32px;
+  min-block-size: 32px;
+  padding-block: 5px;
+  padding-inline: 10px;
+  border: var(--pixel-border-decoration) solid
+    var(--pixel-pm-project-edge-quiet);
+  outline: 0;
+  background-color: color-mix(
+    in srgb,
+    var(--pixel-paper) 94%,
+    var(--pixel-canvas)
+  );
+  font-family: var(--pixel-font-interface);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+body:not(.is-mobile)
+  .modal.pm-modal--project
+  input.pm-cf-opt-input:is(:focus, :focus-visible) {
+  background-color: color-mix(
+    in srgb,
+    var(--pixel-cyan) 4%,
+    var(--pixel-paper)
+  );
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body:not(.is-mobile)
+    .modal.pm-modal--project
+    input.pm-cf-opt-input:hover:not(:focus):not(:focus-visible) {
+    border-color: var(--pixel-search-edge);
+    background-color: color-mix(
+      in srgb,
+      var(--pixel-cyan) 2%,
+      var(--pixel-paper)
+    );
+  }
+}
+
 @media (max-width: 640px) {
   body:not(.is-mobile) .modal.pm-modal--project {
     inline-size: calc(100vw - 24px);

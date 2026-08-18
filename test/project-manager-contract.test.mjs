@@ -127,6 +127,62 @@ test("Project Manager project settings dock actions against the modal edge", asy
   );
 });
 
+test("Project Manager settings fields share one quiet edge model", async () => {
+  const css = await readTheme();
+  const settingsFields = `${projectModal} .pm-input`;
+  const field = ruleBody(css, settingsFields);
+
+  assert.equal(
+    declaration(field, "border"),
+    "var(--pixel-border-decoration) solid var(--pixel-search-edge)",
+  );
+  assert.equal(declaration(field, "outline"), "0");
+  assert.equal(declaration(field, "box-shadow"), "none");
+
+  const focusedField = ruleBody(
+    css,
+    `${settingsFields}:is(:focus, :focus-visible)`,
+  );
+  assert.equal(declaration(focusedField, "border-color"), "var(--pixel-cyan)");
+  assert.equal(declaration(focusedField, "outline"), "0");
+  assert.equal(
+    declaration(focusedField, "box-shadow"),
+    "var(--pixel-search-focus-shadow)",
+  );
+});
+
+test("Project Manager custom-field controls use a clear two-level hierarchy", async () => {
+  const css = await readTheme();
+  const fieldName = ruleBody(css, `${projectModal} input.pm-cf-name`);
+  const typeSelect = ruleBody(
+    css,
+    `${projectModal} select.pm-cf-type`,
+  );
+  const optionInput = ruleBody(
+    css,
+    `${projectModal} input.pm-cf-opt-input`,
+  );
+
+  assert.equal(declaration(fieldName, "block-size"), "38px");
+  assert.equal(declaration(fieldName, "min-block-size"), "38px");
+
+  assert.equal(declaration(typeSelect, "block-size"), "38px");
+  assert.equal(declaration(typeSelect, "min-block-size"), "38px");
+  assert.equal(declaration(typeSelect, "padding-block"), "7px");
+  assert.equal(declaration(typeSelect, "line-height"), "1.5");
+  assert.equal(declaration(typeSelect, "appearance"), "menulist");
+  assert.equal(declaration(typeSelect, "background-position"), "0 0");
+  assert.match(declaration(typeSelect, "background-image"), /linear-gradient/);
+  assert.equal(declaration(typeSelect, "background-size"), "100% 100%");
+
+  assert.equal(declaration(optionInput, "block-size"), "32px");
+  assert.equal(declaration(optionInput, "min-block-size"), "32px");
+  assert.equal(
+    declaration(optionInput, "border"),
+    "var(--pixel-border-decoration) solid var(--pixel-pm-project-edge-quiet)",
+  );
+});
+
 test("Project Manager task editor uses a compact macOS sheet with a Pixel edge", async () => {
   const css = await readTheme();
   const sheet = ruleBody(css, modal);
