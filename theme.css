@@ -4698,6 +4698,105 @@ body:not(.is-mobile) .modal.pm-modal--task .pm-avatar--sm {
   font-size: 8.5px;
 }
 
+body:not(.is-mobile) .modal.pm-modal--task .pm-prop-chips {
+  min-inline-size: 0;
+  align-items: center;
+  gap: 4px;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-chip.pm-chip--tag {
+  min-block-size: 22px;
+  max-inline-size: 100%;
+  gap: 4px;
+  padding: var(--tag-padding-y) 3px var(--tag-padding-y) var(--tag-padding-x);
+  border: var(--tag-border-width) solid var(--tag-border-color);
+  border-radius: var(--tag-radius);
+  background: var(--tag-background);
+  color: var(--tag-color);
+  box-shadow: var(--pixel-tag-highlight);
+  font-size: 11.5px;
+  font-weight: var(--tag-weight);
+  line-height: 1.4;
+  overflow: hidden;
+  transition: background-color var(--pixel-motion-state) var(--pixel-ease-out), border-color var(--pixel-motion-state) var(--pixel-ease-out), color var(--pixel-motion-state) var(--pixel-ease-out);
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-chip--tag .pm-chip-label {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-chip--tag .pm-chip-dot {
+  inline-size: 5px;
+  block-size: 5px;
+  flex: 0 0 5px;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-chip--tag > button.pm-chip-rm {
+  --pixel-icon-size: 10px;
+  inline-size: 18px;
+  min-inline-size: 18px;
+  block-size: 18px;
+  min-block-size: 18px;
+  flex: 0 0 18px;
+  margin: 0;
+  padding: 4px;
+  border: 0;
+  border-radius: 999px;
+  outline: 0;
+  background: transparent;
+  color: var(--tag-color);
+  box-shadow: none;
+  opacity: 0.62;
+  transform: none;
+  transition: background-color var(--pixel-motion-state) var(--pixel-ease-out), color var(--pixel-motion-state) var(--pixel-ease-out), opacity var(--pixel-motion-state) linear;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-chip--tag > button.pm-chip-rm .svg-icon {
+  inline-size: 10px;
+  block-size: 10px;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-chip.pm-chip--tag:focus-within {
+  border-color: var(--tag-border-color-hover);
+  background: var(--tag-background-hover);
+  color: var(--tag-color-hover);
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-chip--tag > button.pm-chip-rm:focus-visible {
+  border: 0;
+  outline: var(--pixel-border-decoration) solid var(--tag-border-color-hover);
+  outline-offset: 0;
+  background: color-mix(in srgb, var(--pixel-cyan) 12%, transparent);
+  box-shadow: none;
+  opacity: 1;
+  transform: none;
+}
+
+body:not(.is-mobile) .modal.pm-modal--task .pm-chip--tag > button.pm-chip-rm:active {
+  border: 0;
+  background: color-mix(in srgb, var(--pixel-cyan) 18%, transparent);
+  box-shadow: none;
+  opacity: 1;
+  transform: translateY(1px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body:not(.is-mobile) .modal.pm-modal--task .pm-chip.pm-chip--tag:hover {
+    border-color: var(--tag-border-color-hover);
+    background: var(--tag-background-hover);
+    color: var(--tag-color-hover);
+  }
+  body:not(.is-mobile) .modal.pm-modal--task .pm-chip--tag > button.pm-chip-rm:hover {
+    border: 0;
+    background: color-mix(in srgb, var(--pixel-cyan) 12%, transparent);
+    color: var(--tag-color-hover);
+    box-shadow: none;
+    opacity: 1;
+    transform: none;
+  }
+}
 body:not(.is-mobile) .modal.pm-modal--task :is(input.pm-prop-text,
 select.pm-prop-select,
 input.pm-subtask-add-input) {

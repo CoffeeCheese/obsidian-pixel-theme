@@ -248,6 +248,55 @@ test("Project Manager long titles and dense properties stay readable", async () 
   assert.equal(declaration(inlineControl, "font-size"), "12.5px");
 });
 
+test("Project Manager task tags reuse Pixel's compact tag language", async () => {
+  const css = await readTheme();
+  const chips = ruleBody(css, `${modal} .pm-prop-chips`);
+  const tagSelector = `${modal} .pm-chip.pm-chip--tag`;
+  const tag = ruleBody(css, tagSelector);
+  const removeSelector = `${modal} .pm-chip--tag > button.pm-chip-rm`;
+  const remove = ruleBody(css, removeSelector);
+  const removeIcon = ruleBody(css, `${removeSelector} .svg-icon`);
+
+  assert.equal(declaration(chips, "align-items"), "center");
+  assert.equal(declaration(chips, "gap"), "4px");
+
+  assert.equal(declaration(tag, "min-block-size"), "22px");
+  assert.equal(
+    declaration(tag, "border"),
+    "var(--tag-border-width) solid var(--tag-border-color)",
+  );
+  assert.equal(declaration(tag, "border-radius"), "var(--tag-radius)");
+  assert.equal(declaration(tag, "background"), "var(--tag-background)");
+  assert.equal(declaration(tag, "color"), "var(--tag-color)");
+  assert.equal(declaration(tag, "box-shadow"), "var(--pixel-tag-highlight)");
+  assert.equal(declaration(tag, "font-weight"), "var(--tag-weight)");
+
+  assert.equal(declaration(remove, "inline-size"), "18px");
+  assert.equal(declaration(remove, "min-inline-size"), "18px");
+  assert.equal(declaration(remove, "block-size"), "18px");
+  assert.equal(declaration(remove, "min-block-size"), "18px");
+  assert.equal(declaration(remove, "border"), "0");
+  assert.equal(declaration(remove, "background"), "transparent");
+  assert.equal(declaration(remove, "box-shadow"), "none");
+  assert.equal(declaration(remove, "transform"), "none");
+  assert.equal(declaration(removeIcon, "inline-size"), "10px");
+  assert.equal(declaration(removeIcon, "block-size"), "10px");
+
+  const focused = ruleBody(css, `${tagSelector}:focus-within`);
+  assert.equal(
+    declaration(focused, "border-color"),
+    "var(--tag-border-color-hover)",
+  );
+  assert.equal(
+    declaration(focused, "background"),
+    "var(--tag-background-hover)",
+  );
+
+  const focusedRemove = ruleBody(css, `${removeSelector}:focus-visible`);
+  assert.equal(declaration(focusedRemove, "box-shadow"), "none");
+  assert.equal(declaration(focusedRemove, "opacity"), "1");
+});
+
 test("Project Manager form fields share the search field interaction model", async () => {
   const css = await readTheme();
   const formFields = `${modal} :is(input.pm-prop-text,\nselect.pm-prop-select,\ninput.pm-subtask-add-input)`;
