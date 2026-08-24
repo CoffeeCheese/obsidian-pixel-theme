@@ -12,6 +12,7 @@ node_modules/
 /h5/
 /test/h5-*.test.mjs
 CONTEXT.md
+AGENTS.md
 prototypes/
 doc/
 
