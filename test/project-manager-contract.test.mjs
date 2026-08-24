@@ -11,6 +11,8 @@ const modal = "body:not(.is-mobile) .modal.pm-modal--task";
 const projectModal = "body:not(.is-mobile) .modal.pm-modal--project";
 const view = ".workspace-leaf-content.pm-view";
 const table = ".workspace-leaf-content.pm-view .pm-table-view";
+const settingsCta =
+  ".mod-settings .vertical-tab-content.pm-settings .setting-item-control > button.mod-cta";
 
 test("Project Manager project titles use the available space before truncating", async () => {
   const css = await readTheme();
@@ -148,6 +150,58 @@ test("Project Manager settings fields share one quiet edge model", async () => {
   assert.equal(
     declaration(focusedField, "box-shadow"),
     "var(--pixel-search-focus-shadow)",
+  );
+});
+
+test("Project Manager settings add actions remain legible on Pixel surfaces", async () => {
+  const css = await readTheme();
+  const button = ruleBody(css, settingsCta);
+
+  assert.equal(declaration(button, "color"), "var(--pixel-text)");
+  assert.doesNotMatch(
+    declaration(button, "box-shadow"),
+    /inset 3px 0 0 var\(--pixel-cyan\)/,
+  );
+  assert.equal(
+    declaration(button, "background-color"),
+    "color-mix(in srgb, var(--pixel-cyan) 6%, var(--pixel-paper))",
+  );
+  assert.match(declaration(button, "border-color"), /--pixel-cyan/);
+
+  const rail = ruleBody(css, `${settingsCta}::before`);
+  assert.equal(declaration(rail, "content"), '""');
+  assert.equal(
+    declaration(rail, "inset-block"),
+    "calc(-1 * var(--pixel-border-decoration))",
+  );
+  assert.equal(
+    declaration(rail, "inset-inline-start"),
+    "calc(-1 * var(--pixel-border-decoration))",
+  );
+  assert.equal(declaration(rail, "border-start-start-radius"), "inherit");
+  assert.equal(declaration(rail, "border-end-start-radius"), "inherit");
+  assert.equal(declaration(rail, "opacity"), "0");
+  assert.equal(declaration(rail, "transform"), "scaley(0)");
+
+  const hoveredButton = ruleBody(css, `${settingsCta}:hover`);
+  assert.match(
+    declaration(hoveredButton, "border-color"),
+    /color-mix\(in srgb, var\(--pixel-cyan\) 62%/,
+  );
+
+  const hoveredRail = ruleBody(css, `${settingsCta}:hover::before`);
+  assert.equal(declaration(hoveredRail, "opacity"), "1");
+  assert.equal(declaration(hoveredRail, "transform"), "scaley(1)");
+
+  const active = ruleBody(css, `${settingsCta}:active`);
+  assert.equal(declaration(active, "transform"), "translatey(1px)");
+
+  const focus = ruleBody(css, `${settingsCta}:focus-visible`);
+  assert.equal(declaration(focus, "outline"), "0");
+  assert.match(declaration(focus, "box-shadow"), /--pixel-cyan/);
+  assert.doesNotMatch(
+    declaration(focus, "box-shadow"),
+    /inset 3px 0 0 var\(--pixel-cyan\)/,
   );
 });
 

@@ -191,6 +191,135 @@
   }
 }
 
+// Project Manager marks its Settings-tab add actions as native CTA buttons.
+// Pixel's shared settings controls deliberately use a pale paper surface,
+// which otherwise replaces the CTA fill while leaving Obsidian's white CTA
+// text behind. Keep the resting action quiet and readable; its cyan signal rail
+// grows from the centre only on hover, so idle never resembles selection.
+.mod-settings
+  .vertical-tab-content.pm-settings
+  .setting-item-control
+  > button.mod-cta {
+  position: relative;
+  min-block-size: 34px;
+  padding-block: 5px;
+  padding-inline: 14px;
+  border-color: color-mix(
+    in srgb,
+    var(--pixel-cyan) 34%,
+    var(--pixel-line-strong)
+  );
+  background-color: color-mix(
+    in srgb,
+    var(--pixel-cyan) 6%,
+    var(--pixel-paper)
+  );
+  box-shadow: 0 1px 0
+    color-mix(in srgb, var(--pixel-paper) 76%, transparent);
+  color: var(--pixel-text);
+  font-family: var(--pixel-font-interface);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.25;
+  text-shadow: none;
+  transition:
+    background-color var(--pixel-motion-state) linear,
+    border-color var(--pixel-motion-state) linear,
+    box-shadow var(--pixel-motion-state) linear,
+    transform var(--pixel-motion-button) var(--pixel-ease-button);
+  overflow: visible;
+}
+
+.mod-settings
+  .vertical-tab-content.pm-settings
+  .setting-item-control
+  > button.mod-cta::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset-block: calc(-1 * var(--pixel-border-decoration));
+  inset-inline-start: calc(-1 * var(--pixel-border-decoration));
+  inline-size: 3px;
+  border-start-start-radius: inherit;
+  border-end-start-radius: inherit;
+  background-color: var(--pixel-cyan);
+  opacity: 0;
+  pointer-events: none;
+  transform: scaleY(0);
+  transform-origin: center;
+  transition:
+    opacity var(--pixel-motion-state) linear,
+    transform var(--pixel-motion-button) var(--pixel-ease-button);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mod-settings
+    .vertical-tab-content.pm-settings
+    .setting-item-control
+    > button.mod-cta:hover {
+    border-color: color-mix(
+      in srgb,
+      var(--pixel-cyan) 62%,
+      var(--pixel-line-strong)
+    );
+    background-color: color-mix(
+      in srgb,
+      var(--pixel-cyan) 14%,
+      var(--pixel-paper)
+    );
+    box-shadow: 1px 2px 0
+      color-mix(in srgb, var(--pixel-shadow-color) 24%, transparent);
+    transform: translateY(-1px);
+  }
+
+  .mod-settings
+    .vertical-tab-content.pm-settings
+    .setting-item-control
+    > button.mod-cta:hover::before {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+.mod-settings
+  .vertical-tab-content.pm-settings
+  .setting-item-control
+  > button.mod-cta:active {
+  border-color: var(--pixel-cyan);
+  background-color: color-mix(
+    in srgb,
+    var(--pixel-cyan) 18%,
+    var(--pixel-paper)
+  );
+  box-shadow: inset 0 1px 2px
+    color-mix(in srgb, var(--pixel-shadow-color) 18%, transparent);
+  transform: translateY(1px);
+}
+
+.mod-settings
+  .vertical-tab-content.pm-settings
+  .setting-item-control
+  > button.mod-cta:focus-visible {
+  outline: 0;
+  border-color: var(--pixel-cyan);
+  box-shadow: 0 0 0 2px
+    color-mix(in srgb, var(--pixel-cyan) 58%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mod-settings
+    .vertical-tab-content.pm-settings
+    .setting-item-control
+    > button.mod-cta,
+  .mod-settings
+    .vertical-tab-content.pm-settings
+    .setting-item-control
+    > button.mod-cta::before {
+    transition: none;
+  }
+}
+
 // Project Manager 1.4–1.8 renders project settings as one padded scrolling
 // content element inside Obsidian's already-padded modal. Its sticky footer can
 // therefore stop only at the inner padding edge, leaving a paper-coloured moat
