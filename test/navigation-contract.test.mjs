@@ -97,6 +97,30 @@ test("tree rows keep hierarchy and expose distinct active, hover, and focus stat
   assert.equal(declaration(fileName, "overflow-wrap"), "anywhere");
 });
 
+test("file explorer context targets use a quiet pixel cursor instead of an outer focus frame", async () => {
+  const css = await readTheme();
+  const contextTarget = ruleBody(
+    css,
+    'body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type=file-explorer] :is(.nav-file-title, .nav-folder-title).has-focus:not(.is-active):not(.is-selected)',
+  );
+
+  assert.equal(declaration(contextTarget, "outline"), "0");
+  assert.equal(declaration(contextTarget, "outline-offset"), "0");
+  assert.equal(
+    declaration(contextTarget, "border"),
+    "var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-cyan) 44%, var(--pixel-line-strong))",
+  );
+  assert.equal(
+    declaration(contextTarget, "background-color"),
+    "color-mix(in srgb, var(--pixel-cyan) 5%, var(--pixel-paper))",
+  );
+  assert.equal(
+    declaration(contextTarget, "box-shadow"),
+    "inset 3px 0 0 color-mix(in srgb, var(--pixel-cyan) 72%, transparent)",
+  );
+  assert.equal(declaration(contextTarget, "transform"), "translatex(1px)");
+});
+
 test("search results use shared surfaces without changing native replace-button layout", async () => {
   const css = await readTheme();
   const matches = ruleBody(css, ".search-result-file-matches");

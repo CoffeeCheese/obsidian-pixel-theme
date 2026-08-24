@@ -366,10 +366,35 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .works
   pointer-events: none;
 }
 
+// A context-menu target is temporary: show where the command will land
+// without letting it compete with the controller strip of the open file.
+// The inset cyan tick is Pixel's compact cursor; the hairline and shallow
+// movement keep the signal legible without rebuilding the former outer ring.
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] :is(.nav-file-title, .nav-folder-title).has-focus:not(.is-active):not(.is-selected) {
+  outline: 0;
+  outline-offset: 0;
+  transform: translateX(1px);
+  border: var(--pixel-border-decoration) solid color-mix(
+    in srgb,
+    var(--pixel-cyan) 44%,
+    var(--pixel-line-strong)
+  );
+  background-color: color-mix(in srgb, var(--pixel-cyan) 5%, var(--pixel-paper));
+  box-shadow: inset 3px 0 0 color-mix(in srgb, var(--pixel-cyan) 72%, transparent);
+}
+
 @media (hover: hover) and (pointer: fine) {
   body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] :is(.nav-file-title, .nav-folder-title):not(.is-active):not(.is-selected):hover {
     transform: translateX(2px);
     background-color: color-mix(in srgb, var(--pixel-cyan) 5%, var(--pixel-paper));
+  }
+}
+
+@media (forced-colors: active) {
+  body:not(.is-mobile) .workspace.workspace .workspace-split.mod-left-split .workspace-leaf-content[data-type="file-explorer"] :is(.nav-file-title, .nav-folder-title).has-focus:not(.is-active):not(.is-selected) {
+    border-color: Highlight;
+    background-color: Canvas;
+    box-shadow: inset 3px 0 0 Highlight;
   }
 }
 
