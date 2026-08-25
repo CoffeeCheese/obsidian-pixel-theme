@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <kbd><!-- pixel-version:start -->0.9.6<!-- pixel-version:end --></kbd>
+  <kbd><!-- pixel-version:start -->0.9.7<!-- pixel-version:end --></kbd>
   <kbd>OBSIDIAN 1.12+</kbd>
   <kbd>LIGHT / DARK</kbd>
   <kbd>DESKTOP / iOS</kbd>
@@ -251,7 +251,7 @@ community plugins are not compatibility commitments unless named here.
 
 | Item | Current information |
 | --- | --- |
-| Current version | <code><!-- pixel-version:start -->0.9.6<!-- pixel-version:end --></code> |
+| Current version | <code><!-- pixel-version:start -->0.9.7<!-- pixel-version:end --></code> |
 | Obsidian requirement | `1.12.0` or newer |
 | Priority platforms | Desktop / iOS |
 | Verified desktop environment | Obsidian `1.13.4` / macOS |

@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <kbd><!-- pixel-version:start -->0.9.6<!-- pixel-version:end --></kbd>
+  <kbd><!-- pixel-version:start -->0.9.7<!-- pixel-version:end --></kbd>
   <kbd>OBSIDIAN 1.12+</kbd>
   <kbd>LIGHT / DARK</kbd>
   <kbd>DESKTOP / iOS</kbd>
@@ -208,7 +208,7 @@ Pixel 为 Claudian、Project Manager 与 Project Manager Insights 提供专项�
 
 | 项目 | 当前信息 |
 | --- | --- |
-| 当前版本 | <code><!-- pixel-version:start -->0.9.6<!-- pixel-version:end --></code> |
+| 当前版本 | <code><!-- pixel-version:start -->0.9.7<!-- pixel-version:end --></code> |
 | Obsidian 要求 | `1.12.0` 或更高版本 |
 | 优先适配平台 | 桌面端 / iOS |
 | 已验证桌面环境 | Obsidian `1.13.4` / macOS |
