@@ -4141,6 +4141,52 @@ body.is-mobile .workspace-leaf-content[data-type=claudian-view] :is(.claudian-in
     border-color: var(--pixel-text);
   }
 }
+.modal .templater-prompt-div > .templater-prompt-input {
+  border: var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-cyan) 22%, var(--pixel-line-strong));
+  outline: 0;
+  background-color: var(--pixel-paper);
+  color: var(--pixel-text);
+  box-shadow: none;
+  caret-color: var(--pixel-cyan);
+  transition: background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, color var(--pixel-motion-state) linear;
+}
+
+.modal .templater-prompt-div > .templater-prompt-input::placeholder {
+  color: var(--pixel-text-muted);
+  opacity: 1;
+}
+
+.modal .templater-prompt-div > .templater-prompt-input:is(:focus, :focus-visible) {
+  border: var(--pixel-border-decoration) solid var(--pixel-cyan);
+  outline: 0;
+  background-color: color-mix(in srgb, var(--pixel-cyan) 6%, var(--pixel-paper));
+  box-shadow: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .modal .templater-prompt-div > .templater-prompt-input:hover:not(:focus):not(:focus-visible) {
+    border-color: color-mix(in srgb, var(--pixel-cyan) 48%, var(--pixel-line-strong));
+    background-color: color-mix(in srgb, var(--pixel-cyan) 3%, var(--pixel-paper));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .modal .templater-prompt-div > .templater-prompt-input {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  .modal .templater-prompt-div > .templater-prompt-input {
+    border-color: CanvasText;
+    background-color: Canvas;
+    color: CanvasText;
+    caret-color: Highlight;
+  }
+  .modal .templater-prompt-div > .templater-prompt-input:is(:focus, :focus-visible) {
+    border-color: Highlight;
+    outline: var(--pixel-border-decoration) solid Highlight;
+    outline-offset: 2px;
+  }
+}
 .workspace-leaf-content.pm-view .pm-toolbar-left {
   min-inline-size: 0;
 }
