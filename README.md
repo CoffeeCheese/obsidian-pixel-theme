@@ -139,8 +139,8 @@ Navigation lives on the left, the note keeps the center, and context settles
 on the right. The compact status pod follows the live right-dock width so the
 workspace reads as one deliberate console rather than a stack of panels.
 
-<details>
-<summary><strong>Open the complete Light and Dark comparison</strong></summary>
+<details open>
+<summary><strong>Complete Light and Dark comparison</strong></summary>
 
 <br>
 
@@ -178,7 +178,7 @@ control boundaries are designed against accessible contrast targets.
 
 ## Built across Obsidian
 
-<details>
+<details open>
 <summary><strong>Markdown writing</strong></summary>
 
 - Consistent heading rhythm across Source, Live Preview, and Reading modes.
@@ -190,7 +190,7 @@ control boundaries are designed against accessible contrast targets.
 
 </details>
 
-<details>
+<details open>
 <summary><strong>Knowledge management</strong></summary>
 
 - File navigation, tags, search, bookmarks, outline, backlinks, and outgoing
@@ -204,7 +204,7 @@ control boundaries are designed against accessible contrast targets.
 
 </details>
 
-<details>
+<details open>
 <summary><strong>Settings and accessibility</strong></summary>
 
 - Independent setting cards, stable hover and focus feedback, compact native
@@ -220,7 +220,7 @@ control boundaries are designed against accessible contrast targets.
 
 </details>
 
-<details>
+<details open>
 <summary><strong>Community-plugin integrations</strong></summary>
 
 - **Claudian:** conversation, composer, context chips, sessions, menus, and
