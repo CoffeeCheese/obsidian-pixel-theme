@@ -20,6 +20,7 @@
 
 <p align="center">
   <a href="#pixel-boy">Pixel Boy</a> ·
+  <a href="#近期更新">近期更新</a> ·
   <a href="#特色地图">特色地图</a> ·
   <a href="#图库">图库</a> ·
   <a href="#安装">安装</a> ·
@@ -35,6 +36,20 @@
 Pixel 为 Obsidian 带来安静的纸张工作区、清晰的像素身份，以及用于导航和焦点的明确信号系统。它不是一层复古滤镜：正文始终适合长时间阅读，原生交互保持不变，个性只集中在真正帮助辨认方向的位置。
 
 桌面端与 iOS 是 Pixel 的优先适配平台。Markdown、属性、导航、Bases、Canvas、Graph、PDF，以及让工作区保持连贯的细小状态，都拥有为平台单独调整的布局。
+
+## 近期更新
+
+`0.9.3`–`0.9.7` 这一轮更新让 Pixel 从广泛覆盖 Obsidian 界面，逐步深入到交互细节与社区插件适配：
+
+| 版本 | 主要变化 |
+| --- | --- |
+| [`0.9.7`](docs/releases/0.9.7.md) | 用紧凑的青色像素游标替代厚重的文件树右键目标框，并修复 Project Manager 新增操作的对比度与状态反馈。 |
+| [`0.9.6`](docs/releases/0.9.6.md) | 将 Project Manager 任务标签、长文本截断和删除操作统一到 Pixel 的紧凑胶囊体系。 |
+| [`0.9.5`](docs/releases/0.9.5.md) | 固定 Project Manager 设置操作栏、统一自定义字段控件，并新增 Project Manager Insights 专项视觉适配。 |
+| [`0.9.4`](docs/releases/0.9.4.md) | 重做任务编辑器与负责人展示，优化长标题布局，并收敛破坏性操作的视觉反馈。 |
+| [`0.9.3`](docs/releases/0.9.3.md) | 引入 Pixel Boy、Claudian 专项适配，以及更统一的设置、搜索、标签与状态信息体系。 |
+
+当前 `main` 分支还包含一项**尚未发布**的 Templater 提示输入框优化：使用更轻的发丝边框，并补齐悬停、聚焦、减少动态效果和强制颜色状态。已发布版本的实际行为仍以以上版本化发布说明为准。
 
 ## Pixel Boy
 
@@ -84,8 +99,8 @@ Pixel 为 Obsidian 带来安静的纸张工作区、清晰的像素身份，以�
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <strong>Claudian 专项适配</strong><br><br>
-      助手对话、输入区、上下文标签、会话列表与设置标签获得统一的 Pixel 处理，并支持窄面板和键盘操作。
+      <strong>社区插件专项适配</strong><br><br>
+      Claudian、Project Manager 与 Project Manager Insights 拥有专门的 Pixel 视觉处理。所有适配均限定在插件自身界面，并保留原生控件与键盘行为。
     </td>
     <td width="50%" valign="top">
       <strong>原生交互契约</strong><br><br>
@@ -170,22 +185,34 @@ Light 与 Dark 使用分别调校的语义颜色，而不是简单反相。正�
 
 </details>
 
+<details>
+<summary><strong>社区插件适配</strong></summary>
+
+- **Claudian**：对话、输入区、上下文标签、会话、菜单与设置标签，包括窄面板和键盘状态。
+- **Project Manager**：任务编辑、项目设置、自定义字段、负责人、标签、长标题与操作反馈。
+- **Project Manager Insights**：只读工作量视图中的筛选、指标、负责人汇总和任务明细。
+- **Templater（当前 `main`，尚未发布）**：使用轻量发丝边框和无障碍聚焦回退的紧凑提示输入框。
+
+</details>
+
 ## 安装
 
-Pixel 从 `0.9.0` 开始进入公开公测。官方目录审核完成后：
+Pixel 已上架 Obsidian 社区主题目录：
 
 1. 打开 Obsidian「设置 → 外观」。
 2. 在主题区域选择「管理」。
 3. 搜索 **Pixel**，安装并选择使用。
 
-后续公开版本会通过 Obsidian 内置主题更新器，从匹配的 GitHub Release 获取。
+后续已发布版本会由 Obsidian 内置主题更新器从匹配的 GitHub Release 获取。
 
 ### 手动安装
 
-1. 下载 [`manifest.json`](manifest.json) 和 [`theme.css`](theme.css)。
+1. 从[最新 GitHub Release](https://github.com/CoffeeCheese/obsidian-pixel-theme/releases/latest) 下载 `manifest.json` 和 `theme.css`。
 2. 在目标 Vault 中创建 `.obsidian/themes/Pixel/`。
 3. 将两个文件放入该目录。
 4. 如有需要，重新启动 Obsidian，然后在外观设置中选择 **Pixel**。
+
+如需稳定的手动安装，请使用带版本标签的 Release 资产；`main` 分支文件可能包含为下一版本准备的开发中改动。
 
 在 iOS 上使用同步 Vault 时，请先等待 `.obsidian/themes/Pixel/` 完成同步，再重新启动 Obsidian。
 
@@ -202,7 +229,7 @@ Pixel 当前不提供自定义 **Style Settings** 选项。Style Settings 插件
 
 主题内置 Fusion Pixel 作为身份标题字体。代码和技术状态使用 Obsidian 配置的等宽字体与系统回退；正文则使用用户的正文字体，并由操作系统补全罕见字符。
 
-Pixel 为 Claudian、Project Manager 与 Project Manager Insights 提供专项视觉适配。其他使用 Obsidian 官方变量和 Setting 组件的插件通常可以自然继承主题，但除非在此明确列出，否则不构成逐个社区插件的兼容承诺。
+专项支持的社区插件列在[覆盖的 Obsidian 界面](#覆盖的-obsidian-界面)中。其他使用 Obsidian 官方变量和 Setting 组件的插件通常可以自然继承主题，但除非在该章节明确列出，否则不构成逐个社区插件的兼容承诺。
 
 ## 兼容性
 
@@ -213,6 +240,7 @@ Pixel 为 Claudian、Project Manager 与 Project Manager Insights 提供专项�
 | 优先适配平台 | 桌面端 / iOS |
 | 已验证桌面环境 | Obsidian `1.13.4` / macOS |
 | 外观模式 | Light / Dark |
+| 分发方式 | Obsidian 社区主题目录 / GitHub Releases |
 | 安装文件 | `manifest.json`、`theme.css` |
 | 主题许可 | MIT |
 | 内置字体许可 | SIL Open Font License 1.1 |

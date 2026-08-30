@@ -20,6 +20,7 @@
 
 <p align="center">
   <a href="#pixel-boy">Pixel Boy</a> ·
+  <a href="#recent-updates">Recent updates</a> ·
   <a href="#feature-map">Feature map</a> ·
   <a href="#gallery">Gallery</a> ·
   <a href="#installation">Installation</a> ·
@@ -40,6 +41,24 @@ and personality is concentrated where it helps orientation.
 Desktop and iOS are the priority platforms. Both receive purpose-built layouts
 for Markdown, properties, navigation, Bases, Canvas, Graph, PDF, and the small
 states that make a workspace feel coherent.
+
+## Recent updates
+
+The `0.9.3`–`0.9.7` cycle moved Pixel from broad surface coverage toward finer
+interaction and community-plugin polish:
+
+| Release | What changed |
+| --- | --- |
+| [`0.9.7`](docs/releases/0.9.7.en.md) | Replaced the heavy file-tree context target with a compact cyan cursor, then restored clear contrast and state feedback for Project Manager add actions. |
+| [`0.9.6`](docs/releases/0.9.6.en.md) | Brought Project Manager task tags, truncation, and removal controls into Pixel's compact capsule system. |
+| [`0.9.5`](docs/releases/0.9.5.en.md) | Docked Project Manager settings actions, unified custom-field controls, and added a dedicated Project Manager Insights treatment. |
+| [`0.9.4`](docs/releases/0.9.4.en.md) | Redesigned the task editor and assignee display, improved long-title layouts, and made destructive feedback quieter. |
+| [`0.9.3`](docs/releases/0.9.3.en.md) | Introduced Pixel Boy, the Claudian integration, and a more coherent system for settings, search, tags, and status information. |
+
+The current `main` branch also includes an **unreleased** Templater prompt-field
+refinement with a quieter hairline edge and explicit hover, focus,
+reduced-motion, and forced-colors states. Published behavior remains documented
+in the versioned release notes above.
 
 ## Pixel Boy
 
@@ -99,10 +118,10 @@ reduced-motion preferences continue to belong to Obsidian.
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <strong>CLAUDIAN INTEGRATION</strong><br><br>
-      The assistant conversation, composer, context chips, sessions, and
-      settings tabs receive a focused Pixel treatment with narrow-pane and
-      keyboard support.
+      <strong>COMMUNITY-PLUGIN INTEGRATIONS</strong><br><br>
+      Claudian, Project Manager, and Project Manager Insights receive focused
+      Pixel treatments. Integrations stay scoped to plugin-owned surfaces and
+      preserve native controls and keyboard behavior.
     </td>
     <td width="50%" valign="top">
       <strong>NATIVE CONTRACT</strong><br><br>
@@ -201,24 +220,41 @@ control boundaries are designed against accessible contrast targets.
 
 </details>
 
+<details>
+<summary><strong>Community-plugin integrations</strong></summary>
+
+- **Claudian:** conversation, composer, context chips, sessions, menus, and
+  settings tabs, including narrow-pane and keyboard states.
+- **Project Manager:** task editing, project settings, custom fields,
+  assignees, tags, long titles, and action feedback.
+- **Project Manager Insights:** filters, metrics, assignee summaries, and task
+  details for the read-only workload view.
+- **Templater (current `main`, unreleased):** compact prompt inputs with a quiet
+  hairline edge and accessible focus fallbacks.
+
+</details>
+
 ## Installation
 
-Pixel entered public beta with `0.9.0`. Once the official directory review is
-complete:
+Pixel is available in Obsidian's community theme directory:
 
 1. Open **Settings → Appearance** in Obsidian.
 2. Select **Manage** under Themes.
 3. Search for **Pixel**, install it, and select **Use**.
 
-Future public versions are delivered through Obsidian's built-in theme updater
-from matching GitHub Releases.
+Obsidian's built-in theme updater delivers later published versions from the
+matching GitHub Releases.
 
 ### Manual installation
 
-1. Download [`manifest.json`](manifest.json) and [`theme.css`](theme.css).
+1. Download `manifest.json` and `theme.css` from the
+   [latest GitHub Release](https://github.com/CoffeeCheese/obsidian-pixel-theme/releases/latest).
 2. Create `.obsidian/themes/Pixel/` in the target Vault.
 3. Put both files in that directory.
 4. Restart Obsidian if necessary, then select **Pixel** under Appearance.
+
+Use tagged Release assets for a stable manual installation. Files on `main`
+may contain work intended for the next version.
 
 For a synced Vault on iOS, wait for `.obsidian/themes/Pixel/` to finish syncing
 before restarting Obsidian.
@@ -242,10 +278,11 @@ Obsidian's configured monospace font with system fallbacks, while body text
 uses the user's text font and operating-system fallback for uncommon
 characters.
 
-Pixel includes focused visual integrations for Claudian, Project Manager, and
-Project Manager Insights. Other plugins that use official Obsidian variables
-and Setting components generally inherit the theme naturally, but individual
-community plugins are not compatibility commitments unless named here.
+The named community-plugin integrations are listed under
+[Built across Obsidian](#built-across-obsidian). Other plugins that use official
+Obsidian variables and Setting components generally inherit the theme
+naturally, but individual community plugins are not compatibility commitments
+unless named there.
 
 ## Compatibility
 
@@ -256,6 +293,7 @@ community plugins are not compatibility commitments unless named here.
 | Priority platforms | Desktop / iOS |
 | Verified desktop environment | Obsidian `1.13.4` / macOS |
 | Appearance modes | Light / Dark |
+| Distribution | Obsidian community theme directory / GitHub Releases |
 | Installable files | `manifest.json`, `theme.css` |
 | Theme license | MIT |
 | Embedded font license | SIL Open Font License 1.1 |
