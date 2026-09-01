@@ -175,6 +175,59 @@ test("inline and fenced code keep mono typography, restrained boundaries, and st
   assert.equal(declaration(sourceCode, "line-height"), "1.65");
 });
 
+test("fenced code exposes a static Pixel status header without replacing native copy controls", async () => {
+  const css = await readTheme();
+  const readingBlock = ruleBody(css, ".markdown-rendered pre[class*=language-]");
+  assert.equal(declaration(readingBlock, "position"), "relative");
+  assert.equal(
+    declaration(readingBlock, "padding-block-start"),
+    "calc(var(--pixel-space-8) + var(--pixel-space-3))",
+  );
+  assert.equal(
+    declaration(readingBlock, "border-block-start"),
+    "var(--pixel-space-1) solid var(--pixel-cyan)",
+  );
+
+  const readingLabel = ruleBody(
+    css,
+    ".markdown-rendered pre[class*=language-]::before",
+  );
+  assert.equal(declaration(readingLabel, "content"), '"code"');
+  assert.equal(declaration(readingLabel, "font-family"), "var(--font-monospace)");
+  assert.equal(
+    declaration(readingLabel, "border-inline-start"),
+    "var(--pixel-space-2) solid var(--pixel-cyan)",
+  );
+  assert.equal(declaration(readingLabel, "pointer-events"), "none");
+  assert.equal(declaration(readingLabel, "animation"), "none");
+
+  const liveHeader = ruleBody(
+    css,
+    ".markdown-source-view.mod-cm6 .cm-line.HyperMD-codeblock-begin",
+  );
+  assert.equal(
+    declaration(liveHeader, "border-block-start"),
+    "var(--pixel-space-1) solid var(--pixel-cyan)",
+  );
+
+  const liveLabel = ruleBody(
+    css,
+    ".markdown-source-view.mod-cm6 .code-block-flair",
+  );
+  assert.equal(declaration(liveLabel, "font-family"), "var(--font-monospace)");
+  assert.equal(
+    declaration(liveLabel, "border-inline-start"),
+    "var(--pixel-space-2) solid var(--pixel-cyan)",
+  );
+  assert.equal(declaration(liveLabel, "background-color"), "var(--pixel-paper)");
+  assert.equal(declaration(liveLabel, "animation"), "none");
+
+  assert.doesNotMatch(
+    css,
+    /\.copy-code-button[^{}]*\{[^}]*(?:display:\s*none|visibility:\s*hidden|pointer-events:\s*none)/is,
+  );
+});
+
 test("reading and live-preview tables retain hierarchy, alignment, editing controls, and horizontal overflow", async () => {
   const css = await readTheme();
   const readingWrapper = ruleBodyForSelector(

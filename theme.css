@@ -930,6 +930,56 @@ body:not(.is-mobile) .status-bar-item.mod-clickable:focus-visible {
   animation: none;
 }
 
+.markdown-rendered pre[class*=language-] {
+  position: relative;
+  padding-block-start: calc(var(--pixel-space-8) + var(--pixel-space-3));
+  border-block-start: var(--pixel-space-1) solid var(--pixel-cyan);
+}
+
+.markdown-rendered pre[class*=language-]::before {
+  content: "CODE";
+  position: absolute;
+  inset-block-start: var(--pixel-space-2);
+  inset-inline-start: var(--pixel-space-3);
+  padding-block: 1px;
+  padding-inline: var(--pixel-space-2);
+  border-block: var(--pixel-border-decoration) solid var(--pixel-border-meaningful);
+  border-inline-end: var(--pixel-border-decoration) solid var(--pixel-border-meaningful);
+  border-inline-start: var(--pixel-space-2) solid var(--pixel-cyan);
+  background-color: var(--pixel-paper);
+  color: var(--pixel-text);
+  font-family: var(--font-monospace);
+  font-size: var(--font-smallest);
+  font-weight: 700;
+  line-height: var(--pixel-space-4);
+  letter-spacing: 0.08em;
+  pointer-events: none;
+  box-shadow: none;
+  animation: none;
+}
+
+.markdown-source-view.mod-cm6 .cm-line.HyperMD-codeblock-begin {
+  border-block-start: var(--pixel-space-1) solid var(--pixel-cyan);
+}
+
+.markdown-source-view.mod-cm6 .code-block-flair {
+  padding-block: 1px;
+  padding-inline: var(--pixel-space-2);
+  border-block: var(--pixel-border-decoration) solid var(--pixel-border-meaningful);
+  border-inline-end: var(--pixel-border-decoration) solid var(--pixel-border-meaningful);
+  border-inline-start: var(--pixel-space-2) solid var(--pixel-cyan);
+  background-color: var(--pixel-paper);
+  color: var(--pixel-text);
+  font-family: var(--font-monospace);
+  font-size: var(--font-smallest);
+  font-weight: 700;
+  line-height: var(--pixel-space-4);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: none;
+  animation: none;
+}
+
 .markdown-rendered .table-wrapper,
 .markdown-rendered .el-table,
 .markdown-source-view.mod-cm6 .cm-table-widget {
