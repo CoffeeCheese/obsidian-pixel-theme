@@ -378,6 +378,69 @@ test("pixel-banner crops a stable full-width image without decorative motion", a
   }
 });
 
+test("task checkboxes give one layout-stable Pixel press response", async () => {
+  const css = await readTheme();
+  const readingTask = ruleBodyForSelector(
+    css,
+    ".markdown-rendered .task-list-item-checkbox",
+  );
+  const editingTask = ruleBodyForSelector(
+    css,
+    ".markdown-source-view.mod-cm6 .task-list-item-checkbox",
+  );
+  const checkedTask = ruleBodyForSelector(
+    css,
+    ".markdown-rendered .task-list-item-checkbox:checked",
+  );
+  const pressedTask = ruleBodyForSelector(
+    css,
+    ".markdown-rendered .task-list-item-checkbox:active",
+  );
+
+  for (const task of [readingTask, editingTask]) {
+    assert.equal(declaration(task, "box-shadow"), "none");
+    assert.equal(declaration(task, "transform"), "translatey(0) scale(1)");
+    assert.match(
+      declaration(task, "transition"),
+      /transform var\(--pixel-motion-press\) var\(--pixel-ease-out\)/,
+    );
+    assert.match(
+      declaration(task, "transition"),
+      /box-shadow var\(--pixel-motion-state\) var\(--pixel-ease-out\)/,
+    );
+    assert.doesNotMatch(
+      task,
+      /(?:inline-size|block-size|position|margin|inset(?:-\w+)?):/,
+    );
+  }
+
+  assert.equal(
+    declaration(checkedTask, "border-color"),
+    "var(--interactive-accent)",
+  );
+  assert.equal(
+    declaration(checkedTask, "background-color"),
+    "var(--interactive-accent)",
+  );
+  assert.equal(
+    declaration(checkedTask, "box-shadow"),
+    "inset 0 -2px 0 var(--pixel-border-meaningful)",
+  );
+  assert.equal(
+    declaration(pressedTask, "transform"),
+    "translatey(1px) scale(0.9)",
+  );
+  assert.equal(declaration(pressedTask, "box-shadow"), "none");
+
+  const reducedMotion = atRuleBody(css, "@media (prefers-reduced-motion: reduce)");
+  const reducedTask = ruleBodyForSelector(
+    reducedMotion,
+    ".markdown-rendered .task-list-item-checkbox",
+  );
+  assert.equal(declaration(reducedTask, "transition-duration"), "0ms");
+  assert.equal(declaration(reducedTask, "animation"), "none");
+});
+
 test("footnotes, math, comments, rules, highlights, tags, and nested tasks keep cross-mode semantics", async () => {
   const css = await readTheme();
   const footnotes = ruleBody(css, ".footnotes");

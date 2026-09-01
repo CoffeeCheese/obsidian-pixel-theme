@@ -1187,8 +1187,25 @@ a.tag:active {
   transform: translateY(1px);
 }
 
-.task-list-item-checkbox {
+.markdown-rendered .task-list-item-checkbox,
+.markdown-source-view.mod-cm6 .task-list-item-checkbox {
   box-shadow: none;
+  transform: translateY(0) scale(1);
+  transform-origin: center;
+  transition: background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, box-shadow var(--pixel-motion-state) var(--pixel-ease-out), transform var(--pixel-motion-press) var(--pixel-ease-out);
+}
+
+.markdown-rendered .task-list-item-checkbox:checked,
+.markdown-source-view.mod-cm6 .task-list-item-checkbox:checked {
+  border-color: var(--interactive-accent);
+  background-color: var(--interactive-accent);
+  box-shadow: inset 0 -2px 0 var(--pixel-border-meaningful);
+}
+
+.markdown-rendered .task-list-item-checkbox:active,
+.markdown-source-view.mod-cm6 .task-list-item-checkbox:active {
+  box-shadow: none;
+  transform: translateY(1px) scale(0.9);
 }
 
 button:not(.clickable-icon):not(.mod-settings *),
@@ -2150,6 +2167,8 @@ body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data
   button,
   .clickable-icon,
   input,
+  .markdown-rendered .task-list-item-checkbox,
+  .markdown-source-view.mod-cm6 .task-list-item-checkbox,
   textarea,
   select,
   .checkbox-container,
