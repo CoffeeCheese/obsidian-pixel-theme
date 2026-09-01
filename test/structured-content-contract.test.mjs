@@ -320,6 +320,64 @@ test("reserved image alt tokens align media without changing Live Preview widget
   assert.equal(declaration(editingRight, "transform"), "translatex(-100%)");
 });
 
+test("pixel-banner crops a stable full-width image without decorative motion", async () => {
+  const css = await readTheme();
+  const theme = ruleBody(css, ".theme-light,\n.theme-dark");
+  const readingBanner = ruleBodyForSelector(
+    css,
+    ".markdown-rendered .image-embed[alt~=pixel-banner]",
+  );
+  const editingBanner = ruleBodyForSelector(
+    css,
+    ".markdown-source-view.mod-cm6 .image-embed[alt~=pixel-banner]",
+  );
+  const editingWrapper = ruleBody(
+    css,
+    ".markdown-source-view.mod-cm6 .image-embed[alt~=pixel-banner] .image-wrapper",
+  );
+  const readingImage = ruleBodyForSelector(
+    css,
+    ".markdown-rendered .image-embed[alt~=pixel-banner] img",
+  );
+  const editingImage = ruleBodyForSelector(
+    css,
+    ".markdown-source-view.mod-cm6 .image-embed[alt~=pixel-banner] img",
+  );
+
+  assert.equal(
+    declaration(theme, "--pixel-banner-block-size"),
+    "clamp(160px, 24vw, 240px)",
+  );
+
+  for (const banner of [readingBanner, editingBanner]) {
+    assert.equal(declaration(banner, "inline-size"), "100%");
+    assert.equal(declaration(banner, "max-inline-size"), "100%");
+    assert.equal(declaration(banner, "margin-block"), "var(--pixel-space-2)");
+    assert.equal(declaration(banner, "overflow"), "hidden");
+  }
+
+  assert.equal(declaration(readingBanner, "display"), "block");
+  assert.equal(declaration(editingBanner, "display"), "inline-block");
+  assert.equal(declaration(editingBanner, "position"), "static");
+  assert.equal(declaration(editingBanner, "inset-inline-start"), "auto");
+  assert.equal(declaration(editingBanner, "vertical-align"), "top");
+  assert.equal(declaration(editingBanner, "transform"), "none");
+  assert.equal(declaration(editingWrapper, "inline-size"), "100%");
+
+  for (const image of [readingImage, editingImage]) {
+    assert.equal(declaration(image, "display"), "block");
+    assert.equal(declaration(image, "inline-size"), "100%");
+    assert.equal(
+      declaration(image, "block-size"),
+      "var(--pixel-banner-block-size)",
+    );
+    assert.equal(declaration(image, "object-fit"), "cover");
+    assert.equal(declaration(image, "object-position"), "center");
+    assert.equal(declaration(image, "transform"), "none");
+    assert.equal(declaration(image, "transition"), "none");
+  }
+});
+
 test("footnotes, math, comments, rules, highlights, tags, and nested tasks keep cross-mode semantics", async () => {
   const css = await readTheme();
   const footnotes = ruleBody(css, ".footnotes");

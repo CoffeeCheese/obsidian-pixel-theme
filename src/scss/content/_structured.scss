@@ -182,6 +182,48 @@
   transform: translateX(-100%);
 }
 
+// A banner is a compact section marker, not a hero card. Keep the existing
+// Pixel media edge, crop the image to one calm strip, and make banner sizing
+// explicit so Live Preview gives CodeMirror one stable widget measurement.
+.markdown-rendered .image-embed[alt~="pixel-banner"] {
+  display: block;
+  box-sizing: border-box;
+  inline-size: 100%;
+  max-inline-size: 100%;
+  margin-block: var(--pixel-space-2);
+  overflow: hidden;
+}
+
+.markdown-source-view.mod-cm6 .image-embed[alt~="pixel-banner"] {
+  display: inline-block;
+  position: static;
+  box-sizing: border-box;
+  inline-size: 100%;
+  max-inline-size: 100%;
+  margin-block: var(--pixel-space-2);
+  inset-inline-start: auto;
+  overflow: hidden;
+  vertical-align: top;
+  transform: none;
+}
+
+.markdown-source-view.mod-cm6
+  .image-embed[alt~="pixel-banner"]
+  .image-wrapper {
+  inline-size: 100%;
+}
+
+.markdown-rendered .image-embed[alt~="pixel-banner"] img,
+.markdown-source-view.mod-cm6 .image-embed[alt~="pixel-banner"] img {
+  display: block;
+  inline-size: 100%;
+  block-size: var(--pixel-banner-block-size);
+  object-fit: cover;
+  object-position: center;
+  transform: none;
+  transition: none;
+}
+
 .markdown-rendered img,
 .markdown-rendered audio,
 .markdown-rendered video {

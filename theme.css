@@ -469,6 +469,7 @@ body {
   --bases-embed-border-width: var(--pixel-border-control);
   --bases-embed-border-radius: var(--pixel-radius-large);
   --embed-max-height: min(60vh, 720px);
+  --pixel-banner-block-size: clamp(160px, 24vw, 240px);
   --embed-background: var(--pixel-paper);
   --embed-border-start: 4px solid var(--pixel-cyan);
   --embed-border-end: var(--pixel-border-control) solid var(--pixel-border-meaningful);
@@ -1029,6 +1030,43 @@ body:not(.is-mobile) .status-bar-item.mod-clickable:focus-visible {
 .markdown-source-view.mod-cm6 .image-embed[alt~=pixel-right] {
   inset-inline-start: 100%;
   transform: translateX(-100%);
+}
+
+.markdown-rendered .image-embed[alt~=pixel-banner] {
+  display: block;
+  box-sizing: border-box;
+  inline-size: 100%;
+  max-inline-size: 100%;
+  margin-block: var(--pixel-space-2);
+  overflow: hidden;
+}
+
+.markdown-source-view.mod-cm6 .image-embed[alt~=pixel-banner] {
+  display: inline-block;
+  position: static;
+  box-sizing: border-box;
+  inline-size: 100%;
+  max-inline-size: 100%;
+  margin-block: var(--pixel-space-2);
+  inset-inline-start: auto;
+  overflow: hidden;
+  vertical-align: top;
+  transform: none;
+}
+
+.markdown-source-view.mod-cm6 .image-embed[alt~=pixel-banner] .image-wrapper {
+  inline-size: 100%;
+}
+
+.markdown-rendered .image-embed[alt~=pixel-banner] img,
+.markdown-source-view.mod-cm6 .image-embed[alt~=pixel-banner] img {
+  display: block;
+  inline-size: 100%;
+  block-size: var(--pixel-banner-block-size);
+  object-fit: cover;
+  object-position: center;
+  transform: none;
+  transition: none;
 }
 
 .markdown-rendered img,

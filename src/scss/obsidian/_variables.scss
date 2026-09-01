@@ -186,6 +186,7 @@ body {
   --bases-embed-border-width: var(--pixel-border-control);
   --bases-embed-border-radius: var(--pixel-radius-large);
   --embed-max-height: min(60vh, 720px);
+  --pixel-banner-block-size: clamp(160px, 24vw, 240px);
   --embed-background: var(--pixel-paper);
   --embed-border-start: 4px solid var(--pixel-cyan);
   --embed-border-end: var(--pixel-border-control) solid var(--pixel-border-meaningful);
