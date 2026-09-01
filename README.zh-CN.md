@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <kbd><!-- pixel-version:start -->0.9.7<!-- pixel-version:end --></kbd>
+  <kbd><!-- pixel-version:start -->0.9.8<!-- pixel-version:end --></kbd>
   <kbd>OBSIDIAN 1.12+</kbd>
   <kbd>LIGHT / DARK</kbd>
   <kbd>DESKTOP / iOS</kbd>
@@ -39,17 +39,16 @@ Pixel 为 Obsidian 带来安静的纸张工作区、清晰的像素身份，以�
 
 ## 近期更新
 
-`0.9.3`–`0.9.7` 这一轮更新让 Pixel 从广泛覆盖 Obsidian 界面，逐步深入到交互细节与社区插件适配：
+`0.9.3`–`0.9.8` 这一轮更新让 Pixel 从广泛覆盖 Obsidian 界面，逐步深入到交互细节与社区插件适配：
 
 | 版本 | 主要变化 |
 | --- | --- |
+| [`0.9.8`](docs/releases/0.9.8.md) | 优化 Markdown 图片、任务反馈与代码块身份，并改善 Templater 提示框和文档阅读体验。 |
 | [`0.9.7`](docs/releases/0.9.7.md) | 用紧凑的青色像素游标替代厚重的文件树右键目标框，并修复 Project Manager 新增操作的对比度与状态反馈。 |
 | [`0.9.6`](docs/releases/0.9.6.md) | 将 Project Manager 任务标签、长文本截断和删除操作统一到 Pixel 的紧凑胶囊体系。 |
 | [`0.9.5`](docs/releases/0.9.5.md) | 固定 Project Manager 设置操作栏、统一自定义字段控件，并新增 Project Manager Insights 专项视觉适配。 |
 | [`0.9.4`](docs/releases/0.9.4.md) | 重做任务编辑器与负责人展示，优化长标题布局，并收敛破坏性操作的视觉反馈。 |
 | [`0.9.3`](docs/releases/0.9.3.md) | 引入 Pixel Boy、Claudian 专项适配，以及更统一的设置、搜索、标签与状态信息体系。 |
-
-当前 `main` 分支还包含一项**尚未发布**的 Templater 提示输入框优化：使用更轻的发丝边框，并补齐悬停、聚焦、减少动态效果和强制颜色状态。已发布版本的实际行为仍以以上版本化发布说明为准。
 
 ## Pixel Boy
 
@@ -191,7 +190,7 @@ Light 与 Dark 使用分别调校的语义颜色，而不是简单反相。正�
 - **Claudian**：对话、输入区、上下文标签、会话、菜单与设置标签，包括窄面板和键盘状态。
 - **Project Manager**：任务编辑、项目设置、自定义字段、负责人、标签、长标题与操作反馈。
 - **Project Manager Insights**：只读工作量视图中的筛选、指标、负责人汇总和任务明细。
-- **Templater（当前 `main`，尚未发布）**：使用轻量发丝边框和无障碍聚焦回退的紧凑提示输入框。
+- **Templater**：使用轻量发丝边框和无障碍聚焦回退的紧凑提示输入框。
 
 </details>
 
@@ -235,7 +234,7 @@ Pixel 当前不提供自定义 **Style Settings** 选项。Style Settings 插件
 
 | 项目 | 当前信息 |
 | --- | --- |
-| 当前版本 | <code><!-- pixel-version:start -->0.9.7<!-- pixel-version:end --></code> |
+| 当前版本 | <code><!-- pixel-version:start -->0.9.8<!-- pixel-version:end --></code> |
 | Obsidian 要求 | `1.12.0` 或更高版本 |
 | 优先适配平台 | 桌面端 / iOS |
 | 已验证桌面环境 | Obsidian `1.13.4` / macOS |
