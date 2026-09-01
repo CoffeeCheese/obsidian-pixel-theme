@@ -130,6 +130,58 @@
   overflow: auto;
 }
 
+// Reserved alt tokens let a note author position an image without turning the
+// surrounding prose into a layout system. Reading mode can use intrinsic block
+// margins because it is not virtualized by CodeMirror.
+.markdown-rendered .image-embed[alt~="pixel-left"] {
+  display: block;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  margin-inline: 0 auto;
+}
+
+.markdown-rendered .image-embed[alt~="pixel-center"] {
+  display: block;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  margin-inline: auto;
+}
+
+.markdown-rendered .image-embed[alt~="pixel-right"] {
+  display: block;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  margin-inline: auto 0;
+}
+
+// Live Preview embeds are CodeMirror widgets. Preserve their native inline
+// geometry and move only the painted box so rapid virtualization never has to
+// reconcile a theme-created block/fitted-size layout with its height map.
+.markdown-source-view.mod-cm6 .image-embed[alt~="pixel-left"],
+.markdown-source-view.mod-cm6 .image-embed[alt~="pixel-center"],
+.markdown-source-view.mod-cm6 .image-embed[alt~="pixel-right"] {
+  display: inline-block;
+  position: relative;
+  inline-size: auto;
+  max-inline-size: 100%;
+  margin-inline: 0;
+}
+
+.markdown-source-view.mod-cm6 .image-embed[alt~="pixel-left"] {
+  inset-inline-start: 0;
+  transform: none;
+}
+
+.markdown-source-view.mod-cm6 .image-embed[alt~="pixel-center"] {
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+}
+
+.markdown-source-view.mod-cm6 .image-embed[alt~="pixel-right"] {
+  inset-inline-start: 100%;
+  transform: translateX(-100%);
+}
+
 .markdown-rendered img,
 .markdown-rendered audio,
 .markdown-rendered video {

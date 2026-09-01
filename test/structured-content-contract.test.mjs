@@ -263,6 +263,63 @@ test("internal embeds, attachments, images, and native media controls remain bou
   );
 });
 
+test("reserved image alt tokens align media without changing Live Preview widget geometry", async () => {
+  const css = await readTheme();
+
+  const readingLeft = ruleBodyForSelector(
+    css,
+    ".markdown-rendered .image-embed[alt~=pixel-left]",
+  );
+  const readingCenter = ruleBodyForSelector(
+    css,
+    ".markdown-rendered .image-embed[alt~=pixel-center]",
+  );
+  const readingRight = ruleBodyForSelector(
+    css,
+    ".markdown-rendered .image-embed[alt~=pixel-right]",
+  );
+
+  for (const alignedImage of [readingLeft, readingCenter, readingRight]) {
+    assert.equal(declaration(alignedImage, "display"), "block");
+    assert.equal(declaration(alignedImage, "inline-size"), "fit-content");
+    assert.equal(declaration(alignedImage, "max-inline-size"), "100%");
+  }
+
+  assert.equal(declaration(readingLeft, "margin-inline"), "0 auto");
+  assert.equal(declaration(readingCenter, "margin-inline"), "auto");
+  assert.equal(declaration(readingRight, "margin-inline"), "auto 0");
+
+  const editingGeometry = ruleBodyForSelector(
+    css,
+    ".markdown-source-view.mod-cm6 .image-embed[alt~=pixel-left]",
+  );
+  const editingLeft = ruleBody(
+    css,
+    ".markdown-source-view.mod-cm6 .image-embed[alt~=pixel-left]",
+  );
+  const editingCenter = ruleBody(
+    css,
+    ".markdown-source-view.mod-cm6 .image-embed[alt~=pixel-center]",
+  );
+  const editingRight = combinedRuleBody(
+    css,
+    ".markdown-source-view.mod-cm6 .image-embed[alt~=pixel-right]",
+  );
+
+  assert.equal(declaration(editingGeometry, "display"), "inline-block");
+  assert.equal(declaration(editingGeometry, "inline-size"), "auto");
+  assert.equal(declaration(editingGeometry, "max-inline-size"), "100%");
+  assert.equal(declaration(editingGeometry, "margin-inline"), "0");
+  assert.equal(declaration(editingGeometry, "position"), "relative");
+
+  assert.equal(declaration(editingLeft, "inset-inline-start"), "0");
+  assert.equal(declaration(editingLeft, "transform"), "none");
+  assert.equal(declaration(editingCenter, "inset-inline-start"), "50%");
+  assert.equal(declaration(editingCenter, "transform"), "translatex(-50%)");
+  assert.equal(declaration(editingRight, "inset-inline-start"), "100%");
+  assert.equal(declaration(editingRight, "transform"), "translatex(-100%)");
+});
+
 test("footnotes, math, comments, rules, highlights, tags, and nested tasks keep cross-mode semantics", async () => {
   const css = await readTheme();
   const footnotes = ruleBody(css, ".footnotes");
