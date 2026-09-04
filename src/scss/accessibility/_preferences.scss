@@ -144,6 +144,11 @@
     forced-color-adjust: auto;
   }
 
+  body:not(.is-mobile) .workspace .clickable-icon:not(.mod-settings *):is(.is-active, [aria-pressed="true"]):not([aria-disabled="true"]) {
+    outline: var(--pixel-border-control) solid Highlight;
+    outline-offset: -4px;
+  }
+
   body:not(.is-mobile) .workspace-split.mod-right-split {
     --pixel-tree-signal: Highlight;
     --pixel-tree-active-surface: Canvas;

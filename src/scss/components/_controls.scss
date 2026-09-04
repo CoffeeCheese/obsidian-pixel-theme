@@ -34,9 +34,25 @@ button:not(.clickable-icon):not(.mod-settings *),
   transition:
     transform var(--pixel-motion-button) var(--pixel-ease-button),
     box-shadow var(--pixel-motion-button) var(--pixel-ease-button),
+    background-size var(--pixel-motion-state) var(--pixel-ease-out),
     background-color var(--pixel-motion-state) var(--pixel-ease-out),
     border-color var(--pixel-motion-state) var(--pixel-ease-out),
     color var(--pixel-motion-state) var(--pixel-ease-out);
+}
+
+// Persistent panel actions expose a short cyan power rail without claiming a
+// pseudo-element or changing native positioning. Expanding the background from
+// its center separates a latched state from the vertical hover/press travel.
+body:not(.is-mobile) .workspace .clickable-icon:not(.mod-settings *) {
+  background-image: linear-gradient(var(--pixel-cyan), var(--pixel-cyan));
+  background-position: center calc(100% - var(--pixel-space-1));
+  background-repeat: no-repeat;
+  background-size: 0 var(--pixel-border-control);
+}
+
+body:not(.is-mobile) .workspace .clickable-icon:not(.mod-settings *):is(.is-active, [aria-pressed="true"]):not([aria-disabled="true"]) {
+  color: var(--pixel-cyan);
+  background-size: var(--pixel-space-3) var(--pixel-border-control);
 }
 
 button:not(.clickable-icon):not(.mod-settings *) {

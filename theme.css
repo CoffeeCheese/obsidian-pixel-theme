@@ -1267,7 +1267,19 @@ button:not(.clickable-icon):not(.mod-settings *),
   color: var(--pixel-text);
   box-shadow: var(--pixel-shadow-control);
   transform: translateY(0);
-  transition: transform var(--pixel-motion-button) var(--pixel-ease-button), box-shadow var(--pixel-motion-button) var(--pixel-ease-button), background-color var(--pixel-motion-state) var(--pixel-ease-out), border-color var(--pixel-motion-state) var(--pixel-ease-out), color var(--pixel-motion-state) var(--pixel-ease-out);
+  transition: transform var(--pixel-motion-button) var(--pixel-ease-button), box-shadow var(--pixel-motion-button) var(--pixel-ease-button), background-size var(--pixel-motion-state) var(--pixel-ease-out), background-color var(--pixel-motion-state) var(--pixel-ease-out), border-color var(--pixel-motion-state) var(--pixel-ease-out), color var(--pixel-motion-state) var(--pixel-ease-out);
+}
+
+body:not(.is-mobile) .workspace .clickable-icon:not(.mod-settings *) {
+  background-image: linear-gradient(var(--pixel-cyan), var(--pixel-cyan));
+  background-position: center calc(100% - var(--pixel-space-1));
+  background-repeat: no-repeat;
+  background-size: 0 var(--pixel-border-control);
+}
+
+body:not(.is-mobile) .workspace .clickable-icon:not(.mod-settings *):is(.is-active, [aria-pressed=true]):not([aria-disabled=true]) {
+  color: var(--pixel-cyan);
+  background-size: var(--pixel-space-3) var(--pixel-border-control);
 }
 
 button:not(.clickable-icon):not(.mod-settings *) {
@@ -2358,6 +2370,10 @@ body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data
   .tooltip,
   .setting-item {
     forced-color-adjust: auto;
+  }
+  body:not(.is-mobile) .workspace .clickable-icon:not(.mod-settings *):is(.is-active, [aria-pressed=true]):not([aria-disabled=true]) {
+    outline: var(--pixel-border-control) solid Highlight;
+    outline-offset: -4px;
   }
   body:not(.is-mobile) .workspace-split.mod-right-split {
     --pixel-tree-signal: Highlight;

@@ -494,6 +494,37 @@ test("controls expose pointer, keyboard, and pressed feedback without layout shi
     declaration(panelButton, "transition"),
     /transform var\(--pixel-motion-button\) var\(--pixel-ease-button\)/,
   );
+  assert.match(
+    declaration(panelButton, "transition"),
+    /background-size var\(--pixel-motion-state\) var\(--pixel-ease-out\)/,
+  );
+
+  const panelStateTrack = ruleBody(
+    css,
+    "body:not(.is-mobile) .workspace .clickable-icon:not(.mod-settings *)",
+  );
+  assert.equal(
+    declaration(panelStateTrack, "background-image"),
+    "linear-gradient(var(--pixel-cyan), var(--pixel-cyan))",
+  );
+  assert.equal(
+    declaration(panelStateTrack, "background-position"),
+    "center calc(100% - var(--pixel-space-1))",
+  );
+  assert.equal(
+    declaration(panelStateTrack, "background-size"),
+    "0 var(--pixel-border-control)",
+  );
+
+  const activePanelButton = ruleBody(
+    css,
+    'body:not(.is-mobile) .workspace .clickable-icon:not(.mod-settings *):is(.is-active, [aria-pressed=true]):not([aria-disabled=true])',
+  );
+  assert.equal(declaration(activePanelButton, "color"), "var(--pixel-cyan)");
+  assert.equal(
+    declaration(activePanelButton, "background-size"),
+    "var(--pixel-space-3) var(--pixel-border-control)",
+  );
 
   const pressedButton = ruleBodyForSelector(
     css,
@@ -705,6 +736,16 @@ test("accessibility preferences remove motion and preserve system-authoritative 
   assert.equal(declaration(systemRoles, "--pixel-shadow-button-hover"), "none");
   assert.equal(declaration(systemRoles, "--pixel-shadow-button-active"), "none");
   assert.equal(declaration(systemRoles, "--pixel-shadow-shell"), "none");
+
+  const forcedActivePanelButton = ruleBody(
+    forcedColors,
+    'body:not(.is-mobile) .workspace .clickable-icon:not(.mod-settings *):is(.is-active, [aria-pressed=true]):not([aria-disabled=true])',
+  );
+  assert.equal(
+    declaration(forcedActivePanelButton, "outline"),
+    "var(--pixel-border-control) solid highlight",
+  );
+  assert.equal(declaration(forcedActivePanelButton, "outline-offset"), "-4px");
 
   const highContrast = atRuleBody(css, "@media (prefers-contrast: more)");
   const strongerRoles = ruleBodyForSelector(highContrast, ".theme-light");
