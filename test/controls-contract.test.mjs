@@ -468,7 +468,7 @@ test("controls expose pointer, keyboard, and pressed feedback without layout shi
   assert.equal(declaration(raisedControl, "min-block-size"), "var(--pixel-control-min)");
   assert.match(
     declaration(raisedControl, "transition"),
-    /transform var\(--pixel-motion-press\) ease-out/,
+    /transform var\(--pixel-motion-button\) var\(--pixel-ease-button\)/,
   );
 
   const roundedButton = ruleBody(
@@ -484,8 +484,14 @@ test("controls expose pointer, keyboard, and pressed feedback without layout shi
     "var(--pixel-shadow-button)",
   );
   assert.equal(declaration(roundedButton, "transform"), "translatey(0) scale(1)");
+
+  const panelButton = ruleBody(
+    css,
+    ".clickable-icon:not(.mod-settings *)",
+  );
+  assert.equal(declaration(panelButton, "transform"), "translatey(0)");
   assert.match(
-    declaration(roundedButton, "transition"),
+    declaration(panelButton, "transition"),
     /transform var\(--pixel-motion-button\) var\(--pixel-ease-button\)/,
   );
 
@@ -514,8 +520,12 @@ test("controls expose pointer, keyboard, and pressed feedback without layout shi
     css,
     '.clickable-icon:not(.mod-settings *):not([aria-disabled=true]):active',
   );
-  assert.equal(declaration(pressed, "transform"), "translate(2px, 2px)");
+  assert.equal(declaration(pressed, "transform"), "translatey(1px)");
   assert.equal(declaration(pressed, "box-shadow"), "none");
+  assert.equal(
+    declaration(pressed, "transition-duration"),
+    "var(--pixel-motion-press)",
+  );
 
   const focus = ruleBodyForSelector(css, "button:focus-visible");
   assert.equal(
@@ -550,6 +560,11 @@ test("controls expose pointer, keyboard, and pressed feedback without layout shi
     declaration(hover, "background-color"),
     "var(--pixel-surface-secondary)",
   );
+  const liftedPanelButton = ruleBodyForSelector(
+    pointerHover,
+    '.clickable-icon:not(.mod-settings *):not([aria-disabled=true]):not(:active):hover',
+  );
+  assert.equal(declaration(liftedPanelButton, "transform"), "translatey(-1px)");
   const buttonHover = ruleBodyForSelector(
     pointerHover,
     'button:not(.clickable-icon):not(.mod-settings *):not(:disabled):not([aria-disabled=true]):not(:active):hover',

@@ -1266,14 +1266,14 @@ button:not(.clickable-icon):not(.mod-settings *),
   background-color: var(--pixel-paper);
   color: var(--pixel-text);
   box-shadow: var(--pixel-shadow-control);
-  transition: transform var(--pixel-motion-press) ease-out, box-shadow var(--pixel-motion-press) ease-out, background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, color var(--pixel-motion-state) linear;
+  transform: translateY(0);
+  transition: transform var(--pixel-motion-button) var(--pixel-ease-button), box-shadow var(--pixel-motion-button) var(--pixel-ease-button), background-color var(--pixel-motion-state) var(--pixel-ease-out), border-color var(--pixel-motion-state) var(--pixel-ease-out), color var(--pixel-motion-state) var(--pixel-ease-out);
 }
 
 button:not(.clickable-icon):not(.mod-settings *) {
   border-radius: var(--pixel-radius-button);
   box-shadow: var(--pixel-shadow-button);
   transform: translateY(0) scale(1);
-  transition: transform var(--pixel-motion-button) var(--pixel-ease-button), box-shadow var(--pixel-motion-button) var(--pixel-ease-button), background-color var(--pixel-motion-state) var(--pixel-ease-out), border-color var(--pixel-motion-state) var(--pixel-ease-out), color var(--pixel-motion-state) var(--pixel-ease-out);
 }
 
 textarea:not(.mod-settings *),
@@ -1319,7 +1319,7 @@ button:not(.clickable-icon):not(.mod-settings *):not(:disabled):not([aria-disabl
 }
 
 .clickable-icon:not(.mod-settings *):not([aria-disabled=true]):active {
-  transform: translate(2px, 2px);
+  transform: translateY(1px);
   box-shadow: none;
   transition-duration: var(--pixel-motion-press);
 }
@@ -1372,6 +1372,9 @@ select:not(.mod-settings *):focus-visible,
   button:not(.clickable-icon):not(.mod-settings *):not(:disabled):not([aria-disabled=true]):not(:active):hover {
     box-shadow: var(--pixel-shadow-button-hover);
     transform: translateY(-1px) scale(1);
+  }
+  .clickable-icon:not(.mod-settings *):not([aria-disabled=true]):not(:active):hover {
+    transform: translateY(-1px);
   }
   textarea:not(.mod-settings *):hover,
   .multi-select-container:not(.mod-settings *):hover,
