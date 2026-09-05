@@ -549,7 +549,7 @@ test("controls expose pointer, keyboard, and pressed feedback without layout shi
 
   const pressed = ruleBodyForSelector(
     css,
-    '.clickable-icon:not(.mod-settings *):not([aria-disabled=true]):active',
+    '.clickable-icon:not(.mod-settings *):not(:disabled):not([aria-disabled=true]):active',
   );
   assert.equal(declaration(pressed, "transform"), "translatey(1px)");
   assert.equal(declaration(pressed, "box-shadow"), "none");
@@ -593,7 +593,7 @@ test("controls expose pointer, keyboard, and pressed feedback without layout shi
   );
   const liftedPanelButton = ruleBodyForSelector(
     pointerHover,
-    '.clickable-icon:not(.mod-settings *):not([aria-disabled=true]):not(:active):hover',
+    '.clickable-icon:not(.mod-settings *):not(:disabled):not([aria-disabled=true]):not(:active):hover',
   );
   assert.equal(declaration(liftedPanelButton, "transform"), "translatey(-1px)");
   const buttonHover = ruleBodyForSelector(
@@ -757,4 +757,34 @@ test("accessibility preferences remove motion and preserve system-authoritative 
 
   assert.doesNotMatch(css, /!important/);
   assert.doesNotMatch(css, /@keyframes/);
+});
+
+
+test("reduced motion zeros every shared duration and removes the search scan delay", async () => {
+  const css = await readTheme();
+  const defaults = ruleBody(css, "body");
+  const reduced = atRuleBody(css, "@media (prefers-reduced-motion: reduce)");
+  const preference = ruleBody(reduced, "body");
+  const durations = [...defaults.matchAll(/(--pixel-motion-[\w-]+):/g)].map(match => match[1]);
+  assert.ok(durations.length >= 7);
+  for (const duration of durations) {
+    assert.equal(declaration(preference, duration), "0ms", `${duration} must honor reduced motion`);
+  }
+  const scan = ruleBodyForSelector(reduced, ".setting-group-search :focus-within::after");
+  assert.equal(declaration(scan, "transition-duration"), "0ms");
+  assert.equal(declaration(scan, "transition-delay"), "0ms");
+});
+
+test("disabled native controls resolve after semantic and mobile surface styles", async () => {
+  const css = await readTheme();
+  const selector = 'body button:not(.clickable-icon):not(.mod-settings *):is(:disabled, [aria-disabled=true])';
+  const disabled = ruleBodyForSelector(css, ".suggestion-item.is-disabled");
+  assert.equal(declaration(disabled, "transform"), "none");
+  assert.equal(declaration(disabled, "box-shadow"), "none");
+  assert.equal(declaration(disabled, "color"), "var(--pixel-text-muted)");
+  assert.ok(css.indexOf(selector) > css.lastIndexOf("body.is-mobile button"));
+  assert.ok(css.indexOf(selector) > css.lastIndexOf("button.mod-destructive"));
+  const thumb = ruleBody(css, ".checkbox-container.is-disabled::after");
+  assert.equal(declaration(thumb, "background-color"), "var(--pixel-surface-secondary)");
+  assert.equal(declaration(thumb, "box-shadow"), "none");
 });

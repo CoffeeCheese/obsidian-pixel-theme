@@ -1,0 +1,35 @@
+// Disabled is a terminal state: resolve it after desktop/mobile surface
+// adapters so semantic emphasis and pointer feedback cannot make it look live.
+body button:not(.clickable-icon):not(.mod-settings *):is(:disabled, [aria-disabled="true"]),
+body .clickable-icon:not(.mod-settings *):is(:disabled, [aria-disabled="true"]),
+body :is(input[type], textarea, select):not(.mod-settings *):is(:disabled, [aria-disabled="true"]),
+body .mod-settings .setting-item-control > :is(
+  button,
+  input:not([type="checkbox"]):not([type="radio"]):not([type="color"]),
+  textarea,
+  select,
+  .combobox-button
+):is(:disabled, [aria-disabled="true"], .is-disabled),
+button:disabled:not(.mod-settings *),
+button[aria-disabled="true"]:not(.mod-settings *),
+.clickable-icon[aria-disabled="true"]:not(.mod-settings *),
+input:disabled:not(.mod-settings *),
+textarea:disabled:not(.mod-settings *),
+select:disabled:not(.mod-settings *),
+.checkbox-container.is-disabled,
+.menu-item.is-disabled,
+.suggestion-item.is-disabled {
+  opacity: 1;
+  border-color: var(--pixel-border-meaningful);
+  background-color: var(--pixel-surface-secondary);
+  color: var(--pixel-text-muted);
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.checkbox-container.is-disabled::after {
+  border-color: var(--pixel-border-meaningful);
+  background-color: var(--pixel-surface-secondary);
+  box-shadow: none;
+}

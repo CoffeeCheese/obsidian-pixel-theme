@@ -1,4 +1,16 @@
 @media (prefers-reduced-motion: reduce) {
+  // Resolve durations at their source so later surface adapters and more
+  // specific hover/press selectors inherit the same motion preference.
+  body {
+    --pixel-motion-press: 0ms;
+    --pixel-motion-state: 0ms;
+    --pixel-motion-surface: 0ms;
+    --pixel-motion-button: 0ms;
+    --pixel-motion-toggle: 0ms;
+    --pixel-motion-toggle-color: 0ms;
+    --pixel-motion-toggle-press: 0ms;
+  }
+
   button,
   .clickable-icon,
   input,
@@ -41,10 +53,12 @@
   .pdfViewer .page,
   .pdf-thumbnail-view .thumbnail,
   .setting-group-search .search-input-container::after,
+  .setting-group-search :focus-within::after,
   a.tag,
   .modal-bg,
   .suggestion-bg {
     transition-duration: 0ms;
+    transition-delay: 0ms;
     animation: none;
   }
 }

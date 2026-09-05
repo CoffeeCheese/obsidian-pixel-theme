@@ -421,6 +421,37 @@ body.is-mobile {
     border-radius: var(--pixel-radius);
   }
 
+  // Keep the 24px color well, but let the native input own the surrounding
+  // touch area. Padding remains clickable and does not intercept another row.
+  .mod-settings .setting-item-control > input[type="color"] {
+    --swatch-width: 24px;
+    --swatch-height: 24px;
+    inline-size: var(--pixel-control-min);
+    block-size: var(--pixel-control-min);
+    min-inline-size: var(--pixel-control-min);
+    min-block-size: var(--pixel-control-min);
+    padding: 9px;
+    border-color: transparent;
+  }
+
+  .mod-settings .setting-item-control > input[type="color"]::-webkit-color-swatch {
+    box-sizing: border-box;
+    border: var(--pixel-border-decoration) solid var(--pixel-settings-edge);
+  }
+
+  // Obsidian already provides an invisible ::before on the toggle label.
+  // Extend that native label's hit area while reserving the space in flow;
+  // the visible track and thumb keep their existing size and alignment.
+  .mod-settings .setting-item-control > label.checkbox-container {
+    margin-block: 11px;
+  }
+
+  .mod-settings .setting-item-control > label.checkbox-container::before {
+    inset-block: -12px;
+    inset-inline: calc(-1 * var(--pixel-border-decoration));
+    pointer-events: auto;
+  }
+
   .workspace-drawer :is(
       .workspace-drawer-header-icon,
       .workspace-drawer-tab-select,

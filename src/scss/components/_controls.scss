@@ -107,7 +107,7 @@ button:not(.clickable-icon):not(.mod-settings *):not(:disabled):not([aria-disabl
   transition-duration: var(--pixel-motion-press);
 }
 
-.clickable-icon:not(.mod-settings *):not([aria-disabled="true"]):active {
+.clickable-icon:not(.mod-settings *):not(:disabled):not([aria-disabled="true"]):active {
   transform: translateY(1px);
   box-shadow: none;
   transition-duration: var(--pixel-motion-press);
@@ -156,7 +156,7 @@ input[type="range"]:focus-visible,
     transform: translateY(-1px) scale(1);
   }
 
-  .clickable-icon:not(.mod-settings *):not([aria-disabled="true"]):not(:active):hover {
+  .clickable-icon:not(.mod-settings *):not(:disabled):not([aria-disabled="true"]):not(:active):hover {
     transform: translateY(-1px);
   }
 
@@ -181,23 +181,6 @@ input[type="range"]:focus-visible,
   }
 }
 
-button:disabled:not(.mod-settings *),
-button[aria-disabled="true"]:not(.mod-settings *),
-.clickable-icon[aria-disabled="true"]:not(.mod-settings *),
-input:disabled:not(.mod-settings *),
-textarea:disabled:not(.mod-settings *),
-select:disabled:not(.mod-settings *),
-.checkbox-container.is-disabled,
-.menu-item.is-disabled,
-.suggestion-item.is-disabled {
-  opacity: 1;
-  border-color: var(--pixel-border-meaningful);
-  background-color: var(--pixel-surface-secondary);
-  color: var(--pixel-text-muted);
-  box-shadow: none;
-  cursor: not-allowed;
-  transform: none;
-}
 
 .suggestion-item.is-selected,
 .menu-item.is-selected,

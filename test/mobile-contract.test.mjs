@@ -450,7 +450,13 @@ test("M1 adds no custom gestures, hover dependencies, or fake controls", async (
 
   assert.doesNotMatch(mobileSource, /edge-swipe|touch-action|overscroll-behavior/);
   assert.doesNotMatch(mobileSelectors, /body\.is-mobile[^{}]*:hover/);
-  assert.doesNotMatch(mobileSelectors, /body\.is-mobile[^{}]*::(?:before|after)/);
+  // The native toggle hit-area pseudo is functional and already exists in
+  // Obsidian; all decorative mobile pseudo-elements remain disallowed.
+  const withoutNativeHitArea = mobileSelectors.replace(
+    "body.is-mobile .mod-settings .setting-item-control > label.checkbox-container::before",
+    "",
+  );
+  assert.doesNotMatch(withoutNativeHitArea, /body\.is-mobile[^{}]*::(?:before|after)/);
   assert.doesNotMatch(mobileDeclarations, /(?:^|;)\s*display:\s*none/m);
 });
 
@@ -471,4 +477,23 @@ test("M1 drawer motion follows preferences and forced colors", async () => {
   assert.equal(declaration(forcedDrawer, "border-color"), "canvastext");
   assert.equal(declaration(forcedDrawer, "background-color"), "canvas");
   assert.equal(declaration(forcedDrawer, "box-shadow"), "none");
+});
+
+
+test("mobile settings keep compact visuals inside separated native touch targets", async () => {
+  const css = await readTheme();
+  const scope = "body.is-mobile .mod-settings .setting-item-control >";
+  const color = ruleBody(css, `${scope} input[type=color]`);
+  assert.equal(declaration(color, "--swatch-width"), "24px");
+  assert.equal(declaration(color, "--swatch-height"), "24px");
+  for (const dimension of ["inline-size", "block-size", "min-inline-size", "min-block-size"]) {
+    assert.equal(declaration(color, dimension), "var(--pixel-control-min)");
+  }
+  assert.equal(declaration(color, "padding"), "9px");
+  const label = ruleBody(css, `${scope} label.checkbox-container`);
+  assert.equal(declaration(label, "margin-block"), "11px");
+  const hitArea = ruleBody(css, `${scope} label.checkbox-container::before`);
+  assert.equal(declaration(hitArea, "inset-block"), "-12px");
+  assert.equal(declaration(hitArea, "inset-inline"), "calc(-1 * var(--pixel-border-decoration))");
+  assert.equal(declaration(hitArea, "pointer-events"), "auto");
 });

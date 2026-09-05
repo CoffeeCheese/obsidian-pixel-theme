@@ -230,3 +230,22 @@ test("Ticket 12 records every acceptance gate as complete with evidence", async 
     assert.match(evidence, /`[^`]+`|installed runtime|structural runtime/);
   }
 });
+
+
+test("property tag ink passes against its actual tinted background in both themes", async () => {
+  const css = await readTheme();
+  const scope = 'body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown]';
+  assert.equal(declaration(ruleBody(css, `${scope} .multi-select-pill`), "color"), "var(--pixel-tag-ink)");
+  const ink = declaration(ruleBody(css, "body"), "--pixel-tag-ink");
+  const match = ink.match(/^color-mix\(in srgb, var\(--pixel-cyan\) (\d+)%, var\(--pixel-text\)\)$/);
+  assert.ok(match, "tag ink must derive from the shared palette");
+  const weight = Number(match[1]) / 100;
+  for (const mode of [".theme-light", ".theme-dark"]) {
+    const palette = ruleBody(css, mode);
+    const channels = role => declaration(palette, role).match(/[a-f\d]{2}/gi).map(v => parseInt(v, 16));
+    const cyan = channels("--pixel-cyan");
+    const text = channels("--pixel-text");
+    const mixed = cyan.map((v, i) => Math.round(v * weight + text[i] * (1 - weight)).toString(16).padStart(2, "0")).join("");
+    assert.ok(contrast(mixed, declaration(palette, "--pixel-nav-label")) >= 4.5, `${mode} property tag text must pass on its tint`);
+  }
+});
