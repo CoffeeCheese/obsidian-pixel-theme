@@ -22,6 +22,47 @@ function combinedAtRuleBody(css, prelude) {
   return bodies.join("\n");
 }
 
+test("primary actions retain tactile motion while separating semantic button roles", async () => {
+  const css = await readTheme();
+  const exclusions = ":not(.mod-destructive):not(.mod-warning):not(.mod-loading)";
+  const enabled = `${exclusions}:not(:disabled):not([aria-disabled=true])`;
+  const surfaces = [
+    "button.mod-cta:not(.clickable-icon):not(.mod-settings *)",
+    ".mod-settings .setting-item .setting-item-control > button.mod-cta:not(.clickable-icon)",
+  ];
+  for (const surface of surfaces) {
+    const resting = ruleBodyForSelector(css, `${surface}:where(${exclusions})`);
+    assert.equal(declaration(resting, "background-color"), "var(--pixel-cyan)");
+    assert.equal(declaration(resting, "color"), "var(--pixel-button-primary-text)");
+    assert.equal(declaration(resting, "--pixel-mobile-control-surface"), "var(--pixel-cyan)");
+    assert.equal(declaration(resting, "--pixel-mobile-control-active"), "var(--pixel-button-primary-hover)");
+    assert.equal(declaration(resting, "--pixel-mobile-control-border"), "var(--pixel-cyan)");
+    assert.equal(declaration(resting, "border-color"), "var(--pixel-cyan)");
+    assert.equal(declaration(resting, "font-weight"), "650");
+    assert.doesNotMatch(resting, /(?:transform|transition|box-shadow|padding|outline):/);
+    for (const state of ["hover", "active"]) {
+      const body = ruleBodyForSelector(css, `${surface}:where(${enabled}):${state}`);
+      assert.equal(declaration(body, "background-color"), "var(--pixel-button-primary-hover)");
+      assert.equal(declaration(body, "color"), "var(--pixel-button-primary-text)");
+      assert.doesNotMatch(body, /(?:transform|transition|box-shadow|outline):/);
+    }
+  }
+  const forcedColors = atRuleBody(css, "@media (forced-colors: active)");
+  const palette = ruleBodyForSelector(forcedColors, ".theme-light");
+  assert.equal(declaration(palette, "--pixel-button-primary-hover"), "highlight");
+  assert.equal(declaration(palette, "--pixel-button-primary-text"), "highlighttext");
+});
+
+test("settings hover is quiet and cannot replace the focused row marker", async () => {
+  const css = await readTheme();
+  const row = ".mod-settings .vertical-tab-content .setting-item:not(.setting-item-heading)";
+  const hover = ruleBody(css, `${row}:hover`);
+  const focused = ruleBody(css, `${row}:focus-within`);
+  assert.equal(declaration(hover, "background-color"), "var(--pixel-settings-card-surface-hover)");
+  assert.doesNotMatch(hover, /box-shadow:|transform:|padding:|margin:/);
+  assert.match(declaration(focused, "box-shadow"), /inset 3px 0 0 var\(--pixel-cyan\)/);
+});
+
 test("compiled controls share Pixel surfaces, meaningful boundaries, and motion", async () => {
   const css = await readTheme();
   const body = ruleBody(css, "body");
@@ -32,9 +73,9 @@ test("compiled controls share Pixel surfaces, meaningful boundaries, and motion"
     "--pixel-motion-state": "120ms",
     "--pixel-motion-surface": "160ms",
     "--pixel-motion-button": "160ms",
-    "--pixel-motion-toggle": "260ms",
-    "--pixel-motion-toggle-color": "220ms",
-    "--pixel-motion-toggle-press": "150ms",
+    "--pixel-motion-toggle": "200ms",
+    "--pixel-motion-toggle-color": "160ms",
+    "--pixel-motion-toggle-press": "100ms",
     "--pixel-control-min": "32px",
     "--pixel-state-min-block-size": "48px",
   };

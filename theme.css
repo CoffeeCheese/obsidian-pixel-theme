@@ -167,6 +167,8 @@ body {
   --pixel-radius-large: 10px;
   --pixel-radius-button: 12px;
   --pixel-shadow-control: 2px 2px 0 var(--pixel-shadow-color);
+  --pixel-button-primary-hover: color-mix(in srgb, var(--pixel-cyan) 88%, var(--pixel-text));
+  --pixel-button-primary-text: var(--pixel-paper);
   --pixel-shadow-button:
     0 2px 0 color-mix(in srgb, var(--pixel-shadow-color) 76%, var(--pixel-paper)),
     0 5px 10px color-mix(in srgb, var(--pixel-shadow-color) 16%, transparent);
@@ -186,14 +188,16 @@ body {
   --pixel-cartridge-rail-padding-block: 6px;
   --pixel-cartridge-rail-padding-inline: 8px;
   --pixel-cartridge-rail-gap: 6px;
+  --pixel-tab-width: 224px;
+  --pixel-tab-min-width: 112px;
   --pixel-content-chassis-inset: 8px;
   --pixel-motion-press: 80ms;
   --pixel-motion-state: 120ms;
   --pixel-motion-surface: 160ms;
   --pixel-motion-button: 160ms;
-  --pixel-motion-toggle: 260ms;
-  --pixel-motion-toggle-color: 220ms;
-  --pixel-motion-toggle-press: 150ms;
+  --pixel-motion-toggle: 200ms;
+  --pixel-motion-toggle-color: 160ms;
+  --pixel-motion-toggle-press: 100ms;
   --pixel-ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
   --pixel-ease-button: cubic-bezier(0.22, 1, 0.36, 1);
   --pixel-ease-toggle: cubic-bezier(0.42, 0, 0.25, 1);
@@ -1631,7 +1635,6 @@ button.mod-loading:not(.mod-settings *)::after {
   .mod-settings .vertical-tab-content .setting-item:not(.setting-item-heading):hover {
     border-color: var(--pixel-settings-card-edge-hover);
     background-color: var(--pixel-settings-card-surface-hover);
-    box-shadow: inset 3px 0 0 var(--pixel-cyan), inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 72%, transparent);
   }
 }
 .mod-settings .setting-item-control > :is(button:not(.clickable-icon),
@@ -1695,6 +1698,32 @@ select.dropdown,
 .mod-settings .setting-item-control > button:not(.clickable-icon):active {
   background-color: color-mix(in srgb, var(--pixel-cyan) 8%, var(--pixel-paper));
   box-shadow: inset 0 1px 2px color-mix(in srgb, var(--pixel-shadow-color) 14%, transparent);
+}
+
+button.mod-cta:not(.clickable-icon):not(.mod-settings *):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading)),
+.mod-settings .setting-item .setting-item-control > button.mod-cta:not(.clickable-icon):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading)) {
+  --pixel-mobile-control-surface: var(--pixel-cyan);
+  --pixel-mobile-control-active: var(--pixel-button-primary-hover);
+  --pixel-mobile-control-border: var(--pixel-cyan);
+  border-color: var(--pixel-cyan);
+  background-color: var(--pixel-cyan);
+  color: var(--pixel-button-primary-text);
+  font-weight: 650;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  button.mod-cta:not(.clickable-icon):not(.mod-settings *):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading):not(:disabled):not([aria-disabled=true])):hover,
+  .mod-settings .setting-item .setting-item-control > button.mod-cta:not(.clickable-icon):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading):not(:disabled):not([aria-disabled=true])):hover {
+    border-color: var(--pixel-button-primary-hover);
+    background-color: var(--pixel-button-primary-hover);
+    color: var(--pixel-button-primary-text);
+  }
+}
+button.mod-cta:not(.clickable-icon):not(.mod-settings *):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading):not(:disabled):not([aria-disabled=true])):active,
+.mod-settings .setting-item .setting-item-control > button.mod-cta:not(.clickable-icon):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading):not(:disabled):not([aria-disabled=true])):active {
+  border-color: var(--pixel-button-primary-hover);
+  background-color: var(--pixel-button-primary-hover);
+  color: var(--pixel-button-primary-text);
 }
 
 .mod-settings .vertical-tab-nav-item {
@@ -2310,6 +2339,8 @@ body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data
     --pixel-shadow-button: none;
     --pixel-shadow-button-hover: none;
     --pixel-shadow-button-active: none;
+    --pixel-button-primary-hover: Highlight;
+    --pixel-button-primary-text: HighlightText;
     --pixel-shadow-shell: none;
     --pixel-shadow-side-module: none;
     --pixel-shadow-cockpit: none;
@@ -6227,14 +6258,19 @@ body:not(.is-mobile) .workspace.workspace .workspace-tab-header {
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header {
-  inline-size: 224px;
-  min-inline-size: 224px;
-  max-inline-size: 224px;
   border: var(--pixel-border-decoration) solid transparent;
   border-block-end: 0;
   border-radius: var(--pixel-radius-large) var(--pixel-radius-large) 0 0;
   overflow: hidden;
   transition: background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, color var(--pixel-motion-state) linear;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header-container-inner > .workspace-tab-header {
+  flex: 1 1 var(--pixel-tab-width);
+  inline-size: var(--pixel-tab-width);
+  min-inline-size: var(--pixel-tab-min-width);
+  max-inline-size: var(--pixel-tab-width);
+  min-block-size: 0;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-tab-header.is-active {

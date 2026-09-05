@@ -36,6 +36,8 @@ body {
   --pixel-radius-large: 10px;
   --pixel-radius-button: 12px;
   --pixel-shadow-control: 2px 2px 0 var(--pixel-shadow-color);
+  --pixel-button-primary-hover: color-mix(in srgb, var(--pixel-cyan) 88%, var(--pixel-text));
+  --pixel-button-primary-text: var(--pixel-paper);
   --pixel-shadow-button:
     0 2px 0 color-mix(in srgb, var(--pixel-shadow-color) 76%, var(--pixel-paper)),
     0 5px 10px color-mix(in srgb, var(--pixel-shadow-color) 16%, transparent);
@@ -55,14 +57,16 @@ body {
   --pixel-cartridge-rail-padding-block: 6px;
   --pixel-cartridge-rail-padding-inline: 8px;
   --pixel-cartridge-rail-gap: 6px;
+  --pixel-tab-width: 224px;
+  --pixel-tab-min-width: 112px;
   --pixel-content-chassis-inset: 8px;
   --pixel-motion-press: 80ms;
   --pixel-motion-state: 120ms;
   --pixel-motion-surface: 160ms;
   --pixel-motion-button: 160ms;
-  --pixel-motion-toggle: 260ms;
-  --pixel-motion-toggle-color: 220ms;
-  --pixel-motion-toggle-press: 150ms;
+  --pixel-motion-toggle: 200ms;
+  --pixel-motion-toggle-color: 160ms;
+  --pixel-motion-toggle-press: 100ms;
   --pixel-ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
   --pixel-ease-button: cubic-bezier(0.22, 1, 0.36, 1);
   --pixel-ease-toggle: cubic-bezier(0.42, 0, 0.25, 1);

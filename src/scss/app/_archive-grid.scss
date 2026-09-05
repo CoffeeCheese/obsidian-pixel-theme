@@ -79,9 +79,6 @@ body:not(.is-mobile) .workspace.workspace .workspace-tab-header {
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header {
-  inline-size: 224px;
-  min-inline-size: 224px;
-  max-inline-size: 224px;
   border: var(--pixel-border-decoration) solid transparent;
   border-block-end: 0;
   border-radius: var(--pixel-radius-large) var(--pixel-radius-large) 0 0;
@@ -90,6 +87,19 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-t
     background-color var(--pixel-motion-state) linear,
     border-color var(--pixel-motion-state) linear,
     color var(--pixel-motion-state) linear;
+}
+
+// Keep the reference cartridge width when room permits, then share the native
+// rail down to a readable title width before its own scrolling takes over.
+// Only horizontal rail children participate; stacked tab spines stay native.
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header-container-inner > .workspace-tab-header {
+  flex: 1 1 var(--pixel-tab-width);
+  inline-size: var(--pixel-tab-width);
+  min-inline-size: var(--pixel-tab-min-width);
+  max-inline-size: var(--pixel-tab-width);
+  // The native rail includes a top gutter inside the 44px header. Let its
+  // children fit that remaining height so the bottom activity rail is visible.
+  min-block-size: 0;
 }
 
 body:not(.is-mobile) .workspace.workspace .workspace-tab-header.is-active {

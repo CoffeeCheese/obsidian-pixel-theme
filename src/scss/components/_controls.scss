@@ -445,8 +445,8 @@ button.mod-loading:not(.mod-settings *)::after {
   box-shadow: none;
 }
 
-// The cyan inset rail is Pixel's compact state signal. It changes paint only,
-// never dimensions, so pointer and keyboard feedback cannot shift the layout.
+// Reserve the cyan inset rail for the row containing focus. Pointer hover only
+// lifts the surface, so passing over adjacent rows cannot mimic that location.
 .mod-settings
   .vertical-tab-content
   .setting-item:not(.setting-item-heading):focus-within {
@@ -462,9 +462,6 @@ button.mod-loading:not(.mod-settings *)::after {
     .setting-item:not(.setting-item-heading):hover {
     border-color: var(--pixel-settings-card-edge-hover);
     background-color: var(--pixel-settings-card-surface-hover);
-    box-shadow:
-      inset 3px 0 0 var(--pixel-cyan),
-      inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 72%, transparent);
   }
 }
 
@@ -573,6 +570,36 @@ button.mod-loading:not(.mod-settings *)::after {
   );
   box-shadow: inset 0 1px 2px
     color-mix(in srgb, var(--pixel-shadow-color) 14%, transparent);
+}
+
+// Native CTA classes identify the primary decision. Paint that hierarchy
+// without changing the shared button lift, press, or plugin-owned geometry.
+button.mod-cta:not(.clickable-icon):not(.mod-settings *):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading)),
+.mod-settings .setting-item .setting-item-control > button.mod-cta:not(.clickable-icon):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading)) {
+  // Mobile controls keep their own shape and press surface, with the same role.
+  --pixel-mobile-control-surface: var(--pixel-cyan);
+  --pixel-mobile-control-active: var(--pixel-button-primary-hover);
+  --pixel-mobile-control-border: var(--pixel-cyan);
+  border-color: var(--pixel-cyan);
+  background-color: var(--pixel-cyan);
+  color: var(--pixel-button-primary-text);
+  font-weight: 650;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  button.mod-cta:not(.clickable-icon):not(.mod-settings *):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading):not(:disabled):not([aria-disabled="true"])):hover,
+  .mod-settings .setting-item .setting-item-control > button.mod-cta:not(.clickable-icon):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading):not(:disabled):not([aria-disabled="true"])):hover {
+    border-color: var(--pixel-button-primary-hover);
+    background-color: var(--pixel-button-primary-hover);
+    color: var(--pixel-button-primary-text);
+  }
+}
+
+button.mod-cta:not(.clickable-icon):not(.mod-settings *):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading):not(:disabled):not([aria-disabled="true"])):active,
+.mod-settings .setting-item .setting-item-control > button.mod-cta:not(.clickable-icon):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading):not(:disabled):not([aria-disabled="true"])):active {
+  border-color: var(--pixel-button-primary-hover);
+  background-color: var(--pixel-button-primary-hover);
+  color: var(--pixel-button-primary-text);
 }
 
 .mod-settings .vertical-tab-nav-item {

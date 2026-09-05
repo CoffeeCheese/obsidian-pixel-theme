@@ -125,9 +125,19 @@ test("H5 Archive Grid gives root tabs the H5 S1 cartridge geometry", async () =>
   );
 
   assert.equal(declaration(rail, "gap"), "2px");
-  assert.equal(declaration(tab, "inline-size"), "224px");
-  assert.equal(declaration(tab, "min-inline-size"), "224px");
-  assert.equal(declaration(tab, "max-inline-size"), "224px");
+  const railTab = ruleBodyForSelector(
+    css,
+    "body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header-container-inner > .workspace-tab-header",
+  );
+  assert.equal(declaration(railTab, "flex"), "1 1 var(--pixel-tab-width)");
+  assert.equal(declaration(railTab, "inline-size"), "var(--pixel-tab-width)");
+  assert.equal(declaration(railTab, "min-inline-size"), "var(--pixel-tab-min-width)");
+  assert.equal(declaration(railTab, "max-inline-size"), "var(--pixel-tab-width)");
+  assert.equal(declaration(railTab, "min-block-size"), "0");
+  assert.doesNotMatch(tab, /(?:inline-size|width):/);
+  const tokens = ruleBodyForSelector(css, "body");
+  assert.equal(declaration(tokens, "--pixel-tab-width"), "224px");
+  assert.equal(declaration(tokens, "--pixel-tab-min-width"), "112px");
   assert.equal(
     declaration(tab, "border"),
     "var(--pixel-border-decoration) solid transparent",
