@@ -30,10 +30,15 @@ test("the empty root tab forms one bounded Game Boy shell around native actions"
   const shell = ruleBody(css, `${emptyRoot} .empty-state-container`);
   const lcd = ruleBody(css, `${emptyRoot} .empty-state-action-list`);
   const action = ruleBody(css, `${emptyRoot} .empty-state-action`);
+  const canvas = ruleBody(css, `${emptyRoot} .empty-state`);
+  assert.equal(declaration(canvas, "block-size"), "auto");
+  assert.equal(declaration(canvas, "min-block-size"), "100%");
 
   assert.equal(declaration(shell, "position"), "relative");
   assert.equal(declaration(shell, "isolation"), "isolate");
   assert.equal(declaration(shell, "min-block-size"), "421px");
+  assert.equal(declaration(shell, "max-block-size"), "none");
+  assert.equal(declaration(shell, "inline-size"), "354px");
   assert.equal(
     declaration(shell, "border"),
     "4px solid var(--pixel-handheld-bezel)",
@@ -59,6 +64,30 @@ test("the empty root tab forms one bounded Game Boy shell around native actions"
   assert.equal(declaration(action, "position"), "relative");
   assert.equal(declaration(action, "z-index"), "1");
   assert.equal(declaration(action, "background"), "transparent");
+});
+
+test("narrow desktop leaves adapt the handheld to their own width with readable native actions", async () => {
+  const css = await readTheme();
+  const desktopRoot = emptyRoot.replace("body ", "body:not(.is-mobile) ");
+  const container = ruleBodyForSelector(css, `${desktopRoot} > .view-content`);
+  assert.equal(declaration(container, "container-type"), "inline-size");
+  assert.equal(declaration(container, "container-name"), "pixel-empty-tab");
+  const narrow = atRuleBody(css, "@container pixel-empty-tab (max-width: 420px)");
+  const shell = ruleBodyForSelector(narrow, `${desktopRoot} .empty-state-container`);
+  assert.equal(declaration(shell, "min-block-size"), "355px");
+  const action = ruleBodyForSelector(narrow, `${desktopRoot} .empty-state-action`);
+  assert.equal(declaration(action, "min-block-size"), "44px");
+  assert.equal(declaration(action, "white-space"), "normal");
+  assert.equal(declaration(action, "overflow-wrap"), "anywhere");
+  assert.equal(declaration(ruleBodyForSelector(narrow, `${desktopRoot} .empty-state-action::after`), "display"), "none");
+  assert.doesNotMatch(narrow, /(?:100vw|transform:|zoom:|font-size:\s*[0-9]px)/);
+  const smallest = atRuleBody(css, "@container pixel-empty-tab (max-width: 280px)");
+  const label = ruleBodyForSelector(smallest, `${desktopRoot} .empty-state-action-list::before`);
+  assert.equal(declaration(label, "background"), "none");
+  assert.equal(declaration(label, "text-align"), "start");
+  const dpad = ruleBodyForSelector(smallest, `${desktopRoot} .empty-state-container::before`);
+  assert.equal(declaration(dpad, "inline-size"), "40px");
+  assert.equal(declaration(dpad, "block-size"), "40px");
 });
 
 test("handheld decoration is semantic, inert, and scoped away from generic empty states", async () => {

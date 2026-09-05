@@ -778,27 +778,12 @@ input[type="radio"]:checked {
   opacity: 1;
 }
 
-// Core plugins inherit the global preference cards, then translate their
-// compact controls onto Pixel's 4px grid. The search channel marks focus with
-// a one-pixel scan before settling on the shared cyan hairline.
+// Search focus is a stable perimeter signal. Suppress the old scan pseudo on
+// both the input wrapper and its focused descendants, leaving native clear
+// icons (which also use ::after) intact.
 .setting-group-search .search-input-container::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-right: var(--pixel-border-decoration) solid var(--pixel-cyan);
-  visibility: hidden;
-  opacity: 1;
-  transform: translateX(-100%);
-  pointer-events: none;
-}
-
-.setting-group-search :focus-within::after {
-  visibility: visible;
-  opacity: 0;
-  transform: none;
-  transition:
-    transform 300ms steps(8),
-    opacity 0ms 300ms;
+  content: none;
+  display: none;
 }
 
 .mod-settings .mod-list

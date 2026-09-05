@@ -1,0 +1,79 @@
+// Short-lived surfaces use smaller hard shadows than a decision dialog.
+// Keep native positioning and transforms, especially tooltip direction and
+// draggable modals; entrance feedback only changes opacity.
+body:not(.is-mobile) .menu,
+body:not(.is-mobile) .suggestion-container {
+  border: var(--pixel-border-decoration) solid var(--pixel-border-meaningful);
+  border-radius: var(--pixel-radius);
+  box-shadow: var(--pixel-shadow-buffer);
+  transition: opacity var(--pixel-motion-state) var(--pixel-ease-out);
+}
+
+body:not(.is-mobile) .prompt {
+  box-shadow: var(--pixel-shadow-shell);
+}
+
+body:not(.is-mobile) .tooltip {
+  border-radius: var(--pixel-radius-small);
+  box-shadow: var(--pixel-shadow-control);
+}
+
+body:not(.is-mobile) .notice {
+  border-radius: var(--pixel-radius);
+  box-shadow: var(--pixel-shadow-buffer);
+}
+
+body:not(.is-mobile) :is(.tooltip, .notice):where(:not(.mod-warning):not(.mod-error)) {
+  border-width: var(--pixel-border-decoration);
+}
+
+// Checked menu commands retain their native check icon. Keyboard selection
+// stays inside the row so scrolling and submenu edges cannot crop its ring.
+body:not(.is-mobile) .menu .menu-item.is-selected {
+  outline: var(--pixel-border-decoration) solid var(--pixel-cyan);
+  outline-offset: -1px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @starting-style {
+    body:not(.is-mobile) .menu,
+    body:not(.is-mobile) .suggestion-container,
+    body:not(.is-mobile) .prompt,
+    body:not(.is-mobile) .modal {
+      opacity: 0;
+    }
+  }
+}
+
+// Native clear controls keep their visibility, size and hit testing. A quiet
+// inset focus ring is visible inside compact search fields without moving X.
+body .search-input-container .search-input-clear-button,
+body .prompt .search-input-clear-button {
+  border-radius: var(--pixel-radius-small);
+  color: var(--pixel-text-muted);
+  transition:
+    color var(--pixel-motion-state) var(--pixel-ease-out),
+    background-color var(--pixel-motion-state) var(--pixel-ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body .search-input-container .search-input-clear-button:hover,
+  body .prompt .search-input-clear-button:hover {
+    background-color: var(--pixel-surface-secondary);
+    color: var(--pixel-text);
+  }
+}
+
+body .search-input-container .search-input-clear-button:focus-visible,
+body .prompt .search-input-clear-button:focus-visible {
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: -2px;
+  color: var(--pixel-text);
+}
+
+@media (forced-colors: active) {
+  body .search-input-container .search-input-clear-button:focus-visible,
+  body .prompt .search-input-clear-button:focus-visible {
+    outline-color: Highlight;
+  }
+}

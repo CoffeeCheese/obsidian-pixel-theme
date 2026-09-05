@@ -379,29 +379,10 @@ test("core plugins use a quiet list with Pixel keycaps and search signal", async
   const scanSelector =
     ".setting-group-search .search-input-container::after";
   const scan = ruleBody(css, scanSelector);
-  assert.equal(declaration(scan, "visibility"), "hidden");
-  assert.equal(declaration(scan, "opacity"), "1");
-  assert.equal(
-    declaration(scan, "transform"),
-    "translatex(-100%)",
-  );
-  assert.equal(declaration(scan, "pointer-events"), "none");
-  assert.equal(
-    declaration(scan, "border-right"),
-    "var(--pixel-border-decoration) solid var(--pixel-cyan)",
-  );
-
-  const activeScan = ruleBody(
-    css,
-    ".setting-group-search :focus-within::after",
-  );
-  assert.equal(declaration(activeScan, "visibility"), "visible");
-  assert.equal(declaration(activeScan, "opacity"), "0");
-  assert.equal(declaration(activeScan, "transform"), "none");
-  assert.match(
-    declaration(activeScan, "transition"),
-    /transform 300ms steps\(8\)/,
-  );
+  assert.equal(declaration(scan, "content"), "none");
+  assert.equal(declaration(scan, "display"), "none");
+  assert.doesNotMatch(css, /transform 300ms steps\(8\)/);
+  assert.doesNotMatch(css, /\.setting-group-search :focus-within::after\s*\{[^}]*transform:/);
 
   const searchSelector = `${list} .setting-group-search input[type=search]`;
   const search = ruleBody(css, searchSelector);
@@ -801,7 +782,7 @@ test("accessibility preferences remove motion and preserve system-authoritative 
 });
 
 
-test("reduced motion zeros every shared duration and removes the search scan delay", async () => {
+test("reduced motion zeros every shared duration and search clear feedback", async () => {
   const css = await readTheme();
   const defaults = ruleBody(css, "body");
   const reduced = atRuleBody(css, "@media (prefers-reduced-motion: reduce)");
@@ -811,9 +792,9 @@ test("reduced motion zeros every shared duration and removes the search scan del
   for (const duration of durations) {
     assert.equal(declaration(preference, duration), "0ms", `${duration} must honor reduced motion`);
   }
-  const scan = ruleBodyForSelector(reduced, ".setting-group-search :focus-within::after");
-  assert.equal(declaration(scan, "transition-duration"), "0ms");
-  assert.equal(declaration(scan, "transition-delay"), "0ms");
+  const clear = ruleBodyForSelector(reduced, ".search-input-clear-button");
+  assert.equal(declaration(clear, "transition-duration"), "0ms");
+  assert.equal(declaration(clear, "transition-delay"), "0ms");
 });
 
 test("disabled native controls resolve after semantic and mobile surface styles", async () => {

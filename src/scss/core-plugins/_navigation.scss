@@ -163,9 +163,9 @@ $pixel-quick-switcher: ".prompt";
   font-size: var(--font-ui-medium);
   font-weight: 400;
   transition:
-    background-color 90ms var(--pixel-ease-out),
-    box-shadow 90ms var(--pixel-ease-out),
-    color 90ms var(--pixel-ease-out);
+    background-color var(--pixel-motion-state) var(--pixel-ease-out),
+    box-shadow var(--pixel-motion-state) var(--pixel-ease-out),
+    color var(--pixel-motion-state) var(--pixel-ease-out);
 }
 
 #{$pixel-quick-switcher} .suggestion-item.is-selected {
@@ -419,18 +419,18 @@ body .workspace.workspace .workspace-leaf-content[data-type="search"] .search-em
   font-weight: 400;
   align-items: center;
   transition:
-    background-color 90ms var(--pixel-ease-out),
-    border-color 90ms var(--pixel-ease-out),
-    box-shadow 90ms var(--pixel-ease-out),
-    color 90ms var(--pixel-ease-out);
+    background-color var(--pixel-motion-state) var(--pixel-ease-out),
+    border-color var(--pixel-motion-state) var(--pixel-ease-out),
+    box-shadow var(--pixel-motion-state) var(--pixel-ease-out),
+    color var(--pixel-motion-state) var(--pixel-ease-out);
 }
 
 .suggestion-container.mod-search-suggestion .search-suggest-item.is-selected {
   outline: 0;
   outline-offset: 0;
   border-color: color-mix(in srgb, var(--pixel-cyan) 58%, var(--pixel-line-strong));
-  background-color: color-mix(in srgb, var(--pixel-cyan) 26%, var(--pixel-paper));
-  box-shadow: inset 4px 0 0 var(--pixel-cyan);
+  background-color: color-mix(in srgb, var(--pixel-cyan) 10%, var(--pixel-paper));
+  box-shadow: inset 3px 0 0 var(--pixel-cyan);
   color: var(--pixel-text);
   font-weight: 600;
 }
@@ -463,8 +463,8 @@ body .workspace.workspace .workspace-leaf-content[data-type="search"] .search-em
 
 .suggestion-container.mod-search-suggestion .search-suggest-item.mod-group.is-selected {
   border-color: color-mix(in srgb, var(--pixel-cyan) 58%, var(--pixel-line-strong));
-  background-color: color-mix(in srgb, var(--pixel-cyan) 26%, var(--pixel-paper));
-  box-shadow: inset 4px 0 0 var(--pixel-cyan);
+  background-color: color-mix(in srgb, var(--pixel-cyan) 10%, var(--pixel-paper));
+  box-shadow: inset 3px 0 0 var(--pixel-cyan);
 }
 
 .suggestion-container.mod-search-suggestion .search-suggest-icon.clickable-icon {

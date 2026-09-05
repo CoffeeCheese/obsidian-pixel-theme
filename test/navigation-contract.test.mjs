@@ -311,11 +311,11 @@ test("global search stays inside the navigation pane with flat query and toggle 
   );
   assert.equal(
     declaration(selectedSuggestion, "background-color"),
-    "color-mix(in srgb, var(--pixel-cyan) 26%, var(--pixel-paper))",
+    "color-mix(in srgb, var(--pixel-cyan) 10%, var(--pixel-paper))",
   );
   assert.equal(
     declaration(selectedSuggestion, "box-shadow"),
-    "inset 4px 0 0 var(--pixel-cyan)",
+    "inset 3px 0 0 var(--pixel-cyan)",
   );
 
   const selectedDescription = ruleBody(
@@ -333,11 +333,11 @@ test("global search stays inside the navigation pane with flat query and toggle 
   );
   assert.equal(
     declaration(selectedGroup, "background-color"),
-    "color-mix(in srgb, var(--pixel-cyan) 26%, var(--pixel-paper))",
+    "color-mix(in srgb, var(--pixel-cyan) 10%, var(--pixel-paper))",
   );
   assert.equal(
     declaration(selectedGroup, "box-shadow"),
-    "inset 4px 0 0 var(--pixel-cyan)",
+    "inset 3px 0 0 var(--pixel-cyan)",
   );
 
   const groupLabel = ruleBody(

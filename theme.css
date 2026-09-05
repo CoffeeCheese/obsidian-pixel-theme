@@ -1845,21 +1845,8 @@ input[type=radio]:checked {
 }
 
 .setting-group-search .search-input-container::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-right: var(--pixel-border-decoration) solid var(--pixel-cyan);
-  visibility: hidden;
-  opacity: 1;
-  transform: translateX(-100%);
-  pointer-events: none;
-}
-
-.setting-group-search :focus-within::after {
-  visibility: visible;
-  opacity: 0;
-  transform: none;
-  transition: transform 300ms steps(8), opacity 0ms 300ms;
+  content: none;
+  display: none;
 }
 
 .mod-settings .mod-list .setting-group-search input[type=search] {
@@ -1987,6 +1974,7 @@ body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data
   box-sizing: border-box;
   min-inline-size: 0;
   min-block-size: 100%;
+  block-size: auto;
   padding: clamp(28px, 5vh, 64px) var(--pixel-space-4);
 }
 body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state::before {
@@ -2009,8 +1997,9 @@ body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data
   position: relative;
   isolation: isolate;
   box-sizing: border-box;
-  inline-size: min(354px, 100vw - 40px);
+  inline-size: 354px;
   max-inline-size: 100%;
+  max-block-size: none;
   min-block-size: 421px;
   margin: auto;
   padding: 47px 43px 168px;
@@ -2212,6 +2201,79 @@ body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data
   pointer-events: none;
 }
 
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] > .view-content {
+  container-type: inline-size;
+  container-name: pixel-empty-tab;
+}
+
+@container pixel-empty-tab (max-width: 420px) {
+  body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state {
+    block-size: auto;
+    padding: var(--pixel-space-6) var(--pixel-space-3);
+  }
+  body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state::before {
+    content: none;
+  }
+  body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-container {
+    inline-size: 354px;
+    min-block-size: 355px;
+    padding: 40px 28px 104px;
+    border-radius: 16px 16px 40px 16px;
+    background-image: none;
+  }
+  body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-title {
+    inset-inline: 20px;
+    letter-spacing: 0.06em;
+  }
+  body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-action-list {
+    grid-template-rows: repeat(3, minmax(44px, auto));
+    min-block-size: 0;
+    padding: 40px 4px 4px;
+    box-shadow: 0 0 0 8px var(--pixel-handheld-bezel);
+  }
+  body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-action {
+    min-block-size: 44px;
+    padding: 6px 4px 6px 18px;
+    font-size: 14px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-action::after {
+    display: none;
+  }
+  body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-action-list::after {
+    inset-block-start: calc(100% + 16px);
+    inset-inline-start: 0;
+    font-size: 12px;
+  }
+  body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-container::before {
+    inline-size: 48px;
+    block-size: 48px;
+    inset-inline-start: 28px;
+    inset-block-end: 16px;
+  }
+  body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-container::after {
+    inline-size: 92px;
+    block-size: 60px;
+    inset-inline-end: 20px;
+    inset-block-end: 16px;
+    background: radial-gradient(circle at 22px 37px, var(--pixel-brick) 0 13px, transparent 14px), radial-gradient(circle at 67px 20px, var(--pixel-brick) 0 13px, transparent 14px);
+  }
+}
+@container pixel-empty-tab (max-width: 280px) {
+  body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-action-list::before {
+    background: none;
+    text-align: start;
+  }
+  body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-container::before {
+    inline-size: 40px;
+    block-size: 40px;
+    inset-inline-start: var(--pixel-space-4);
+  }
+  body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state-container::after {
+    inset-inline-end: var(--pixel-space-3);
+  }
+}
 @media (max-width: 520px) {
   body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .empty-state {
     padding: var(--pixel-space-6) var(--pixel-space-3);
@@ -2291,7 +2353,7 @@ body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data
   .pdfViewer .page,
   .pdf-thumbnail-view .thumbnail,
   .setting-group-search .search-input-container::after,
-  .setting-group-search :focus-within::after,
+  .search-input-clear-button,
   a.tag,
   .modal-bg,
   .suggestion-bg {
@@ -2631,7 +2693,7 @@ body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data
   font-family: var(--pixel-font-text);
   font-size: var(--font-ui-medium);
   font-weight: 400;
-  transition: background-color 90ms var(--pixel-ease-out), box-shadow 90ms var(--pixel-ease-out), color 90ms var(--pixel-ease-out);
+  transition: background-color var(--pixel-motion-state) var(--pixel-ease-out), box-shadow var(--pixel-motion-state) var(--pixel-ease-out), color var(--pixel-motion-state) var(--pixel-ease-out);
 }
 
 .prompt .suggestion-item.is-selected {
@@ -2852,15 +2914,15 @@ body .workspace.workspace .workspace-leaf-content[data-type=search] .search-empt
   font-size: var(--font-ui-small);
   font-weight: 400;
   align-items: center;
-  transition: background-color 90ms var(--pixel-ease-out), border-color 90ms var(--pixel-ease-out), box-shadow 90ms var(--pixel-ease-out), color 90ms var(--pixel-ease-out);
+  transition: background-color var(--pixel-motion-state) var(--pixel-ease-out), border-color var(--pixel-motion-state) var(--pixel-ease-out), box-shadow var(--pixel-motion-state) var(--pixel-ease-out), color var(--pixel-motion-state) var(--pixel-ease-out);
 }
 
 .suggestion-container.mod-search-suggestion .search-suggest-item.is-selected {
   outline: 0;
   outline-offset: 0;
   border-color: color-mix(in srgb, var(--pixel-cyan) 58%, var(--pixel-line-strong));
-  background-color: color-mix(in srgb, var(--pixel-cyan) 26%, var(--pixel-paper));
-  box-shadow: inset 4px 0 0 var(--pixel-cyan);
+  background-color: color-mix(in srgb, var(--pixel-cyan) 10%, var(--pixel-paper));
+  box-shadow: inset 3px 0 0 var(--pixel-cyan);
   color: var(--pixel-text);
   font-weight: 600;
 }
@@ -2893,8 +2955,8 @@ body .workspace.workspace .workspace-leaf-content[data-type=search] .search-empt
 
 .suggestion-container.mod-search-suggestion .search-suggest-item.mod-group.is-selected {
   border-color: color-mix(in srgb, var(--pixel-cyan) 58%, var(--pixel-line-strong));
-  background-color: color-mix(in srgb, var(--pixel-cyan) 26%, var(--pixel-paper));
-  box-shadow: inset 4px 0 0 var(--pixel-cyan);
+  background-color: color-mix(in srgb, var(--pixel-cyan) 10%, var(--pixel-paper));
+  box-shadow: inset 3px 0 0 var(--pixel-cyan);
 }
 
 .suggestion-container.mod-search-suggestion .search-suggest-icon.clickable-icon {
@@ -6940,6 +7002,74 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split :is(.
   font-family: var(--pixel-font-identity);
 }
 
+body:not(.is-mobile) .menu,
+body:not(.is-mobile) .suggestion-container {
+  border: var(--pixel-border-decoration) solid var(--pixel-border-meaningful);
+  border-radius: var(--pixel-radius);
+  box-shadow: var(--pixel-shadow-buffer);
+  transition: opacity var(--pixel-motion-state) var(--pixel-ease-out);
+}
+
+body:not(.is-mobile) .prompt {
+  box-shadow: var(--pixel-shadow-shell);
+}
+
+body:not(.is-mobile) .tooltip {
+  border-radius: var(--pixel-radius-small);
+  box-shadow: var(--pixel-shadow-control);
+}
+
+body:not(.is-mobile) .notice {
+  border-radius: var(--pixel-radius);
+  box-shadow: var(--pixel-shadow-buffer);
+}
+
+body:not(.is-mobile) :is(.tooltip, .notice):where(:not(.mod-warning):not(.mod-error)) {
+  border-width: var(--pixel-border-decoration);
+}
+
+body:not(.is-mobile) .menu .menu-item.is-selected {
+  outline: var(--pixel-border-decoration) solid var(--pixel-cyan);
+  outline-offset: -1px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @starting-style {
+    body:not(.is-mobile) .menu,
+    body:not(.is-mobile) .suggestion-container,
+    body:not(.is-mobile) .prompt,
+    body:not(.is-mobile) .modal {
+      opacity: 0;
+    }
+  }
+}
+body .search-input-container .search-input-clear-button,
+body .prompt .search-input-clear-button {
+  border-radius: var(--pixel-radius-small);
+  color: var(--pixel-text-muted);
+  transition: color var(--pixel-motion-state) var(--pixel-ease-out), background-color var(--pixel-motion-state) var(--pixel-ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body .search-input-container .search-input-clear-button:hover,
+  body .prompt .search-input-clear-button:hover {
+    background-color: var(--pixel-surface-secondary);
+    color: var(--pixel-text);
+  }
+}
+body .search-input-container .search-input-clear-button:focus-visible,
+body .prompt .search-input-clear-button:focus-visible {
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: -2px;
+  color: var(--pixel-text);
+}
+
+@media (forced-colors: active) {
+  body .search-input-container .search-input-clear-button:focus-visible,
+  body .prompt .search-input-clear-button:focus-visible {
+    outline-color: Highlight;
+  }
+}
 body button:not(.clickable-icon):not(.mod-settings *):is(:disabled, [aria-disabled=true]),
 body .clickable-icon:not(.mod-settings *):is(:disabled, [aria-disabled=true]),
 body :is(input[type], textarea, select):not(.mod-settings *):is(:disabled, [aria-disabled=true]),
