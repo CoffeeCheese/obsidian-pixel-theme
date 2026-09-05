@@ -230,7 +230,7 @@
 .inline-embed > .markdown-embed-content {
   max-block-size: var(--embed-max-height);
   overflow: auto;
-  overscroll-behavior: contain;
+  overscroll-behavior: auto;
 }
 
 .image-embed,

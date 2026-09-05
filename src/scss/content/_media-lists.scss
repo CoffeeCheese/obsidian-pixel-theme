@@ -1,0 +1,142 @@
+// A media frame should follow the image, including author-specified widths.
+// Live Preview keeps its native widget display, resize handles and transforms.
+.markdown-rendered .image-embed {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.markdown-rendered .image-embed,
+.markdown-source-view.mod-cm6 .image-embed {
+  box-sizing: border-box;
+  border-width: var(--pixel-border-decoration);
+  border-color: var(--pixel-line-strong);
+}
+
+.image-embed .image-wrapper {
+  max-inline-size: 100%;
+}
+
+.image-embed img:not([height]) {
+  height: auto;
+}
+
+.markdown-rendered .image-embed img {
+  vertical-align: middle;
+}
+
+.file-embed.mod-generic {
+  border-style: solid;
+}
+
+.file-embed:is(.mod-generic, .mod-empty, .mod-empty-attachment) {
+  padding: var(--pixel-space-3);
+  border-width: var(--pixel-border-decoration);
+  border-inline-start-width: 3px;
+  border-color: var(--pixel-line-strong);
+  border-inline-start-color: var(--pixel-cyan);
+  color: var(--pixel-text);
+  text-align: start;
+}
+
+.file-embed-title {
+  justify-content: flex-start;
+  align-items: flex-start;
+  line-height: 1.65;
+}
+
+.file-embed-icon {
+  flex-shrink: 0;
+  padding-block-start: 0.15em;
+}
+
+.markdown-embed.inline-embed {
+  border-width: var(--pixel-border-decoration);
+  border-color: var(--pixel-line-strong);
+  border-inline-start: 3px solid var(--pixel-cyan);
+}
+
+.markdown-embed.inline-embed > .markdown-embed-title {
+  padding: var(--pixel-space-3);
+  padding-inline-end: var(--pixel-space-12);
+  border-block-end: var(--pixel-border-decoration) solid var(--pixel-line);
+  background-color: var(--pixel-surface-secondary);
+  font-family: var(--pixel-font-text);
+  font-size: var(--font-ui-small);
+  line-height: 1.65;
+}
+
+.markdown-embed.inline-embed > .markdown-embed-link {
+  box-sizing: border-box;
+  min-inline-size: var(--pixel-space-8);
+  min-block-size: var(--pixel-space-8);
+  justify-content: center;
+  opacity: 1;
+  color: var(--pixel-text-muted);
+  border: var(--pixel-border-decoration) solid transparent;
+  border-radius: var(--pixel-radius-small);
+  transition:
+    border-color var(--pixel-motion-state) var(--pixel-ease-out),
+    background-color var(--pixel-motion-state) var(--pixel-ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .markdown-embed.inline-embed > .markdown-embed-link:hover {
+    border-color: var(--pixel-cyan);
+    background-color: var(--pixel-paper);
+    color: var(--pixel-text);
+  }
+}
+
+.markdown-embed.inline-embed > .markdown-embed-link:focus-visible,
+.file-embed.mod-generic:focus-visible {
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: -2px;
+}
+
+.markdown-embed.inline-embed .markdown-embed.inline-embed {
+  border-inline-start-width: var(--pixel-border-control);
+  border-inline-start-color: var(--pixel-line-strong);
+}
+
+.markdown-embed.inline-embed .markdown-embed.inline-embed > .markdown-embed-content {
+  max-block-size: min(var(--embed-max-height), 360px);
+}
+
+// Mixed ordered/unordered lists need the same nesting step. Leave CodeMirror
+// line indentation to the editor so cursor and folding geometry stay native.
+.markdown-rendered :is(ul, ol) :is(ul, ol) > li {
+  margin-inline-start: 1.75em;
+}
+
+.markdown-rendered li {
+  overflow-wrap: anywhere;
+}
+
+.markdown-preview-view .task-list-item-checkbox {
+  top: 0;
+  vertical-align: middle;
+}
+
+// Text decoration crosses ordinary block descendants. An atomic inline box
+// stops the parent's strike at the child list; use it in both completion
+// states so checking the parent does not change the nested list's geometry.
+.markdown-rendered li.task-list-item > :is(ul, ol) {
+  display: inline-block;
+  inline-size: 100%;
+  vertical-align: top;
+  color: var(--pixel-text);
+}
+
+body.is-mobile .markdown-embed.inline-embed > .markdown-embed-link {
+  min-inline-size: 44px;
+  min-block-size: 44px;
+}
+
+body.is-mobile .markdown-embed.inline-embed > .markdown-embed-title {
+  min-block-size: 52px;
+  padding-inline-end: calc(var(--pixel-space-12) + var(--pixel-space-2));
+}
+
+body.is-mobile .file-embed.mod-generic {
+  min-block-size: 44px;
+}

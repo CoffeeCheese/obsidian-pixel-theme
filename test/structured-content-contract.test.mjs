@@ -277,7 +277,7 @@ test("internal embeds, attachments, images, and native media controls remain bou
   const embedContent = ruleBody(css, ".inline-embed > .markdown-embed-content");
   assert.equal(declaration(embedContent, "max-block-size"), "var(--embed-max-height)");
   assert.equal(declaration(embedContent, "overflow"), "auto");
-  assert.equal(declaration(embedContent, "overscroll-behavior"), "contain");
+  assert.equal(declaration(embedContent, "overscroll-behavior"), "auto");
 
   const attachment = ruleBodyForSelector(css, ".file-embed");
   assert.equal(

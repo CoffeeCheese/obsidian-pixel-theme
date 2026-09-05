@@ -254,7 +254,7 @@ body {
   --tag-radius: 999px;
   --tag-corner-shape: round;
   --tag-weight: 500;
-  --list-spacing: 0.125em;
+  --list-spacing: 0.2em;
   --list-marker-color: var(--pixel-text-muted);
   --list-marker-color-hover: var(--pixel-text);
   --list-marker-color-collapsed: var(--text-accent);
@@ -272,6 +272,7 @@ body {
   --checkbox-border-color-hover: var(--pixel-cyan);
   --checkbox-marker-color: var(--pixel-paper);
   --checklist-done-color: var(--pixel-text-muted);
+  --checklist-done-decoration: line-through;
   --text-selection: var(--pixel-selection);
   --nav-item-color: var(--pixel-text-muted);
   --nav-item-color-hover: var(--pixel-text);
