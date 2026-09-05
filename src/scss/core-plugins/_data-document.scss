@@ -5,6 +5,11 @@
 }
 
 .bases-view {
+  // Use native sizing variables so virtual rows and card measurement stay aligned.
+  --bases-table-header-background: var(--pixel-surface-secondary);
+  --bases-table-header-weight: 600;
+  --bases-table-summary-background: var(--pixel-surface-secondary);
+  --bases-table-cell-background-active: var(--pixel-paper);
   --link-color: var(--pixel-text);
   --link-color-hover: var(--pixel-text);
   --link-external-color: var(--pixel-text);
@@ -70,6 +75,164 @@
 }
 
 .pdf-thumbnail-view .thumbnail:focus-visible {
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: 2px;
+}
+
+.bases-group-heading {
+  background-color: rgba(var(--pixel-amber-rgb), 0.06);
+}
+
+.bases-group-heading .bases-group-property,
+.bases-cards-item .bases-cards-label {
+  color: var(--pixel-text-muted);
+}
+
+.bases-group-heading .bases-group-value {
+  color: var(--pixel-text);
+  font-weight: 600;
+}
+
+.bases-table-header-label {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+.bases-table-header-name {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bases-table-header-icon {
+  flex-shrink: 0;
+}
+
+.bases-table-summary-cell .summary-content {
+  color: var(--pixel-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.bases-cards-line:empty::before,
+.bases-cards-line .value-list-container:empty::before {
+  color: var(--pixel-text-muted);
+}
+
+.bases-cards-item {
+  transition: border-color var(--pixel-motion-state) var(--pixel-ease-out);
+}
+
+.bases-cards-item:focus-within {
+  outline-offset: 2px;
+}
+
+.bases-table-container .bases-td:focus-within {
+  // Inset focus stays visible inside the virtual table's clipping boundary.
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: -2px;
+}
+
+.pdf-toolbar {
+  gap: var(--pixel-space-2);
+  scrollbar-width: thin;
+}
+
+.pdf-container,
+.pdf-content-container {
+  // The native 350px minimum otherwise clips the last controls in a narrow leaf.
+  min-inline-size: 0;
+}
+
+.pdf-content-container {
+  --findbar-height: max(44px, calc(var(--input-height) + var(--pixel-space-2)));
+}
+
+.pdf-toolbar .pdf-toolbar-left,
+.pdf-toolbar .pdf-toolbar-center,
+.pdf-toolbar .pdf-toolbar-right {
+  flex-shrink: 0;
+}
+
+.pdf-toolbar .pdf-toolbar-center {
+  // Flow with adjacent groups instead of covering them in a narrow split.
+  position: static;
+  transform: none;
+}
+
+.pdf-toolbar .pdf-page-input {
+  flex-shrink: 0;
+  min-inline-size: 7ch;
+}
+
+.pdf-page-numbers,
+.pdf-findbar-message {
+  font-variant-numeric: tabular-nums;
+  color: var(--pixel-text-muted);
+}
+
+.pdf-findbar {
+  // The viewer reserves a fixed findbar height. Scroll one row instead of
+  // wrapping controls over the first page or the topmost thumbnail.
+  flex-wrap: nowrap;
+  flex-direction: row;
+  align-items: center;
+  min-block-size: var(--findbar-height, 44px);
+  padding-block: 0;
+}
+
+.pdf-findbar .pdf-search-wrapper {
+  flex: 1 1 12rem;
+  min-inline-size: 0;
+  flex-wrap: nowrap;
+}
+
+.pdf-findbar .search-input-container {
+  flex: 1 1 12rem;
+  min-inline-size: 12rem;
+}
+
+.pdf-findbar .clickable-icon {
+  flex-shrink: 0;
+}
+
+.pdf-findbar input[type="search"],
+.pdf-findbar input[type="text"] {
+  min-inline-size: 0;
+  inline-size: 100%;
+  min-block-size: var(--pixel-space-8);
+}
+
+.pdf-findbar .input-right-decorator {
+  // Shared icon-button states reset transform; keep the search action centered.
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+}
+
+body .pdf-findbar .input-right-decorator.clickable-icon:not(.mod-settings *):not(:disabled):not([aria-disabled="true"]) {
+  // Beat the shared hover/press lift without replacing this icon's centering.
+  // A moving hit box can repeatedly lose hover at its upper edge.
+  transform: translateY(-50%);
+  transition: background-color var(--pixel-motion-state) var(--pixel-ease-out),
+    border-color var(--pixel-motion-state) var(--pixel-ease-out),
+    color var(--pixel-motion-state) var(--pixel-ease-out);
+}
+
+.pdf-findbar-message {
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+}
+
+.pdf-findbar .mod-not-found {
+  --background-modifier-border: var(--pixel-brick);
+  --background-modifier-border-focus: var(--pixel-brick);
+}
+
+.pdf-thumbnail-view .thumbnail.selected {
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: 2px;
+}
+
+.pdf-thumbnail-view a:focus-visible {
   outline: var(--pixel-border-control) solid var(--pixel-cyan);
   outline-offset: 2px;
 }

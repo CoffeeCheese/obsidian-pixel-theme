@@ -212,3 +212,38 @@ test("Bases and PDF exceptions stay shallow and avoid decorative rendering costs
     }
   }
 });
+
+test("Bases adds hierarchy and visible empty values without changing virtual row geometry", async () => {
+  const css = await readTheme();
+  const roles = ruleBody(css, ".bases-view");
+  assert.equal(declaration(roles, "--bases-table-header-background"), "var(--pixel-surface-secondary)");
+  assert.equal(declaration(roles, "--bases-table-cell-background-active"), "var(--pixel-paper)");
+  assert.doesNotMatch(roles, /(?:row-height|line-height|position|height):/);
+  assert.equal(declaration(ruleBody(css, ".bases-table-header-name"), "text-overflow"), "ellipsis");
+  assert.equal(declaration(ruleBody(css, ".bases-table-header-icon"), "flex-shrink"), "0");
+  assert.equal(declaration(ruleBodyForSelector(css, ".bases-cards-line:empty::before"), "color"), "var(--pixel-text-muted)");
+  assert.equal(declaration(ruleBody(css, ".bases-table-summary-cell .summary-content"), "font-variant-numeric"), "tabular-nums");
+  assert.equal(declaration(ruleBody(css, ".bases-table-container .bases-td:focus-within"), "outline-offset"), "-2px");
+});
+
+test("PDF narrow toolbars keep controls in flow and permit search input shrinking", async () => {
+  const css = await readTheme();
+  const center = ruleBody(css, ".pdf-toolbar .pdf-toolbar-center");
+  assert.equal(declaration(center, "position"), "static");
+  assert.equal(declaration(center, "transform"), "none");
+  assert.equal(declaration(ruleBodyForSelector(css, '.pdf-container'), "min-inline-size"), "0");
+  assert.equal(declaration(ruleBody(css, '.pdf-findbar .pdf-search-wrapper'), "flex-wrap"), "nowrap");
+  assert.equal(declaration(ruleBody(css, '.pdf-findbar .search-input-container'), "min-inline-size"), "12rem");
+  assert.equal(declaration(ruleBody(css, '.pdf-findbar .input-right-decorator'), "transform"), "translatey(-50%)");
+  assert.equal(declaration(ruleBodyForSelector(css, '.pdf-findbar input[type=search]'), "min-inline-size"), "0");
+  assert.equal(declaration(ruleBody(css, ".pdf-thumbnail-view a:focus-visible"), "outline-offset"), "2px");
+  assert.equal(declaration(ruleBody(css, ".pdf-findbar .mod-not-found"), "--background-modifier-border"), "var(--pixel-brick)");
+});
+
+test("PDF case toggle stays centered through pointer and pressed states", async () => {
+  const css = await readTheme();
+  const toggle = ruleBody(css, 'body .pdf-findbar .input-right-decorator.clickable-icon:not(.mod-settings *):not(:disabled):not([aria-disabled=true])');
+  assert.equal(declaration(toggle, "transform"), "translatey(-50%)");
+  assert.doesNotMatch(declaration(toggle, "transition"), /transform|translate|all/);
+  assert.match(declaration(toggle, "transition"), /background-color.*--pixel-motion-state/);
+});

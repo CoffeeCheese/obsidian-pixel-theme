@@ -4161,6 +4161,45 @@ body.theme-dark {
   outline-offset: 2px;
 }
 
+.canvas-node.is-focused .canvas-node-container,
+.canvas-node.is-themed.is-focused .canvas-node-container {
+  outline-style: dashed;
+  outline-offset: 2px;
+}
+
+.canvas-node.is-editing .canvas-node-container,
+.canvas-node.is-themed.is-editing .canvas-node-container {
+  border-color: var(--pixel-amber-text);
+  outline: 4px double var(--pixel-amber-text);
+  outline-offset: 2px;
+}
+
+.canvas-node-group:not(.is-themed) .canvas-group-label {
+  color: var(--pixel-amber-text);
+  background-color: var(--pixel-paper);
+}
+
+.canvas-group-label {
+  line-height: 1.35;
+}
+
+.canvas-path-label {
+  border: var(--pixel-border-decoration) solid var(--pixel-line-strong);
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+}
+
+.canvas-control-item,
+body.is-mobile .canvas-control-item {
+  border-inline-start: 4px solid transparent;
+  transition: background-color var(--pixel-motion-state) var(--pixel-ease-out), color var(--pixel-motion-state) var(--pixel-ease-out);
+}
+
+.canvas-control-item:is(.is-active, .has-active-menu),
+body.is-mobile .canvas-control-item:is(.is-active, .has-active-menu) {
+  border-inline-start-color: var(--pixel-cyan);
+}
+
 .bases-table-container,
 .bases-list-container,
 .bases-cards-container {
@@ -4168,6 +4207,10 @@ body.theme-dark {
 }
 
 .bases-view {
+  --bases-table-header-background: var(--pixel-surface-secondary);
+  --bases-table-header-weight: 600;
+  --bases-table-summary-background: var(--pixel-surface-secondary);
+  --bases-table-cell-background-active: var(--pixel-paper);
   --link-color: var(--pixel-text);
   --link-color-hover: var(--pixel-text);
   --link-external-color: var(--pixel-text);
@@ -4233,6 +4276,154 @@ body.theme-dark {
 }
 
 .pdf-thumbnail-view .thumbnail:focus-visible {
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: 2px;
+}
+
+.bases-group-heading {
+  background-color: rgba(var(--pixel-amber-rgb), 0.06);
+}
+
+.bases-group-heading .bases-group-property,
+.bases-cards-item .bases-cards-label {
+  color: var(--pixel-text-muted);
+}
+
+.bases-group-heading .bases-group-value {
+  color: var(--pixel-text);
+  font-weight: 600;
+}
+
+.bases-table-header-label {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+.bases-table-header-name {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bases-table-header-icon {
+  flex-shrink: 0;
+}
+
+.bases-table-summary-cell .summary-content {
+  color: var(--pixel-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.bases-cards-line:empty::before,
+.bases-cards-line .value-list-container:empty::before {
+  color: var(--pixel-text-muted);
+}
+
+.bases-cards-item {
+  transition: border-color var(--pixel-motion-state) var(--pixel-ease-out);
+}
+
+.bases-cards-item:focus-within {
+  outline-offset: 2px;
+}
+
+.bases-table-container .bases-td:focus-within {
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: -2px;
+}
+
+.pdf-toolbar {
+  gap: var(--pixel-space-2);
+  scrollbar-width: thin;
+}
+
+.pdf-container,
+.pdf-content-container {
+  min-inline-size: 0;
+}
+
+.pdf-content-container {
+  --findbar-height: max(44px, calc(var(--input-height) + var(--pixel-space-2)));
+}
+
+.pdf-toolbar .pdf-toolbar-left,
+.pdf-toolbar .pdf-toolbar-center,
+.pdf-toolbar .pdf-toolbar-right {
+  flex-shrink: 0;
+}
+
+.pdf-toolbar .pdf-toolbar-center {
+  position: static;
+  transform: none;
+}
+
+.pdf-toolbar .pdf-page-input {
+  flex-shrink: 0;
+  min-inline-size: 7ch;
+}
+
+.pdf-page-numbers,
+.pdf-findbar-message {
+  font-variant-numeric: tabular-nums;
+  color: var(--pixel-text-muted);
+}
+
+.pdf-findbar {
+  flex-wrap: nowrap;
+  flex-direction: row;
+  align-items: center;
+  min-block-size: var(--findbar-height, 44px);
+  padding-block: 0;
+}
+
+.pdf-findbar .pdf-search-wrapper {
+  flex: 1 1 12rem;
+  min-inline-size: 0;
+  flex-wrap: nowrap;
+}
+
+.pdf-findbar .search-input-container {
+  flex: 1 1 12rem;
+  min-inline-size: 12rem;
+}
+
+.pdf-findbar .clickable-icon {
+  flex-shrink: 0;
+}
+
+.pdf-findbar input[type=search],
+.pdf-findbar input[type=text] {
+  min-inline-size: 0;
+  inline-size: 100%;
+  min-block-size: var(--pixel-space-8);
+}
+
+.pdf-findbar .input-right-decorator {
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+}
+
+body .pdf-findbar .input-right-decorator.clickable-icon:not(.mod-settings *):not(:disabled):not([aria-disabled=true]) {
+  transform: translateY(-50%);
+  transition: background-color var(--pixel-motion-state) var(--pixel-ease-out), border-color var(--pixel-motion-state) var(--pixel-ease-out), color var(--pixel-motion-state) var(--pixel-ease-out);
+}
+
+.pdf-findbar-message {
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+}
+
+.pdf-findbar .mod-not-found {
+  --background-modifier-border: var(--pixel-brick);
+  --background-modifier-border-focus: var(--pixel-brick);
+}
+
+.pdf-thumbnail-view .thumbnail.selected {
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: 2px;
+}
+
+.pdf-thumbnail-view a:focus-visible {
   outline: var(--pixel-border-control) solid var(--pixel-cyan);
   outline-offset: 2px;
 }

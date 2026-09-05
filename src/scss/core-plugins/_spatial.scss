@@ -151,3 +151,44 @@ body.theme-dark {
   outline: var(--pixel-border-control) solid var(--pixel-cyan);
   outline-offset: 2px;
 }
+
+.canvas-node.is-focused .canvas-node-container,
+.canvas-node.is-themed.is-focused .canvas-node-container {
+  outline-style: dashed;
+  outline-offset: 2px;
+}
+
+.canvas-node.is-editing .canvas-node-container,
+.canvas-node.is-themed.is-editing .canvas-node-container {
+  border-color: var(--pixel-amber-text);
+  outline: 4px double var(--pixel-amber-text);
+  outline-offset: 2px;
+}
+
+.canvas-node-group:not(.is-themed) .canvas-group-label {
+  color: var(--pixel-amber-text);
+  background-color: var(--pixel-paper);
+}
+
+.canvas-group-label {
+  line-height: 1.35;
+}
+
+.canvas-path-label {
+  border: var(--pixel-border-decoration) solid var(--pixel-line-strong);
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+}
+
+.canvas-control-item,
+body.is-mobile .canvas-control-item {
+  // Reserve the active indicator's space before selection to avoid a width jump.
+  border-inline-start: 4px solid transparent;
+  transition: background-color var(--pixel-motion-state) var(--pixel-ease-out),
+    color var(--pixel-motion-state) var(--pixel-ease-out);
+}
+
+.canvas-control-item:is(.is-active, .has-active-menu),
+body.is-mobile .canvas-control-item:is(.is-active, .has-active-menu) {
+  border-inline-start-color: var(--pixel-cyan);
+}

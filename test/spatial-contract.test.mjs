@@ -276,3 +276,14 @@ test("spatial styling avoids expensive selectors and decorative rendering effect
     }
   }
 });
+
+test("Canvas distinguishes selected, focused, and editing nodes without resizing their content", async () => {
+  const css = await readTheme();
+  const focused = ruleBodyForSelector(css, '.canvas-node.is-themed.is-focused .canvas-node-container');
+  const editing = ruleBodyForSelector(css, '.canvas-node.is-themed.is-editing .canvas-node-container');
+  assert.equal(declaration(focused, 'outline-style'), 'dashed');
+  assert.equal(declaration(editing, 'outline'), '4px double var(--pixel-amber-text)');
+  assert.doesNotMatch(focused + editing, /(?:width|height|padding|transform):/);
+  assert.equal(declaration(ruleBody(css, '.canvas-control-item'), 'border-inline-start'), '4px solid transparent');
+  assert.equal(declaration(matchingRuleBodies(css, '.canvas-path-label').at(-1), 'overflow-wrap'), 'anywhere');
+});
