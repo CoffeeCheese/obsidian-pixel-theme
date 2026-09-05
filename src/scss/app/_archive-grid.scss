@@ -826,9 +826,9 @@ body:not(.is-mobile) .workspace.workspace :is(
 }
 
 body:not(.is-mobile) .workspace.workspace .callout {
-  border: var(--pixel-border-decoration) solid var(--pixel-line-strong);
+  border: var(--pixel-border-decoration) solid var(--pixel-line);
   border-inline-start: 4px solid rgb(var(--callout-color));
-  background-color: rgb(from var(--pixel-paper) r g b / 78%);
+  background-color: color-mix(in srgb, rgb(var(--callout-color)) 6%, var(--pixel-paper));
   box-shadow: none;
 }
 

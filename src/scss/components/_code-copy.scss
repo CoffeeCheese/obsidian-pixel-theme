@@ -1,0 +1,49 @@
+// Keep the native copy action discoverable by keyboard as well as pointer.
+body .markdown-rendered pre > button.copy-code-button:not(.clickable-icon):not(.mod-settings *) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: var(--pixel-space-8);
+  margin: var(--pixel-space-1);
+  padding: var(--pixel-space-1) var(--pixel-space-2);
+  border: var(--pixel-border-decoration) solid var(--pixel-line-strong);
+  border-radius: var(--pixel-radius-small);
+  color: var(--pixel-text);
+}
+
+// A code action belongs to the flat status strip; moving it must not make the
+// code look as though it moved. Full dialog buttons keep their tactile travel.
+body .markdown-rendered pre > button.copy-code-button:not(.clickable-icon):not(.mod-settings *):not(:disabled):not([aria-disabled="true"]) {
+  background-color: var(--pixel-paper);
+  box-shadow: none;
+  transform: none;
+  transition:
+    background-color var(--pixel-motion-state) var(--pixel-ease-out),
+    border-color var(--pixel-motion-state) var(--pixel-ease-out);
+
+  &:hover,
+  &:active {
+    border-color: var(--pixel-cyan);
+    background-color: var(--pixel-surface-secondary);
+    box-shadow: none;
+    transform: none;
+  }
+
+  &:focus-visible {
+    outline: var(--pixel-border-control) solid var(--pixel-cyan);
+    outline-offset: 1px;
+  }
+}
+
+body.is-mobile .markdown-rendered pre {
+  padding-block-start: calc(var(--pixel-space-12) + var(--pixel-space-2));
+}
+
+body.is-mobile .markdown-rendered pre > button.copy-code-button:not(.clickable-icon):not(.mod-settings *) {
+  min-inline-size: 44px;
+  min-block-size: 44px;
+}
+
+body.is-mobile .callout.is-collapsible > .callout-title {
+  min-block-size: 44px;
+}

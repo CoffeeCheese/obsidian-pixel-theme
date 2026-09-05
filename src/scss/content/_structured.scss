@@ -1,5 +1,6 @@
 .callout {
   --pixel-callout-fallback-glyph: "i";
+  --callout-padding: var(--pixel-space-3) var(--pixel-space-4);
   border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
   border-inline-start: 4px solid rgb(var(--callout-color));
   border-radius: var(--pixel-radius);
@@ -35,6 +36,48 @@
 .callout-title {
   color: var(--pixel-text);
   font-weight: 700;
+  gap: var(--pixel-space-2);
+  align-items: center;
+  min-inline-size: 0;
+}
+
+.callout-title-inner {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+
+.callout.is-collapsible > .callout-title {
+  min-block-size: var(--pixel-space-8);
+  transition: background-color var(--pixel-motion-state) var(--pixel-ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .callout.is-collapsible > .callout-title:hover {
+    background-color: color-mix(in srgb, rgb(var(--callout-color)) 8%, var(--pixel-paper));
+  }
+}
+
+.callout > .callout-title > .callout-fold {
+  flex-shrink: 0;
+  margin-inline-start: auto;
+  padding-inline-end: var(--pixel-space-1);
+}
+
+.callout-content > :first-child {
+  margin-block-start: var(--pixel-space-3);
+}
+
+.callout-content > :last-child {
+  margin-block-end: 0;
+}
+
+.callout-content .callout {
+  margin-block: var(--pixel-space-3);
+}
+
+.markdown-rendered blockquote {
+  padding-block: var(--pixel-space-2);
+  padding-inline: var(--pixel-space-4);
 }
 
 .callout-icon {
@@ -49,7 +92,7 @@
 
 .callout.is-collapsible .callout-title:focus-visible {
   outline: var(--pixel-border-control) solid var(--pixel-cyan);
-  outline-offset: 2px;
+  outline-offset: -2px;
 }
 
 .markdown-rendered code {
@@ -66,12 +109,26 @@
 }
 
 .markdown-rendered pre {
+  padding-block-start: calc(var(--pixel-space-8) + var(--pixel-space-3));
   max-inline-size: 100%;
   overflow-x: auto;
   overscroll-behavior-inline: contain;
   border: var(--code-border-width) solid var(--code-border-color);
   box-shadow: none;
   animation: none;
+}
+
+// Scroll the code itself so the native copy action and status label stay in
+// place. Unwrapped pre elements retain their native overflow fallback.
+.markdown-rendered pre > code {
+  display: block;
+  white-space: var(--code-white-space);
+  max-inline-size: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
 }
 
 .markdown-rendered pre[class*="language-"] {
@@ -134,6 +191,7 @@
 
 .markdown-rendered table {
   min-inline-size: 100%;
+  background-color: var(--table-background);
   box-shadow: none;
   animation: none;
 }
@@ -142,6 +200,13 @@
 .markdown-rendered td {
   overflow-wrap: anywhere;
   text-overflow: clip;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .markdown-rendered tbody > tr:hover,
+  .markdown-source-view.mod-cm6 .cm-table-widget tbody > tr:hover {
+    background-color: var(--table-row-background-hover);
+  }
 }
 
 .markdown-embed,

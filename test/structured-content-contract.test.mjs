@@ -32,15 +32,17 @@ test("structured content maps stable Obsidian callout, code, table, embed, and f
     "--code-comment": "var(--pixel-text)",
     "--table-background": "var(--pixel-paper)",
     "--table-border-width": "var(--pixel-border-decoration)",
-    "--table-border-color": "var(--pixel-border-meaningful)",
+    "--table-border-color": "var(--pixel-line)",
     "--table-white-space": "normal",
     "--table-header-background": "var(--pixel-surface-secondary)",
     "--table-header-border-width": "var(--pixel-border-control)",
-    "--table-header-border-color": "var(--pixel-border-meaningful)",
+    "--table-header-border-color": "var(--pixel-line-strong)",
     "--table-header-weight": "700",
     "--table-header-color": "var(--pixel-text)",
-    "--table-column-min-width": "12ch",
-    "--table-row-background-hover": "var(--pixel-surface-secondary)",
+    "--table-column-min-width": "max(8ch, 6em)",
+    "--table-column-alt-background": "transparent",
+    "--table-line-height": "1.65",
+    "--table-row-background-hover": "color-mix(in srgb, var(--pixel-cyan) 6%, var(--pixel-paper))",
     "--table-selection": "var(--pixel-selection)",
     "--table-selection-blend-mode": "normal",
     "--table-selection-border-color": "var(--pixel-cyan)",
@@ -142,7 +144,7 @@ test("callouts preserve type, title, icon, folding, and nested content with stru
     declaration(foldFocus, "outline"),
     "var(--pixel-border-control) solid var(--pixel-cyan)",
   );
-  assert.equal(declaration(foldFocus, "outline-offset"), "2px");
+  assert.equal(declaration(foldFocus, "outline-offset"), "-2px");
 
   assert.doesNotMatch(
     css,
