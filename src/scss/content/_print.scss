@@ -1,0 +1,142 @@
+// Obsidian exports a separate .print subtree. Keep these overrides out of
+// reading/editing views and leave paper size and margins to the export dialog.
+@media print {
+  body {
+    background: white;
+  }
+
+  .print {
+    --pixel-paper: #fff;
+    --pixel-surface-secondary: #f1f3f4;
+    --pixel-text: #20262d;
+    --pixel-text-muted: #535e66;
+    --pixel-line: #c3cbd0;
+    --pixel-line-strong: #89959d;
+    --pixel-border-meaningful: #707d86;
+    --pixel-cyan: #176777;
+    --pixel-amber-text: #745020;
+    --pixel-brick: #8f3925;
+    --text-normal: #20262d;
+    --text-muted: #535e66;
+    --code-normal: #20262d;
+    --code-background: #f1f3f4;
+    --code-comment: #535e66;
+    --code-function: #745020;
+    --code-important: #20262d;
+    --code-keyword: #745020;
+    --code-operator: #20262d;
+    --code-property: #745020;
+    --code-punctuation: #20262d;
+    --code-string: #20262d;
+    --code-tag: #745020;
+    --code-value: #20262d;
+    --code-border-color: #c3cbd0;
+    --table-background: #fff;
+    --table-row-alt-background: #fff;
+    --table-row-alt-background-hover: #fff;
+    --table-row-background-hover: #fff;
+    --table-column-alt-background: transparent;
+    --table-header-background: #f1f3f4;
+    --table-header-color: #20262d;
+    --table-border-color: #c3cbd0;
+    --table-header-border-color: #89959d;
+    --table-column-min-width: 0;
+    --embed-background: #fff;
+    --checklist-done-color: #535e66;
+    --blockquote-color: #20262d;
+    --blockquote-background-color: #f6f6f6;
+    --blockquote-border-color: #89959d;
+    --link-color: #176777;
+    --link-external-color: #176777;
+    color: #20262d;
+    background: white;
+  }
+
+  .print .markdown-rendered {
+    color: var(--pixel-text);
+    background: white;
+    background-image: none;
+    box-shadow: none;
+    font-family: var(--font-print);
+    print-color-adjust: economy;
+  }
+
+  .print .markdown-rendered :is(h1, h2, h3, h4, h5, h6) {
+    color: var(--pixel-text);
+    font-family: var(--font-print);
+    break-after: avoid;
+  }
+
+  .print .markdown-rendered :is(p, li) {
+    orphans: 3;
+    widows: 3;
+  }
+
+  .print .markdown-rendered pre,
+  .print .markdown-rendered pre[class*="language-"] {
+    padding: var(--pixel-space-3);
+    border: var(--pixel-border-decoration) solid var(--pixel-line);
+    overflow: visible;
+    break-inside: auto;
+  }
+
+  .print .markdown-rendered pre > code {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    overflow: visible;
+  }
+
+  .print .markdown-rendered pre::before {
+    content: none;
+  }
+
+  .print .markdown-rendered pre > button.copy-code-button:not(.clickable-icon):not(.mod-settings *),
+  .print .heading-collapse-indicator,
+  .print .list-collapse-indicator,
+  .print .markdown-rendered .embed-actions,
+  .print .image-resize-corner {
+    display: none;
+  }
+
+  .print .markdown-rendered :is(.el-table, .table-wrapper) {
+    overflow: visible;
+    max-inline-size: none;
+  }
+
+  .print .markdown-rendered table {
+    inline-size: 100%;
+    min-inline-size: 0;
+    table-layout: fixed;
+  }
+
+  .print .markdown-rendered :is(th, td) {
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+
+  .print .markdown-rendered tr {
+    break-inside: avoid;
+  }
+
+  .print .markdown-rendered .markdown-embed-content,
+  .print .markdown-rendered .markdown-embed.inline-embed .markdown-embed.inline-embed > .markdown-embed-content {
+    // Both native physical and theme logical limits must be released,
+    // including the narrower cap on a second-level embedded note.
+    max-height: none;
+    max-block-size: none;
+    overflow: visible;
+  }
+
+  .print .markdown-rendered .callout {
+    background: #f6f6f6;
+    border-color: var(--pixel-line-strong);
+    color: var(--pixel-text);
+    overflow: visible;
+    break-inside: auto;
+  }
+
+  .print .markdown-rendered .callout-content {
+    overflow: visible;
+  }
+}

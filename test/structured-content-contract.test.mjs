@@ -225,7 +225,7 @@ test("fenced code exposes a static Pixel status header without replacing native 
   assert.equal(declaration(liveLabel, "animation"), "none");
 
   assert.doesNotMatch(
-    css,
+    css.replace(atRuleBody(css, "@media print"), ""),
     /\.copy-code-button[^{}]*\{[^}]*(?:display:\s*none|visibility:\s*hidden|pointer-events:\s*none)/is,
   );
 });

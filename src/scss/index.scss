@@ -22,6 +22,8 @@
 @use "responsive/mobile";
 @use "app/archive-grid";
 @use "app/document-details";
+@use "core-plugins/note-navigation";
 @use "components/transient-surfaces";
 @use "components/code-copy";
 @use "components/control-states";
+@use "content/print";
