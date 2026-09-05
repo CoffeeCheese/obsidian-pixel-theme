@@ -1,12 +1,22 @@
 // Short-lived surfaces use smaller hard shadows than a decision dialog.
 // Keep native positioning and transforms, especially tooltip direction and
 // draggable modals; entrance feedback only changes opacity.
+body:not(.is-mobile) .prompt .prompt-results {
+  background-color: var(--pixel-floating-surface);
+}
+
 body:not(.is-mobile) .menu,
 body:not(.is-mobile) .suggestion-container {
   border: var(--pixel-border-decoration) solid var(--pixel-border-meaningful);
   border-radius: var(--pixel-radius);
   box-shadow: var(--pixel-shadow-buffer);
   transition: opacity var(--pixel-motion-state) var(--pixel-ease-out);
+}
+
+@media (prefers-contrast: more) {
+  body:not(.is-mobile) {
+    --pixel-floating-edge: var(--pixel-text);
+  }
 }
 
 body:not(.is-mobile) .prompt {
@@ -25,6 +35,16 @@ body:not(.is-mobile) .notice {
 
 body:not(.is-mobile) :is(.tooltip, .notice):where(:not(.mod-warning):not(.mod-error)) {
   border-width: var(--pixel-border-decoration);
+}
+
+body:not(.is-mobile) :is(.menu, .suggestion-container, .prompt, .notice, .tooltip):where(:not(.mod-warning):not(.mod-error)) {
+  border-color: var(--pixel-floating-edge);
+  background-color: var(--pixel-floating-surface);
+}
+
+body:not(.is-mobile) .tooltip:where(:not(.mod-warning):not(.mod-error)) {
+  // Native arrows read this role in all four directions.
+  --background-modifier-message: var(--pixel-floating-surface);
 }
 
 // Checked menu commands retain their native check icon. Keyboard selection

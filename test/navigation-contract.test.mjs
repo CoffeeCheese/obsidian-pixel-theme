@@ -173,7 +173,7 @@ test("quick switcher uses a light index-card shell and a pixel cursor rail", asy
   assert.equal(declaration(input, "box-shadow"), "none");
   assert.equal(
     declaration(input, "font-family"),
-    "var(--pixel-font-identity)",
+    "var(--pixel-font-text)",
   );
 
   const cursorRail = ruleBody(

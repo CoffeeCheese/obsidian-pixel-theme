@@ -127,10 +127,11 @@ $pixel-quick-switcher: ".prompt";
   background-color: transparent;
   color: var(--pixel-text);
   box-shadow: none;
-  font-family: var(--pixel-font-identity);
+  // Queries are editable prose; reserve the pixel face for short headings.
+  font-family: var(--pixel-font-text);
   font-size: var(--font-ui-medium);
-  font-weight: 600;
-  letter-spacing: 0.01em;
+  font-weight: 500;
+  letter-spacing: normal;
 }
 
 #{$pixel-quick-switcher} input.prompt-input::placeholder {
@@ -216,6 +217,15 @@ $pixel-quick-switcher: ".prompt";
   font-family: var(--pixel-font-monospace);
   font-size: 0.92em;
   font-weight: 600;
+}
+
+// Paths remain supporting information even when their result is selected.
+#{$pixel-quick-switcher} .suggestion-item.mod-complex .suggestion-note {
+  color: var(--pixel-text-muted);
+  font-family: var(--pixel-font-text);
+  font-size: var(--font-ui-smaller);
+  font-weight: 400;
+  line-height: 1.5;
 }
 
 @media (prefers-reduced-motion: reduce) {

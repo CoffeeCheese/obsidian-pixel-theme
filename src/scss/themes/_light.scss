@@ -1,4 +1,6 @@
 .theme-light {
+  --pixel-floating-surface: var(--pixel-paper);
+  --pixel-floating-edge: var(--pixel-border-meaningful);
   color-scheme: light;
   --accent-h: 188;
   --accent-s: 70%;

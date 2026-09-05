@@ -1,4 +1,7 @@
 .theme-dark {
+  // Lift transient surfaces without brightening the long-form reading plane.
+  --pixel-floating-surface: #1c2b36;
+  --pixel-floating-edge: #647c89;
   color-scheme: dark;
   --accent-h: 184;
   --accent-s: 55%;

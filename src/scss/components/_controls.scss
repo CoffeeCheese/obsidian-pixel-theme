@@ -403,8 +403,9 @@ button.mod-loading:not(.mod-settings *)::after {
   border: var(--pixel-border-decoration) solid var(--pixel-settings-card-edge);
   border-radius: var(--pixel-radius-large);
   background-color: var(--pixel-settings-card-surface);
-  box-shadow: inset 0 1px 0
-    color-mix(in srgb, var(--pixel-paper) 72%, transparent);
+  // The row perimeter already separates preferences; an inner highlight
+  // doubles that edge, especially when a bordered input sits inside it.
+  box-shadow: none;
   transition:
     background-color var(--pixel-motion-state) linear,
     border-color var(--pixel-motion-state) linear,
@@ -451,9 +452,7 @@ button.mod-loading:not(.mod-settings *)::after {
   .vertical-tab-content
   .setting-item:not(.setting-item-heading):focus-within {
   border-color: var(--pixel-settings-card-edge-hover);
-  box-shadow:
-    inset 3px 0 0 var(--pixel-cyan),
-    inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 72%, transparent);
+  box-shadow: inset 3px 0 0 var(--pixel-cyan);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -468,6 +467,18 @@ button.mod-loading:not(.mod-settings *)::after {
 // Native Setting controls form the compatibility seam shared by core and
 // community plugins. Style only direct control-rail children so custom plugin
 // navigation and compound controls keep ownership of their geometry.
+.mod-settings .setting-item-info > .setting-item-name {
+  font-family: var(--pixel-font-text);
+  line-height: 1.45;
+}
+
+.mod-settings .setting-item-info > .setting-item-description {
+  font-family: var(--pixel-font-text);
+  font-weight: 400;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
 .mod-settings
   .setting-item-control
   > :is(
@@ -480,8 +491,7 @@ button.mod-loading:not(.mod-settings *)::after {
   border: var(--pixel-border-decoration) solid var(--pixel-settings-edge);
   border-radius: var(--pixel-radius);
   background-color: var(--pixel-settings-surface);
-  box-shadow: 0 1px 0
-    color-mix(in srgb, var(--pixel-paper) 76%, transparent);
+  box-shadow: none;
   transition:
     background-color var(--pixel-motion-state) linear,
     border-color var(--pixel-motion-state) linear,
