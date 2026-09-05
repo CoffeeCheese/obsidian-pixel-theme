@@ -1,0 +1,32 @@
+// Keep native scrollbar dimensions and drag hit areas. Hover previews the
+// navigation signal; the full cyan fill is reserved for an ongoing drag.
+@media (hover: hover) and (pointer: fine) {
+  body.styled-scrollbars:not(.is-mobile) ::-webkit-scrollbar-thumb:hover {
+    background-color: color-mix(in srgb, var(--pixel-border-meaningful) 60%, var(--pixel-cyan));
+  }
+
+  body:not(.is-mobile) .workspace-leaf-resize-handle:hover {
+    background-color: color-mix(in srgb, var(--pixel-cyan) 45%, var(--pixel-paper));
+    border-color: var(--pixel-cyan);
+  }
+}
+
+body.styled-scrollbars:not(.is-mobile) ::-webkit-scrollbar-thumb:active {
+  background-color: var(--pixel-cyan);
+}
+
+body:not(.is-mobile) .workspace-leaf-resize-handle.is-active {
+  background-color: var(--pixel-cyan);
+  border-color: var(--pixel-cyan);
+  transition-duration: 0ms;
+}
+
+@media (forced-colors: active) {
+  body.styled-scrollbars:not(.is-mobile) ::-webkit-scrollbar-thumb:hover,
+  body.styled-scrollbars:not(.is-mobile) ::-webkit-scrollbar-thumb:active,
+  body:not(.is-mobile) .workspace-leaf-resize-handle:hover,
+  body:not(.is-mobile) .workspace-leaf-resize-handle.is-active {
+    background-color: Highlight;
+    border-color: Highlight;
+  }
+}

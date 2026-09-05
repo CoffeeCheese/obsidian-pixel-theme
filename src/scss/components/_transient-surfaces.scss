@@ -54,6 +54,27 @@ body:not(.is-mobile) .menu .menu-item.is-selected {
   outline-offset: -1px;
 }
 
+// Long commands may wrap while their native leading/trailing icons keep a
+// stable column. Tab lists retain their intentional one-line ellipsis.
+body:not(.is-mobile) .menu:not(.mod-tab-list) .menu-item-title {
+  min-inline-size: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+}
+
+body:not(.is-mobile) .menu .menu-item-icon {
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+body:not(.is-mobile) .prompt .suggestion-hotkey {
+  flex-shrink: 0;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   @starting-style {
     body:not(.is-mobile) .menu,

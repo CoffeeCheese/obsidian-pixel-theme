@@ -898,6 +898,27 @@ body:not(.is-mobile) .status-bar-item.mod-clickable:focus-visible {
   outline-offset: 2px;
 }
 
+.markdown-rendered a.internal-link,
+.markdown-rendered a.external-link {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.markdown-rendered :not(pre) > code {
+  overflow-wrap: anywhere;
+  white-space: break-spaces;
+  line-height: inherit;
+  padding-block: 0.08em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.markdown-rendered mark,
+.markdown-source-view.mod-cm6 .cm-highlight {
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
 .callout {
   --pixel-callout-fallback-glyph: "i";
   --callout-padding: var(--pixel-space-3) var(--pixel-space-4);
@@ -3269,6 +3290,8 @@ body .workspace.workspace .workspace-leaf-content[data-type=search] .search-empt
   border-radius: var(--pixel-radius);
   background-color: var(--pixel-paper);
   color: var(--pixel-text-muted);
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
 }
 
 .tag-pane-tag.is-active .tag-pane-tag-count {
@@ -7676,6 +7699,25 @@ body:not(.is-mobile) .menu .menu-item.is-selected {
   outline-offset: -1px;
 }
 
+body:not(.is-mobile) .menu:not(.mod-tab-list) .menu-item-title {
+  min-inline-size: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+}
+
+body:not(.is-mobile) .menu .menu-item-icon {
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+body:not(.is-mobile) .prompt .suggestion-hotkey {
+  flex-shrink: 0;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   @starting-style {
     body:not(.is-mobile) .menu,
@@ -7787,6 +7829,34 @@ select:disabled:not(.mod-settings *),
   box-shadow: none;
 }
 
+@media (hover: hover) and (pointer: fine) {
+  body.styled-scrollbars:not(.is-mobile) ::-webkit-scrollbar-thumb:hover {
+    background-color: color-mix(in srgb, var(--pixel-border-meaningful) 60%, var(--pixel-cyan));
+  }
+  body:not(.is-mobile) .workspace-leaf-resize-handle:hover {
+    background-color: color-mix(in srgb, var(--pixel-cyan) 45%, var(--pixel-paper));
+    border-color: var(--pixel-cyan);
+  }
+}
+body.styled-scrollbars:not(.is-mobile) ::-webkit-scrollbar-thumb:active {
+  background-color: var(--pixel-cyan);
+}
+
+body:not(.is-mobile) .workspace-leaf-resize-handle.is-active {
+  background-color: var(--pixel-cyan);
+  border-color: var(--pixel-cyan);
+  transition-duration: 0ms;
+}
+
+@media (forced-colors: active) {
+  body.styled-scrollbars:not(.is-mobile) ::-webkit-scrollbar-thumb:hover,
+  body.styled-scrollbars:not(.is-mobile) ::-webkit-scrollbar-thumb:active,
+  body:not(.is-mobile) .workspace-leaf-resize-handle:hover,
+  body:not(.is-mobile) .workspace-leaf-resize-handle.is-active {
+    background-color: Highlight;
+    border-color: Highlight;
+  }
+}
 @media print {
   body {
     background: white;

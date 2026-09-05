@@ -518,6 +518,8 @@ body .workspace.workspace .workspace-leaf-content[data-type="search"] .search-em
   border-radius: var(--pixel-radius);
   background-color: var(--pixel-paper);
   color: var(--pixel-text-muted);
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
 }
 
 .tag-pane-tag.is-active .tag-pane-tag-count {

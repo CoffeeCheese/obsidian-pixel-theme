@@ -85,3 +85,26 @@
   outline: var(--pixel-border-control) solid var(--pixel-cyan);
   outline-offset: 2px;
 }
+
+// Break long addresses only when needed, leaving normal CJK and Latin word
+// boundaries intact. Inline code follows prose rhythm without affecting pre.
+.markdown-rendered a.internal-link,
+.markdown-rendered a.external-link {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.markdown-rendered :not(pre) > code {
+  overflow-wrap: anywhere;
+  white-space: break-spaces;
+  line-height: inherit;
+  padding-block: 0.08em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.markdown-rendered mark,
+.markdown-source-view.mod-cm6 .cm-highlight {
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
