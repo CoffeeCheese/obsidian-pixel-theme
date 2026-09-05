@@ -51,3 +51,37 @@
 .markdown-rendered .code-block-flair {
   color: var(--pixel-text);
 }
+
+// Keep selection paint uniform over the paper texture, including linked text.
+.markdown-rendered,
+.markdown-source-view.mod-cm6 {
+  --text-selection: color-mix(in srgb, var(--pixel-cyan) 22%, var(--pixel-paper));
+}
+
+.markdown-rendered ::selection {
+  background-color: var(--text-selection);
+  color: var(--pixel-text);
+}
+
+.markdown-rendered a.internal-link,
+.markdown-rendered a.external-link,
+.markdown-source-view.mod-cm6 .cm-hmd-internal-link,
+.markdown-source-view.mod-cm6 .cm-link,
+.markdown-source-view.mod-cm6 .cm-url {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-skip-ink: auto;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .markdown-rendered a.internal-link:hover,
+  .markdown-rendered a.external-link:hover {
+    text-decoration-thickness: 2px;
+  }
+}
+
+.markdown-rendered a.internal-link:focus-visible,
+.markdown-rendered a.external-link:focus-visible {
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: 2px;
+}

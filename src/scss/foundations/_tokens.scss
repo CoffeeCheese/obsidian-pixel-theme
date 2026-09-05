@@ -40,10 +40,10 @@ body {
   --pixel-button-primary-text: var(--pixel-paper);
   --pixel-shadow-button:
     0 2px 0 color-mix(in srgb, var(--pixel-shadow-color) 76%, var(--pixel-paper)),
-    0 5px 10px color-mix(in srgb, var(--pixel-shadow-color) 16%, transparent);
+    inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 32%, transparent);
   --pixel-shadow-button-hover:
     0 3px 0 color-mix(in srgb, var(--pixel-shadow-color) 72%, var(--pixel-paper)),
-    0 7px 14px color-mix(in srgb, var(--pixel-shadow-color) 18%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 48%, transparent),
     inset 0 0 0 1px color-mix(in srgb, var(--pixel-cyan) 22%, transparent);
   --pixel-shadow-button-active:
     0 1px 0 color-mix(in srgb, var(--pixel-shadow-color) 72%, var(--pixel-paper)),
@@ -76,4 +76,5 @@ body {
   --pixel-workspace-gap: 12px;
   --pixel-workspace-inset: 12px;
   --pixel-workspace-grid-size: 24px;
+  --pixel-reading-grid-ink: rgb(from var(--pixel-text) r g b / 1.3%);
 }

@@ -1,0 +1,72 @@
+// Horizontal titles reserve the close action's width even when they truncate.
+// Stacked spines retain Obsidian's own writing mode and sticky positioning.
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header-container-inner > .workspace-tab-header .workspace-tab-header-inner-title {
+  min-inline-size: 0;
+  inline-size: auto;
+  text-overflow: ellipsis;
+  mask-image: none;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header-inner-close-button {
+  flex-shrink: 0;
+  border-radius: var(--pixel-radius-small);
+  transition:
+    background-color var(--pixel-motion-state) linear,
+    color var(--pixel-motion-state) linear;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header-inner-close-button:hover {
+    background-color: var(--pixel-surface-secondary);
+    color: var(--pixel-text);
+  }
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header-inner-close-button:focus-visible {
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: -2px;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tabs.mod-stacked .workspace-tab-container > .workspace-tab-header {
+  border-radius: 0;
+  border-inline-end: var(--pixel-border-decoration) solid var(--pixel-line);
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tabs.mod-stacked .workspace-tab-container > .workspace-tab-header.is-active {
+  box-shadow: inset 3px 0 0 var(--pixel-cyan);
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type="markdown"] {
+  .metadata-property-value {
+    --input-placeholder-color: var(--pixel-text-muted);
+  }
+
+  .metadata-property-value:focus-within {
+    border-radius: var(--pixel-radius-small);
+    outline: var(--pixel-border-decoration) solid var(--pixel-cyan);
+    outline-offset: -1px;
+  }
+
+  .metadata-input-longtext {
+    // Very long values stay reachable without growing an unbounded sheet.
+    overflow-y: auto;
+  }
+
+  .metadata-property-value[data-property-type="tags"] .multi-select-pill-content {
+    min-inline-size: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.4;
+  }
+
+  .multi-select-pill-remove-button {
+    flex-shrink: 0;
+  }
+}
+
+@media (forced-colors: active) {
+  body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tabs.mod-stacked .workspace-tab-container > .workspace-tab-header.is-active {
+    outline: var(--pixel-border-control) solid Highlight;
+    outline-offset: -2px;
+  }
+}

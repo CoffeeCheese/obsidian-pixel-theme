@@ -64,6 +64,16 @@
 }
 
 @media (forced-colors: active) {
+  .markdown-rendered,
+  .markdown-source-view.mod-cm6 {
+    --text-selection: Highlight;
+  }
+
+  .markdown-rendered ::selection {
+    background-color: Highlight;
+    color: HighlightText;
+  }
+
   .theme-light,
   .theme-dark {
     --pixel-canvas: Canvas;

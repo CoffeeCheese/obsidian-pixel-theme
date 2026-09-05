@@ -171,10 +171,10 @@ body {
   --pixel-button-primary-text: var(--pixel-paper);
   --pixel-shadow-button:
     0 2px 0 color-mix(in srgb, var(--pixel-shadow-color) 76%, var(--pixel-paper)),
-    0 5px 10px color-mix(in srgb, var(--pixel-shadow-color) 16%, transparent);
+    inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 32%, transparent);
   --pixel-shadow-button-hover:
     0 3px 0 color-mix(in srgb, var(--pixel-shadow-color) 72%, var(--pixel-paper)),
-    0 7px 14px color-mix(in srgb, var(--pixel-shadow-color) 18%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 48%, transparent),
     inset 0 0 0 1px color-mix(in srgb, var(--pixel-cyan) 22%, transparent);
   --pixel-shadow-button-active:
     0 1px 0 color-mix(in srgb, var(--pixel-shadow-color) 72%, var(--pixel-paper)),
@@ -207,6 +207,7 @@ body {
   --pixel-workspace-gap: 12px;
   --pixel-workspace-inset: 12px;
   --pixel-workspace-grid-size: 24px;
+  --pixel-reading-grid-ink: rgb(from var(--pixel-text) r g b / 1.3%);
 }
 
 .theme-light {
@@ -858,6 +859,38 @@ body:not(.is-mobile) .status-bar-item.mod-clickable:focus-visible {
   color: var(--pixel-text);
 }
 
+.markdown-rendered,
+.markdown-source-view.mod-cm6 {
+  --text-selection: color-mix(in srgb, var(--pixel-cyan) 22%, var(--pixel-paper));
+}
+
+.markdown-rendered ::selection {
+  background-color: var(--text-selection);
+  color: var(--pixel-text);
+}
+
+.markdown-rendered a.internal-link,
+.markdown-rendered a.external-link,
+.markdown-source-view.mod-cm6 .cm-hmd-internal-link,
+.markdown-source-view.mod-cm6 .cm-link,
+.markdown-source-view.mod-cm6 .cm-url {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-skip-ink: auto;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .markdown-rendered a.internal-link:hover,
+  .markdown-rendered a.external-link:hover {
+    text-decoration-thickness: 2px;
+  }
+}
+.markdown-rendered a.internal-link:focus-visible,
+.markdown-rendered a.external-link:focus-visible {
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: 2px;
+}
+
 .callout {
   --pixel-callout-fallback-glyph: "i";
   border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
@@ -1289,7 +1322,7 @@ body:not(.is-mobile) .workspace .clickable-icon:not(.mod-settings *):is(.is-acti
 button:not(.clickable-icon):not(.mod-settings *) {
   border-radius: var(--pixel-radius-button);
   box-shadow: var(--pixel-shadow-button);
-  transform: translateY(0) scale(1);
+  transform: translateY(0);
 }
 
 textarea:not(.mod-settings *),
@@ -1329,7 +1362,7 @@ input[type=search]:is(:focus, :focus-visible) {
 }
 
 button:not(.clickable-icon):not(.mod-settings *):not(:disabled):not([aria-disabled=true]):active {
-  transform: translateY(1px) scale(0.98);
+  transform: translateY(1px);
   box-shadow: var(--pixel-shadow-button-active);
   transition-duration: var(--pixel-motion-press);
 }
@@ -1387,7 +1420,7 @@ select:not(.mod-settings *):focus-visible,
   }
   button:not(.clickable-icon):not(.mod-settings *):not(:disabled):not([aria-disabled=true]):not(:active):hover {
     box-shadow: var(--pixel-shadow-button-hover);
-    transform: translateY(-1px) scale(1);
+    transform: translateY(-1px);
   }
   .clickable-icon:not(.mod-settings *):not(:disabled):not([aria-disabled=true]):not(:active):hover {
     transform: translateY(-1px);
@@ -1490,14 +1523,14 @@ button.mod-destructive:not(.mod-settings *) {
     background-color: color-mix(in srgb, var(--pixel-brick) 16%, var(--pixel-paper));
     color: color-mix(in srgb, var(--pixel-brick) 94%, var(--pixel-text));
     box-shadow: 0 2px 0 color-mix(in srgb, var(--pixel-brick) 68%, var(--pixel-shadow-color)), inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 68%, transparent);
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 }
 button.mod-destructive:not(.mod-settings *):not(:disabled):not([aria-disabled=true]):active {
   border-color: var(--pixel-brick);
   background-color: color-mix(in srgb, var(--pixel-brick) 22%, var(--pixel-paper));
   box-shadow: 0 1px 0 color-mix(in srgb, var(--pixel-brick) 72%, var(--pixel-shadow-color));
-  transform: translateY(1px) scale(0.98);
+  transform: translateY(1px);
 }
 
 .is-loading {
@@ -1700,6 +1733,13 @@ select.dropdown,
   box-shadow: inset 0 1px 2px color-mix(in srgb, var(--pixel-shadow-color) 14%, transparent);
 }
 
+@media (forced-colors: none) {
+  body:not(.is-mobile) button.mod-cta:not(.clickable-icon):not(.mod-settings *):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading)) {
+    --pixel-shadow-button: 0 2px 0 color-mix(in srgb, var(--pixel-shadow-color) 76%, var(--pixel-paper));
+    --pixel-shadow-button-hover: 0 3px 0 color-mix(in srgb, var(--pixel-shadow-color) 72%, var(--pixel-paper));
+    --pixel-shadow-button-active: 0 1px 0 color-mix(in srgb, var(--pixel-shadow-color) 72%, var(--pixel-paper));
+  }
+}
 button.mod-cta:not(.clickable-icon):not(.mod-settings *):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading)),
 .mod-settings .setting-item .setting-item-control > button.mod-cta:not(.clickable-icon):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading)) {
   --pixel-mobile-control-surface: var(--pixel-cyan);
@@ -2363,6 +2403,14 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-l
   }
 }
 @media (forced-colors: active) {
+  .markdown-rendered,
+  .markdown-source-view.mod-cm6 {
+    --text-selection: Highlight;
+  }
+  .markdown-rendered ::selection {
+    background-color: Highlight;
+    color: HighlightText;
+  }
   .theme-light,
   .theme-dark {
     --pixel-canvas: Canvas;
@@ -5807,7 +5855,7 @@ body.is-mobile button:not(.clickable-icon):not(.mod-settings *) {
   box-shadow: var(--pixel-mobile-pixel-step);
 }
 body.is-mobile button:not(.clickable-icon):not(.mod-settings *):not(:disabled):not([aria-disabled=true]):active {
-  transform: translateY(1px) scale(0.98);
+  transform: translateY(1px);
   background-color: var(--pixel-mobile-control-active);
   box-shadow: inset 0 -1px 0 var(--pixel-mobile-control-border);
 }
@@ -6729,10 +6777,10 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-l
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property {
   display: flex;
-  min-block-size: 29px;
+  min-block-size: 32px;
   margin: 0;
   padding: 0;
-  align-items: center;
+  align-items: flex-start;
   border: 0;
   border-radius: 6px;
   background-color: transparent;
@@ -6741,7 +6789,8 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-l
 
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-key {
   display: flex;
-  flex: 0 0 165px;
+  flex: 0 0 min(165px, 38%);
+  align-self: flex-start;
   min-inline-size: 0;
   padding: 0;
   align-items: center;
@@ -6883,8 +6932,8 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-l
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .multi-select-pill {
   display: inline-flex;
   min-block-size: 0;
-  margin: 0 5px 0 0;
-  padding: 2.5px 0;
+  margin: 0;
+  padding: var(--pixel-space-1) 0;
   border: var(--pixel-border-decoration) solid rgb(from var(--pixel-cyan) r g b/35%);
   border-radius: 6px;
   background-color: var(--pixel-nav-label);
@@ -6957,7 +7006,7 @@ body:not(.is-mobile) .workspace.workspace .callout {
 body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .view-content {
   border: 0;
   background-color: transparent;
-  background-image: linear-gradient(rgb(from var(--pixel-text) r g b/2.6%) 1px, transparent 1px), linear-gradient(90deg, rgb(from var(--pixel-text) r g b/2.6%) 1px, transparent 1px);
+  background-image: linear-gradient(var(--pixel-reading-grid-ink) 1px, transparent 1px), linear-gradient(90deg, var(--pixel-reading-grid-ink) 1px, transparent 1px);
   background-size: 4px 4px;
 }
 
@@ -7002,6 +7051,66 @@ body:not(.is-mobile) .workspace.workspace .workspace-split.mod-right-split :is(.
   font-family: var(--pixel-font-identity);
 }
 
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header-container-inner > .workspace-tab-header .workspace-tab-header-inner-title {
+  min-inline-size: 0;
+  inline-size: auto;
+  text-overflow: ellipsis;
+  mask-image: none;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header-inner-close-button {
+  flex-shrink: 0;
+  border-radius: var(--pixel-radius-small);
+  transition: background-color var(--pixel-motion-state) linear, color var(--pixel-motion-state) linear;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header-inner-close-button:hover {
+    background-color: var(--pixel-surface-secondary);
+    color: var(--pixel-text);
+  }
+}
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tab-header-inner-close-button:focus-visible {
+  outline: var(--pixel-border-control) solid var(--pixel-cyan);
+  outline-offset: -2px;
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tabs.mod-stacked .workspace-tab-container > .workspace-tab-header {
+  border-radius: 0;
+  border-inline-end: var(--pixel-border-decoration) solid var(--pixel-line);
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tabs.mod-stacked .workspace-tab-container > .workspace-tab-header.is-active {
+  box-shadow: inset 3px 0 0 var(--pixel-cyan);
+}
+
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-value {
+  --input-placeholder-color: var(--pixel-text-muted);
+}
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-value:focus-within {
+  border-radius: var(--pixel-radius-small);
+  outline: var(--pixel-border-decoration) solid var(--pixel-cyan);
+  outline-offset: -1px;
+}
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-input-longtext {
+  overflow-y: auto;
+}
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .metadata-property-value[data-property-type=tags] .multi-select-pill-content {
+  min-inline-size: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.4;
+}
+body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=markdown] .multi-select-pill-remove-button {
+  flex-shrink: 0;
+}
+
+@media (forced-colors: active) {
+  body:not(.is-mobile) .workspace.workspace .workspace-split.mod-root .workspace-tabs.mod-stacked .workspace-tab-container > .workspace-tab-header.is-active {
+    outline: var(--pixel-border-control) solid Highlight;
+    outline-offset: -2px;
+  }
+}
 body:not(.is-mobile) .menu,
 body:not(.is-mobile) .suggestion-container {
   border: var(--pixel-border-decoration) solid var(--pixel-border-meaningful);

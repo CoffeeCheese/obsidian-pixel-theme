@@ -505,7 +505,7 @@ test("controls expose pointer, keyboard, and pressed feedback without layout shi
     declaration(roundedButton, "box-shadow"),
     "var(--pixel-shadow-button)",
   );
-  assert.equal(declaration(roundedButton, "transform"), "translatey(0) scale(1)");
+  assert.equal(declaration(roundedButton, "transform"), "translatey(0)");
 
   const panelButton = ruleBody(
     css,
@@ -552,7 +552,7 @@ test("controls expose pointer, keyboard, and pressed feedback without layout shi
     css,
     'button:not(.clickable-icon):not(.mod-settings *):not(:disabled):not([aria-disabled=true]):active',
   );
-  assert.equal(declaration(pressedButton, "transform"), "translatey(1px) scale(0.98)");
+  assert.equal(declaration(pressedButton, "transform"), "translatey(1px)");
   assert.equal(
     declaration(pressedButton, "box-shadow"),
     "var(--pixel-shadow-button-active)",
@@ -622,7 +622,7 @@ test("controls expose pointer, keyboard, and pressed feedback without layout shi
     pointerHover,
     'button:not(.clickable-icon):not(.mod-settings *):not(:disabled):not([aria-disabled=true]):not(:active):hover',
   );
-  assert.equal(declaration(buttonHover, "transform"), "translatey(-1px) scale(1)");
+  assert.equal(declaration(buttonHover, "transform"), "translatey(-1px)");
   assert.equal(
     declaration(buttonHover, "box-shadow"),
     "var(--pixel-shadow-button-hover)",
@@ -691,7 +691,7 @@ test("disabled, selected, warning, danger, loading, and empty states use multipl
   );
   assert.equal(
     declaration(dangerActive, "transform"),
-    "translatey(1px) scale(0.98)",
+    "translatey(1px)",
   );
 
   const loading = ruleBody(css, ".is-loading");

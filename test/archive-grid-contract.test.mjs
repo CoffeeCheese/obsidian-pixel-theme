@@ -531,10 +531,10 @@ test("H5 Archive Grid reproduces the prototype property sheet in the central rea
   );
   assert.equal(declaration(focusedMarker, "outline-offset"), "2px");
   assert.equal(declaration(markerIcon, "opacity"), "0");
-  assert.equal(declaration(row, "min-block-size"), "29px");
+  assert.equal(declaration(row, "min-block-size"), "32px");
   assert.equal(declaration(row, "border"), "0");
   assert.equal(declaration(row, "border-radius"), "6px");
-  assert.equal(declaration(key, "flex"), "0 0 165px");
+  assert.equal(declaration(key, "flex"), "0 0 min(165px, 38%)");
   assert.equal(declaration(key, "font-family"), "var(--pixel-font-monospace)");
   assert.equal(declaration(key, "font-size"), "16px");
   assert.equal(declaration(value, "font-family"), "var(--pixel-font-text)");
