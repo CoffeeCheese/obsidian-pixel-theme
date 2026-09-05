@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <kbd><!-- pixel-version:start -->0.9.8<!-- pixel-version:end --></kbd>
+  <kbd><!-- pixel-version:start -->0.9.9<!-- pixel-version:end --></kbd>
   <kbd>OBSIDIAN 1.12+</kbd>
   <kbd>LIGHT / DARK</kbd>
   <kbd>DESKTOP / iOS</kbd>
@@ -39,10 +39,11 @@ Pixel 为 Obsidian 带来安静的纸张工作区、清晰的像素身份，以�
 
 ## 近期更新
 
-`0.9.3`–`0.9.8` 这一轮更新让 Pixel 从广泛覆盖 Obsidian 界面，逐步深入到交互细节与社区插件适配：
+`0.9.3`–`0.9.9` 这一轮更新让 Pixel 从广泛覆盖 Obsidian 界面，逐步深入到交互细节与社区插件适配：
 
 | 版本 | 主要变化 |
 | --- | --- |
+| [`0.9.9`](docs/releases/0.9.9.md) | 精修动效、阅读、搜索、PDF、Bases 与 Canvas，完善任务删除线及深色浮层。 |
 | [`0.9.8`](docs/releases/0.9.8.md) | 优化 Markdown 图片、任务反馈与代码块身份，并改善 Templater 提示框和文档阅读体验。 |
 | [`0.9.7`](docs/releases/0.9.7.md) | 用紧凑的青色像素游标替代厚重的文件树右键目标框，并修复 Project Manager 新增操作的对比度与状态反馈。 |
 | [`0.9.6`](docs/releases/0.9.6.md) | 将 Project Manager 任务标签、长文本截断和删除操作统一到 Pixel 的紧凑胶囊体系。 |
@@ -234,7 +235,7 @@ Pixel 当前不提供自定义 **Style Settings** 选项。Style Settings 插件
 
 | 项目 | 当前信息 |
 | --- | --- |
-| 当前版本 | <code><!-- pixel-version:start -->0.9.8<!-- pixel-version:end --></code> |
+| 当前版本 | <code><!-- pixel-version:start -->0.9.9<!-- pixel-version:end --></code> |
 | Obsidian 要求 | `1.12.0` 或更高版本 |
 | 优先适配平台 | 桌面端 / iOS |
 | 已验证桌面环境 | Obsidian `1.13.4` / macOS |

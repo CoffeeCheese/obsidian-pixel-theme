@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <kbd><!-- pixel-version:start -->0.9.8<!-- pixel-version:end --></kbd>
+  <kbd><!-- pixel-version:start -->0.9.9<!-- pixel-version:end --></kbd>
   <kbd>OBSIDIAN 1.12+</kbd>
   <kbd>LIGHT / DARK</kbd>
   <kbd>DESKTOP / iOS</kbd>
@@ -44,11 +44,12 @@ states that make a workspace feel coherent.
 
 ## Recent updates
 
-The `0.9.3`–`0.9.8` cycle moved Pixel from broad surface coverage toward finer
+The `0.9.3`–`0.9.9` cycle moved Pixel from broad surface coverage toward finer
 interaction and community-plugin polish:
 
 | Release | What changed |
 | --- | --- |
+| [`0.9.9`](docs/releases/0.9.9.en.md) | Refined motion, reading, search, PDF, Bases, and Canvas, with stable task strikethrough and clearer dark surfaces. |
 | [`0.9.8`](docs/releases/0.9.8.en.md) | Refined Markdown images, task feedback, and fenced-code identity, while polishing Templater prompts and documentation readability. |
 | [`0.9.7`](docs/releases/0.9.7.en.md) | Replaced the heavy file-tree context target with a compact cyan cursor, then restored clear contrast and state feedback for Project Manager add actions. |
 | [`0.9.6`](docs/releases/0.9.6.en.md) | Brought Project Manager task tags, truncation, and removal controls into Pixel's compact capsule system. |
@@ -284,7 +285,7 @@ unless named there.
 
 | Item | Current information |
 | --- | --- |
-| Current version | <code><!-- pixel-version:start -->0.9.8<!-- pixel-version:end --></code> |
+| Current version | <code><!-- pixel-version:start -->0.9.9<!-- pixel-version:end --></code> |
 | Obsidian requirement | `1.12.0` or newer |
 | Priority platforms | Desktop / iOS |
 | Verified desktop environment | Obsidian `1.13.4` / macOS |
