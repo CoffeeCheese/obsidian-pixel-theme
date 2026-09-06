@@ -8,10 +8,6 @@
 </p>
 
 <p align="center">
-  <img src="src/assets/screenshots/pixel-status-rail.svg" width="352" alt="Pixel semantic color rail">
-</p>
-
-<p align="center">
   <kbd><!-- pixel-version:start -->0.9.9<!-- pixel-version:end --></kbd>
   <kbd>OBSIDIAN 1.12+</kbd>
   <kbd>LIGHT / DARK</kbd>
@@ -28,10 +24,10 @@
 </p>
 
 <p align="center">
-  <img src="src/assets/screenshots/pixel-store-preview.png" alt="Pixel theme preview showing desktop Light, desktop Dark, and iOS surfaces" width="100%">
+  <img src="src/assets/screenshots/pixel-store-preview.png" alt="Pixel Light and Dark Obsidian workspaces with file navigation, central Pixel Boy new tab, and sidebar" width="100%">
 </p>
 
-<p align="center"><sub>Desktop Light / Dark and iOS · Composed from real Obsidian captures</sub></p>
+<p align="center"><sub>Pixels on paper · Light and Dark · Real Obsidian captures</sub></p>
 
 Pixel gives Obsidian a calm paper workspace, a crisp pixel identity, and a
 clear signal system for navigation and focus. It is not a retro filter: body
@@ -141,14 +137,54 @@ workspace reads as one deliberate console rather than a stack of panels.
 
 <br>
 
+<p><strong>Light · Cool paper and cyan navigation</strong></p>
+
+![Light · Cool paper and cyan navigation](src/assets/screenshots/pixel-desktop-light.png)
+
+<p><strong>Dark · Slate surfaces and clear reading hierarchy</strong></p>
+
+![Dark · Slate surfaces and clear reading hierarchy](src/assets/screenshots/pixel-desktop-dark.png)
+
+</details>
+
+### Markdown · A closer look
+
+Real Reading mode details from `Theme Debug/Pixel Markdown 全格式调试` in the dev-test Vault. Open an image to inspect it at full resolution.
+
+<details>
+<summary><strong>Typography, links, and tags</strong></summary>
+
 <table>
+  <tr><th width="50%">LIGHT</th><th width="50%">DARK</th></tr>
   <tr>
-    <td align="center"><strong>LIGHT</strong></td>
-    <td align="center"><strong>DARK</strong></td>
+    <td><img src="src/assets/screenshots/pixel-typography-light.png" alt="Typography, links, and tags · light" loading="lazy"></td>
+    <td><img src="src/assets/screenshots/pixel-typography-dark.png" alt="Typography, links, and tags · dark" loading="lazy"></td>
   </tr>
+</table>
+
+</details>
+
+<details>
+<summary><strong>Callout hierarchy</strong></summary>
+
+<table>
+  <tr><th width="50%">LIGHT</th><th width="50%">DARK</th></tr>
   <tr>
-    <td><img src="src/assets/screenshots/pixel-desktop-light.png" alt="Pixel desktop Light theme"></td>
-    <td><img src="src/assets/screenshots/pixel-desktop-dark.png" alt="Pixel desktop Dark theme"></td>
+    <td><img src="src/assets/screenshots/pixel-callouts-light.png" alt="Callout hierarchy · light" loading="lazy"></td>
+    <td><img src="src/assets/screenshots/pixel-callouts-dark.png" alt="Callout hierarchy · dark" loading="lazy"></td>
+  </tr>
+</table>
+
+</details>
+
+<details>
+<summary><strong>Code and syntax highlighting</strong></summary>
+
+<table>
+  <tr><th width="50%">LIGHT</th><th width="50%">DARK</th></tr>
+  <tr>
+    <td><img src="src/assets/screenshots/pixel-code-light.png" alt="Code and syntax highlighting · light" loading="lazy"></td>
+    <td><img src="src/assets/screenshots/pixel-code-dark.png" alt="Code and syntax highlighting · dark" loading="lazy"></td>
   </tr>
 </table>
 
@@ -157,7 +193,7 @@ workspace reads as one deliberate console rather than a stack of panels.
 ## Visual language
 
 <p align="center">
-  <img src="src/assets/screenshots/pixel-status-rail.svg" width="352" alt="Paper, Canvas, Cyan, Amber, and Brick semantic colors">
+  <img src="src/assets/screenshots/pixel-status-rail.svg" width="520" alt="Paper, Canvas, Cyan, Amber, and Brick semantic colors">
 </p>
 
 | Role | What it communicates |

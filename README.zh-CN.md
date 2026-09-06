@@ -8,10 +8,6 @@
 </p>
 
 <p align="center">
-  <img src="src/assets/screenshots/pixel-status-rail.svg" width="352" alt="Pixel 语义色像素轨">
-</p>
-
-<p align="center">
   <kbd><!-- pixel-version:start -->0.9.9<!-- pixel-version:end --></kbd>
   <kbd>OBSIDIAN 1.12+</kbd>
   <kbd>LIGHT / DARK</kbd>
@@ -28,10 +24,10 @@
 </p>
 
 <p align="center">
-  <img src="src/assets/screenshots/pixel-store-preview.png" alt="Pixel 主题预览，展示桌面浅色、桌面深色与 iOS 界面" width="100%">
+  <img src="src/assets/screenshots/pixel-store-preview.png" alt="Pixel 深浅色完整工作区，保留文件导航和侧栏，中央文档舱展示 Pixel Boy 新标签页" width="100%">
 </p>
 
-<p align="center"><sub>桌面 Light / Dark 与 iOS · 使用真实 Obsidian 界面合成</sub></p>
+<p align="center"><sub>纸面上的像素 · 浅色与深色 · 使用真实 Obsidian 截图排版</sub></p>
 
 Pixel 为 Obsidian 带来安静的纸张工作区、清晰的像素身份，以及用于导航和焦点的明确信号系统。它不是一层复古滤镜：正文始终适合长时间阅读，原生交互保持不变，个性只集中在真正帮助辨认方向的位置。
 
@@ -120,14 +116,54 @@ Pixel 为 Obsidian 带来安静的纸张工作区、清晰的像素身份，以�
 
 <br>
 
+<p><strong>浅色 · 冷白纸面与青色导航</strong></p>
+
+![浅色 · 冷白纸面与青色导航](src/assets/screenshots/pixel-desktop-light.png)
+
+<p><strong>深色 · 深灰蓝工作区与清晰的阅读层次</strong></p>
+
+![深色 · 深灰蓝工作区与清晰的阅读层次](src/assets/screenshots/pixel-desktop-dark.png)
+
+</details>
+
+### Markdown · 看清每一处细节
+
+以下图片取自 dev-test 中的「Theme Debug/Pixel Markdown 全格式调试」，均为真实阅读模式局部截图。点击图片可查看原尺寸。
+
+<details>
+<summary><strong>文字、链接与标签</strong></summary>
+
 <table>
+  <tr><th width="50%">LIGHT</th><th width="50%">DARK</th></tr>
   <tr>
-    <td align="center"><strong>LIGHT</strong></td>
-    <td align="center"><strong>DARK</strong></td>
+    <td><img src="src/assets/screenshots/pixel-typography-light.png" alt="文字、链接与标签 · light" loading="lazy"></td>
+    <td><img src="src/assets/screenshots/pixel-typography-dark.png" alt="文字、链接与标签 · dark" loading="lazy"></td>
   </tr>
+</table>
+
+</details>
+
+<details>
+<summary><strong>Callout 信息层次</strong></summary>
+
+<table>
+  <tr><th width="50%">LIGHT</th><th width="50%">DARK</th></tr>
   <tr>
-    <td><img src="src/assets/screenshots/pixel-desktop-light.png" alt="Pixel 桌面端浅色主题"></td>
-    <td><img src="src/assets/screenshots/pixel-desktop-dark.png" alt="Pixel 桌面端深色主题"></td>
+    <td><img src="src/assets/screenshots/pixel-callouts-light.png" alt="Callout 信息层次 · light" loading="lazy"></td>
+    <td><img src="src/assets/screenshots/pixel-callouts-dark.png" alt="Callout 信息层次 · dark" loading="lazy"></td>
+  </tr>
+</table>
+
+</details>
+
+<details>
+<summary><strong>代码与语法高亮</strong></summary>
+
+<table>
+  <tr><th width="50%">LIGHT</th><th width="50%">DARK</th></tr>
+  <tr>
+    <td><img src="src/assets/screenshots/pixel-code-light.png" alt="代码与语法高亮 · light" loading="lazy"></td>
+    <td><img src="src/assets/screenshots/pixel-code-dark.png" alt="代码与语法高亮 · dark" loading="lazy"></td>
   </tr>
 </table>
 
@@ -136,7 +172,7 @@ Pixel 为 Obsidian 带来安静的纸张工作区、清晰的像素身份，以�
 ## 视觉语言
 
 <p align="center">
-  <img src="src/assets/screenshots/pixel-status-rail.svg" width="352" alt="Paper、Canvas、Cyan、Amber 与 Brick 语义颜色">
+  <img src="src/assets/screenshots/pixel-status-rail.svg" width="520" alt="Paper、Canvas、Cyan、Amber 与 Brick 语义颜色">
 </p>
 
 | 角色 | 传达的信息 |
