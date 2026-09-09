@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "cover:sync": "node scripts/sync-cover.mjs",
     "build": "node build.mjs",
     "dev": "node build.mjs --watch",
     "check": "node build.mjs --check",

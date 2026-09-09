@@ -94,8 +94,25 @@ The first public version requires one manual registration:
 
 1. Make the GitHub repository public.
 2. Publish `0.9.0` and confirm its Release contains `manifest.json` and `theme.css`.
-3. Confirm the default branch contains the matching `manifest.json`, `README.md`, `LICENSE`, and the root-level `512×288` `screenshot.png` required by the community directory.
+3. Confirm the default branch contains the matching `manifest.json`, `README.md`, `LICENSE`, and root-level `screenshot.png`. The directory recommends 512×288; Pixel preserves its existing 1920×1080 cover at the same 16:9 ratio.
 4. Sign in at [community.obsidian.md](https://community.obsidian.md), link the owning GitHub account, and add the theme.
 5. Resolve automated review feedback with a new incremented version and Release rather than altering the public `0.9.0` assets.
 
 After approval, no directory resubmission is needed for routine upgrades. Obsidian reads the current default-branch manifest and downloads the identically tagged GitHub Release. Users on an older Obsidian version are resolved through `versions.json` to the latest compatible Pixel version.
+
+## Update the store cover
+
+Keep the community directory's **Screenshot path** set to `screenshot.png`, matching the official registry. The canonical artwork is `src/assets/screenshots/pixel-store-preview.png`, also used by both READMEs. After exporting new artwork, run:
+
+```sh
+npm run cover:sync
+node --test test/release-candidate-contract.test.mjs
+npm test
+npm run check
+```
+
+Commit both PNGs and push to the default branch. The contract checks byte equality so updates to the README cover cannot silently leave the registry cover behind. Cover-only changes do not require a new theme version or release tag.
+
+The dashboard's **Screenshots** gallery is separate from **Screenshot path**; uploading gallery images does not replace the repository cover. See [Set up and claim](https://docs.obsidian.md/community-directory/set-up-and-claim), [Manage your entry](https://docs.obsidian.md/community-directory/manage-entry), and [Submit your theme](https://docs.obsidian.md/themes/app-themes/submit-theme).
+
+After pushing, verify the public default-branch `screenshot.png`, the registry path, and the store rendering separately. A local fix or successful push alone does not confirm that the store has refreshed its image.

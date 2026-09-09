@@ -140,8 +140,23 @@ test("documentation separates historical evidence, release operations, and bilin
   assert.match(issueTemplate, /Obsidian version/);
   assert.match(issueTemplate, /Android \(unverified\)/);
   assert.equal(screenshot.subarray(1, 4).toString("ascii"), "PNG");
-  assert.equal(screenshot.readUInt32BE(16), 512);
-  assert.equal(screenshot.readUInt32BE(20), 288);
+  assert.equal(screenshot.readUInt32BE(16), 1920);
+  assert.equal(screenshot.readUInt32BE(20), 1080);
   assert.doesNotMatch(readme, /DESKTOP \/ MOBILE/);
   assert.doesNotMatch(readmeEnglish, /DESKTOP \/ MOBILE/);
+});
+
+test("the registry cover stays identical to the bilingual README cover", async () => {
+  const sourcePath = "src/assets/screenshots/pixel-store-preview.png";
+  const [cover, source, ...readmes] = await Promise.all([
+    readBytes("screenshot.png"),
+    readBytes(sourcePath),
+    read("README.md"),
+    read("README.zh-CN.md"),
+  ]);
+
+  assert.deepEqual(cover, source, "Run npm run cover:sync after updating the cover");
+  for (const readme of readmes) {
+    assert.ok(readme.includes(`src="${sourcePath}"`));
+  }
 });
