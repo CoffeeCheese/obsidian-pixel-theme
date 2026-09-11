@@ -151,7 +151,7 @@ workspace reads as one deliberate console rather than a stack of panels.
 
 Real Reading mode details from `Theme Debug/Pixel Markdown 全格式调试` in the dev-test Vault. Open an image to inspect it at full resolution.
 
-<details>
+<details open>
 <summary><strong>Typography, links, and tags</strong></summary>
 
 <table>
@@ -164,7 +164,7 @@ Real Reading mode details from `Theme Debug/Pixel Markdown 全格式调试` in t
 
 </details>
 
-<details>
+<details open>
 <summary><strong>Callout hierarchy</strong></summary>
 
 <table>
@@ -177,7 +177,7 @@ Real Reading mode details from `Theme Debug/Pixel Markdown 全格式调试` in t
 
 </details>
 
-<details>
+<details open>
 <summary><strong>Code and syntax highlighting</strong></summary>
 
 <table>

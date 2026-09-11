@@ -130,7 +130,7 @@ Pixel 为 Obsidian 带来安静的纸张工作区、清晰的像素身份，以�
 
 以下图片取自 dev-test 中的「Theme Debug/Pixel Markdown 全格式调试」，均为真实阅读模式局部截图。点击图片可查看原尺寸。
 
-<details>
+<details open>
 <summary><strong>文字、链接与标签</strong></summary>
 
 <table>
@@ -143,7 +143,7 @@ Pixel 为 Obsidian 带来安静的纸张工作区、清晰的像素身份，以�
 
 </details>
 
-<details>
+<details open>
 <summary><strong>Callout 信息层次</strong></summary>
 
 <table>
@@ -156,7 +156,7 @@ Pixel 为 Obsidian 带来安静的纸张工作区、清晰的像素身份，以�
 
 </details>
 
-<details>
+<details open>
 <summary><strong>代码与语法高亮</strong></summary>
 
 <table>

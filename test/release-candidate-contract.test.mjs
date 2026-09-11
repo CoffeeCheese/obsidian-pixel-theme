@@ -146,6 +146,18 @@ test("documentation separates historical evidence, release operations, and bilin
   assert.doesNotMatch(readmeEnglish, /DESKTOP \/ MOBILE/);
 });
 
+test("Markdown detail galleries open by default in both README languages", async () => {
+  for (const file of ["README.md", "README.zh-CN.md"]) {
+    const markdown = await read(file);
+    const section = markdown.split(/### Markdown · /)[1].split(/\n#{2,3} /)[0];
+    const galleries = [...section.matchAll(/<details\b([^>]*)>/g)];
+    assert.equal(galleries.length, 3, file);
+    for (const [, attributes] of galleries) {
+      assert.match(attributes, /\bopen\b/, file);
+    }
+  }
+});
+
 test("the registry cover stays identical to the bilingual README cover", async () => {
   const sourcePath = "src/assets/screenshots/pixel-store-preview.png";
   const [cover, source, ...readmes] = await Promise.all([
