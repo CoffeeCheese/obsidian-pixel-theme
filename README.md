@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <kbd><!-- pixel-version:start -->0.9.9<!-- pixel-version:end --></kbd>
+  <kbd><!-- pixel-version:start -->1.0.0<!-- pixel-version:end --></kbd>
   <kbd>OBSIDIAN 1.12+</kbd>
   <kbd>LIGHT / DARK</kbd>
   <kbd>DESKTOP / iOS</kbd>
@@ -40,11 +40,12 @@ states that make a workspace feel coherent.
 
 ## Recent updates
 
-The `0.9.3`–`0.9.9` cycle moved Pixel from broad surface coverage toward finer
-interaction and community-plugin polish:
+Pixel `1.0.0` establishes the stable baseline after the `0.9` series, with
+plugin-native Claudian content and refined Obsidian surfaces:
 
 | Release | What changed |
 | --- | --- |
+| [`1.0.0`](docs/releases/1.0.0.en.md) | First stable release; restores native Claudian content controls and fixes doubled message bubbles and oversized action rows. |
 | [`0.9.9`](docs/releases/0.9.9.en.md) | Refined motion, reading, search, PDF, Bases, and Canvas, with stable task strikethrough and clearer dark surfaces. |
 | [`0.9.8`](docs/releases/0.9.8.en.md) | Refined Markdown images, task feedback, and fenced-code identity, while polishing Templater prompts and documentation readability. |
 | [`0.9.7`](docs/releases/0.9.7.en.md) | Replaced the heavy file-tree context target with a compact cyan cursor, then restored clear contrast and state feedback for Project Manager add actions. |
@@ -112,9 +113,9 @@ reduced-motion preferences continue to belong to Obsidian.
   <tr>
     <td width="50%" valign="top">
       <strong>COMMUNITY-PLUGIN INTEGRATIONS</strong><br><br>
-      Claudian, Project Manager, and Project Manager Insights receive focused
-      Pixel treatments. Integrations stay scoped to plugin-owned surfaces and
-      preserve native controls and keyboard behavior.
+      Project Manager and Project Manager Insights receive focused Pixel
+      treatments. Claudian keeps its own content layout and controls within
+      Pixel pane chrome, reducing coupling to plugin DOM changes.
     </td>
     <td width="50%" valign="top">
       <strong>NATIVE CONTRACT</strong><br><br>
@@ -256,8 +257,9 @@ control boundaries are designed against accessible contrast targets.
 <details open>
 <summary><strong>Community-plugin integrations</strong></summary>
 
-- **Claudian:** conversation, composer, context chips, sessions, menus, and
-  settings tabs, including narrow-pane and keyboard states.
+- **Claudian:** plugin-native conversation and composer controls, with a boundary
+  excluding shared Pixel control decoration from its content pane. Pane chrome,
+  inherited theme variables, and shared Markdown styling remain themed.
 - **Project Manager:** task editing, project settings, custom fields,
   assignees, tags, long titles, and action feedback.
 - **Project Manager Insights:** filters, metrics, assignee summaries, and task
@@ -321,7 +323,7 @@ unless named there.
 
 | Item | Current information |
 | --- | --- |
-| Current version | <code><!-- pixel-version:start -->0.9.9<!-- pixel-version:end --></code> |
+| Current version | <code><!-- pixel-version:start -->1.0.0<!-- pixel-version:end --></code> |
 | Obsidian requirement | `1.12.0` or newer |
 | Priority platforms | Desktop / iOS |
 | Verified desktop environment | Obsidian `1.13.4` / macOS |

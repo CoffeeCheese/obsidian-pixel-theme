@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <kbd><!-- pixel-version:start -->0.9.9<!-- pixel-version:end --></kbd>
+  <kbd><!-- pixel-version:start -->1.0.0<!-- pixel-version:end --></kbd>
   <kbd>OBSIDIAN 1.12+</kbd>
   <kbd>LIGHT / DARK</kbd>
   <kbd>DESKTOP / iOS</kbd>
@@ -35,10 +35,11 @@ Pixel 为 Obsidian 带来安静的纸张工作区、清晰的像素身份，以�
 
 ## 近期更新
 
-`0.9.3`–`0.9.9` 这一轮更新让 Pixel 从广泛覆盖 Obsidian 界面，逐步深入到交互细节与社区插件适配：
+Pixel `1.0.0` 在 `0.9` 系列基础上确立稳定版本基线，保留 Claudian 原生内容控件，并延续对 Obsidian 界面的细节打磨：
 
 | 版本 | 主要变化 |
 | --- | --- |
+| [`1.0.0`](docs/releases/1.0.0.md) | 首个稳定版本；恢复 Claudian 原生内容控件，修复双层消息气泡和操作栏高度异常。 |
 | [`0.9.9`](docs/releases/0.9.9.md) | 精修动效、阅读、搜索、PDF、Bases 与 Canvas，完善任务删除线及深色浮层。 |
 | [`0.9.8`](docs/releases/0.9.8.md) | 优化 Markdown 图片、任务反馈与代码块身份，并改善 Templater 提示框和文档阅读体验。 |
 | [`0.9.7`](docs/releases/0.9.7.md) | 用紧凑的青色像素游标替代厚重的文件树右键目标框，并修复 Project Manager 新增操作的对比度与状态反馈。 |
@@ -96,7 +97,7 @@ Pixel 为 Obsidian 带来安静的纸张工作区、清晰的像素身份，以�
   <tr>
     <td width="50%" valign="top">
       <strong>社区插件专项适配</strong><br><br>
-      Claudian、Project Manager 与 Project Manager Insights 拥有专门的 Pixel 视觉处理。所有适配均限定在插件自身界面，并保留原生控件与键盘行为。
+      Project Manager 与 Project Manager Insights 拥有专门的 Pixel 视觉处理。Claudian 在 Pixel 面板外框中保留插件自身的内容布局与控件，降低对插件内部结构的依赖。
     </td>
     <td width="50%" valign="top">
       <strong>原生交互契约</strong><br><br>
@@ -224,7 +225,7 @@ Light 与 Dark 使用分别调校的语义颜色，而不是简单反相。正�
 <details>
 <summary><strong>社区插件适配</strong></summary>
 
-- **Claudian**：对话、输入区、上下文标签、会话、菜单与设置标签，包括窄面板和键盘状态。
+- **Claudian**：对话和输入区保留插件原生控件，共享 Pixel 控件装饰不进入其内容面板；外框、继承的主题变量和共享 Markdown 样式仍保留主题风格。
 - **Project Manager**：任务编辑、项目设置、自定义字段、负责人、标签、长标题与操作反馈。
 - **Project Manager Insights**：只读工作量视图中的筛选、指标、负责人汇总和任务明细。
 - **Templater**：使用轻量发丝边框和无障碍聚焦回退的紧凑提示输入框。
@@ -271,7 +272,7 @@ Pixel 当前不提供自定义 **Style Settings** 选项。Style Settings 插件
 
 | 项目 | 当前信息 |
 | --- | --- |
-| 当前版本 | <code><!-- pixel-version:start -->0.9.9<!-- pixel-version:end --></code> |
+| 当前版本 | <code><!-- pixel-version:start -->1.0.0<!-- pixel-version:end --></code> |
 | Obsidian 要求 | `1.12.0` 或更高版本 |
 | 优先适配平台 | 桌面端 / iOS |
 | 已验证桌面环境 | Obsidian `1.13.4` / macOS |
