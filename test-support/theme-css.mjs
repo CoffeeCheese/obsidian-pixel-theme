@@ -13,9 +13,14 @@ export async function readTheme() {
 }
 
 export function matchingRuleBodies(css, selector) {
-  const escapedSelector = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const escapedSelector = selector
+    .replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+    .replace(/\s+/g, "\\s+");
+  // Multiline selector lists describe a whole rule, not a suffix of a
+  // longer list (e.g. forced-colors rules ending with the Canvas controls).
+  const start = selector.includes("\n") ? "(?:^|[{}])\\s*" : "";
   const matches = [
-    ...css.matchAll(new RegExp(`${escapedSelector}\\s*\\{([\\s\\S]*?)\\}`, "g")),
+    ...css.matchAll(new RegExp(`${start}${escapedSelector}\\s*\\{([\\s\\S]*?)\\}`, "g")),
   ];
   assert.ok(matches.length > 0, `Expected compiled theme.css to contain ${selector}`);
   return matches.map((match) => match[1]);

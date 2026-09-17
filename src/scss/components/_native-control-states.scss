@@ -1,0 +1,7 @@
+@use "sass:meta";
+
+// Claudian owns its content controls across DOM versions. Keep Pixel on the
+// native view header, but do not override the plugin's geometry or states.
+@scope (body) to (.workspace-leaf-content[data-type="claudian-view"] > .view-content) {
+  @include meta.load-css("control-states");
+}

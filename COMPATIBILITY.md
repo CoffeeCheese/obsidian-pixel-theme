@@ -97,3 +97,26 @@ npm run check
 ```
 
 The original runtime evidence was captured in a dedicated `dev-test` Vault and never depended on or modified a personal Vault. The public repository keeps package-level regression contracts; current manual desktop and iOS results are recorded per version under `docs/releases/`.
+
+## Claudian content boundary
+
+Claudian's conversation and composer use plugin-native layout and controls. Pixel
+keeps Obsidian's pane chrome and inherited theme variables, but no longer targets
+Claudian's private message, editor, session-column, or settings-tab classes.
+Shared control decoration and disabled-state rules have a CSS `@scope` lower
+boundary at `claudian-view > .view-content`; the native view header stays outside
+that boundary. This exception currently applies to Claudian, not every community
+plugin. Inherited typography/colors and shared Markdown rendering still apply.
+
+Claudian 2.2.7 moved the user bubble onto an inner content element and replaced
+its textarea with CodeMirror. The previous outer-container styling painted a
+second bubble around the hidden action row, while global button minimum heights
+inflated that row. Do not restore those private selectors to fix future versions.
+
+After `npm run build`, open an existing Claudian conversation with a user message
+in the dedicated development Vault and run `node scripts/verify-claudian.mjs`.
+The check uses the installed DOM, compares Light/Dark geometry and decoration
+against the same pane with Pixel temporarily disabled. It also checks the mounted
+CodeMirror editor and its pseudo-elements both unfocused and focused, verifies
+that native buttons retain Pixel styling, and restores theme and focus state. It sends no messages and changes no conversation data. The Node
+contract suite separately checks that the compiled CSS preserves this boundary.

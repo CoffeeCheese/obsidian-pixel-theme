@@ -1517,728 +1517,655 @@ body.is-mobile .file-embed.mod-generic {
   min-block-size: 44px;
 }
 
-button:not(.clickable-icon):not(.mod-settings *),
-.clickable-icon:not(.mod-settings *) {
-  min-block-size: var(--pixel-control-min);
-  border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
-  border-radius: var(--pixel-radius);
-  background-color: var(--pixel-paper);
-  color: var(--pixel-text);
-  box-shadow: var(--pixel-shadow-control);
-  transform: translateY(0);
-  transition: transform var(--pixel-motion-button) var(--pixel-ease-button), box-shadow var(--pixel-motion-button) var(--pixel-ease-button), background-size var(--pixel-motion-state) var(--pixel-ease-out), background-color var(--pixel-motion-state) var(--pixel-ease-out), border-color var(--pixel-motion-state) var(--pixel-ease-out), color var(--pixel-motion-state) var(--pixel-ease-out);
-}
-
-body:not(.is-mobile) .workspace .clickable-icon:not(.mod-settings *) {
-  background-image: linear-gradient(var(--pixel-cyan), var(--pixel-cyan));
-  background-position: center calc(100% - var(--pixel-space-1));
-  background-repeat: no-repeat;
-  background-size: 0 var(--pixel-border-control);
-}
-
-body:not(.is-mobile) .workspace .clickable-icon:not(.mod-settings *):is(.is-active, [aria-pressed=true]):not([aria-disabled=true]) {
-  color: var(--pixel-cyan);
-  background-size: var(--pixel-space-3) var(--pixel-border-control);
-}
-
-button:not(.clickable-icon):not(.mod-settings *) {
-  border-radius: var(--pixel-radius-button);
-  box-shadow: var(--pixel-shadow-button);
-  transform: translateY(0);
-}
-
-textarea:not(.mod-settings *),
-.multi-select-container:not(.mod-settings *),
-input.metadata-input-text:not(.mod-settings *),
-input[type=date]:not(.mod-settings *),
-input[type=datetime-local]:not(.mod-settings *),
-input[type=text]:not(.mod-settings *),
-input[type=email]:not(.mod-settings *),
-input[type=password]:not(.mod-settings *),
-input[type=number]:not(.mod-settings *),
-select:not(.mod-settings *),
-.combobox-button:not(.mod-settings *),
-.dropdown:not(.mod-settings *) {
-  border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
-  border-radius: var(--pixel-radius);
-  background-color: var(--pixel-paper);
-  color: var(--pixel-text);
-  transition: background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, color var(--pixel-motion-state) linear;
-}
-
-input[type=search] {
-  border: var(--pixel-border-decoration) solid var(--pixel-search-edge);
-  border-radius: var(--pixel-radius);
-  outline: 0;
-  background-color: var(--pixel-paper);
-  color: var(--pixel-text);
-  box-shadow: none;
-  transition: background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, box-shadow var(--pixel-motion-state) linear, color var(--pixel-motion-state) linear;
-}
-
-input[type=search]:is(:focus, :focus-visible) {
-  border-color: var(--pixel-cyan);
-  outline: 0;
-  background-color: color-mix(in srgb, var(--pixel-cyan) 6%, var(--pixel-paper));
-  box-shadow: var(--pixel-search-focus-shadow);
-}
-
-button:not(.clickable-icon):not(.mod-settings *):not(:disabled):not([aria-disabled=true]):active {
-  transform: translateY(1px);
-  box-shadow: var(--pixel-shadow-button-active);
-  transition-duration: var(--pixel-motion-press);
-}
-
-.clickable-icon:not(.mod-settings *):not(:disabled):not([aria-disabled=true]):active {
-  transform: translateY(1px);
-  box-shadow: none;
-  transition-duration: var(--pixel-motion-press);
-}
-
-button:focus-visible,
-.clickable-icon:focus-visible,
-.internal-link:focus-visible,
-.tag:focus-visible,
-.workspace-tab-header-container-inner:focus-visible,
-.nav-files-container:focus-visible,
-.menu-item:focus-visible,
-.suggestion-item:focus-visible,
-[role=button]:focus-visible,
-input[type=checkbox]:focus-visible,
-input[type=radio]:focus-visible,
-input[type=range]:focus-visible,
-.checkbox-container:focus-visible {
-  outline: var(--pixel-border-control) solid var(--pixel-cyan);
-  outline-offset: 2px;
-}
-
-textarea:not(.mod-settings *):focus-visible,
-.multi-select-container:not(.mod-settings *):focus-visible,
-input.metadata-input-text:not(.mod-settings *):focus-visible,
-input[type=date]:not(.mod-settings *):focus-visible,
-input[type=datetime-local]:not(.mod-settings *):focus-visible,
-input[type=text]:not(.mod-settings *):focus-visible,
-input[type=email]:not(.mod-settings *):focus-visible,
-input[type=password]:not(.mod-settings *):focus-visible,
-input[type=number]:not(.mod-settings *):focus-visible,
-select:not(.mod-settings *):focus-visible,
-.combobox-button:not(.mod-settings *):focus-visible,
-.dropdown:not(.mod-settings *):focus-visible {
-  outline: var(--pixel-border-control) solid var(--pixel-cyan);
-  outline-offset: 2px;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  input[type=search]:hover:not(:focus):not(:focus-visible) {
-    border-color: var(--pixel-search-edge-hover);
-    background-color: color-mix(in srgb, var(--pixel-cyan) 3%, var(--pixel-paper));
-    box-shadow: none;
-  }
-  button:not(.clickable-icon):not(.mod-settings *):hover,
-  .clickable-icon:not(.mod-settings *):hover {
-    background-color: var(--pixel-surface-secondary);
-    border-color: var(--pixel-cyan);
-    color: var(--pixel-text);
-  }
-  button:not(.clickable-icon):not(.mod-settings *):not(:disabled):not([aria-disabled=true]):not(:active):hover {
-    box-shadow: var(--pixel-shadow-button-hover);
-    transform: translateY(-1px);
-  }
-  .clickable-icon:not(.mod-settings *):not(:disabled):not([aria-disabled=true]):not(:active):hover {
-    transform: translateY(-1px);
-  }
-  textarea:not(.mod-settings *):hover,
-  .multi-select-container:not(.mod-settings *):hover,
-  input.metadata-input-text:not(.mod-settings *):hover,
-  input[type=date]:not(.mod-settings *):hover,
-  input[type=datetime-local]:not(.mod-settings *):hover,
-  input[type=text]:not(.mod-settings *):hover,
-  input[type=email]:not(.mod-settings *):hover,
-  input[type=password]:not(.mod-settings *):hover,
-  input[type=number]:not(.mod-settings *):hover,
-  select:not(.mod-settings *):hover,
-  .combobox-button:not(.mod-settings *):hover,
-  .dropdown:not(.mod-settings *):hover {
-    background-color: var(--pixel-surface-secondary);
-    border-color: var(--pixel-cyan);
-  }
-}
-@media (hover: none) {
-  textarea:not(.mod-settings *):hover,
-  .multi-select-container:not(.mod-settings *):hover,
-  input.metadata-input-text:not(.mod-settings *):hover,
-  input[type=date]:not(.mod-settings *):hover,
-  input[type=datetime-local]:not(.mod-settings *):hover,
-  input[type=text]:not(.mod-settings *):hover,
-  input[type=email]:not(.mod-settings *):hover,
-  input[type=password]:not(.mod-settings *):hover,
-  input[type=number]:not(.mod-settings *):hover,
-  select:not(.mod-settings *):hover,
-  .combobox-button:not(.mod-settings *):hover,
-  .dropdown:not(.mod-settings *):hover {
-    border-color: var(--pixel-border-meaningful);
-    background-color: var(--pixel-paper);
-    color: var(--pixel-text);
-  }
-  .clickable-icon:not(.mod-settings *):hover {
-    border-color: var(--pixel-border-meaningful);
+@scope (body) to (.workspace-leaf-content[data-type="claudian-view"] > .view-content) {
+  button:not(.clickable-icon):not(.mod-settings *),
+  .clickable-icon:not(.mod-settings *) {
+    min-block-size: var(--pixel-control-min);
+    border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
+    border-radius: var(--pixel-radius);
     background-color: var(--pixel-paper);
     color: var(--pixel-text);
     box-shadow: var(--pixel-shadow-control);
+    transform: translateY(0);
+    transition: transform var(--pixel-motion-button) var(--pixel-ease-button), box-shadow var(--pixel-motion-button) var(--pixel-ease-button), background-size var(--pixel-motion-state) var(--pixel-ease-out), background-color var(--pixel-motion-state) var(--pixel-ease-out), border-color var(--pixel-motion-state) var(--pixel-ease-out), color var(--pixel-motion-state) var(--pixel-ease-out);
   }
-}
-.suggestion-item.is-selected,
-.menu-item.is-selected,
-.menu-item.is-checked {
-  border-radius: var(--pixel-radius-small);
-  background-color: color-mix(in srgb, var(--pixel-cyan) 10%, var(--pixel-paper));
-  color: var(--pixel-text);
-  box-shadow: inset 3px 0 0 var(--pixel-cyan);
-  font-weight: 600;
-  transition: background-color var(--pixel-motion-state) linear, box-shadow var(--pixel-motion-state) var(--pixel-ease-out);
-}
-
-.suggestion-item.is-selected,
-.menu-item.is-selected {
-  outline: var(--pixel-border-control) solid var(--pixel-cyan);
-  outline-offset: 2px;
-}
-
-.notice.mod-warning,
-.tooltip.mod-warning {
-  border: var(--pixel-border-control) solid var(--pixel-amber-text);
-  border-inline-start-width: 4px;
-  background-color: var(--pixel-paper);
-  color: var(--pixel-amber-text);
-}
-
-button.mod-warning:not(.mod-settings *),
-.notice.mod-error,
-.tooltip.mod-error,
-[aria-invalid=true],
-.is-invalid {
-  border: var(--pixel-border-control) solid var(--pixel-brick);
-  border-inline-start-width: 4px;
-  background-color: var(--pixel-paper);
-  color: var(--pixel-brick);
-}
-
-button.mod-destructive:not(.mod-settings *) {
-  border: var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-brick) 72%, var(--pixel-line));
-  border-inline-start-width: var(--pixel-border-decoration);
-  background-color: color-mix(in srgb, var(--pixel-brick) 10%, var(--pixel-paper));
-  color: color-mix(in srgb, var(--pixel-brick) 88%, var(--pixel-text));
-  box-shadow: 0 2px 0 color-mix(in srgb, var(--pixel-brick) 54%, var(--pixel-shadow-color)), inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 76%, transparent);
-  font-weight: 650;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  button.mod-warning:not(.mod-settings *):hover,
-  [aria-invalid=true]:hover,
-  .is-invalid:hover {
-    border-color: var(--pixel-brick);
-    background-color: var(--pixel-surface-secondary);
-    color: var(--pixel-brick);
+  body:not(.is-mobile) .workspace .clickable-icon:not(.mod-settings *) {
+    background-image: linear-gradient(var(--pixel-cyan), var(--pixel-cyan));
+    background-position: center calc(100% - var(--pixel-space-1));
+    background-repeat: no-repeat;
+    background-size: 0 var(--pixel-border-control);
   }
-  button.mod-destructive:not(.mod-settings *):not(:disabled):not([aria-disabled=true]):hover {
-    border-color: var(--pixel-brick);
-    background-color: color-mix(in srgb, var(--pixel-brick) 16%, var(--pixel-paper));
-    color: color-mix(in srgb, var(--pixel-brick) 94%, var(--pixel-text));
-    box-shadow: 0 2px 0 color-mix(in srgb, var(--pixel-brick) 68%, var(--pixel-shadow-color)), inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 68%, transparent);
+  body:not(.is-mobile) .workspace .clickable-icon:not(.mod-settings *):is(.is-active, [aria-pressed=true]):not([aria-disabled=true]) {
+    color: var(--pixel-cyan);
+    background-size: var(--pixel-space-3) var(--pixel-border-control);
+  }
+  button:not(.clickable-icon):not(.mod-settings *) {
+    border-radius: var(--pixel-radius-button);
+    box-shadow: var(--pixel-shadow-button);
     transform: translateY(0);
   }
-}
-button.mod-destructive:not(.mod-settings *):not(:disabled):not([aria-disabled=true]):active {
-  border-color: var(--pixel-brick);
-  background-color: color-mix(in srgb, var(--pixel-brick) 22%, var(--pixel-paper));
-  box-shadow: 0 1px 0 color-mix(in srgb, var(--pixel-brick) 72%, var(--pixel-shadow-color));
-  transform: translateY(1px);
-}
-
-.is-loading {
-  min-block-size: var(--pixel-state-min-block-size);
-  color: var(--pixel-text);
-  cursor: progress;
-}
-
-.is-loading::before {
-  inline-size: 100%;
-  background-color: var(--pixel-cyan);
-  animation: none;
-}
-
-button.mod-loading:not(.mod-settings *) {
-  color: var(--pixel-text);
-  cursor: progress;
-  box-shadow: inset 4px 0 0 var(--pixel-cyan);
-}
-
-button.mod-loading:not(.mod-settings *)::after {
-  display: none;
-}
-
-.suggestion-empty,
-.empty-state-container,
-.search-empty-state,
-.bookmarks-pane-empty,
-.tag-pane-empty {
-  min-block-size: var(--pixel-state-min-block-size);
-  border: var(--pixel-border-control) dashed var(--pixel-border-meaningful);
-  background-color: var(--pixel-paper);
-  color: var(--pixel-text-muted);
-}
-
-.menu,
-.suggestion-container,
-.prompt,
-.modal,
-.notice,
-.tooltip {
-  border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
-  border-radius: var(--pixel-radius-large);
-  background-color: var(--pixel-paper);
-  color: var(--pixel-text);
-  box-shadow: var(--pixel-shadow-shell);
-  transition: opacity var(--pixel-motion-surface) linear, transform var(--pixel-motion-surface) ease-out, border-color var(--pixel-motion-state) linear;
-  animation-duration: var(--pixel-motion-surface);
-}
-
-.modal-bg,
-.suggestion-bg {
-  transition: opacity var(--pixel-motion-surface) linear;
-}
-
-.mod-settings {
-  --pixel-settings-edge: color-mix(
-    in srgb,
-    var(--pixel-cyan) 28%,
-    var(--pixel-border-meaningful)
-  );
-  --pixel-settings-edge-hover: color-mix(
-    in srgb,
-    var(--pixel-cyan) 62%,
-    var(--pixel-border-meaningful)
-  );
-  --pixel-settings-surface: color-mix(
-    in srgb,
-    var(--pixel-paper) 92%,
-    var(--pixel-canvas)
-  );
-  --pixel-settings-card-edge: color-mix(
-    in srgb,
-    var(--pixel-cyan) 14%,
-    var(--pixel-line)
-  );
-  --pixel-settings-card-edge-hover: color-mix(
-    in srgb,
-    var(--pixel-cyan) 38%,
-    var(--pixel-line)
-  );
-  --pixel-settings-card-surface: color-mix(
-    in srgb,
-    var(--pixel-paper) 76%,
-    var(--pixel-canvas)
-  );
-  --pixel-settings-card-surface-hover: color-mix(
-    in srgb,
-    var(--pixel-cyan) 4%,
-    var(--pixel-settings-card-surface)
-  );
-  --pixel-settings-focus-ring: 0 0 0 3px
-    color-mix(in srgb, var(--pixel-cyan) 16%, transparent);
-  --input-border-width: var(--pixel-border-decoration);
-  --input-border-width-focus: var(--pixel-border-decoration);
-  --input-shadow: none;
-  --input-shadow-hover: none;
-  --setting-items-border-width: 0px;
-}
-
-.mod-settings .vertical-tab-content .setting-item:not(.setting-item-heading) {
-  position: relative;
-  margin-block: 0 var(--pixel-space-2);
-  padding: var(--pixel-space-4);
-  border: var(--pixel-border-decoration) solid var(--pixel-settings-card-edge);
-  border-radius: var(--pixel-radius-large);
-  background-color: var(--pixel-settings-card-surface);
-  box-shadow: none;
-  transition: background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, box-shadow var(--pixel-motion-state) linear;
-}
-
-.mod-settings .vertical-tab-content .setting-item:not(.setting-item-heading)::before {
-  content: none;
-  display: none;
-  border: 0;
-}
-
-.modal.mod-settings .vertical-tab-content .setting-group .setting-items > .setting-item:not(.setting-item-heading) {
-  border-radius: var(--pixel-radius-large);
-}
-
-.mod-settings .vertical-tab-content .setting-item.setting-item-heading {
-  border-inline: 0;
-  border-radius: 0;
-  background-color: transparent;
-  box-shadow: none;
-}
-
-.mod-settings .vertical-tab-content .setting-item:not(.setting-item-heading):focus-within {
-  border-color: var(--pixel-settings-card-edge-hover);
-  box-shadow: inset 3px 0 0 var(--pixel-cyan);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .mod-settings .vertical-tab-content .setting-item:not(.setting-item-heading):hover {
-    border-color: var(--pixel-settings-card-edge-hover);
-    background-color: var(--pixel-settings-card-surface-hover);
+  textarea:not(.mod-settings *),
+  .multi-select-container:not(.mod-settings *),
+  input.metadata-input-text:not(.mod-settings *),
+  input[type=date]:not(.mod-settings *),
+  input[type=datetime-local]:not(.mod-settings *),
+  input[type=text]:not(.mod-settings *),
+  input[type=email]:not(.mod-settings *),
+  input[type=password]:not(.mod-settings *),
+  input[type=number]:not(.mod-settings *),
+  select:not(.mod-settings *),
+  .combobox-button:not(.mod-settings *),
+  .dropdown:not(.mod-settings *) {
+    border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
+    border-radius: var(--pixel-radius);
+    background-color: var(--pixel-paper);
+    color: var(--pixel-text);
+    transition: background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, color var(--pixel-motion-state) linear;
   }
-}
-.mod-settings .setting-item-info > .setting-item-name {
-  font-family: var(--pixel-font-text);
-  line-height: 1.45;
-}
-
-.mod-settings .setting-item-info > .setting-item-description {
-  font-family: var(--pixel-font-text);
-  font-weight: 400;
-  line-height: 1.65;
-  overflow-wrap: anywhere;
-}
-
-.mod-settings .setting-item-control > :is(button:not(.clickable-icon),
-input:not([type=checkbox]):not([type=radio]):not([type=color]),
-textarea,
-select.dropdown,
-.combobox-button) {
-  border: var(--pixel-border-decoration) solid var(--pixel-settings-edge);
-  border-radius: var(--pixel-radius);
-  background-color: var(--pixel-settings-surface);
-  box-shadow: none;
-  transition: background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, box-shadow var(--pixel-motion-state) linear;
-}
-
-.mod-settings .setting-item-control > :is(button:not(.clickable-icon),
-input:not([type=checkbox]):not([type=radio]),
-textarea,
-select.dropdown,
-.combobox-button):focus-visible {
-  outline: 0;
-  border-color: var(--pixel-cyan);
-  box-shadow: var(--pixel-settings-focus-ring);
-}
-
-@media (hover: hover) and (pointer: fine) {
+  input[type=search] {
+    border: var(--pixel-border-decoration) solid var(--pixel-search-edge);
+    border-radius: var(--pixel-radius);
+    outline: 0;
+    background-color: var(--pixel-paper);
+    color: var(--pixel-text);
+    box-shadow: none;
+    transition: background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, box-shadow var(--pixel-motion-state) linear, color var(--pixel-motion-state) linear;
+  }
+  input[type=search]:is(:focus, :focus-visible) {
+    border-color: var(--pixel-cyan);
+    outline: 0;
+    background-color: color-mix(in srgb, var(--pixel-cyan) 6%, var(--pixel-paper));
+    box-shadow: var(--pixel-search-focus-shadow);
+  }
+  button:not(.clickable-icon):not(.mod-settings *):not(:disabled):not([aria-disabled=true]):active {
+    transform: translateY(1px);
+    box-shadow: var(--pixel-shadow-button-active);
+    transition-duration: var(--pixel-motion-press);
+  }
+  .clickable-icon:not(.mod-settings *):not(:disabled):not([aria-disabled=true]):active {
+    transform: translateY(1px);
+    box-shadow: none;
+    transition-duration: var(--pixel-motion-press);
+  }
+  button:focus-visible,
+  .clickable-icon:focus-visible,
+  .internal-link:focus-visible,
+  .tag:focus-visible,
+  .workspace-tab-header-container-inner:focus-visible,
+  .nav-files-container:focus-visible,
+  .menu-item:focus-visible,
+  .suggestion-item:focus-visible,
+  [role=button]:focus-visible,
+  input[type=checkbox]:focus-visible,
+  input[type=radio]:focus-visible,
+  input[type=range]:focus-visible,
+  .checkbox-container:focus-visible {
+    outline: var(--pixel-border-control) solid var(--pixel-cyan);
+    outline-offset: 2px;
+  }
+  textarea:not(.mod-settings *):focus-visible,
+  .multi-select-container:not(.mod-settings *):focus-visible,
+  input.metadata-input-text:not(.mod-settings *):focus-visible,
+  input[type=date]:not(.mod-settings *):focus-visible,
+  input[type=datetime-local]:not(.mod-settings *):focus-visible,
+  input[type=text]:not(.mod-settings *):focus-visible,
+  input[type=email]:not(.mod-settings *):focus-visible,
+  input[type=password]:not(.mod-settings *):focus-visible,
+  input[type=number]:not(.mod-settings *):focus-visible,
+  select:not(.mod-settings *):focus-visible,
+  .combobox-button:not(.mod-settings *):focus-visible,
+  .dropdown:not(.mod-settings *):focus-visible {
+    outline: var(--pixel-border-control) solid var(--pixel-cyan);
+    outline-offset: 2px;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    input[type=search]:hover:not(:focus):not(:focus-visible) {
+      border-color: var(--pixel-search-edge-hover);
+      background-color: color-mix(in srgb, var(--pixel-cyan) 3%, var(--pixel-paper));
+      box-shadow: none;
+    }
+    button:not(.clickable-icon):not(.mod-settings *):hover,
+    .clickable-icon:not(.mod-settings *):hover {
+      background-color: var(--pixel-surface-secondary);
+      border-color: var(--pixel-cyan);
+      color: var(--pixel-text);
+    }
+    button:not(.clickable-icon):not(.mod-settings *):not(:disabled):not([aria-disabled=true]):not(:active):hover {
+      box-shadow: var(--pixel-shadow-button-hover);
+      transform: translateY(-1px);
+    }
+    .clickable-icon:not(.mod-settings *):not(:disabled):not([aria-disabled=true]):not(:active):hover {
+      transform: translateY(-1px);
+    }
+    textarea:not(.mod-settings *):hover,
+    .multi-select-container:not(.mod-settings *):hover,
+    input.metadata-input-text:not(.mod-settings *):hover,
+    input[type=date]:not(.mod-settings *):hover,
+    input[type=datetime-local]:not(.mod-settings *):hover,
+    input[type=text]:not(.mod-settings *):hover,
+    input[type=email]:not(.mod-settings *):hover,
+    input[type=password]:not(.mod-settings *):hover,
+    input[type=number]:not(.mod-settings *):hover,
+    select:not(.mod-settings *):hover,
+    .combobox-button:not(.mod-settings *):hover,
+    .dropdown:not(.mod-settings *):hover {
+      background-color: var(--pixel-surface-secondary);
+      border-color: var(--pixel-cyan);
+    }
+  }
+  @media (hover: none) {
+    textarea:not(.mod-settings *):hover,
+    .multi-select-container:not(.mod-settings *):hover,
+    input.metadata-input-text:not(.mod-settings *):hover,
+    input[type=date]:not(.mod-settings *):hover,
+    input[type=datetime-local]:not(.mod-settings *):hover,
+    input[type=text]:not(.mod-settings *):hover,
+    input[type=email]:not(.mod-settings *):hover,
+    input[type=password]:not(.mod-settings *):hover,
+    input[type=number]:not(.mod-settings *):hover,
+    select:not(.mod-settings *):hover,
+    .combobox-button:not(.mod-settings *):hover,
+    .dropdown:not(.mod-settings *):hover {
+      border-color: var(--pixel-border-meaningful);
+      background-color: var(--pixel-paper);
+      color: var(--pixel-text);
+    }
+    .clickable-icon:not(.mod-settings *):hover {
+      border-color: var(--pixel-border-meaningful);
+      background-color: var(--pixel-paper);
+      color: var(--pixel-text);
+      box-shadow: var(--pixel-shadow-control);
+    }
+  }
+  .suggestion-item.is-selected,
+  .menu-item.is-selected,
+  .menu-item.is-checked {
+    border-radius: var(--pixel-radius-small);
+    background-color: color-mix(in srgb, var(--pixel-cyan) 10%, var(--pixel-paper));
+    color: var(--pixel-text);
+    box-shadow: inset 3px 0 0 var(--pixel-cyan);
+    font-weight: 600;
+    transition: background-color var(--pixel-motion-state) linear, box-shadow var(--pixel-motion-state) var(--pixel-ease-out);
+  }
+  .suggestion-item.is-selected,
+  .menu-item.is-selected {
+    outline: var(--pixel-border-control) solid var(--pixel-cyan);
+    outline-offset: 2px;
+  }
+  .notice.mod-warning,
+  .tooltip.mod-warning {
+    border: var(--pixel-border-control) solid var(--pixel-amber-text);
+    border-inline-start-width: 4px;
+    background-color: var(--pixel-paper);
+    color: var(--pixel-amber-text);
+  }
+  button.mod-warning:not(.mod-settings *),
+  .notice.mod-error,
+  .tooltip.mod-error,
+  [aria-invalid=true],
+  .is-invalid {
+    border: var(--pixel-border-control) solid var(--pixel-brick);
+    border-inline-start-width: 4px;
+    background-color: var(--pixel-paper);
+    color: var(--pixel-brick);
+  }
+  button.mod-destructive:not(.mod-settings *) {
+    border: var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-brick) 72%, var(--pixel-line));
+    border-inline-start-width: var(--pixel-border-decoration);
+    background-color: color-mix(in srgb, var(--pixel-brick) 10%, var(--pixel-paper));
+    color: color-mix(in srgb, var(--pixel-brick) 88%, var(--pixel-text));
+    box-shadow: 0 2px 0 color-mix(in srgb, var(--pixel-brick) 54%, var(--pixel-shadow-color)), inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 76%, transparent);
+    font-weight: 650;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    button.mod-warning:not(.mod-settings *):hover,
+    [aria-invalid=true]:hover,
+    .is-invalid:hover {
+      border-color: var(--pixel-brick);
+      background-color: var(--pixel-surface-secondary);
+      color: var(--pixel-brick);
+    }
+    button.mod-destructive:not(.mod-settings *):not(:disabled):not([aria-disabled=true]):hover {
+      border-color: var(--pixel-brick);
+      background-color: color-mix(in srgb, var(--pixel-brick) 16%, var(--pixel-paper));
+      color: color-mix(in srgb, var(--pixel-brick) 94%, var(--pixel-text));
+      box-shadow: 0 2px 0 color-mix(in srgb, var(--pixel-brick) 68%, var(--pixel-shadow-color)), inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 68%, transparent);
+      transform: translateY(0);
+    }
+  }
+  button.mod-destructive:not(.mod-settings *):not(:disabled):not([aria-disabled=true]):active {
+    border-color: var(--pixel-brick);
+    background-color: color-mix(in srgb, var(--pixel-brick) 22%, var(--pixel-paper));
+    box-shadow: 0 1px 0 color-mix(in srgb, var(--pixel-brick) 72%, var(--pixel-shadow-color));
+    transform: translateY(1px);
+  }
+  .is-loading {
+    min-block-size: var(--pixel-state-min-block-size);
+    color: var(--pixel-text);
+    cursor: progress;
+  }
+  .is-loading::before {
+    inline-size: 100%;
+    background-color: var(--pixel-cyan);
+    animation: none;
+  }
+  button.mod-loading:not(.mod-settings *) {
+    color: var(--pixel-text);
+    cursor: progress;
+    box-shadow: inset 4px 0 0 var(--pixel-cyan);
+  }
+  button.mod-loading:not(.mod-settings *)::after {
+    display: none;
+  }
+  .suggestion-empty,
+  .empty-state-container,
+  .search-empty-state,
+  .bookmarks-pane-empty,
+  .tag-pane-empty {
+    min-block-size: var(--pixel-state-min-block-size);
+    border: var(--pixel-border-control) dashed var(--pixel-border-meaningful);
+    background-color: var(--pixel-paper);
+    color: var(--pixel-text-muted);
+  }
+  .menu,
+  .suggestion-container,
+  .prompt,
+  .modal,
+  .notice,
+  .tooltip {
+    border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
+    border-radius: var(--pixel-radius-large);
+    background-color: var(--pixel-paper);
+    color: var(--pixel-text);
+    box-shadow: var(--pixel-shadow-shell);
+    transition: opacity var(--pixel-motion-surface) linear, transform var(--pixel-motion-surface) ease-out, border-color var(--pixel-motion-state) linear;
+    animation-duration: var(--pixel-motion-surface);
+  }
+  .modal-bg,
+  .suggestion-bg {
+    transition: opacity var(--pixel-motion-surface) linear;
+  }
+  .mod-settings {
+    --pixel-settings-edge: color-mix(
+      in srgb,
+      var(--pixel-cyan) 28%,
+      var(--pixel-border-meaningful)
+    );
+    --pixel-settings-edge-hover: color-mix(
+      in srgb,
+      var(--pixel-cyan) 62%,
+      var(--pixel-border-meaningful)
+    );
+    --pixel-settings-surface: color-mix(
+      in srgb,
+      var(--pixel-paper) 92%,
+      var(--pixel-canvas)
+    );
+    --pixel-settings-card-edge: color-mix(
+      in srgb,
+      var(--pixel-cyan) 14%,
+      var(--pixel-line)
+    );
+    --pixel-settings-card-edge-hover: color-mix(
+      in srgb,
+      var(--pixel-cyan) 38%,
+      var(--pixel-line)
+    );
+    --pixel-settings-card-surface: color-mix(
+      in srgb,
+      var(--pixel-paper) 76%,
+      var(--pixel-canvas)
+    );
+    --pixel-settings-card-surface-hover: color-mix(
+      in srgb,
+      var(--pixel-cyan) 4%,
+      var(--pixel-settings-card-surface)
+    );
+    --pixel-settings-focus-ring: 0 0 0 3px
+      color-mix(in srgb, var(--pixel-cyan) 16%, transparent);
+    --input-border-width: var(--pixel-border-decoration);
+    --input-border-width-focus: var(--pixel-border-decoration);
+    --input-shadow: none;
+    --input-shadow-hover: none;
+    --setting-items-border-width: 0px;
+  }
+  .mod-settings .vertical-tab-content .setting-item:not(.setting-item-heading) {
+    position: relative;
+    margin-block: 0 var(--pixel-space-2);
+    padding: var(--pixel-space-4);
+    border: var(--pixel-border-decoration) solid var(--pixel-settings-card-edge);
+    border-radius: var(--pixel-radius-large);
+    background-color: var(--pixel-settings-card-surface);
+    box-shadow: none;
+    transition: background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, box-shadow var(--pixel-motion-state) linear;
+  }
+  .mod-settings .vertical-tab-content .setting-item:not(.setting-item-heading)::before {
+    content: none;
+    display: none;
+    border: 0;
+  }
+  .modal.mod-settings .vertical-tab-content .setting-group .setting-items > .setting-item:not(.setting-item-heading) {
+    border-radius: var(--pixel-radius-large);
+  }
+  .mod-settings .vertical-tab-content .setting-item.setting-item-heading {
+    border-inline: 0;
+    border-radius: 0;
+    background-color: transparent;
+    box-shadow: none;
+  }
+  .mod-settings .vertical-tab-content .setting-item:not(.setting-item-heading):focus-within {
+    border-color: var(--pixel-settings-card-edge-hover);
+    box-shadow: inset 3px 0 0 var(--pixel-cyan);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .mod-settings .vertical-tab-content .setting-item:not(.setting-item-heading):hover {
+      border-color: var(--pixel-settings-card-edge-hover);
+      background-color: var(--pixel-settings-card-surface-hover);
+    }
+  }
+  .mod-settings .setting-item-info > .setting-item-name {
+    font-family: var(--pixel-font-text);
+    line-height: 1.45;
+  }
+  .mod-settings .setting-item-info > .setting-item-description {
+    font-family: var(--pixel-font-text);
+    font-weight: 400;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+  }
+  .mod-settings .setting-item-control > :is(button:not(.clickable-icon),
+  input:not([type=checkbox]):not([type=radio]):not([type=color]),
+  textarea,
+  select.dropdown,
+  .combobox-button) {
+    border: var(--pixel-border-decoration) solid var(--pixel-settings-edge);
+    border-radius: var(--pixel-radius);
+    background-color: var(--pixel-settings-surface);
+    box-shadow: none;
+    transition: background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, box-shadow var(--pixel-motion-state) linear;
+  }
   .mod-settings .setting-item-control > :is(button:not(.clickable-icon),
   input:not([type=checkbox]):not([type=radio]),
   textarea,
   select.dropdown,
-  .combobox-button):hover {
-    border-color: var(--pixel-settings-edge-hover);
-    background-color: color-mix(in srgb, var(--pixel-cyan) 4%, var(--pixel-paper));
+  .combobox-button):focus-visible {
+    outline: 0;
+    border-color: var(--pixel-cyan);
+    box-shadow: var(--pixel-settings-focus-ring);
   }
-}
-.mod-settings .setting-item-control > input[type=color] {
-  box-sizing: border-box;
-  inline-size: 24px;
-  block-size: 24px;
-  min-inline-size: 24px;
-  min-block-size: 24px;
-  padding: 0;
-  border: var(--pixel-border-decoration) solid var(--pixel-settings-edge);
-  border-radius: 50%;
-  background-color: transparent;
-  box-shadow: none;
-  overflow: hidden;
-  cursor: pointer;
-  transition: background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, box-shadow var(--pixel-motion-state) linear;
-}
-
-.mod-settings .setting-item-control > input[type=color]::-webkit-color-swatch-wrapper {
-  padding: 0;
-  border-radius: 50%;
-}
-
-.mod-settings .setting-item-control > input[type=color]::-webkit-color-swatch {
-  border: 0;
-  border-radius: 50%;
-}
-
-.mod-settings .setting-item-control > button:not(.clickable-icon):active {
-  background-color: color-mix(in srgb, var(--pixel-cyan) 8%, var(--pixel-paper));
-  box-shadow: inset 0 1px 2px color-mix(in srgb, var(--pixel-shadow-color) 14%, transparent);
-}
-
-@media (forced-colors: none) {
-  body:not(.is-mobile) button.mod-cta:not(.clickable-icon):not(.mod-settings *):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading)) {
-    --pixel-shadow-button: 0 2px 0 color-mix(in srgb, var(--pixel-shadow-color) 76%, var(--pixel-paper));
-    --pixel-shadow-button-hover: 0 3px 0 color-mix(in srgb, var(--pixel-shadow-color) 72%, var(--pixel-paper));
-    --pixel-shadow-button-active: 0 1px 0 color-mix(in srgb, var(--pixel-shadow-color) 72%, var(--pixel-paper));
+  @media (hover: hover) and (pointer: fine) {
+    .mod-settings .setting-item-control > :is(button:not(.clickable-icon),
+    input:not([type=checkbox]):not([type=radio]),
+    textarea,
+    select.dropdown,
+    .combobox-button):hover {
+      border-color: var(--pixel-settings-edge-hover);
+      background-color: color-mix(in srgb, var(--pixel-cyan) 4%, var(--pixel-paper));
+    }
   }
-}
-button.mod-cta:not(.clickable-icon):not(.mod-settings *):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading)),
-.mod-settings .setting-item .setting-item-control > button.mod-cta:not(.clickable-icon):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading)) {
-  --pixel-mobile-control-surface: var(--pixel-cyan);
-  --pixel-mobile-control-active: var(--pixel-button-primary-hover);
-  --pixel-mobile-control-border: var(--pixel-cyan);
-  border-color: var(--pixel-cyan);
-  background-color: var(--pixel-cyan);
-  color: var(--pixel-button-primary-text);
-  font-weight: 650;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  button.mod-cta:not(.clickable-icon):not(.mod-settings *):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading):not(:disabled):not([aria-disabled=true])):hover,
-  .mod-settings .setting-item .setting-item-control > button.mod-cta:not(.clickable-icon):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading):not(:disabled):not([aria-disabled=true])):hover {
+  .mod-settings .setting-item-control > input[type=color] {
+    box-sizing: border-box;
+    inline-size: 24px;
+    block-size: 24px;
+    min-inline-size: 24px;
+    min-block-size: 24px;
+    padding: 0;
+    border: var(--pixel-border-decoration) solid var(--pixel-settings-edge);
+    border-radius: 50%;
+    background-color: transparent;
+    box-shadow: none;
+    overflow: hidden;
+    cursor: pointer;
+    transition: background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, box-shadow var(--pixel-motion-state) linear;
+  }
+  .mod-settings .setting-item-control > input[type=color]::-webkit-color-swatch-wrapper {
+    padding: 0;
+    border-radius: 50%;
+  }
+  .mod-settings .setting-item-control > input[type=color]::-webkit-color-swatch {
+    border: 0;
+    border-radius: 50%;
+  }
+  .mod-settings .setting-item-control > button:not(.clickable-icon):active {
+    background-color: color-mix(in srgb, var(--pixel-cyan) 8%, var(--pixel-paper));
+    box-shadow: inset 0 1px 2px color-mix(in srgb, var(--pixel-shadow-color) 14%, transparent);
+  }
+  @media (forced-colors: none) {
+    body:not(.is-mobile) button.mod-cta:not(.clickable-icon):not(.mod-settings *):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading)) {
+      --pixel-shadow-button: 0 2px 0 color-mix(in srgb, var(--pixel-shadow-color) 76%, var(--pixel-paper));
+      --pixel-shadow-button-hover: 0 3px 0 color-mix(in srgb, var(--pixel-shadow-color) 72%, var(--pixel-paper));
+      --pixel-shadow-button-active: 0 1px 0 color-mix(in srgb, var(--pixel-shadow-color) 72%, var(--pixel-paper));
+    }
+  }
+  button.mod-cta:not(.clickable-icon):not(.mod-settings *):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading)),
+  .mod-settings .setting-item .setting-item-control > button.mod-cta:not(.clickable-icon):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading)) {
+    --pixel-mobile-control-surface: var(--pixel-cyan);
+    --pixel-mobile-control-active: var(--pixel-button-primary-hover);
+    --pixel-mobile-control-border: var(--pixel-cyan);
+    border-color: var(--pixel-cyan);
+    background-color: var(--pixel-cyan);
+    color: var(--pixel-button-primary-text);
+    font-weight: 650;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    button.mod-cta:not(.clickable-icon):not(.mod-settings *):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading):not(:disabled):not([aria-disabled=true])):hover,
+    .mod-settings .setting-item .setting-item-control > button.mod-cta:not(.clickable-icon):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading):not(:disabled):not([aria-disabled=true])):hover {
+      border-color: var(--pixel-button-primary-hover);
+      background-color: var(--pixel-button-primary-hover);
+      color: var(--pixel-button-primary-text);
+    }
+  }
+  button.mod-cta:not(.clickable-icon):not(.mod-settings *):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading):not(:disabled):not([aria-disabled=true])):active,
+  .mod-settings .setting-item .setting-item-control > button.mod-cta:not(.clickable-icon):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading):not(:disabled):not([aria-disabled=true])):active {
     border-color: var(--pixel-button-primary-hover);
     background-color: var(--pixel-button-primary-hover);
     color: var(--pixel-button-primary-text);
   }
-}
-button.mod-cta:not(.clickable-icon):not(.mod-settings *):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading):not(:disabled):not([aria-disabled=true])):active,
-.mod-settings .setting-item .setting-item-control > button.mod-cta:not(.clickable-icon):where(:not(.mod-destructive):not(.mod-warning):not(.mod-loading):not(:disabled):not([aria-disabled=true])):active {
-  border-color: var(--pixel-button-primary-hover);
-  background-color: var(--pixel-button-primary-hover);
-  color: var(--pixel-button-primary-text);
-}
-
-.mod-settings .vertical-tab-nav-item {
-  transition: background-color var(--pixel-motion-state) linear;
-}
-
-.mod-settings .vertical-tab-nav-item:not(.is-active):is(:hover, :focus-visible) {
-  background-color: color-mix(in srgb, var(--pixel-cyan) 5%, var(--pixel-paper));
-}
-
-.mod-settings .setting-search-container input[type=search] {
-  border: var(--pixel-border-decoration) solid var(--pixel-search-edge);
-  background-color: color-mix(in srgb, var(--pixel-paper) 92%, var(--pixel-canvas));
-  box-shadow: none;
-  transition: background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, box-shadow var(--pixel-motion-state) linear, color var(--pixel-motion-state) linear;
-}
-
-.mod-settings .setting-search-container .search-input-container:focus-within::before {
-  background-color: var(--pixel-cyan);
-}
-
-.mod-settings .setting-search-container input[type=search]:focus {
-  outline: 0;
-  border-color: var(--pixel-cyan);
-  background-color: color-mix(in srgb, var(--pixel-cyan) 6%, var(--pixel-paper));
-  box-shadow: var(--pixel-search-focus-shadow);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .mod-settings .setting-search-container input[type=search]:hover:not(:focus) {
-    border-color: color-mix(in srgb, var(--pixel-search-edge-hover) 86%, var(--pixel-search-edge));
-    background-color: color-mix(in srgb, var(--pixel-cyan) 2%, var(--pixel-paper));
+  .mod-settings .vertical-tab-nav-item {
+    transition: background-color var(--pixel-motion-state) linear;
+  }
+  .mod-settings .vertical-tab-nav-item:not(.is-active):is(:hover, :focus-visible) {
+    background-color: color-mix(in srgb, var(--pixel-cyan) 5%, var(--pixel-paper));
+  }
+  .mod-settings .setting-search-container input[type=search] {
+    border: var(--pixel-border-decoration) solid var(--pixel-search-edge);
+    background-color: color-mix(in srgb, var(--pixel-paper) 92%, var(--pixel-canvas));
+    box-shadow: none;
+    transition: background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, box-shadow var(--pixel-motion-state) linear, color var(--pixel-motion-state) linear;
+  }
+  .mod-settings .setting-search-container .search-input-container:focus-within::before {
+    background-color: var(--pixel-cyan);
+  }
+  .mod-settings .setting-search-container input[type=search]:focus {
+    outline: 0;
+    border-color: var(--pixel-cyan);
+    background-color: color-mix(in srgb, var(--pixel-cyan) 6%, var(--pixel-paper));
+    box-shadow: var(--pixel-search-focus-shadow);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .mod-settings .setting-search-container input[type=search]:hover:not(:focus) {
+      border-color: color-mix(in srgb, var(--pixel-search-edge-hover) 86%, var(--pixel-search-edge));
+      background-color: color-mix(in srgb, var(--pixel-cyan) 2%, var(--pixel-paper));
+      box-shadow: none;
+    }
+  }
+  input[type=checkbox],
+  input[type=radio] {
+    border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
+    background-color: var(--pixel-paper);
+    transition: background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, box-shadow var(--pixel-motion-state) linear;
+  }
+  input[type=checkbox]:checked,
+  input[type=radio]:checked {
+    border-color: var(--interactive-accent);
+    background-color: var(--interactive-accent);
+  }
+  .checkbox-container {
+    border: var(--pixel-border-decoration) solid var(--pixel-border-meaningful);
+    border-radius: var(--pixel-radius);
+    background-color: color-mix(in srgb, var(--pixel-border-meaningful) 16%, var(--pixel-paper));
+    box-shadow: none;
+    transition: background-color var(--pixel-motion-toggle-color) var(--pixel-ease-toggle), border-color var(--pixel-motion-toggle-color) var(--pixel-ease-toggle);
+  }
+  .modal label.checkbox-container {
+    --pixel-toggle-inline-size: 44px;
+    --pixel-toggle-block-size: 22px;
+    --pixel-toggle-thumb-size: 20px;
+    --pixel-toggle-travel: 22px;
+    --pixel-toggle-position: 0px;
+    box-sizing: border-box;
+    width: var(--pixel-toggle-inline-size);
+    height: var(--pixel-toggle-block-size);
+    inline-size: var(--pixel-toggle-inline-size);
+    block-size: var(--pixel-toggle-block-size);
+  }
+  .checkbox-container::after {
+    border: var(--pixel-border-decoration) solid var(--pixel-border-meaningful);
+    border-radius: calc(var(--pixel-radius) - 1px);
+    background-color: var(--pixel-paper);
     box-shadow: none;
   }
-}
-input[type=checkbox],
-input[type=radio] {
-  border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
-  background-color: var(--pixel-paper);
-  transition: background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, box-shadow var(--pixel-motion-state) linear;
-}
-
-input[type=checkbox]:checked,
-input[type=radio]:checked {
-  border-color: var(--interactive-accent);
-  background-color: var(--interactive-accent);
-}
-
-.checkbox-container {
-  border: var(--pixel-border-decoration) solid var(--pixel-border-meaningful);
-  border-radius: var(--pixel-radius);
-  background-color: color-mix(in srgb, var(--pixel-border-meaningful) 16%, var(--pixel-paper));
-  box-shadow: none;
-  transition: background-color var(--pixel-motion-toggle-color) var(--pixel-ease-toggle), border-color var(--pixel-motion-toggle-color) var(--pixel-ease-toggle);
-}
-
-.modal label.checkbox-container {
-  --pixel-toggle-inline-size: 44px;
-  --pixel-toggle-block-size: 22px;
-  --pixel-toggle-thumb-size: 20px;
-  --pixel-toggle-travel: 22px;
-  --pixel-toggle-position: 0px;
-  box-sizing: border-box;
-  width: var(--pixel-toggle-inline-size);
-  height: var(--pixel-toggle-block-size);
-  inline-size: var(--pixel-toggle-inline-size);
-  block-size: var(--pixel-toggle-block-size);
-}
-
-.checkbox-container::after {
-  border: var(--pixel-border-decoration) solid var(--pixel-border-meaningful);
-  border-radius: calc(var(--pixel-radius) - 1px);
-  background-color: var(--pixel-paper);
-  box-shadow: none;
-}
-
-.modal label.checkbox-container::after {
-  box-sizing: border-box;
-  width: var(--pixel-toggle-thumb-size);
-  height: var(--pixel-toggle-thumb-size);
-  inline-size: var(--pixel-toggle-thumb-size);
-  block-size: var(--pixel-toggle-thumb-size);
-  top: 0;
-  bottom: auto;
-  inset-inline-start: var(--pixel-toggle-position);
-  inset-inline-end: auto;
-  margin: 0;
-  transform: scaleY(1);
-  transform-origin: center;
-  transition: inset-inline-start var(--pixel-motion-toggle) var(--pixel-ease-toggle), background-color var(--pixel-motion-toggle-color) var(--pixel-ease-toggle), border-color var(--pixel-motion-toggle-color) var(--pixel-ease-toggle), transform var(--pixel-motion-toggle-press) var(--pixel-ease-toggle);
-}
-
-.checkbox-container.is-enabled {
-  border-color: var(--pixel-cyan);
-  background-color: color-mix(in srgb, var(--pixel-cyan) 24%, var(--pixel-paper));
-}
-
-.checkbox-container.is-enabled::after {
-  border-color: var(--pixel-cyan);
-  background-color: color-mix(in srgb, var(--pixel-cyan) 68%, var(--pixel-paper));
-}
-
-.modal label.checkbox-container.is-enabled {
-  --pixel-toggle-position: var(--pixel-toggle-travel);
-}
-
-.modal label.checkbox-container.is-enabled::after {
-  transform: scaleY(1);
-}
-
-.modal label.checkbox-container:not(.is-disabled):active::after {
-  width: var(--pixel-toggle-thumb-size);
-  height: var(--pixel-toggle-thumb-size);
-  inset-inline-start: var(--pixel-toggle-position);
-  margin: 0;
-  transform: scaleY(0.9);
-  box-shadow: none;
-  opacity: 1;
-}
-
-.setting-group-search .search-input-container::after {
-  content: none;
-  display: none;
-}
-
-.mod-settings .mod-list .setting-group-search input[type=search] {
-  min-block-size: 36px;
-  border: var(--pixel-border-decoration) solid var(--pixel-search-edge);
-  border-radius: var(--pixel-radius);
-  background-color: color-mix(in srgb, var(--pixel-paper) 94%, var(--pixel-canvas));
-  box-shadow: none;
-}
-
-.setting-group.mod-list.mod-list .setting-group-search :focus-within > input[type=search] {
-  outline: 0;
-  border-color: var(--pixel-cyan);
-  background-color: color-mix(in srgb, var(--pixel-cyan) 6%, var(--pixel-paper));
-  box-shadow: var(--pixel-search-focus-shadow);
-}
-
-.mod-settings .mod-list .setting-item-control {
-  min-block-size: var(--pixel-control-min);
-  flex: 0 0 auto;
-  gap: var(--pixel-space-2);
-}
-
-.mod-settings .mod-list .extra-setting-button {
-  padding: 6px;
-  border: var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-border-meaningful) 54%, var(--pixel-paper));
-  border-radius: var(--pixel-radius-small);
-  background-color: color-mix(in srgb, var(--pixel-paper) 94%, var(--pixel-canvas));
-  color: var(--pixel-text-muted);
-  box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--pixel-border-meaningful) 28%, var(--pixel-paper));
-  transform: translateY(0);
-}
-
-.mod-settings .mod-list .extra-setting-button:not([aria-disabled=true]):active {
-  box-shadow: inset 0 -1px 0 color-mix(in srgb, var(--pixel-cyan) 36%, var(--pixel-paper));
-  transform: translateY(1px);
-}
-
-body:not(.is-mobile) .mod-settings .mod-list .checkbox-container {
-  --toggle-s-width: var(--pixel-toggle-inline-size);
-  --toggle-s-thumb-width: var(--pixel-toggle-thumb-size);
-  --toggle-s-thumb-height: var(--pixel-toggle-thumb-size);
-  inline-size: var(--pixel-toggle-inline-size);
-  block-size: var(--pixel-toggle-block-size);
-}
-
-body:not(.is-mobile) .mod-settings .mod-list .checkbox-container::after {
-  top: 0;
-  inset-inline-start: var(--pixel-toggle-position);
-  inline-size: var(--pixel-toggle-thumb-size);
-  block-size: var(--pixel-toggle-thumb-size);
-  margin: 0;
-  transform: scaleY(1);
-}
-
-body:not(.is-mobile) .mod-settings .mod-list .checkbox-container.is-enabled::after {
-  transform: scaleY(1);
-}
-
-body:not(.is-mobile) .mod-settings .mod-list .checkbox-container:not(.is-disabled):active::after {
-  transform: scaleY(0.9);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .mod-settings .mod-list .extra-setting-button:hover {
-    border-color: color-mix(in srgb, var(--pixel-cyan) 64%, var(--pixel-border-meaningful));
-    background-color: color-mix(in srgb, var(--pixel-cyan) 9%, var(--pixel-paper));
-    box-shadow: inset 0 -2px 0 var(--pixel-cyan);
-    transform: translateY(-1px);
+  .modal label.checkbox-container::after {
+    box-sizing: border-box;
+    width: var(--pixel-toggle-thumb-size);
+    height: var(--pixel-toggle-thumb-size);
+    inline-size: var(--pixel-toggle-thumb-size);
+    block-size: var(--pixel-toggle-thumb-size);
+    top: 0;
+    bottom: auto;
+    inset-inline-start: var(--pixel-toggle-position);
+    inset-inline-end: auto;
+    margin: 0;
+    transform: scaleY(1);
+    transform-origin: center;
+    transition: inset-inline-start var(--pixel-motion-toggle) var(--pixel-ease-toggle), background-color var(--pixel-motion-toggle-color) var(--pixel-ease-toggle), border-color var(--pixel-motion-toggle-color) var(--pixel-ease-toggle), transform var(--pixel-motion-toggle-press) var(--pixel-ease-toggle);
+  }
+  .checkbox-container.is-enabled {
+    border-color: var(--pixel-cyan);
+    background-color: color-mix(in srgb, var(--pixel-cyan) 24%, var(--pixel-paper));
+  }
+  .checkbox-container.is-enabled::after {
+    border-color: var(--pixel-cyan);
+    background-color: color-mix(in srgb, var(--pixel-cyan) 68%, var(--pixel-paper));
+  }
+  .modal label.checkbox-container.is-enabled {
+    --pixel-toggle-position: var(--pixel-toggle-travel);
+  }
+  .modal label.checkbox-container.is-enabled::after {
+    transform: scaleY(1);
+  }
+  .modal label.checkbox-container:not(.is-disabled):active::after {
+    width: var(--pixel-toggle-thumb-size);
+    height: var(--pixel-toggle-thumb-size);
+    inset-inline-start: var(--pixel-toggle-position);
+    margin: 0;
+    transform: scaleY(0.9);
+    box-shadow: none;
+    opacity: 1;
+  }
+  .setting-group-search .search-input-container::after {
+    content: none;
+    display: none;
+  }
+  .mod-settings .mod-list .setting-group-search input[type=search] {
+    min-block-size: 36px;
+    border: var(--pixel-border-decoration) solid var(--pixel-search-edge);
+    border-radius: var(--pixel-radius);
+    background-color: color-mix(in srgb, var(--pixel-paper) 94%, var(--pixel-canvas));
+    box-shadow: none;
+  }
+  .setting-group.mod-list.mod-list .setting-group-search :focus-within > input[type=search] {
+    outline: 0;
+    border-color: var(--pixel-cyan);
+    background-color: color-mix(in srgb, var(--pixel-cyan) 6%, var(--pixel-paper));
+    box-shadow: var(--pixel-search-focus-shadow);
+  }
+  .mod-settings .mod-list .setting-item-control {
+    min-block-size: var(--pixel-control-min);
+    flex: 0 0 auto;
+    gap: var(--pixel-space-2);
+  }
+  .mod-settings .mod-list .extra-setting-button {
+    padding: 6px;
+    border: var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-border-meaningful) 54%, var(--pixel-paper));
+    border-radius: var(--pixel-radius-small);
+    background-color: color-mix(in srgb, var(--pixel-paper) 94%, var(--pixel-canvas));
+    color: var(--pixel-text-muted);
+    box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--pixel-border-meaningful) 28%, var(--pixel-paper));
+    transform: translateY(0);
+  }
+  .mod-settings .mod-list .extra-setting-button:not([aria-disabled=true]):active {
+    box-shadow: inset 0 -1px 0 color-mix(in srgb, var(--pixel-cyan) 36%, var(--pixel-paper));
+    transform: translateY(1px);
+  }
+  body:not(.is-mobile) .mod-settings .mod-list .checkbox-container {
+    --toggle-s-width: var(--pixel-toggle-inline-size);
+    --toggle-s-thumb-width: var(--pixel-toggle-thumb-size);
+    --toggle-s-thumb-height: var(--pixel-toggle-thumb-size);
+    inline-size: var(--pixel-toggle-inline-size);
+    block-size: var(--pixel-toggle-block-size);
+  }
+  body:not(.is-mobile) .mod-settings .mod-list .checkbox-container::after {
+    top: 0;
+    inset-inline-start: var(--pixel-toggle-position);
+    inline-size: var(--pixel-toggle-thumb-size);
+    block-size: var(--pixel-toggle-thumb-size);
+    margin: 0;
+    transform: scaleY(1);
+  }
+  body:not(.is-mobile) .mod-settings .mod-list .checkbox-container.is-enabled::after {
+    transform: scaleY(1);
+  }
+  body:not(.is-mobile) .mod-settings .mod-list .checkbox-container:not(.is-disabled):active::after {
+    transform: scaleY(0.9);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .mod-settings .mod-list .extra-setting-button:hover {
+      border-color: color-mix(in srgb, var(--pixel-cyan) 64%, var(--pixel-border-meaningful));
+      background-color: color-mix(in srgb, var(--pixel-cyan) 9%, var(--pixel-paper));
+      box-shadow: inset 0 -2px 0 var(--pixel-cyan);
+      transform: translateY(-1px);
+    }
+  }
+  .checkbox-container.is-disabled::after,
+  input[type=range]:disabled::-webkit-slider-thumb {
+    box-shadow: none;
+  }
+  input[type=range] {
+    accent-color: var(--interactive-accent);
+  }
+  input[type=range]::-webkit-slider-runnable-track {
+    border-radius: var(--pixel-radius);
+    background-color: var(--pixel-border-meaningful);
+  }
+  input[type=range]::-webkit-slider-thumb {
+    border: var(--pixel-border-control) solid var(--pixel-cyan);
+    border-radius: var(--pixel-radius);
+    background-color: var(--pixel-paper);
+    box-shadow: var(--pixel-shadow-control);
+    transition: transform var(--pixel-motion-press) ease-out, box-shadow var(--pixel-motion-press) ease-out;
+  }
+  input[type=range]:active::-webkit-slider-thumb {
+    transform: translate(2px, 2px);
+    box-shadow: none;
+  }
+  .svg-icon {
+    color: currentColor;
+    filter: none;
+  }
+  .clickable-icon:not(.mod-settings *) .svg-icon,
+  button:not(.mod-settings *) .svg-icon {
+    inline-size: var(--pixel-icon-size);
+    block-size: var(--pixel-icon-size);
+  }
+  .clickable-icon:not(.mod-settings *) {
+    min-inline-size: var(--pixel-control-min);
+  }
+  .setting-item-control,
+  .modal-button-container {
+    gap: var(--pixel-space-2);
   }
 }
-.checkbox-container.is-disabled::after,
-input[type=range]:disabled::-webkit-slider-thumb {
-  box-shadow: none;
-}
-
-input[type=range] {
-  accent-color: var(--interactive-accent);
-}
-
-input[type=range]::-webkit-slider-runnable-track {
-  border-radius: var(--pixel-radius);
-  background-color: var(--pixel-border-meaningful);
-}
-
-input[type=range]::-webkit-slider-thumb {
-  border: var(--pixel-border-control) solid var(--pixel-cyan);
-  border-radius: var(--pixel-radius);
-  background-color: var(--pixel-paper);
-  box-shadow: var(--pixel-shadow-control);
-  transition: transform var(--pixel-motion-press) ease-out, box-shadow var(--pixel-motion-press) ease-out;
-}
-
-input[type=range]:active::-webkit-slider-thumb {
-  transform: translate(2px, 2px);
-  box-shadow: none;
-}
-
-.svg-icon {
-  color: currentColor;
-  filter: none;
-}
-
-.clickable-icon:not(.mod-settings *) .svg-icon,
-button:not(.mod-settings *) .svg-icon {
-  inline-size: var(--pixel-icon-size);
-  block-size: var(--pixel-icon-size);
-}
-
-.clickable-icon:not(.mod-settings *) {
-  min-inline-size: var(--pixel-control-min);
-}
-
-.setting-item-control,
-.modal-button-container {
-  gap: var(--pixel-space-2);
-}
-
 body .workspace.workspace .workspace-split.mod-root .workspace-leaf-content[data-type=empty] .view-content {
   overflow: auto;
   background-color: var(--pixel-surface-secondary);
@@ -4477,413 +4404,6 @@ body .pdf-findbar .input-right-decorator.clickable-icon:not(.mod-settings *):not
   outline-offset: 2px;
 }
 
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] {
-  --pixel-claudian-edge: color-mix(
-    in srgb,
-    var(--pixel-cyan) 28%,
-    var(--pixel-line)
-  );
-  --pixel-claudian-edge-hover: color-mix(
-    in srgb,
-    var(--pixel-cyan) 58%,
-    var(--pixel-line)
-  );
-  --pixel-claudian-surface: color-mix(
-    in srgb,
-    var(--pixel-paper) 96%,
-    var(--pixel-cyan)
-  );
-  --pixel-claudian-surface-muted: color-mix(
-    in srgb,
-    var(--pixel-cyan) 6%,
-    var(--pixel-paper)
-  );
-  --pixel-claudian-focus-ring: 0 0 0 3px
-    color-mix(in srgb, var(--pixel-cyan) 18%, transparent);
-  --pixel-claudian-context-focus-ring: 0 0 0 3px
-    color-mix(in srgb, var(--pixel-cyan) 16%, transparent);
-  container: pixel-claudian-pane/inline-size;
-  min-inline-size: 0;
-  min-block-size: 0;
-  background-color: var(--pixel-paper);
-}
-
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .view-content.claudian-container {
-  box-sizing: border-box;
-  min-inline-size: 0;
-  min-block-size: 0;
-  margin: 0;
-  padding: var(--pixel-space-3) var(--pixel-space-4) calc(var(--pixel-space-8) + var(--pixel-space-2));
-  overflow: hidden;
-  border: 0;
-  border-radius: 0;
-  background-color: var(--pixel-paper);
-  background-image: none;
-  box-shadow: none;
-  color: var(--pixel-text);
-}
-
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-chat-panel {
-  inline-size: 100%;
-  min-inline-size: 0;
-  max-inline-size: 960px;
-  margin-inline: auto;
-}
-
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] :is(.claudian-tab-content-container, .claudian-tab-content, .claudian-messages-wrapper) {
-  min-inline-size: 0;
-  min-block-size: 0;
-}
-
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-messages {
-  gap: var(--pixel-space-4);
-  padding: var(--pixel-space-4) clamp(var(--pixel-space-2), 3cqi, var(--pixel-space-8)) 0;
-  scroll-padding-block: var(--pixel-space-4);
-}
-
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-message {
-  border-radius: var(--pixel-radius-large);
-}
-
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-message-user {
-  border: var(--pixel-border-decoration) solid var(--pixel-claudian-edge);
-  background-color: var(--pixel-claudian-surface-muted);
-  color: var(--pixel-text);
-}
-
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-welcome {
-  gap: var(--pixel-space-2);
-  padding: var(--pixel-space-6);
-}
-
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-welcome-text {
-  color: var(--pixel-text-muted);
-  font-size: clamp(24px, 4cqi, 30px);
-  font-weight: 400;
-  line-height: 1.25;
-}
-
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-input-footer {
-  padding-block-start: var(--pixel-space-2);
-}
-
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-input-nav-actions {
-  gap: var(--pixel-space-2);
-}
-
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] :is(.claudian-input-nav-btn, .claudian-nav-btn) {
-  border: var(--pixel-border-decoration) solid transparent;
-  background-color: transparent;
-  color: var(--pixel-text-muted);
-  box-shadow: none;
-  transition: background-color var(--pixel-motion-state) var(--pixel-ease-out), border-color var(--pixel-motion-state) var(--pixel-ease-out), color var(--pixel-motion-state) var(--pixel-ease-out), opacity var(--pixel-motion-state) var(--pixel-ease-out);
-}
-
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-input-nav-btn {
-  inline-size: 30px;
-  block-size: 30px;
-  border-radius: var(--pixel-radius);
-}
-
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-nav-btn {
-  inline-size: 34px;
-  block-size: 34px;
-  border-color: var(--pixel-claudian-edge);
-  border-radius: 50%;
-  background-color: var(--pixel-claudian-surface);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] :is(.claudian-input-nav-btn, .claudian-nav-btn):hover {
-    border-color: var(--pixel-claudian-edge-hover);
-    background-color: var(--pixel-claudian-surface-muted);
-    color: var(--pixel-text);
-    transform: none;
-  }
-}
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-input-wrapper {
-  min-block-size: 140px;
-  overflow: visible;
-  border: var(--pixel-border-decoration) solid var(--pixel-claudian-edge);
-  border-radius: var(--pixel-radius-large);
-  background-color: var(--pixel-claudian-surface);
-  box-shadow: 0 1px 2px color-mix(in srgb, var(--pixel-shadow-color) 14%, transparent), inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 72%, transparent);
-  transition: border-color var(--pixel-motion-state) var(--pixel-ease-out), box-shadow var(--pixel-motion-state) var(--pixel-ease-out), background-color var(--pixel-motion-state) var(--pixel-ease-out);
-}
-
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-input-wrapper:focus-within {
-  border-color: var(--pixel-cyan);
-  background-color: var(--pixel-paper);
-  box-shadow: var(--pixel-claudian-focus-ring);
-}
-
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .view-content.claudian-container .claudian-input-wrapper textarea.claudian-input,
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .view-content.claudian-container .claudian-input-wrapper textarea.claudian-input:is(:hover, :focus, :focus-visible) {
-  border: 0;
-  outline: 0;
-  border-radius: 0;
-  background-color: transparent;
-  box-shadow: none;
-  color: var(--pixel-text);
-}
-
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .view-content.claudian-container .claudian-input-wrapper textarea.claudian-input::placeholder {
-  color: var(--pixel-text-muted);
-  opacity: 1;
-}
-
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-context-row {
-  gap: var(--pixel-space-2);
-  padding: var(--pixel-space-2) var(--pixel-space-2) 0;
-}
-
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-context-chip {
-  position: relative;
-  max-inline-size: min(260px, 100%);
-  block-size: 28px;
-  padding: 4px 6px 4px 9px;
-  border: var(--pixel-border-decoration) solid var(--pixel-claudian-edge);
-  border-radius: 999px;
-  background-color: var(--pixel-claudian-surface-muted);
-  color: var(--pixel-text);
-  box-shadow: 0 1px 2px color-mix(in srgb, var(--pixel-shadow-color) 10%, transparent), inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 68%, transparent);
-  transform: translateY(0) scale(1);
-  user-select: none;
-  transition: background-color var(--pixel-motion-state) var(--pixel-ease-out), border-color var(--pixel-motion-state) var(--pixel-ease-out), box-shadow var(--pixel-motion-surface) var(--pixel-ease-out), color var(--pixel-motion-state) var(--pixel-ease-out), transform var(--pixel-motion-surface) var(--pixel-ease-out);
-}
-
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-context-chip > button {
-  appearance: none;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  outline: 0;
-  background: transparent;
-  background-image: none;
-  color: inherit;
-  min-block-size: 0;
-  box-shadow: none;
-  transform: none;
-}
-
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-context-chip > button:is(:hover, :focus, :focus-visible, :active) {
-  border: 0;
-  outline: 0;
-  background: transparent;
-  background-image: none;
-  box-shadow: none;
-  transform: none;
-}
-
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-context-chip:focus-within {
-  border-color: var(--pixel-cyan);
-  background-color: color-mix(in srgb, var(--pixel-cyan) 9%, var(--pixel-paper));
-  box-shadow: var(--pixel-claudian-context-focus-ring);
-}
-
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-context-chip > button.claudian-context-chip-remove {
-  inline-size: 18px;
-  block-size: 18px;
-  flex-basis: 18px;
-  border-radius: 50%;
-  transition: background-color var(--pixel-motion-state) var(--pixel-ease-out), color var(--pixel-motion-state) var(--pixel-ease-out);
-}
-
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-context-chip-remove {
-  color: var(--pixel-text-muted);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-context-chip:hover:not(:focus-within) {
-    border-color: var(--pixel-claudian-edge-hover);
-    background-color: color-mix(in srgb, var(--pixel-cyan) 10%, var(--pixel-paper));
-    box-shadow: 0 3px 8px color-mix(in srgb, var(--pixel-shadow-color) 14%, transparent), inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 76%, transparent);
-    transform: translateY(-1px) scale(1.01);
-  }
-  body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-context-chip:hover .claudian-context-chip-label {
-    color: var(--pixel-cyan);
-  }
-  body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-context-chip > button.claudian-context-chip-remove:hover {
-    background: color-mix(in srgb, var(--pixel-cyan) 14%, transparent);
-    color: var(--pixel-cyan);
-  }
-}
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-context-chip:active {
-  box-shadow: inset 0 1px 2px color-mix(in srgb, var(--pixel-shadow-color) 14%, transparent);
-  transform: translateY(0) scale(0.99);
-  transition-duration: var(--pixel-motion-press);
-}
-
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-input-toolbar {
-  column-gap: var(--pixel-space-2);
-  row-gap: var(--pixel-space-1);
-  min-block-size: 36px;
-  padding: 5px var(--pixel-space-2) 7px;
-  color: var(--pixel-text-muted);
-}
-
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] :is(.claudian-model-btn, .claudian-thinking-current) {
-  border-radius: var(--pixel-radius);
-  transition: background-color var(--pixel-motion-state) var(--pixel-ease-out), color var(--pixel-motion-state) var(--pixel-ease-out);
-}
-
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] :is(.claudian-model-dropdown, .claudian-thinking-options, .claudian-external-context-dropdown) {
-  border: var(--pixel-border-decoration) solid var(--pixel-claudian-edge);
-  border-radius: var(--pixel-radius-large);
-  background-color: var(--pixel-paper);
-  box-shadow: 0 8px 24px color-mix(in srgb, var(--pixel-shadow-color) 22%, transparent);
-}
-
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] :is(.claudian-tool-content, .claudian-thinking-content, .claudian-citations-content) {
-  border-inline-start: var(--pixel-border-decoration) solid var(--pixel-claudian-edge);
-}
-
-body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] :is(.claudian-tool-header, .claudian-thinking-header):focus-visible {
-  outline: var(--pixel-border-control) solid var(--pixel-cyan);
-  outline-offset: 2px;
-  border-radius: var(--pixel-radius-small);
-}
-
-body:not(.is-mobile) .workspace-split.mod-root .workspace-tab-header[data-type=claudian-view].is-active {
-  border: 0;
-  border-radius: var(--pixel-radius);
-  background-color: var(--pixel-claudian-surface-muted);
-  box-shadow: inset 0 -2px 0 var(--pixel-cyan);
-}
-
-body:not(.is-mobile) .workspace-split.mod-root .workspace-leaf.mod-active .workspace-leaf-content[data-type=claudian-view] .view-header {
-  min-block-size: 40px;
-  border-block-end: var(--pixel-border-decoration) solid var(--pixel-claudian-edge);
-  background-color: var(--pixel-claudian-surface);
-}
-
-body:not(.is-mobile) .workspace-split.mod-root .workspace-leaf.mod-active .workspace-leaf-content[data-type=claudian-view] .view-header .clickable-icon {
-  min-inline-size: 28px;
-  min-block-size: 28px;
-  border-color: transparent;
-  background-color: transparent;
-  box-shadow: none;
-}
-
-@container pixel-claudian-pane (max-width: 960px) {
-  body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .view-content.claudian-container.claudian-wide-session-layout {
-    flex-direction: column;
-  }
-  body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-wide-session-layout :is(.claudian-session-resizer, .claudian-session-sidebar) {
-    display: none;
-  }
-  body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-wide-session-layout .claudian-chat-panel {
-    max-inline-size: 100%;
-  }
-}
-@container pixel-claudian-pane (max-width: 520px) {
-  body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .view-content.claudian-container {
-    padding-inline: var(--pixel-space-3);
-  }
-  body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-messages {
-    padding-inline: var(--pixel-space-2);
-  }
-  body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-input-wrapper {
-    border-radius: var(--pixel-radius);
-  }
-}
-body.is-mobile .workspace-leaf-content[data-type=claudian-view] :is(.claudian-input-nav-btn, .claudian-nav-btn) {
-  inline-size: 44px;
-  block-size: 44px;
-}
-
-.mod-settings .claudian-settings-tabs {
-  display: flex;
-  align-items: flex-end;
-  inline-size: 100%;
-  max-inline-size: 100%;
-  gap: var(--pixel-space-1);
-  margin-block-end: var(--pixel-space-4);
-  padding: 0;
-  overflow-x: auto;
-  border: 0;
-  border-block-end: var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-cyan) 14%, var(--pixel-line));
-  border-radius: 0;
-  background-color: transparent;
-  scrollbar-color: color-mix(in srgb, var(--pixel-cyan) 28%, transparent) transparent;
-  scrollbar-width: none;
-}
-
-.mod-settings .claudian-settings-tabs::-webkit-scrollbar {
-  display: none;
-}
-
-.mod-settings button.claudian-settings-tab {
-  min-block-size: 36px;
-  margin-block-end: -1px;
-  padding: 7px 16px;
-  white-space: nowrap;
-  border: var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-cyan) 16%, var(--pixel-line));
-  border-radius: calc(var(--pixel-radius) + 2px) calc(var(--pixel-radius) + 2px) 2px 2px;
-  background-color: color-mix(in srgb, var(--pixel-cyan) 5%, var(--pixel-canvas));
-  color: var(--pixel-text-muted);
-  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 64%, transparent);
-  transform: none;
-  transition: background-color var(--pixel-motion-state) linear, border-color var(--pixel-motion-state) linear, box-shadow var(--pixel-motion-state) linear, color var(--pixel-motion-state) linear;
-}
-
-.mod-settings button.claudian-settings-tab--active {
-  border-color: var(--pixel-settings-edge);
-  background-color: color-mix(in srgb, var(--pixel-cyan) 7%, var(--pixel-paper));
-  color: var(--pixel-text);
-  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--pixel-paper) 72%, transparent), inset 0 -2px 0 var(--pixel-cyan);
-}
-
-.mod-settings button.claudian-settings-tab:focus-visible {
-  outline: 0;
-  border-color: var(--pixel-cyan);
-  box-shadow: var(--pixel-settings-focus-ring);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .mod-settings button.claudian-settings-tab:not(.claudian-settings-tab--active):hover {
-    border-color: color-mix(in srgb, var(--pixel-cyan) 38%, var(--pixel-line));
-    background-color: color-mix(in srgb, var(--pixel-cyan) 8%, var(--pixel-canvas));
-    color: var(--pixel-text);
-  }
-}
-.mod-settings .claudian-settings .setting-item-heading {
-  border-block-start-color: color-mix(in srgb, var(--pixel-cyan) 16%, var(--pixel-line));
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .mod-settings button.claudian-settings-tab,
-  body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] :is(.claudian-input-wrapper,
-  .claudian-context-chip,
-  .claudian-input-nav-btn,
-  .claudian-nav-btn,
-  .claudian-model-btn,
-  .claudian-thinking-current) {
-    transition: none;
-  }
-  body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-context-chip > button {
-    transition: none;
-  }
-}
-@media (forced-colors: active) {
-  body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] :is(.claudian-input-wrapper, .claudian-context-chip, .claudian-nav-btn) {
-    border-color: CanvasText;
-  }
-  body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-input-wrapper:focus-within {
-    outline: 2px solid Highlight;
-    outline-offset: 2px;
-  }
-  body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] .claudian-context-chip:focus-within {
-    outline: 2px solid Highlight;
-    outline-offset: 2px;
-    box-shadow: none;
-  }
-}
-@media (prefers-contrast: more) {
-  body .workspace.workspace .workspace-leaf-content[data-type=claudian-view] :is(.claudian-input-wrapper, .claudian-context-chip, .claudian-nav-btn) {
-    border-color: var(--pixel-text);
-  }
-}
 .modal .templater-prompt-div > .templater-prompt-input {
   border: var(--pixel-border-decoration) solid color-mix(in srgb, var(--pixel-cyan) 22%, var(--pixel-line-strong));
   outline: 0;
@@ -7797,38 +7317,38 @@ body.is-mobile .callout.is-collapsible > .callout-title {
   min-block-size: 44px;
 }
 
-body button:not(.clickable-icon):not(.mod-settings *):is(:disabled, [aria-disabled=true]),
-body .clickable-icon:not(.mod-settings *):is(:disabled, [aria-disabled=true]),
-body :is(input[type], textarea, select):not(.mod-settings *):is(:disabled, [aria-disabled=true]),
-body .mod-settings .setting-item-control > :is(button,
-input:not([type=checkbox]):not([type=radio]):not([type=color]),
-textarea,
-select,
-.combobox-button):is(:disabled, [aria-disabled=true], .is-disabled),
-button:disabled:not(.mod-settings *),
-button[aria-disabled=true]:not(.mod-settings *),
-.clickable-icon[aria-disabled=true]:not(.mod-settings *),
-input:disabled:not(.mod-settings *),
-textarea:disabled:not(.mod-settings *),
-select:disabled:not(.mod-settings *),
-.checkbox-container.is-disabled,
-.menu-item.is-disabled,
-.suggestion-item.is-disabled {
-  opacity: 1;
-  border-color: var(--pixel-border-meaningful);
-  background-color: var(--pixel-surface-secondary);
-  color: var(--pixel-text-muted);
-  box-shadow: none;
-  cursor: not-allowed;
-  transform: none;
+@scope (body) to (.workspace-leaf-content[data-type="claudian-view"] > .view-content) {
+  body button:not(.clickable-icon):not(.mod-settings *):is(:disabled, [aria-disabled=true]),
+  body .clickable-icon:not(.mod-settings *):is(:disabled, [aria-disabled=true]),
+  body :is(input[type], textarea, select):not(.mod-settings *):is(:disabled, [aria-disabled=true]),
+  body .mod-settings .setting-item-control > :is(button,
+  input:not([type=checkbox]):not([type=radio]):not([type=color]),
+  textarea,
+  select,
+  .combobox-button):is(:disabled, [aria-disabled=true], .is-disabled),
+  button:disabled:not(.mod-settings *),
+  button[aria-disabled=true]:not(.mod-settings *),
+  .clickable-icon[aria-disabled=true]:not(.mod-settings *),
+  input:disabled:not(.mod-settings *),
+  textarea:disabled:not(.mod-settings *),
+  select:disabled:not(.mod-settings *),
+  .checkbox-container.is-disabled,
+  .menu-item.is-disabled,
+  .suggestion-item.is-disabled {
+    opacity: 1;
+    border-color: var(--pixel-border-meaningful);
+    background-color: var(--pixel-surface-secondary);
+    color: var(--pixel-text-muted);
+    box-shadow: none;
+    cursor: not-allowed;
+    transform: none;
+  }
+  .checkbox-container.is-disabled::after {
+    border-color: var(--pixel-border-meaningful);
+    background-color: var(--pixel-surface-secondary);
+    box-shadow: none;
+  }
 }
-
-.checkbox-container.is-disabled::after {
-  border-color: var(--pixel-border-meaningful);
-  background-color: var(--pixel-surface-secondary);
-  box-shadow: none;
-}
-
 @media (hover: hover) and (pointer: fine) {
   body.styled-scrollbars:not(.is-mobile) ::-webkit-scrollbar-thumb:hover {
     background-color: color-mix(in srgb, var(--pixel-border-meaningful) 60%, var(--pixel-cyan));

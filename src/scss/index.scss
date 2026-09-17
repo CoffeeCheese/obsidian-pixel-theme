@@ -7,14 +7,13 @@
 @use "content/markdown";
 @use "content/structured";
 @use "content/media-lists";
-@use "components/controls";
+@use "components/native-controls";
 @use "app/new-tab";
 @use "accessibility/preferences";
 @use "core-plugins/navigation";
 @use "core-plugins/context";
 @use "core-plugins/spatial";
 @use "core-plugins/data-document";
-@use "plugins/claudian";
 @use "plugins/templater";
 @use "plugins/project-manager";
 @use "plugins/project-manager-insights";
@@ -25,6 +24,6 @@
 @use "core-plugins/note-navigation";
 @use "components/transient-surfaces";
 @use "components/code-copy";
-@use "components/control-states";
+@use "components/native-control-states";
 @use "app/navigation-feedback";
 @use "content/print";
