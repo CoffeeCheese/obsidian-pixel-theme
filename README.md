@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <kbd><!-- pixel-version:start -->1.0.0<!-- pixel-version:end --></kbd>
+  <kbd><!-- pixel-version:start -->1.0.1<!-- pixel-version:end --></kbd>
   <kbd>OBSIDIAN 1.12+</kbd>
   <kbd>LIGHT / DARK</kbd>
   <kbd>DESKTOP / iOS</kbd>
@@ -40,11 +40,11 @@ states that make a workspace feel coherent.
 
 ## Recent updates
 
-Pixel `1.0.0` establishes the stable baseline after the `0.9` series, with
-plugin-native Claudian content and refined Obsidian surfaces:
+Pixel `1.0.1` fixes Preferences toggle positioning and search-clear feedback:
 
 | Release | What changed |
 | --- | --- |
+| [`1.0.1`](docs/releases/1.0.1.en.md) | Fixes plugin toggle overflow and search-clear backgrounds covering field borders. |
 | [`1.0.0`](docs/releases/1.0.0.en.md) | First stable release; restores native Claudian content controls and fixes doubled message bubbles and oversized action rows. |
 | [`0.9.9`](docs/releases/0.9.9.en.md) | Refined motion, reading, search, PDF, Bases, and Canvas, with stable task strikethrough and clearer dark surfaces. |
 | [`0.9.8`](docs/releases/0.9.8.en.md) | Refined Markdown images, task feedback, and fenced-code identity, while polishing Templater prompts and documentation readability. |
@@ -323,7 +323,7 @@ unless named there.
 
 | Item | Current information |
 | --- | --- |
-| Current version | <code><!-- pixel-version:start -->1.0.0<!-- pixel-version:end --></code> |
+| Current version | <code><!-- pixel-version:start -->1.0.1<!-- pixel-version:end --></code> |
 | Obsidian requirement | `1.12.0` or newer |
 | Priority platforms | Desktop / iOS |
 | Verified desktop environment | Obsidian `1.13.4` / macOS |

@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <kbd><!-- pixel-version:start -->1.0.0<!-- pixel-version:end --></kbd>
+  <kbd><!-- pixel-version:start -->1.0.1<!-- pixel-version:end --></kbd>
   <kbd>OBSIDIAN 1.12+</kbd>
   <kbd>LIGHT / DARK</kbd>
   <kbd>DESKTOP / iOS</kbd>
@@ -35,10 +35,11 @@ Pixel 为 Obsidian 带来安静的纸张工作区、清晰的像素身份，以�
 
 ## 近期更新
 
-Pixel `1.0.0` 在 `0.9` 系列基础上确立稳定版本基线，保留 Claudian 原生内容控件，并延续对 Obsidian 界面的细节打磨：
+Pixel `1.0.1` 修复设置开关定位和搜索清除按钮反馈：
 
 | 版本 | 主要变化 |
 | --- | --- |
+| [`1.0.1`](docs/releases/1.0.1.md) | 修复插件开关滑块越界，以及搜索清除按钮背景覆盖输入框边线。 |
 | [`1.0.0`](docs/releases/1.0.0.md) | 首个稳定版本；恢复 Claudian 原生内容控件，修复双层消息气泡和操作栏高度异常。 |
 | [`0.9.9`](docs/releases/0.9.9.md) | 精修动效、阅读、搜索、PDF、Bases 与 Canvas，完善任务删除线及深色浮层。 |
 | [`0.9.8`](docs/releases/0.9.8.md) | 优化 Markdown 图片、任务反馈与代码块身份，并改善 Templater 提示框和文档阅读体验。 |
@@ -272,7 +273,7 @@ Pixel 当前不提供自定义 **Style Settings** 选项。Style Settings 插件
 
 | 项目 | 当前信息 |
 | --- | --- |
-| 当前版本 | <code><!-- pixel-version:start -->1.0.0<!-- pixel-version:end --></code> |
+| 当前版本 | <code><!-- pixel-version:start -->1.0.1<!-- pixel-version:end --></code> |
 | Obsidian 要求 | `1.12.0` 或更高版本 |
 | 优先适配平台 | 桌面端 / iOS |
 | 已验证桌面环境 | Obsidian `1.13.4` / macOS |
