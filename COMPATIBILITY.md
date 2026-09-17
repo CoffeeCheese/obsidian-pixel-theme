@@ -120,3 +120,15 @@ against the same pane with Pixel temporarily disabled. It also checks the mounte
 CodeMirror editor and its pseudo-elements both unfocused and focused, verifies
 that native buttons retain Pixel styling, and restores theme and focus state. It sends no messages and changes no conversation data. The Node
 contract suite separately checks that the compiled CSS preserves this boundary.
+
+The scope starts at `:root`, above `body`. A `body` scope root prevents descendant
+selectors beginning with `body` from matching that root. This previously dropped
+the desktop settings-list overrides, combining Pixel's thumb inset with native
+translation and pushing enabled plugin switches outside their tracks.
+
+With Community plugins settings open, run `node scripts/verify-settings-toggles.mjs`.
+It uses the settings document (including a detached window) and listener-free
+clones of an installed plugin row to check thumb containment in Light/Dark,
+desktop/mobile CSS, enabled/disabled, and on/off states. It restores body classes
+and removes its fixtures without changing plugin activation. Mobile CSS checks
+are not a substitute for iOS device verification.

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { atRuleBody, readTheme } from "../test-support/theme-css.mjs";
 
-const boundary = '@scope (body) to (.workspace-leaf-content[data-type="claudian-view"] > .view-content)';
+const boundary = '@scope (:root) to (.workspace-leaf-content[data-type="claudian-view"] > .view-content)';
 
 test("Claudian owns its message bubbles, composer and responsive layout", async () => {
   const css = await readTheme();

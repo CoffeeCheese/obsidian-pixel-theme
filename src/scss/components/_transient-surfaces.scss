@@ -88,21 +88,28 @@ body:not(.is-mobile) .prompt .suggestion-hotkey {
 
 // Native clear controls keep their visibility, size and hit testing. A quiet
 // inset focus ring is visible inside compact search fields without moving X.
+// The native hit box spans the input height; filling it would cover the field
+// perimeter. Use icon color for pointer feedback while keeping that hit box.
 body .search-input-container .search-input-clear-button,
 body .prompt .search-input-clear-button {
   border-radius: var(--pixel-radius-small);
+  background-color: transparent;
   color: var(--pixel-text-muted);
-  transition:
-    color var(--pixel-motion-state) var(--pixel-ease-out),
-    background-color var(--pixel-motion-state) var(--pixel-ease-out);
+  transition: color var(--pixel-motion-state) var(--pixel-ease-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
   body .search-input-container .search-input-clear-button:hover,
   body .prompt .search-input-clear-button:hover {
-    background-color: var(--pixel-surface-secondary);
+    background-color: transparent;
     color: var(--pixel-text);
   }
+}
+
+body .search-input-container .search-input-clear-button:active,
+body .prompt .search-input-clear-button:active {
+  background-color: transparent;
+  color: var(--pixel-text);
 }
 
 body .search-input-container .search-input-clear-button:focus-visible,

@@ -2,6 +2,7 @@
 
 // Claudian owns its content controls across DOM versions. Keep Pixel on the
 // native view header, but do not override the plugin's geometry or states.
-@scope (body) to (.workspace-leaf-content[data-type="claudian-view"] > .view-content) {
+// Start above body so body-prefixed native selectors can match inside the scope.
+@scope (:root) to (.workspace-leaf-content[data-type="claudian-view"] > .view-content) {
   @include meta.load-css("controls");
 }

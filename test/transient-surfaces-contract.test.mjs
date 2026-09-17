@@ -41,7 +41,10 @@ test("search clear feedback preserves the native icon, visibility and hit target
     assert.equal(declaration(base, "color"), "var(--pixel-text-muted)");
     assert.doesNotMatch(base, /(?:display|width|height|inline-size|block-size|position|content|transform):/);
     const hover = ruleBodyForSelector(css, `${selector}:hover`);
-    assert.equal(declaration(hover, "background-color"), "var(--pixel-surface-secondary)");
+    assert.equal(declaration(base, "background-color"), "transparent");
+    assert.equal(declaration(hover, "background-color"), "transparent");
+    const active = ruleBodyForSelector(css, `${selector}:active`);
+    assert.equal(declaration(active, "background-color"), "transparent");
     const focus = ruleBodyForSelector(css, `${selector}:focus-visible`);
     assert.equal(declaration(focus, "outline-offset"), "-2px");
     assert.match(declaration(focus, "outline"), /var\(--pixel-cyan\)/);

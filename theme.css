@@ -1517,7 +1517,7 @@ body.is-mobile .file-embed.mod-generic {
   min-block-size: 44px;
 }
 
-@scope (body) to (.workspace-leaf-content[data-type="claudian-view"] > .view-content) {
+@scope (:root) to (.workspace-leaf-content[data-type="claudian-view"] > .view-content) {
   button:not(.clickable-icon):not(.mod-settings *),
   .clickable-icon:not(.mod-settings *) {
     min-block-size: var(--pixel-control-min);
@@ -7251,17 +7251,24 @@ body:not(.is-mobile) .prompt .suggestion-hotkey {
 body .search-input-container .search-input-clear-button,
 body .prompt .search-input-clear-button {
   border-radius: var(--pixel-radius-small);
+  background-color: transparent;
   color: var(--pixel-text-muted);
-  transition: color var(--pixel-motion-state) var(--pixel-ease-out), background-color var(--pixel-motion-state) var(--pixel-ease-out);
+  transition: color var(--pixel-motion-state) var(--pixel-ease-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
   body .search-input-container .search-input-clear-button:hover,
   body .prompt .search-input-clear-button:hover {
-    background-color: var(--pixel-surface-secondary);
+    background-color: transparent;
     color: var(--pixel-text);
   }
 }
+body .search-input-container .search-input-clear-button:active,
+body .prompt .search-input-clear-button:active {
+  background-color: transparent;
+  color: var(--pixel-text);
+}
+
 body .search-input-container .search-input-clear-button:focus-visible,
 body .prompt .search-input-clear-button:focus-visible {
   outline: var(--pixel-border-control) solid var(--pixel-cyan);
@@ -7317,7 +7324,7 @@ body.is-mobile .callout.is-collapsible > .callout-title {
   min-block-size: 44px;
 }
 
-@scope (body) to (.workspace-leaf-content[data-type="claudian-view"] > .view-content) {
+@scope (:root) to (.workspace-leaf-content[data-type="claudian-view"] > .view-content) {
   body button:not(.clickable-icon):not(.mod-settings *):is(:disabled, [aria-disabled=true]),
   body .clickable-icon:not(.mod-settings *):is(:disabled, [aria-disabled=true]),
   body :is(input[type], textarea, select):not(.mod-settings *):is(:disabled, [aria-disabled=true]),
