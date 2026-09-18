@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { combinedRuleBody, declaration, readTheme, ruleBodyForSelector } from "../test-support/theme-css.mjs";
+import { combinedRuleBody, declaration, readTheme, ruleBody, ruleBodyForSelector } from "../test-support/theme-css.mjs";
 
 test("quotes and nested callouts use compact spacing without taking over native folding", async () => {
   const css = await readTheme();
@@ -58,8 +58,8 @@ test("reading and live tables use restrained hover feedback without overriding n
 
 test("desktop reading code gives native copy its own column without an empty title row", async () => {
   const css = await readTheme();
-  const panel = ':where(body:not(.is-mobile)) .markdown-rendered pre';
-  const rule = selector => ruleBodyForSelector(css, selector);
+  const panel = ':where(body:not(.is-mobile)) .markdown-rendered pre:where(:not([class]), [class=\"\"], [class^=language-])';
+  const rule = selector => ruleBody(css, selector);
   assert.equal(declaration(rule(panel), "display"), "grid");
   assert.equal(declaration(rule(panel), "border-radius"), "0");
   assert.equal(declaration(rule(panel), "grid-template-columns"), "minmax(0, 1fr) auto");
@@ -79,6 +79,17 @@ test("bare reading pre retains local overflow when no code child can own scrolli
   const css = await readTheme();
   const fallback = ruleBodyForSelector(css, ".markdown-rendered pre");
   assert.equal(declaration(fallback, "overflow-x"), "auto");
-  const desktop = ruleBodyForSelector(css, ":where(body:not(.is-mobile)) .markdown-rendered pre");
+  const desktop = ruleBody(css, ":where(body:not(.is-mobile)) .markdown-rendered pre:where(:not([class]), [class=\"\"], [class^=language-])");
   assert.doesNotMatch(desktop, /(?:^|[;\n])\s*overflow(?:-x)?:\s*(?:visible|hidden|clip)\s*;/);
+});
+
+test("desktop plugin pre output keeps native layout instead of inheriting the code panel", async () => {
+  const css = await readTheme();
+  assert.doesNotMatch(css, /:where\(body:not\(\.is-mobile\)\) \.markdown-rendered pre\s*\{/);
+  const fallback = ruleBodyForSelector(css, ".markdown-rendered pre");
+  assert.doesNotMatch(fallback, /(?:^|[;\n])\s*(?:display|grid-template-columns|padding|border|border-radius|background-color|font-family):/);
+  const panel = ruleBody(css, ".markdown-rendered pre:where(:not([class]), [class=\"\"], [class^=language-])");
+  assert.equal(declaration(panel, "border"), "var(--pixel-border-control) solid var(--pixel-border-meaningful)");
+  const mobile = ruleBodyForSelector(css, ":where(body.is-mobile) .markdown-rendered pre");
+  assert.equal(declaration(mobile, "padding"), "var(--pixel-space-4)");
 });

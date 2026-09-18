@@ -1038,10 +1038,14 @@ body:not(.is-mobile) .status-bar-item.mod-clickable:focus-visible {
 }
 
 .markdown-rendered pre {
-  padding: var(--pixel-space-4);
   max-inline-size: 100%;
   overflow-x: auto;
   overscroll-behavior-inline: contain;
+}
+
+:where(body.is-mobile) .markdown-rendered pre,
+.markdown-rendered pre:where(:not([class]), [class=""], [class^=language-]) {
+  padding: var(--pixel-space-4);
   border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
   border-radius: var(--pixel-radius);
   background-color: var(--code-background);
@@ -1060,13 +1064,13 @@ body:not(.is-mobile) .status-bar-item.mod-clickable:focus-visible {
   padding: 0;
 }
 
-:where(body:not(.is-mobile)) .markdown-rendered pre {
+:where(body:not(.is-mobile)) .markdown-rendered pre:where(:not([class]), [class=""], [class^=language-]) {
   display: grid;
   border-radius: 0;
   grid-template-columns: minmax(0, 1fr) auto;
   column-gap: 0;
 }
-:where(body:not(.is-mobile)) .markdown-rendered pre > code {
+:where(body:not(.is-mobile)) .markdown-rendered pre:where(:not([class]), [class=""], [class^=language-]) > code {
   grid-column: 1;
   grid-row: 1;
   min-inline-size: 0;

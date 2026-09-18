@@ -161,12 +161,13 @@ test("inline and fenced code keep mono typography, restrained boundaries, and st
   const codeBlock = ruleBody(css, ".markdown-rendered pre");
   assert.equal(declaration(codeBlock, "max-inline-size"), "100%");
   assert.equal(declaration(codeBlock, "overflow-x"), "auto");
+  const panel = ruleBody(css, ".markdown-rendered pre:where(:not([class]), [class=\"\"], [class^=language-])");
   assert.equal(
-    declaration(codeBlock, "border"),
+    declaration(panel, "border"),
     "var(--pixel-border-control) solid var(--pixel-border-meaningful)",
   );
-  assert.equal(declaration(codeBlock, "box-shadow"), "none");
-  assert.equal(declaration(codeBlock, "animation"), "none");
+  assert.equal(declaration(panel, "box-shadow"), "none");
+  assert.equal(declaration(panel, "animation"), "none");
 
   const sourceCode = ruleBodyForSelector(
     css,
@@ -179,7 +180,7 @@ test("inline and fenced code keep mono typography, restrained boundaries, and st
 test("reading code omits synthetic labels while preserving the native editor header", async () => {
   const css = await readTheme();
   assert.doesNotMatch(css, /content:\s*["']CODE["']/i);
-  const panel = ruleBody(css, ".markdown-rendered pre");
+  const panel = ruleBody(css, ".markdown-rendered pre:where(:not([class]), [class=\"\"], [class^=language-])");
   assert.equal(declaration(panel, "padding"), "var(--pixel-space-4)");
 
   const liveHeader = ruleBody(

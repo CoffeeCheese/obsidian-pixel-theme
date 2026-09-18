@@ -109,10 +109,17 @@
 }
 
 .markdown-rendered pre {
-  padding: var(--pixel-space-4);
   max-inline-size: 100%;
   overflow-x: auto;
   overscroll-behavior-inline: contain;
+}
+
+// Native Markdown pre elements are unclassified or carry a language class.
+// Leave custom-class plugin output in its own layout, without relational
+// selectors; retain the existing mobile presentation.
+:where(body.is-mobile) .markdown-rendered pre,
+.markdown-rendered pre:where(:not([class]), [class=""], [class^="language-"]) {
+  padding: var(--pixel-space-4);
   border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
   border-radius: var(--pixel-radius);
   background-color: var(--code-background);
@@ -133,9 +140,9 @@
 }
 
 // Desktop copy occupies a real column, not a title row or an overlay. Only
-// reserve that column when the native action exists. Keep the pre overflow
-// fallback for raw HTML without a code child; native code scrolls inside it.
-:where(body:not(.is-mobile)) .markdown-rendered pre {
+// reserve that column when the native action exists. Custom-class pre output
+// keeps its overflow fallback; native code scrolls inside its child.
+:where(body:not(.is-mobile)) .markdown-rendered pre:where(:not([class]), [class=""], [class^="language-"]) {
   display: grid;
   border-radius: 0;
   grid-template-columns: minmax(0, 1fr) auto;
