@@ -327,3 +327,21 @@ test("fenced editor comments and diff lines use readable syntax roles without re
     "var(--pixel-text-muted)",
   );
 });
+
+test("print code keeps distinct syntax ink readable with and without background graphics", async () => {
+  const css = await readTheme();
+  const print = ruleBody(atRuleBody(css, "@media print"), ".print");
+  const roles = [
+    "normal", "comment", "function", "important", "keyword", "operator",
+    "property", "punctuation", "string", "tag", "value",
+  ];
+  const colors = new Map(roles.map(role => [role, declaration(print, `--code-${role}`)]));
+  for (const background of [declaration(print, "--code-background"), "#ffffff"]) {
+    for (const [role, color] of colors) {
+      assert.ok(contrast(color, background) >= 4.5, `Printed ${role} must pass on ${background}`);
+    }
+  }
+  // Export must not collapse the new syntax roles back into prose and amber.
+  const distinctRoles = ["normal", "comment", "keyword", "string", "function", "value"];
+  assert.equal(new Set(distinctRoles.map(role => colors.get(role))).size, distinctRoles.length);
+});

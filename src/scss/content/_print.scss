@@ -18,18 +18,20 @@
     --pixel-brick: #8f3925;
     --text-normal: #20262d;
     --text-muted: #535e66;
+    // Paper ink is independent of the active screen theme. These syntax
+    // colors pass on both the pale code surface and unprinted white paper.
     --code-normal: #20262d;
     --code-background: #f1f3f4;
     --code-comment: #535e66;
-    --code-function: #745020;
-    --code-important: #20262d;
-    --code-keyword: #745020;
+    --code-function: #285a8e;
+    --code-important: #67429b;
+    --code-keyword: #67429b;
     --code-operator: #20262d;
-    --code-property: #745020;
+    --code-property: #285a8e;
     --code-punctuation: #20262d;
-    --code-string: #20262d;
-    --code-tag: #745020;
-    --code-value: #20262d;
+    --code-string: #246343;
+    --code-tag: #67429b;
+    --code-value: #80501e;
     --code-border-color: #c3cbd0;
     --table-background: #fff;
     --table-row-alt-background: #fff;
