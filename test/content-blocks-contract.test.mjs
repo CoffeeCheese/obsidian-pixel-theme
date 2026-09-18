@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { declaration, readTheme, ruleBodyForSelector } from "../test-support/theme-css.mjs";
+import { combinedRuleBody, declaration, readTheme, ruleBodyForSelector } from "../test-support/theme-css.mjs";
 
 test("quotes and nested callouts use compact spacing without taking over native folding", async () => {
   const css = await readTheme();
@@ -37,6 +37,8 @@ test("code scrolls independently of the visible native copy action and keeps mob
     assert.equal(declaration(rule(enabled + state), "box-shadow"), "none");
   }
   assert.match(rule(enabled), /var\(--pixel-motion-state\)/);
+  assert.equal(declaration(combinedRuleBody(css, enabled + ":hover"), "border-style"), "dashed");
+  assert.equal(declaration(combinedRuleBody(css, enabled + ":active"), "outline-offset"), "-3px");
   assert.match(rule(enabled + ":focus-visible"), /outline:.*var\(--pixel-cyan\)/);
   const mobile = rule(copy.replace("body ", "body.is-mobile "));
   assert.equal(declaration(mobile, "min-block-size"), "44px");
@@ -52,4 +54,24 @@ test("reading and live tables use restrained hover feedback without overriding n
     assert.equal(declaration(rule, "background-color"), "var(--table-row-background-hover)");
     assert.doesNotMatch(rule, /(?:^|[;\n])\s*(?:color|transform|box-shadow|outline|border):/);
   }
+});
+
+test("desktop reading code gives native copy its own column without an empty title row", async () => {
+  const css = await readTheme();
+  const panel = ':where(body:not(.is-mobile)) .markdown-rendered pre';
+  const rule = selector => ruleBodyForSelector(css, selector);
+  assert.equal(declaration(rule(panel), "display"), "grid");
+  assert.equal(declaration(rule(panel), "border-radius"), "0");
+  assert.equal(declaration(rule(panel), "grid-template-columns"), "minmax(0, 1fr) auto");
+  assert.equal(declaration(rule(panel), "overflow"), "visible");
+  assert.equal(declaration(rule(panel), "column-gap"), "0");
+  const code = rule(panel + ' > code');
+  assert.equal(declaration(code, "min-inline-size"), "0");
+  assert.equal(declaration(code, "line-height"), "1.6");
+  const copy = rule('body:not(.is-mobile) .markdown-rendered pre > button.copy-code-button:not(.clickable-icon):not(.mod-settings *)');
+  assert.equal(declaration(copy, "position"), "static");
+  assert.equal(declaration(copy, "grid-column"), "2");
+  assert.equal(declaration(copy, "grid-row"), "1");
+  assert.equal(declaration(copy, "opacity"), "1");
+  assert.equal(declaration(copy, "margin-inline-start"), "var(--pixel-space-3)");
 });

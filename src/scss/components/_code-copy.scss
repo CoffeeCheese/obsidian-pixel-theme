@@ -11,7 +11,7 @@ body .markdown-rendered pre > button.copy-code-button:not(.clickable-icon):not(.
   color: var(--pixel-text);
 }
 
-// A code action belongs to the flat status strip; moving it must not make the
+// A code action belongs to the flat panel; moving it must not make the
 // code look as though it moved. Full dialog buttons keep their tactile travel.
 body .markdown-rendered pre > button.copy-code-button:not(.clickable-icon):not(.mod-settings *):not(:disabled):not([aria-disabled="true"]) {
   background-color: var(--pixel-paper);
@@ -29,10 +29,29 @@ body .markdown-rendered pre > button.copy-code-button:not(.clickable-icon):not(.
     transform: none;
   }
 
+  &:hover {
+    border-style: dashed;
+  }
+
+  &:active {
+    outline: var(--pixel-border-decoration) solid var(--pixel-cyan);
+    outline-offset: -3px;
+  }
+
   &:focus-visible {
     outline: var(--pixel-border-control) solid var(--pixel-cyan);
     outline-offset: 1px;
   }
+}
+
+body:not(.is-mobile) .markdown-rendered pre > button.copy-code-button:not(.clickable-icon):not(.mod-settings *) {
+  position: static;
+  grid-column: 2;
+  grid-row: 1;
+  align-self: start;
+  margin: 0;
+  margin-inline-start: var(--pixel-space-3);
+  opacity: 1;
 }
 
 body.is-mobile .markdown-rendered pre {

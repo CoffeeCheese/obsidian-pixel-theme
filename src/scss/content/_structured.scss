@@ -109,17 +109,18 @@
 }
 
 .markdown-rendered pre {
-  padding-block-start: calc(var(--pixel-space-8) + var(--pixel-space-3));
+  padding: var(--pixel-space-4);
   max-inline-size: 100%;
   overflow-x: auto;
   overscroll-behavior-inline: contain;
-  border: var(--code-border-width) solid var(--code-border-color);
+  border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
+  border-radius: var(--pixel-radius);
+  background-color: var(--code-background);
   box-shadow: none;
   animation: none;
 }
 
-// Scroll the code itself so the native copy action and status label stay in
-// place. Unwrapped pre elements retain their native overflow fallback.
+// The native code child owns long-line scrolling; copy stays outside it.
 .markdown-rendered pre > code {
   display: block;
   white-space: var(--code-white-space);
@@ -131,32 +132,21 @@
   padding: 0;
 }
 
-.markdown-rendered pre[class*="language-"] {
-  position: relative;
-  padding-block-start: calc(var(--pixel-space-8) + var(--pixel-space-3));
-  border-block-start: var(--pixel-space-1) solid var(--pixel-cyan);
-}
+// Desktop copy occupies a real column, not a title row or an overlay. Only
+// reserve that column when the native action exists; code owns all scrolling.
+:where(body:not(.is-mobile)) .markdown-rendered pre {
+  display: grid;
+  border-radius: 0;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 0;
+  overflow: visible;
 
-.markdown-rendered pre[class*="language-"]::before {
-  content: "CODE";
-  position: absolute;
-  inset-block-start: var(--pixel-space-2);
-  inset-inline-start: var(--pixel-space-3);
-  padding-block: 1px;
-  padding-inline: var(--pixel-space-2);
-  border-block: var(--pixel-border-decoration) solid var(--pixel-border-meaningful);
-  border-inline-end: var(--pixel-border-decoration) solid var(--pixel-border-meaningful);
-  border-inline-start: var(--pixel-space-2) solid var(--pixel-cyan);
-  background-color: var(--pixel-paper);
-  color: var(--pixel-text);
-  font-family: var(--font-monospace);
-  font-size: var(--font-smallest);
-  font-weight: 700;
-  line-height: var(--pixel-space-4);
-  letter-spacing: 0.08em;
-  pointer-events: none;
-  box-shadow: none;
-  animation: none;
+  > code {
+    grid-column: 1;
+    grid-row: 1;
+    min-inline-size: 0;
+    line-height: 1.6;
+  }
 }
 
 // Markdown comments use muted prose ink elsewhere. Fenced comments must use

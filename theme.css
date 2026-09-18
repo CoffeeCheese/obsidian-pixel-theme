@@ -1038,11 +1038,13 @@ body:not(.is-mobile) .status-bar-item.mod-clickable:focus-visible {
 }
 
 .markdown-rendered pre {
-  padding-block-start: calc(var(--pixel-space-8) + var(--pixel-space-3));
+  padding: var(--pixel-space-4);
   max-inline-size: 100%;
   overflow-x: auto;
   overscroll-behavior-inline: contain;
-  border: var(--code-border-width) solid var(--code-border-color);
+  border: var(--pixel-border-control) solid var(--pixel-border-meaningful);
+  border-radius: var(--pixel-radius);
+  background-color: var(--code-background);
   box-shadow: none;
   animation: none;
 }
@@ -1058,32 +1060,18 @@ body:not(.is-mobile) .status-bar-item.mod-clickable:focus-visible {
   padding: 0;
 }
 
-.markdown-rendered pre[class*=language-] {
-  position: relative;
-  padding-block-start: calc(var(--pixel-space-8) + var(--pixel-space-3));
-  border-block-start: var(--pixel-space-1) solid var(--pixel-cyan);
+:where(body:not(.is-mobile)) .markdown-rendered pre {
+  display: grid;
+  border-radius: 0;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 0;
+  overflow: visible;
 }
-
-.markdown-rendered pre[class*=language-]::before {
-  content: "CODE";
-  position: absolute;
-  inset-block-start: var(--pixel-space-2);
-  inset-inline-start: var(--pixel-space-3);
-  padding-block: 1px;
-  padding-inline: var(--pixel-space-2);
-  border-block: var(--pixel-border-decoration) solid var(--pixel-border-meaningful);
-  border-inline-end: var(--pixel-border-decoration) solid var(--pixel-border-meaningful);
-  border-inline-start: var(--pixel-space-2) solid var(--pixel-cyan);
-  background-color: var(--pixel-paper);
-  color: var(--pixel-text);
-  font-family: var(--font-monospace);
-  font-size: var(--font-smallest);
-  font-weight: 700;
-  line-height: var(--pixel-space-4);
-  letter-spacing: 0.08em;
-  pointer-events: none;
-  box-shadow: none;
-  animation: none;
+:where(body:not(.is-mobile)) .markdown-rendered pre > code {
+  grid-column: 1;
+  grid-row: 1;
+  min-inline-size: 0;
+  line-height: 1.6;
 }
 
 .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-comment {
@@ -7327,9 +7315,26 @@ body .markdown-rendered pre > button.copy-code-button:not(.clickable-icon):not(.
   box-shadow: none;
   transform: none;
 }
+body .markdown-rendered pre > button.copy-code-button:not(.clickable-icon):not(.mod-settings *):not(:disabled):not([aria-disabled=true]):hover {
+  border-style: dashed;
+}
+body .markdown-rendered pre > button.copy-code-button:not(.clickable-icon):not(.mod-settings *):not(:disabled):not([aria-disabled=true]):active {
+  outline: var(--pixel-border-decoration) solid var(--pixel-cyan);
+  outline-offset: -3px;
+}
 body .markdown-rendered pre > button.copy-code-button:not(.clickable-icon):not(.mod-settings *):not(:disabled):not([aria-disabled=true]):focus-visible {
   outline: var(--pixel-border-control) solid var(--pixel-cyan);
   outline-offset: 1px;
+}
+
+body:not(.is-mobile) .markdown-rendered pre > button.copy-code-button:not(.clickable-icon):not(.mod-settings *) {
+  position: static;
+  grid-column: 2;
+  grid-row: 1;
+  align-self: start;
+  margin: 0;
+  margin-inline-start: var(--pixel-space-3);
+  opacity: 1;
 }
 
 body.is-mobile .markdown-rendered pre {
@@ -7474,6 +7479,7 @@ body:not(.is-mobile) .workspace-leaf-resize-handle.is-active {
   }
   .print .markdown-rendered pre,
   .print .markdown-rendered pre[class*=language-] {
+    display: block;
     padding: var(--pixel-space-3);
     border: var(--pixel-border-decoration) solid var(--pixel-line);
     overflow: visible;

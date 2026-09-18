@@ -74,6 +74,7 @@
 
   .print .markdown-rendered pre,
   .print .markdown-rendered pre[class*="language-"] {
+    display: block;
     padding: var(--pixel-space-3);
     border: var(--pixel-border-decoration) solid var(--pixel-line);
     overflow: visible;

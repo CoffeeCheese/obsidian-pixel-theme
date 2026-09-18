@@ -40,6 +40,7 @@ test('print releases scroll limits and exports readable code and tables without 
   assert.equal(declaration(r('.print'), '--pixel-paper'), '#fff');
   assert.equal(declaration(r('.print'), '--table-column-min-width'), '0');
   assert.equal(declaration(r('.print'), '--table-row-alt-background'), '#fff');
+  assert.equal(declaration(r('.print .markdown-rendered pre'), 'display'), 'block');
   assert.equal(declaration(r('.print .markdown-rendered pre > code'), 'white-space'), 'pre-wrap');
   assert.equal(declaration(r('.print .markdown-rendered pre > code'), 'overflow'), 'visible');
   assert.equal(declaration(r('.print .markdown-rendered pre > button.copy-code-button:not(.clickable-icon):not(.mod-settings *)'), 'display'), 'none');

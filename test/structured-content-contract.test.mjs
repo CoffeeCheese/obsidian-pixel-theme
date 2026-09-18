@@ -163,7 +163,7 @@ test("inline and fenced code keep mono typography, restrained boundaries, and st
   assert.equal(declaration(codeBlock, "overflow-x"), "auto");
   assert.equal(
     declaration(codeBlock, "border"),
-    "var(--code-border-width) solid var(--code-border-color)",
+    "var(--pixel-border-control) solid var(--pixel-border-meaningful)",
   );
   assert.equal(declaration(codeBlock, "box-shadow"), "none");
   assert.equal(declaration(codeBlock, "animation"), "none");
@@ -176,31 +176,11 @@ test("inline and fenced code keep mono typography, restrained boundaries, and st
   assert.equal(declaration(sourceCode, "line-height"), "1.65");
 });
 
-test("fenced code exposes a static Pixel status header without replacing native copy controls", async () => {
+test("reading code omits synthetic labels while preserving the native editor header", async () => {
   const css = await readTheme();
-  const readingBlock = ruleBody(css, ".markdown-rendered pre[class*=language-]");
-  assert.equal(declaration(readingBlock, "position"), "relative");
-  assert.equal(
-    declaration(readingBlock, "padding-block-start"),
-    "calc(var(--pixel-space-8) + var(--pixel-space-3))",
-  );
-  assert.equal(
-    declaration(readingBlock, "border-block-start"),
-    "var(--pixel-space-1) solid var(--pixel-cyan)",
-  );
-
-  const readingLabel = ruleBody(
-    css,
-    ".markdown-rendered pre[class*=language-]::before",
-  );
-  assert.equal(declaration(readingLabel, "content"), '"code"');
-  assert.equal(declaration(readingLabel, "font-family"), "var(--font-monospace)");
-  assert.equal(
-    declaration(readingLabel, "border-inline-start"),
-    "var(--pixel-space-2) solid var(--pixel-cyan)",
-  );
-  assert.equal(declaration(readingLabel, "pointer-events"), "none");
-  assert.equal(declaration(readingLabel, "animation"), "none");
+  assert.doesNotMatch(css, /content:\s*["']CODE["']/i);
+  const panel = ruleBody(css, ".markdown-rendered pre");
+  assert.equal(declaration(panel, "padding"), "var(--pixel-space-4)");
 
   const liveHeader = ruleBody(
     css,
