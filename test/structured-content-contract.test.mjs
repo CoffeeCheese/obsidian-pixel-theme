@@ -29,7 +29,6 @@ test("structured content maps stable Obsidian callout, code, table, embed, and f
     "--code-radius": "var(--pixel-radius)",
     "--code-background": "var(--pixel-surface-secondary)",
     "--code-normal": "var(--pixel-text)",
-    "--code-comment": "var(--pixel-text)",
     "--table-background": "var(--pixel-paper)",
     "--table-border-width": "var(--pixel-border-decoration)",
     "--table-border-color": "var(--pixel-line)",

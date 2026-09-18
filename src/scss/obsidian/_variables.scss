@@ -1,7 +1,7 @@
 body {
   --font-interface-theme: var(--pixel-font-interface);
   --font-text-theme: var(--pixel-font-text);
-  --font-monospace-theme: var(--pixel-font-monospace);
+  // Keep the native monospace chain: Pixel utility ink consumes it, not vice versa.
   --font-text-size: 16px;
   --font-ui-small: 13px;
   --font-ui-medium: 13px;
@@ -128,19 +128,18 @@ body {
   --code-border-width: var(--pixel-border-decoration);
   --code-border-color: var(--pixel-line);
   --code-radius: var(--pixel-radius);
-  // Syntax roles sit on the secondary code surface. Keep every small-text role
-  // above the 4.5:1 floor in both palettes instead of inheriting Obsidian's
-  // brighter default syntax colors.
-  --code-comment: var(--pixel-text);
-  --code-function: var(--pixel-amber-text);
-  --code-important: var(--pixel-text);
-  --code-keyword: var(--pixel-amber-text);
+  // Native highlighting engines share roles without sharing token markup.
+  // Keep neutral ink neutral and calibrate syntax ink on the code surface.
+  --code-comment: var(--pixel-code-comment);
+  --code-function: var(--pixel-code-function);
+  --code-important: var(--pixel-code-value);
+  --code-keyword: var(--pixel-code-keyword);
   --code-operator: var(--pixel-text);
-  --code-property: var(--pixel-amber-text);
+  --code-property: var(--pixel-code-function);
   --code-punctuation: var(--pixel-text);
-  --code-string: var(--pixel-text);
-  --code-tag: var(--pixel-amber-text);
-  --code-value: var(--pixel-text);
+  --code-string: var(--pixel-code-string);
+  --code-tag: var(--pixel-code-keyword);
+  --code-value: var(--pixel-code-value);
   --table-background: var(--pixel-paper);
   --table-border-width: var(--pixel-border-decoration);
   --table-border-color: var(--pixel-line);

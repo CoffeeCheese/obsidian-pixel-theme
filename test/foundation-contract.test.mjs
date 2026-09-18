@@ -229,6 +229,13 @@ test("compiled package embeds the identity font and inherits the configured code
     (match) => match[1],
   );
 
+  // Pixel's utility stack consumes --font-monospace. Feeding it back into
+  // the native theme slot makes even a configured user override cyclic.
+  assert.doesNotMatch(
+    combinedRuleBody(css, "body"),
+    /--font-monospace-theme:\s*var\(--pixel-font-monospace\)/,
+  );
+
   assert.equal(fontFaces.length, 1);
   assert.ok(
     fontFaces.some(

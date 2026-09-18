@@ -159,6 +159,20 @@
   animation: none;
 }
 
+// Markdown comments use muted prose ink elsewhere. Fenced comments must use
+// code ink; native diff success/error colors also miss the code contrast floor.
+.markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-comment {
+  color: var(--code-comment);
+}
+
+.markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-positive {
+  color: var(--code-string);
+}
+
+.markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-negative {
+  color: var(--code-keyword);
+}
+
 .markdown-source-view.mod-cm6 .cm-line.HyperMD-codeblock-begin {
   border-block-start: var(--pixel-space-1) solid var(--pixel-cyan);
 }

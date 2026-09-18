@@ -34,10 +34,11 @@ async function sourceStyles() {
   );
 }
 
-test("small text on secondary surfaces uses roles that pass in Light and Dark", async () => {
+test("code roles remain distinguishable and readable in Light and Dark", async () => {
   const css = await readTheme();
   const mappings = ruleBody(css, ".theme-light,\n.theme-dark");
   const syntaxRoles = [
+    "--code-normal",
     "--code-comment",
     "--code-function",
     "--code-important",
@@ -50,19 +51,63 @@ test("small text on secondary surfaces uses roles that pass in Light and Dark", 
     "--code-value",
   ];
 
-  for (const property of syntaxRoles) {
-    assert.match(declaration(mappings, property), /var\(--pixel-(?:text|amber-text)\)/);
-  }
-
   for (const selector of [".theme-light", ".theme-dark"]) {
     const palette = ruleBody(css, selector);
-    const secondary = declaration(palette, "--pixel-surface-secondary");
-    for (const role of ["--pixel-text", "--pixel-amber-text"]) {
+    const values = new Map(
+      [...`${mappings}\n${palette}`.matchAll(/(--[\w-]+):\s*([^;]+);/g)]
+        .map(([, name, value]) => [name, value.trim()]),
+    );
+    function resolve(property, seen = new Set()) {
+      assert.ok(!seen.has(property), `Cyclic color variable: ${property}`);
+      seen.add(property);
+      const value = values.get(property);
+      assert.ok(value, `Missing color variable: ${property}`);
+      const alias = value.match(/^var\((--[\w-]+)\)$/);
+      if (alias) return resolve(alias[1], seen);
+      assert.match(value, /^#[a-f\d]{6}$/i);
+      return value.toLowerCase();
+    }
+
+    const background = resolve("--code-background");
+    const selection = declaration(
+      ruleBody(css, ".markdown-rendered,\n.markdown-source-view.mod-cm6"),
+      "--text-selection",
+    ).match(/^color-mix\(in srgb, var\((--[\w-]+)\) ([\d.]+)%, var\((--[\w-]+)\)\)$/);
+    assert.ok(selection, "Expected an opaque selection surface over Pixel Paper");
+    const [, ink, percentage, paper] = selection;
+    const weight = Number(percentage) / 100;
+    const selectionBackground = "#" + [1, 3, 5].map((offset) => {
+      const channel = (role) => Number.parseInt(resolve(role).slice(offset, offset + 2), 16);
+      return Math.round(channel(ink) * weight + channel(paper) * (1 - weight))
+        .toString(16).padStart(2, "0");
+    }).join("");
+    for (const role of syntaxRoles) {
       assert.ok(
-        contrast(declaration(palette, role), secondary) >= 4.5,
-        `${selector} ${role} must pass on the secondary surface`,
+        contrast(resolve(role), background) >= 4.5,
+        `${selector} ${role} must pass on its code background`,
+      );
+      assert.ok(
+        contrast(resolve(role), selectionBackground) >= 4.5,
+        `${selector} ${role} must remain readable when selected in the editor`,
       );
     }
+
+    const readingRoles = [
+      "--code-normal", "--code-comment", "--code-keyword",
+      "--code-string", "--code-function", "--code-value",
+    ];
+    assert.equal(
+      new Set(readingRoles.map((role) => resolve(role))).size,
+      readingRoles.length,
+      `${selector} code must distinguish prose, comments, keywords, strings, functions and values`,
+    );
+    assert.ok(
+      contrast(resolve("--code-comment"), background)
+        < contrast(resolve("--code-normal"), background),
+      `${selector} comments should be quieter than ordinary code`,
+    );
+    assert.equal(resolve("--code-punctuation"), resolve("--code-normal"));
+    assert.equal(resolve("--code-operator"), resolve("--code-normal"));
   }
 
   assert.equal(
@@ -248,4 +293,24 @@ test("property tag ink passes against its actual tinted background in both theme
     const mixed = cyan.map((v, i) => Math.round(v * weight + text[i] * (1 - weight)).toString(16).padStart(2, "0")).join("");
     assert.ok(contrast(mixed, declaration(palette, "--pixel-nav-label")) >= 4.5, `${mode} property tag text must pass on its tint`);
   }
+});
+
+test("fenced editor comments and diff lines use readable syntax roles without recoloring prose", async () => {
+  const css = await readTheme();
+  const roles = {
+    "cm-comment": "--code-comment",
+    "cm-positive": "--code-string",
+    "cm-negative": "--code-keyword",
+  };
+  for (const [token, role] of Object.entries(roles)) {
+    const rule = ruleBodyForSelector(
+      css,
+      `.markdown-source-view.mod-cm6 .HyperMD-codeblock .${token}`,
+    );
+    assert.equal(declaration(rule, "color"), `var(${role})`);
+  }
+  assert.equal(
+    declaration(ruleBodyForSelector(css, ".cm-comment"), "color"),
+    "var(--pixel-text-muted)",
+  );
 });

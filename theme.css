@@ -223,6 +223,11 @@ body {
   --pixel-surface-secondary: #dbe5eb;
   --pixel-text: #182434;
   --pixel-text-muted: #607184;
+  --pixel-code-comment: #506172;
+  --pixel-code-keyword: #67429b;
+  --pixel-code-string: #246343;
+  --pixel-code-function: #285a8e;
+  --pixel-code-value: #80501e;
   --pixel-cyan: #197d8c;
   --pixel-cyan-rgb: 25, 125, 140;
   --pixel-amber: #d48732;
@@ -266,6 +271,11 @@ body {
   --pixel-surface-secondary: #20313c;
   --pixel-text: #e5edf0;
   --pixel-text-muted: #8fa2ad;
+  --pixel-code-comment: #a2b1ba;
+  --pixel-code-keyword: #c9a4ee;
+  --pixel-code-string: #8bc9a3;
+  --pixel-code-function: #91bdeb;
+  --pixel-code-value: #e6b56e;
   --pixel-cyan: #58c7cf;
   --pixel-cyan-rgb: 88, 199, 207;
   --pixel-amber: #f0aa4f;
@@ -299,7 +309,6 @@ body {
 body {
   --font-interface-theme: var(--pixel-font-interface);
   --font-text-theme: var(--pixel-font-text);
-  --font-monospace-theme: var(--pixel-font-monospace);
   --font-text-size: 16px;
   --font-ui-small: 13px;
   --font-ui-medium: 13px;
@@ -423,16 +432,16 @@ body {
   --code-border-width: var(--pixel-border-decoration);
   --code-border-color: var(--pixel-line);
   --code-radius: var(--pixel-radius);
-  --code-comment: var(--pixel-text);
-  --code-function: var(--pixel-amber-text);
-  --code-important: var(--pixel-text);
-  --code-keyword: var(--pixel-amber-text);
+  --code-comment: var(--pixel-code-comment);
+  --code-function: var(--pixel-code-function);
+  --code-important: var(--pixel-code-value);
+  --code-keyword: var(--pixel-code-keyword);
   --code-operator: var(--pixel-text);
-  --code-property: var(--pixel-amber-text);
+  --code-property: var(--pixel-code-function);
   --code-punctuation: var(--pixel-text);
-  --code-string: var(--pixel-text);
-  --code-tag: var(--pixel-amber-text);
-  --code-value: var(--pixel-text);
+  --code-string: var(--pixel-code-string);
+  --code-tag: var(--pixel-code-keyword);
+  --code-value: var(--pixel-code-value);
   --table-background: var(--pixel-paper);
   --table-border-width: var(--pixel-border-decoration);
   --table-border-color: var(--pixel-line);
@@ -1075,6 +1084,18 @@ body:not(.is-mobile) .status-bar-item.mod-clickable:focus-visible {
   pointer-events: none;
   box-shadow: none;
   animation: none;
+}
+
+.markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-comment {
+  color: var(--code-comment);
+}
+
+.markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-positive {
+  color: var(--code-string);
+}
+
+.markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-negative {
+  color: var(--code-keyword);
 }
 
 .markdown-source-view.mod-cm6 .cm-line.HyperMD-codeblock-begin {
