@@ -157,6 +157,12 @@
 }
 
 @media screen {
+  // Overlay scrollbars do not contribute to intrinsic height. Keep the last
+  // code line above their hit area, including while the native thumb expands.
+  :where(body:not(.is-mobile)) .markdown-rendered pre:where(:not([class]), [class=""], [class^="language-"]) > code {
+    padding-block-end: var(--pixel-space-4);
+  }
+
   // Reading mode exposes the fence identifier as one language-* class, not a
   // data attribute. In a monospace caption, hide only that fixed nine-cell
   // prefix. Extra classes indicate a custom renderer: keep its existing layout.

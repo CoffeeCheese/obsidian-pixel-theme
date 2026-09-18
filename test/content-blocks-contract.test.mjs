@@ -120,3 +120,10 @@ test("desktop language captions use the native fence identifier and leave a full
   assert.equal(declaration(ruleBody(css, panel + ' > code'), 'grid-column'), '1/-1');
   assert.equal(declaration(ruleBody(css, panel + ' > code'), 'grid-row'), '2');
 });
+
+test("desktop screen code reserves space below text for overlay horizontal scrollbars", async () => {
+  const css = await readTheme();
+  const screen = atRuleBody(css, '@media screen');
+  const selector = ':where(body:not(.is-mobile)) .markdown-rendered pre:where(:not([class]), [class=""], [class^=language-]) > code';
+  assert.equal(declaration(ruleBody(screen, selector), 'padding-block-end'), 'var(--pixel-space-4)');
+});

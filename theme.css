@@ -1078,6 +1078,9 @@ body:not(.is-mobile) .status-bar-item.mod-clickable:focus-visible {
 }
 
 @media screen {
+  :where(body:not(.is-mobile)) .markdown-rendered pre:where(:not([class]), [class=""], [class^=language-]) > code {
+    padding-block-end: var(--pixel-space-4);
+  }
   :where(body:not(.is-mobile)) .markdown-rendered pre[class^=language-]:not([class*=" "]):not([class=language-]):not([class=language-none]) {
     row-gap: var(--pixel-space-2);
   }
