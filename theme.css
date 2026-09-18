@@ -1065,7 +1065,6 @@ body:not(.is-mobile) .status-bar-item.mod-clickable:focus-visible {
   border-radius: 0;
   grid-template-columns: minmax(0, 1fr) auto;
   column-gap: 0;
-  overflow: visible;
 }
 :where(body:not(.is-mobile)) .markdown-rendered pre > code {
   grid-column: 1;

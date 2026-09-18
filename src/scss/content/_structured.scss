@@ -133,13 +133,13 @@
 }
 
 // Desktop copy occupies a real column, not a title row or an overlay. Only
-// reserve that column when the native action exists; code owns all scrolling.
+// reserve that column when the native action exists. Keep the pre overflow
+// fallback for raw HTML without a code child; native code scrolls inside it.
 :where(body:not(.is-mobile)) .markdown-rendered pre {
   display: grid;
   border-radius: 0;
   grid-template-columns: minmax(0, 1fr) auto;
   column-gap: 0;
-  overflow: visible;
 
   > code {
     grid-column: 1;

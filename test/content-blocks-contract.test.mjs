@@ -63,7 +63,6 @@ test("desktop reading code gives native copy its own column without an empty tit
   assert.equal(declaration(rule(panel), "display"), "grid");
   assert.equal(declaration(rule(panel), "border-radius"), "0");
   assert.equal(declaration(rule(panel), "grid-template-columns"), "minmax(0, 1fr) auto");
-  assert.equal(declaration(rule(panel), "overflow"), "visible");
   assert.equal(declaration(rule(panel), "column-gap"), "0");
   const code = rule(panel + ' > code');
   assert.equal(declaration(code, "min-inline-size"), "0");
@@ -74,4 +73,12 @@ test("desktop reading code gives native copy its own column without an empty tit
   assert.equal(declaration(copy, "grid-row"), "1");
   assert.equal(declaration(copy, "opacity"), "1");
   assert.equal(declaration(copy, "margin-inline-start"), "var(--pixel-space-3)");
+});
+
+test("bare reading pre retains local overflow when no code child can own scrolling", async () => {
+  const css = await readTheme();
+  const fallback = ruleBodyForSelector(css, ".markdown-rendered pre");
+  assert.equal(declaration(fallback, "overflow-x"), "auto");
+  const desktop = ruleBodyForSelector(css, ":where(body:not(.is-mobile)) .markdown-rendered pre");
+  assert.doesNotMatch(desktop, /(?:^|[;\n])\s*overflow(?:-x)?:\s*(?:visible|hidden|clip)\s*;/);
 });
