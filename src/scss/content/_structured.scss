@@ -169,7 +169,19 @@
       grid-column: 1;
       grid-row: 1;
       align-self: center;
+      justify-self: start;
+      inline-size: fit-content;
+      max-inline-size: calc(100% - var(--pixel-space-2));
       min-inline-size: 0;
+      margin: var(--pixel-space-1);
+      padding-block: var(--pixel-space-1);
+      // Solid side borders provide inset space outside the text clipping area:
+      // horizontal padding would reveal part of the hidden language- prefix.
+      border-inline: var(--pixel-space-2) solid var(--pixel-paper);
+      border-radius: 0;
+      outline: var(--pixel-border-control) solid var(--pixel-amber-text);
+      background-color: var(--pixel-paper);
+      box-shadow: 2px 2px 0 2px var(--pixel-amber-text);
       overflow: hidden;
       color: var(--pixel-amber-text);
       font-family: var(--font-monospace);

@@ -106,6 +106,15 @@ test("desktop language captions use the native fence identifier and leave a full
   assert.equal(declaration(label, 'letter-spacing'), '0');
   assert.equal(declaration(label, 'overflow-wrap'), 'anywhere');
   assert.equal(declaration(label, 'color'), 'var(--pixel-amber-text)');
+  assert.equal(declaration(label, 'justify-self'), 'start');
+  assert.equal(declaration(label, 'inline-size'), 'fit-content');
+  assert.equal(declaration(label, 'max-inline-size'), 'calc(100% - var(--pixel-space-2))');
+  assert.equal(declaration(label, 'background-color'), 'var(--pixel-paper)');
+  assert.equal(declaration(label, 'border-inline'), 'var(--pixel-space-2) solid var(--pixel-paper)');
+  assert.equal(declaration(label, 'outline'), 'var(--pixel-border-control) solid var(--pixel-amber-text)');
+  assert.equal(declaration(label, 'box-shadow'), '2px 2px 0 2px var(--pixel-amber-text)');
+  assert.equal(declaration(label, 'border-radius'), '0');
+  assert.equal(declaration(label, 'overflow'), 'hidden');
   assert.equal(declaration(label, 'pointer-events'), 'none');
   assert.equal(declaration(label, 'user-select'), 'none');
   assert.equal(declaration(ruleBody(css, panel + ' > code'), 'grid-column'), '1/-1');
