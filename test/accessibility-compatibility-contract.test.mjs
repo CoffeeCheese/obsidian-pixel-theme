@@ -69,6 +69,15 @@ test("code roles remain distinguishable and readable in Light and Dark", async (
     }
 
     const background = resolve("--code-background");
+    const activeWash = declaration(palette, "--pixel-active-line")
+      .match(/^rgba\((\d+), (\d+), (\d+), ([\d.]+)\)$/);
+    assert.ok(activeWash, "Expected a translucent active-line wash over the code surface");
+    const activeAlpha = Number(activeWash[4]);
+    const activeBackground = "#" + [1, 3, 5].map((offset, index) => {
+      const base = Number.parseInt(background.slice(offset, offset + 2), 16);
+      return Math.round(Number(activeWash[index + 1]) * activeAlpha + base * (1 - activeAlpha))
+        .toString(16).padStart(2, "0");
+    }).join("");
     const selection = declaration(
       ruleBody(css, ".markdown-rendered,\n.markdown-source-view.mod-cm6"),
       "--text-selection",
@@ -89,6 +98,10 @@ test("code roles remain distinguishable and readable in Light and Dark", async (
       assert.ok(
         contrast(resolve(role), selectionBackground) >= 4.5,
         `${selector} ${role} must remain readable when selected in the editor`,
+      );
+      assert.ok(
+        contrast(resolve(role), activeBackground) >= 4.5,
+        `${selector} ${role} must remain readable on an active code line`,
       );
     }
 

@@ -184,7 +184,7 @@ test("reading code omits synthetic labels while preserving the native editor hea
 
   const liveHeader = ruleBody(
     css,
-    ".markdown-source-view.mod-cm6 .cm-line.HyperMD-codeblock-begin",
+    ":where(body.is-mobile) .markdown-source-view.mod-cm6 .cm-line.HyperMD-codeblock-begin",
   );
   assert.equal(
     declaration(liveHeader, "border-block-start"),
@@ -193,7 +193,7 @@ test("reading code omits synthetic labels while preserving the native editor hea
 
   const liveLabel = ruleBody(
     css,
-    ".markdown-source-view.mod-cm6 .code-block-flair",
+    ":where(body.is-mobile) .markdown-source-view.mod-cm6 .code-block-flair",
   );
   assert.equal(declaration(liveLabel, "font-family"), "var(--font-monospace)");
   assert.equal(
@@ -207,6 +207,49 @@ test("reading code omits synthetic labels while preserving the native editor hea
     css.replace(atRuleBody(css, "@media print"), ""),
     /\.copy-code-button[^{}]*\{[^}]*(?:display:\s*none|visibility:\s*hidden|pointer-events:\s*none)/is,
   );
+});
+
+test("Desktop Workspace editor code uses native block edges without imposing container geometry on lines", async () => {
+  const css = await readTheme();
+  const scope = ":where(body:not(.is-mobile)) .markdown-source-view.mod-cm6";
+  const background = ruleBody(css, `${scope} .HyperMD-codeblock-bg`);
+  assert.equal(declaration(background, "--code-border-width"), "var(--pixel-border-control)");
+  assert.equal(declaration(background, "--code-border-color"), "var(--pixel-border-meaningful)");
+  assert.equal(declaration(background, "--code-radius"), "0px");
+  const line = ruleBody(css, `${scope} .HyperMD-codeblock`);
+  assert.equal(declaration(line, "line-height"), "1.6");
+
+  // CodeMirror owns the line boxes, whitespace, scrolling and selection layer.
+  const rules = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)];
+  for (const [, selectors, body] of rules) {
+    if (!selectors.includes("HyperMD-codeblock") || selectors.includes("body.is-mobile")) continue;
+    assert.doesNotMatch(body, /(?:^|[;\n])\s*(?:display|position|padding[\w-]*|margin[\w-]*|border[\w-]*|overflow[\w-]*|white-space|height|block-size|transform|content):/);
+    if (body.includes("box-shadow:")) assert.equal(declaration(body, "box-shadow"), "none");
+  }
+});
+
+test("desktop native language hints fit the fence row and inherit readable code ink without fabricated text", async () => {
+  const css = await readTheme();
+  const selector = ":where(body:not(.is-mobile)) .markdown-source-view.mod-cm6 .code-block-flair";
+  const label = ruleBody(css, selector);
+  assert.equal(declaration(label, "color"), "var(--code-normal)");
+  assert.equal(declaration(label, "font-family"), "var(--font-monospace)");
+  assert.equal(declaration(label, "inset-block-start"), "var(--pixel-border-control)");
+  assert.equal(declaration(label, "padding-block"), "0");
+  assert.equal(declaration(label, "line-height"), "var(--pixel-space-4)");
+  assert.equal(declaration(label, "max-inline-size"), "50%");
+  assert.equal(declaration(label, "text-overflow"), "ellipsis");
+  assert.equal(declaration(label, "transform"), "none");
+  assert.equal(declaration(label, "transition"), "none");
+  assert.doesNotMatch(css, /code-block-flair[^{}]*::(?:before|after)\s*\{[^}]*content:/);
+});
+
+test("desktop active code lines retain their code surface and paint an inset position cue without shifting text", async () => {
+  const css = await readTheme();
+  const active = ruleBody(css, ":where(body:not(.is-mobile)) .markdown-source-view.mod-cm6 .HyperMD-codeblock.cm-active");
+  assert.match(declaration(active, "background-image"), /linear-gradient\(var\(--pixel-active-line\), var\(--pixel-active-line\)\)/);
+  assert.equal(declaration(active, "box-shadow"), "none");
+  assert.doesNotMatch(active, /(?:^|[;\n])\s*(?:background-color|padding[\w-]*|margin[\w-]*|border[\w-]*|transform):/);
 });
 
 test("reading and live-preview tables retain hierarchy, alignment, editing controls, and horizontal overflow", async () => {
