@@ -1077,6 +1077,37 @@ body:not(.is-mobile) .status-bar-item.mod-clickable:focus-visible {
   line-height: 1.6;
 }
 
+@media screen {
+  :where(body:not(.is-mobile)) .markdown-rendered pre[class^=language-]:not([class*=" "]):not([class=language-]):not([class=language-none]) {
+    row-gap: var(--pixel-space-2);
+  }
+  :where(body:not(.is-mobile)) .markdown-rendered pre[class^=language-]:not([class*=" "]):not([class=language-]):not([class=language-none])::before {
+    content: attr(class);
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
+    min-inline-size: 0;
+    overflow: hidden;
+    color: var(--pixel-amber-text);
+    font-family: var(--font-monospace);
+    font-size: var(--font-smallest);
+    font-weight: 600;
+    font-variant-ligatures: none;
+    line-height: 1.5;
+    letter-spacing: 0;
+    text-indent: -9ch;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    direction: ltr;
+    text-align: start;
+    user-select: none;
+    pointer-events: none;
+  }
+  :where(body:not(.is-mobile)) .markdown-rendered pre[class^=language-]:not([class*=" "]):not([class=language-]):not([class=language-none]) > code {
+    grid-column: 1/-1;
+    grid-row: 2;
+  }
+}
 .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-comment {
   color: var(--code-comment);
 }

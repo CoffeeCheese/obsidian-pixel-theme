@@ -69,6 +69,10 @@ test("code roles remain distinguishable and readable in Light and Dark", async (
     }
 
     const background = resolve("--code-background");
+    assert.ok(
+      contrast(resolve("--pixel-amber-text"), background) >= 4.5,
+      `${selector} reading language captions must pass on the code surface`,
+    );
     const activeWash = declaration(palette, "--pixel-active-line")
       .match(/^rgba\((\d+), (\d+), (\d+), ([\d.]+)\)$/);
     assert.ok(activeWash, "Expected a translucent active-line wash over the code surface");

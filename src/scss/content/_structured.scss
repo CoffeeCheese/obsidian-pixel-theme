@@ -156,6 +156,44 @@
   }
 }
 
+@media screen {
+  // Reading mode exposes the fence identifier as one language-* class, not a
+  // data attribute. In a monospace caption, hide only that fixed nine-cell
+  // prefix. Extra classes indicate a custom renderer: keep its existing layout.
+  // The engine uses language-none when it cannot retain a fence identifier.
+  :where(body:not(.is-mobile)) .markdown-rendered pre[class^="language-"]:not([class*=" "]):not([class="language-"]):not([class="language-none"]) {
+    row-gap: var(--pixel-space-2);
+
+    &::before {
+      content: attr(class);
+      grid-column: 1;
+      grid-row: 1;
+      align-self: center;
+      min-inline-size: 0;
+      overflow: hidden;
+      color: var(--pixel-amber-text);
+      font-family: var(--font-monospace);
+      font-size: var(--font-smallest);
+      font-weight: 600;
+      font-variant-ligatures: none;
+      line-height: 1.5;
+      letter-spacing: 0;
+      text-indent: -9ch;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      direction: ltr;
+      text-align: start;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    > code {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+  }
+}
+
 // Markdown comments use muted prose ink elsewhere. Fenced comments must use
 // code ink; native diff success/error colors also miss the code contrast floor.
 .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-comment {

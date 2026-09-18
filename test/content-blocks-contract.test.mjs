@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { combinedRuleBody, declaration, readTheme, ruleBody, ruleBodyForSelector } from "../test-support/theme-css.mjs";
+import { atRuleBody, combinedRuleBody, declaration, readTheme, ruleBody, ruleBodyForSelector } from "../test-support/theme-css.mjs";
 
 test("quotes and nested callouts use compact spacing without taking over native folding", async () => {
   const css = await readTheme();
@@ -92,4 +92,22 @@ test("desktop plugin pre output keeps native layout instead of inheriting the co
   assert.equal(declaration(panel, "border"), "var(--pixel-border-control) solid var(--pixel-border-meaningful)");
   const mobile = ruleBodyForSelector(css, ":where(body.is-mobile) .markdown-rendered pre");
   assert.equal(declaration(mobile, "padding"), "var(--pixel-space-4)");
+});
+
+test("desktop language captions use the native fence identifier and leave a full-width code row", async () => {
+  const css = await readTheme();
+  const panel = ':where(body:not(.is-mobile)) .markdown-rendered pre[class^=language-]:not([class*=" "]):not([class=language-]):not([class=language-none])';
+  const screen = atRuleBody(css, '@media screen');
+  const label = ruleBody(screen, panel + '::before');
+  assert.equal(declaration(label, 'content'), 'attr(class)');
+  assert.equal(declaration(label, 'text-indent'), '-9ch');
+  assert.equal(declaration(label, 'font-family'), 'var(--font-monospace)');
+  assert.equal(declaration(label, 'font-variant-ligatures'), 'none');
+  assert.equal(declaration(label, 'letter-spacing'), '0');
+  assert.equal(declaration(label, 'overflow-wrap'), 'anywhere');
+  assert.equal(declaration(label, 'color'), 'var(--pixel-amber-text)');
+  assert.equal(declaration(label, 'pointer-events'), 'none');
+  assert.equal(declaration(label, 'user-select'), 'none');
+  assert.equal(declaration(ruleBody(css, panel + ' > code'), 'grid-column'), '1/-1');
+  assert.equal(declaration(ruleBody(css, panel + ' > code'), 'grid-row'), '2');
 });
